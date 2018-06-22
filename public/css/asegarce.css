@@ -1,0 +1,143 @@
+/* Fuentes */
+@charset "UTF-8";[class*=" voyager-"]:before,[class^=voyager-]:before,[data-icon]:before{font-family:voyager!important;font-style:normal!important;font-weight:400!important;font-variant:normal!important;text-transform:none!important;speak:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}@font-face{font-family:voyager;src:url(../vendor/tcg/voyager/assets/fonts/voyager.eot);src:url(../vendor/tcg/voyager/assets/fonts/voyager.eot?#iefix) format("embedded-opentype"),url(../vendor/tcg/voyager/assets/fonts/voyager.woff) format("woff"),url(../vendor/tcg/voyager/assets/fonts/voyager.ttf) format("truetype"),url(../vendor/tcg/voyager/assets/fonts/voyager.svg#voyager) format("svg");font-weight:400;font-style:normal}[data-icon]:before{content:attr(data-icon)}.voyager-bread:before{content:"\61"}.voyager-helm:before{content:"\62"}.voyager-play:before{content:"\63"}.voyager-activity:before{content:"\64"}.voyager-company:before{content:"\65"}.voyager-file-text:before{content:"\66"}.voyager-folder:before{content:"\67"}.voyager-paw:before{content:"\68"}.voyager-sort:before{content:"\6f"}.voyager-sort-asc:before{content:"\70"}.voyager-sort-desc:before{content:"\71"}.voyager-handle:before{content:"\6d"}.voyager-hammer:before{content:"\6e"}.voyager-images:before{content:"\69"}.voyager-categories:before{content:"\6a"}.voyager-group:before{content:"\6b"}.voyager-person:before{content:"\73"}.voyager-people:before{content:"\74"}.voyager-power:before{content:"\75"}.voyager-tools:before{content:"\76"}.voyager-anchor:before{content:"\77"}.voyager-double-down:before{content:"\78"}.voyager-double-up:before{content:"\79"}.voyager-double-left:before{content:"\7a"}.voyager-double-right:before{content:"\41"}.voyager-window-list:before{content:"\42"}.voyager-x:before{content:"\43"}.voyager-dot:before{content:"\44"}.voyager-dot-2:before{content:"\45"}.voyager-dot-3:before{content:"\46"}.voyager-list:before{content:"\47"}.voyager-list-add:before{content:"\48"}.voyager-pie-chart:before{content:"\49"}.voyager-watch:before{content:"\4a"}.voyager-data:before{content:"\4b"}.voyager-music:before{content:"\4c"}.voyager-settings:before{content:"\4e"}.voyager-video:before{content:"\4f"}.voyager-trash:before{content:"\50"}.voyager-tv:before{content:"\51"}.voyager-lock:before{content:"\52"}.voyager-news:before{content:"\4d"}.voyager-bag:before{content:"\53"}.voyager-upload:before{content:"\54"}.voyager-refresh:before{content:"\55"}.voyager-character:before{content:"\57"}.voyager-move:before{content:"\58"}.voyager-paypal:before{content:"\56"}.voyager-paper-plane:before{content:"\59"}.voyager-ticket:before{content:"\5a"}.voyager-youtube-play:before{content:"\30"}.voyager-boat:before{content:"\31"}.voyager-check:before{content:"\6c"}.voyager-alarm-clock:before{content:"\32"}.voyager-controller:before{content:"\34"}.voyager-pizza:before{content:"\35"}.voyager-backpack:before{content:"\36"}.voyager-barbeque:before{content:"\37"}.voyager-bomb:before{content:"\38"}.voyager-book-download:before{content:"\39"}.voyager-browser:before{content:"\21"}.voyager-brush:before{content:"\22"}.voyager-bubble-hear:before{content:"\23"}.voyager-polaroid:before{content:"\24"}.voyager-crop:before{content:"\26"}.voyager-dashboard:before{content:"\27"}.voyager-hotdog:before{content:"\28"}.voyager-laptop:before{content:"\29"}.voyager-paint-bucket:before{content:"\2c"}.voyager-photo:before{content:"\2d"}.voyager-photos:before{content:"\2e"}.voyager-receipt:before{content:"\2f"}.voyager-buy:before{content:"\3a"}.voyager-lightbulb:before{content:"\3b"}.voyager-archive:before{content:"\3f"}.voyager-paperclip:before{content:"\40"}.voyager-warning:before{content:"\5b"}.voyager-basket:before{content:"\5d"}.voyager-bell:before{content:"\5e"}.voyager-book:before{content:"\5f"}.voyager-chat:before{content:"\60"}.voyager-down-circled:before{content:"\7b"}.voyager-location:before{content:"\7d"}.voyager-forward:before{content:"\7e"}.voyager-flashlight:before{content:"\5c"}.voyager-trophy:before{content:"\e001"}.voyager-diamond:before{content:"\e002"}.voyager-credit-cards:before{content:"\e003"}.voyager-shop:before{content:"\e004"}.voyager-sound:before{content:"\e005"}.voyager-study:before{content:"\e006"}.voyager-pen:before{content:"\e007"}.voyager-params:before{content:"\e008"}.voyager-fire:before{content:"\e009"}.voyager-dollar:before{content:"\e00a"}.voyager-bulb:before{content:"\e00b"}.voyager-lab:before{content:"\e00c"}.voyager-cup:before{content:"\e00d"}.voyager-megaphone:before{content:"\e00e"}.voyager-heart:before{content:"\e00f"}.voyager-bubble:before{content:"\e011"}.voyager-search:before{content:"\e012"}.voyager-tag:before{content:"\e013"}.voyager-world:before{content:"\25"}.voyager-camera:before{content:"\2a"}.voyager-calendar:before{content:"\7c"}.voyager-mail:before{content:"\e014"}.voyager-phone:before{content:"\e015"}.voyager-star:before{content:"\e016"}.voyager-star-half:before{content:"\e017"}.voyager-star-half-1:before{content:"\e018"}.voyager-star-two:before{content:"\e019"}.voyager-medal-rank-star:before{content:"\e01a"}.voyager-facebook:before{content:"\e01b"}.voyager-google-plus:before{content:"\e01c"}.voyager-twitter:before{content:"\e01d"}.voyager-github:before{content:"\e01e"}.voyager-code:before{content:"\e01f"}.voyager-pie-graph:before{content:"\e020"}.voyager-javascript:before{content:"\e021"}.voyager-wand:before{content:"\e022"}.voyager-wineglass:before{content:"\e023"}.voyager-milestone:before{content:"\e024"}.voyager-terminal:before{content:"\e025"}.voyager-plug:before{content:"\e026"}.voyager-gift:before{content:"\e027"}.voyager-markdown:before{content:"\e028"}.voyager-beer:before{content:"\e029"}.voyager-credit-card:before{content:"\e02a"}.voyager-bolt:before{content:"\e02b"}.voyager-external:before{content:"\e02c"}.voyager-magnet:before{content:"\e02d"}.voyager-certificate:before{content:"\e02e"}.voyager-cloud-download:before{content:"\e02f"}.voyager-campfire:before{content:"\e030"}.voyager-new:before{content:"\e031"}.voyager-skull:before{content:"\e032"}.voyager-telephone:before{content:"\e033"}.voyager-trees:before{content:"\e034"}.voyager-bar-chart:before{content:"\e035"}.voyager-check-circle:before{content:"\e036"}.voyager-exclamation:before{content:"\e037"}.voyager-font:before{content:"\e03a"}.voyager-puzzle:before{content:"\e03b"}.voyager-smile:before{content:"\e03c"}.voyager-frown:before{content:"\e03d"}.voyager-meh:before{content:"\e03e"}.voyager-leaf:before{content:"\e03f"}.voyager-info-circled:before{content:"\e040"}.voyager-underline:before{content:"\e041"}.voyager-wallet:before{content:"\e042"}.voyager-truck:before{content:"\e043"}.voyager-eye:before{content:"\e044"}.voyager-sun:before{content:"\e045"}.voyager-barbell:before{content:"\e04a"}.voyager-bookmark:before{content:"\e04c"}.voyager-volume-up:before{content:"\e04d"}.voyager-volume-down:before{content:"\e04e"}.voyager-wifi:before{content:"\e04f"}.voyager-pause:before{content:"\e053"}.voyager-resize-full:before{content:"\e054"}.voyager-resize-small:before{content:"\e055"}.voyager-download:before{content:"\e056"}.voyager-droplet:before{content:"\e057"}.voyager-umbrella:before{content:"\e058"}.voyager-harddrive:before{content:"\e059"}.voyager-css3:before{content:"\e05a"}.voyager-html5:before{content:"\e05b"}.voyager-tree:before{content:"\e05e"}.voyager-file-code:before{content:"\e061"}.voyager-bug:before{content:"\e062"}.voyager-rocket:before{content:"\e063"}.voyager-key:before{content:"\33"}.voyager-question:before{content:"\2b"}.voyager-cursor:before{content:"\3c"}.voyager-lifebuoy:before{content:"\3d"}.voyager-thumbs-up:before{content:"\3e"}.voyager-thumb-tack:before{content:"\e000"}.voyager-edit:before{content:"\e010"}.voyager-angle-down:before{content:"\e038"}.voyager-angle-left:before{content:"\e039"}.voyager-angle-right:before{content:"\e046"}.voyager-angle-up:before{content:"\e047"}.voyager-home:before{content:"\e048"}.voyager-pirate-swords:before{content:"\e04b"}.voyager-pirate:before{content:"\e050"}.voyager-rum:before{content:"\e051"}.voyager-cannon:before{content:"\e049"}.voyager-hook:before{content:"\e052"}.voyager-kraken:before{content:"\e05c"}.voyager-lighthouse:before{content:"\e05d"}.voyager-pirate-hat:before{content:"\e05f"}.voyager-rum-1:before{content:"\e060"}.voyager-ship:before{content:"\e064"}.voyager-treasure:before{content:"\e065"}.voyager-treasure-open:before{content:"\e066"}.voyager-whale:before{content:"\e067"}.voyager-compass:before{content:"\e068"}.voyager-logbook:before{content:"\e069"}.voyager-plus:before{content:"\e06a"}.voyager-documentation:before{content:"\72"}.voyager-belt:before{content:"\e06b"}.voyager-zoom-in:before{content:"\e06c"}.voyager-zoom-out:before{content:"\e06d"}.voyager-scissors:before{content:"\e06e"}.voyager-github-icon:before{content:"\e06f"}
+
+/* Pantalla de Login */
+.login {
+  background-image:url('../img/fondo_olaizola.jpg');
+  background-position:center;
+  background-size:cover;
+  height:100%;
+  max-width:unset;
+  left:50%;
+  position:absolute;
+  top:50%;
+  width:100;
+
+  -webkit-transform:translateX(-50%) translateY(-50%);
+  -moz-transform:translateX(-50%) translateY(-50%);
+  -ms-transform:translateX(-50%) translateY(-50%);
+  -o-transform:translateX(-50%) translateY(-50%);
+  transform:translateX(-50%) translateY(-50%);
+}
+.login::before {
+  content:" ";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  background-color:rgba(10,10,10,.25);
+}
+.login .logo-wrap {
+  position:absolute;
+  text-align:center;
+  top:10%;
+  width:100%;
+}
+.login .logo {
+  display:none;
+  width:100px;
+}
+.login .login-form-wrap {
+  max-width:800px;
+  position:absolute;
+  top:50%;
+  width:100%;
+
+  -webkit-transform:translateY(-50%);
+  -moz-transform:translateY(-50%);
+  -ms-transform:translateY(-50%);
+  -o-transform:translateY(-50%);
+  transform:translateY(-50%);
+}
+.login .card {
+  background-color:rgba(255,255,255,.75);
+  border-radius:0;
+  margin:0 auto;
+  max-height:300px;
+  max-width:450px;
+}
+.login .card-body {
+  padding:.25rem 1.25rem;
+}
+.login button.submit {
+  width:150px;
+}
+
+@media screen and (min-height:400px) {
+  .login .card {
+    max-height:unset;
+  }
+  .login .card-body {
+    padding:1.25rem;
+  }
+}
+@media screen and (min-height:600px) {
+  .login .logo {
+    display:inline-block;
+  }
+}
+@media screen and (min-width:450px) {
+  .login .logo {
+    width:150px;
+  }
+}
+@media screen and (min-width:768px) {
+  .login .login-form-wrap {
+    left:50%;
+
+    -webkit-transform:translateX(-50%) translateY(-50%);
+    -moz-transform:translateX(-50%) translateY(-50%);
+    -ms-transform:translateX(-50%) translateY(-50%);
+    -o-transform:translateX(-50%) translateY(-50%);
+    transform:translateX(-50%) translateY(-50%);
+  }
+}
+
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+   visibility: hidden; /* Hidden by default. Visible on click */
+   min-width: 250px; /* Set a default minimum width */
+   margin-left: -125px; /* Divide value of min-width by 2 */
+   background-color: #333; /* Black background color */
+   color: #fff; /* White text color */
+   text-align: center; /* Centered text */
+   border-radius: 2px; /* Rounded borders */
+   padding: 16px; /* Padding */
+   position: fixed; /* Sit on top of the screen */
+   z-index: 1; /* Add a z-index if needed */
+   left: 50%; /* Center the snackbar */
+   bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+   visibility: visible; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+However, delay the fade out process for 2.5 seconds */
+   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+   animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+   from {bottom: 0; opacity: 0;}
+   to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+   from {bottom: 0; opacity: 0;}
+   to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+   from {bottom: 30px; opacity: 1;}
+   to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+   from {bottom: 30px; opacity: 1;}
+   to {bottom: 0; opacity: 0;}
+}
