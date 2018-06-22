@@ -121,6 +121,12 @@ However, delay the fade out process for 2.5 seconds */
    animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
+.form-title {
+  font-size:1.75rem;
+  font-weight:bold;
+  text-transform:uppercase;
+}
+
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
    from {bottom: 0; opacity: 0;}

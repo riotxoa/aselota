@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
+    <h1 class="form-title">{{ formTitle }}</h1>
+    <hr/>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <div class="row">
         <b-form-group label="DNI:"
@@ -136,6 +137,7 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
+    props: ['formTitle'],
     data () {
       return {
         form: {

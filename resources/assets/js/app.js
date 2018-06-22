@@ -29,9 +29,9 @@ Vue.component('rrhh-component', require('./components/RRHHComponent.vue'));
 Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));
 Vue.component('ficha-pelotari', require('./components/rrhh_pelotaris/FichaComponent.vue'));
 
-const ListPelotaris = { template: '<transition name="fade"><listado-pelotaris></listado-pelotaris></transition>'};
-const CreatePelotari = { template: '<transition name="fade"><ficha-pelotari></ficha-pelotari></transition>'};
-const EditPelotari = { template: '<transition name="fade"><ficha-pelotari></ficha-pelotari></transition>'};
+const ListPelotaris = { template: '<transition><listado-pelotaris></listado-pelotaris></transition>'};
+const CreatePelotari = { template: '<transition><ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari></transition>'};
+const EditPelotari = { template: '<transition><ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari></transition>'};
 
 const routes = [
   {

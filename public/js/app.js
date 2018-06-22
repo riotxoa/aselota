@@ -20260,9 +20260,9 @@ Vue.component('rrhh-component', __webpack_require__(218));
 Vue.component('listado-pelotaris', __webpack_require__(221));
 Vue.component('ficha-pelotari', __webpack_require__(224));
 
-var ListPelotaris = { template: '<transition name="fade"><listado-pelotaris></listado-pelotaris></transition>' };
-var CreatePelotari = { template: '<transition name="fade"><ficha-pelotari></ficha-pelotari></transition>' };
-var EditPelotari = { template: '<transition name="fade"><ficha-pelotari></ficha-pelotari></transition>' };
+var ListPelotaris = { template: '<transition><listado-pelotaris></listado-pelotaris></transition>' };
+var CreatePelotari = { template: '<transition><ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari></transition>' };
+var EditPelotari = { template: '<transition><ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari></transition>' };
 
 var routes = [{
   path: '/',
@@ -67903,6 +67903,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -67918,6 +67919,7 @@ var showSnackbar = function showSnackbar(msg) {
   }, 3000);
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['formTitle'],
   data: function data() {
     var _this = this;
 
@@ -68073,7 +68075,9 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h1", [_vm._v(_vm._s(_vm.title))]),
+      _c("h1", { staticClass: "form-title" }, [_vm._v(_vm._s(_vm.formTitle))]),
+      _vm._v(" "),
+      _c("hr"),
       _vm._v(" "),
       _vm.show
         ? _c(
