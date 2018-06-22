@@ -64,8 +64,13 @@
     </b-table>
 
     <b-row>
-      <b-col md="8" class="my-1">
+      <b-col md="5" class="my-1">
         <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+      </b-col>
+      <b-col md="3" class="my-1 text-right">
+        <b-form-group horizontal class="mb-0" label="Total: ">
+          <b-form-input readonly plaintext v-model="totalRows"></b-form-input>
+        </b-form-group>
       </b-col>
       <b-col md="4" class="my-1">
         <b-form-group horizontal label="NºLíneas" class="mb-0">

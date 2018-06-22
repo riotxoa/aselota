@@ -67273,6 +67273,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -67630,7 +67635,7 @@ var render = function() {
         [
           _c(
             "b-col",
-            { staticClass: "my-1", attrs: { md: "8" } },
+            { staticClass: "my-1", attrs: { md: "5" } },
             [
               _c("b-pagination", {
                 staticClass: "my-0",
@@ -67643,6 +67648,34 @@ var render = function() {
                   expression: "currentPage"
                 }
               })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Total: " }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "", plaintext: "" },
+                    model: {
+                      value: _vm.totalRows,
+                      callback: function($$v) {
+                        _vm.totalRows = $$v
+                      },
+                      expression: "totalRows"
+                    }
+                  })
+                ],
+                1
+              )
             ],
             1
           ),
