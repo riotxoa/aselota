@@ -67188,6 +67188,7 @@ var showSnackbar = function showSnackbar(msg) {
       sortDesc: false,
       fields: [{ key: 'alias', label: 'Apodo', sortable: true }, { key: 'posicion', label: 'Posición', sortable: true }, { key: 'provincia', label: 'Provincia', sortable: true }, { key: 'email', label: 'Correo', sortable: true }, { key: 'telefono', label: 'Teléfono', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false }],
       items: [],
+      defaultPhoto: '/storage/avatars/default/default.jpg',
       totalRows: 0,
       perPage: 10,
       currentPage: 1,
@@ -67217,16 +67218,13 @@ var showSnackbar = function showSnackbar(msg) {
       this.currentPage = 1;
     },
     edit: function edit(id) {
-      console.log("EDIT " + id);
       this.$router.push('/rrhh/pelotari/' + id + '/edit/');
     },
     remove: function remove() {
       var _this2 = this;
 
-      console.log("REMOVE: " + this.deleteId);
       var uri = '/www/pelotaris/' + this.deleteId;
       this.axios.delete(uri).then(function (response) {
-        console.log("[remove] response.data: " + JSON.stringify(response.data));
         _this2.deleteId = null;
         _this2.$refs.modalDelete.hide();
         _this2.fetchPelotaris();
@@ -67462,7 +67460,11 @@ var render = function() {
                           _c("img", {
                             staticClass: "img-responsive",
                             staticStyle: { width: "100%" },
-                            attrs: { src: row.item.foto }
+                            attrs: {
+                              src: row.item.foto
+                                ? row.item.foto
+                                : _vm.defaultPhoto
+                            }
                           })
                         ]),
                         _vm._v(" "),
@@ -67909,7 +67911,7 @@ var showSnackbar = function showSnackbar(msg) {
         fotoName: null
       },
       file: null,
-      image: '',
+      image: '/storage/avatars/default/default.jpg',
       posiciones: [{ value: null, text: 'Seleccionar posición' }, { value: 'Delantero', text: 'Delantero ' }, { value: 'Zaguero', text: 'Zaguero' }],
       provincias: [],
       municipios: [],
@@ -67975,7 +67977,7 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.form.email = pelotari.email;
         _this4.form.telefono = pelotari.telefono;
         _this4.form.fotoName = pelotari.foto;
-        _this4.image = pelotari.foto;
+        _this4.image = pelotari.foto ? pelotari.foto : _this4.image;
       });
     },
     onChangeProvincia: function onChangeProvincia(evt) {

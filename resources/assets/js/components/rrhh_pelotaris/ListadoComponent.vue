@@ -50,7 +50,7 @@
         <b-card>
           <b-row>
             <b-col sm="1">
-              <img :src="row.item.foto" class="img-responsive" style="width:100%;">
+              <img :src="(row.item.foto ? row.item.foto : defaultPhoto)" class="img-responsive" style="width:100%;">
             </b-col>
             <b-col sm="11">
               <b-row class="mb-2">
@@ -125,6 +125,7 @@
             { key: 'actions', label: 'Acciones', sortable: false },
           ],
           items: [],
+          defaultPhoto: '/storage/avatars/default/default.jpg',
           totalRows: 0,
           perPage: 10,
           currentPage: 1,
@@ -151,15 +152,12 @@
           this.currentPage = 1;
         },
         edit (id) {
-          console.log("EDIT " + id);
           this.$router.push('/rrhh/pelotari/' + id + '/edit/');
         },
         remove () {
-          console.log("REMOVE: " + this.deleteId);
           let uri = '/www/pelotaris/' + this.deleteId;
           this.axios.delete(uri)
             .then((response) => {
-              console.log("[remove] response.data: " + JSON.stringify(response.data));
               this.deleteId = null;
               this.$refs.modalDelete.hide();
               this.fetchPelotaris();

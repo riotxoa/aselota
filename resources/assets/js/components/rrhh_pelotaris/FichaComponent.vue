@@ -172,7 +172,7 @@
           fotoName: null,
         },
         file: null,
-        image: '',
+        image: '/storage/avatars/default/default.jpg',
         posiciones: [
           { value: null, text: 'Seleccionar posición' },
           { value: 'Delantero', text: 'Delantero '},
@@ -237,7 +237,7 @@
             this.form.email = pelotari.email;
             this.form.telefono = pelotari.telefono;
             this.form.fotoName = pelotari.foto;
-            this.image = pelotari.foto;
+            this.image = (pelotari.foto ? pelotari.foto : this.image);
         });
       },
       onChangeProvincia (evt) {
