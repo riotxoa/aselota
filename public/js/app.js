@@ -20256,26 +20256,26 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_axios___default.a, __WEBPACK_IMPORTED_MO
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('rrhh-component', __webpack_require__(218));
+Vue.component('home-component', __webpack_require__(231));
+
+Vue.component('home-rrhh', __webpack_require__(234));
 Vue.component('listado-pelotaris', __webpack_require__(221));
 Vue.component('ficha-pelotari', __webpack_require__(224));
 
-var ListPelotaris = { template: '<transition><listado-pelotaris></listado-pelotaris></transition>' };
-var CreatePelotari = { template: '<transition><ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari></transition>' };
-var EditPelotari = { template: '<transition><ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari></transition>' };
+var HomeRRHH = { template: '<home-rrhh>' };
+var ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> ' };
+var CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> ' };
+var EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> ' };
 
 var routes = [{
-  path: '/',
-  component: ListPelotaris
-}, {
-  path: '/pelotaris',
-  component: ListPelotaris
-}, {
-  path: '/pelotari/new',
-  component: CreatePelotari
-}, {
-  path: '/pelotari/:id/edit',
-  component: EditPelotari
+  path: '/rrhh', component: HomeRRHH,
+  children: [{
+    path: '', component: ListPelotaris
+  }, {
+    path: 'pelotari/new', component: CreatePelotari
+  }, {
+    path: 'pelotari/:id/edit', component: EditPelotari
+  }]
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({ mode: 'history', routes: routes });
@@ -67011,127 +67011,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof="fun
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):window.Vue&&window.axios&&Vue.use(o,window.axios)}();
 
 /***/ }),
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(36)
-/* script */
-var __vue_script__ = __webpack_require__(219)
-/* template */
-var __vue_template__ = __webpack_require__(220)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/RRHHComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-48214296", Component.options)
-  } else {
-    hotAPI.reload("data-v-48214296", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 219 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-12" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header bg-primary" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "div",
-                { staticClass: "col-sm-8 col-md-9 col-lg-10" },
-                [
-                  _c(
-                    "router-link",
-                    { staticClass: "text-white", attrs: { to: "/pelotaris" } },
-                    [_vm._v("Mantenimiento de Pelotaris")]
-                  )
-                ],
-                1
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [_c("router-view")], 1)
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { attrs: { id: "snackbar" } })
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-48214296", module.exports)
-  }
-}
-
-/***/ }),
+/* 218 */,
+/* 219 */,
+/* 220 */,
 /* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -67336,7 +67218,7 @@ var showSnackbar = function showSnackbar(msg) {
     },
     edit: function edit(id) {
       console.log("EDIT " + id);
-      this.$router.push('/pelotari/' + id + '/edit/');
+      this.$router.push('/rrhh/pelotari/' + id + '/edit/');
     },
     remove: function remove() {
       var _this2 = this;
@@ -67378,6 +67260,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "container-fluid" },
     [
       _c(
         "b-row",
@@ -67453,7 +67336,7 @@ var render = function() {
                     "router-link",
                     {
                       staticClass: "text-white",
-                      attrs: { to: "/pelotari/new" }
+                      attrs: { to: "/rrhh/pelotari/new" }
                     },
                     [_vm._v("Nuevo Pelotari")]
                   )
@@ -68040,6 +67923,7 @@ var showSnackbar = function showSnackbar(msg) {
   },
 
   created: function created() {
+    console.log("FichaComponent created");
     this.fetchMunicipios();
     this.fetchProvincias();
 
@@ -68611,6 +68495,231 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(36)
+/* script */
+var __vue_script__ = __webpack_require__(232)
+/* template */
+var __vue_template__ = __webpack_require__(233)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/HomeComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-41daeb37", Component.options)
+  } else {
+    hotAPI.reload("data-v-41daeb37", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['userRole'],
+  data: function data() {
+    return {
+      home: '',
+      title: ''
+    };
+  },
+
+  created: function created() {
+    switch (this.userRole) {
+      case 'rrhh':
+        this.home = '/rrhh';
+        this.title = "Gestión de RRHH";
+        this.$router.push('/rrhh');
+        break;
+      default:
+        this.title = "SIN PERMISOS";
+        break;
+    }
+  }
+});
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header bg-primary" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-sm-8 col-md-9 col-lg-10" },
+                [
+                  _c(
+                    "router-link",
+                    { staticClass: "text-white", attrs: { to: this.home } },
+                    [_vm._v(_vm._s(this.title))]
+                  )
+                ],
+                1
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [_c("router-view")], 1)
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "snackbar" } })
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-41daeb37", module.exports)
+  }
+}
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(36)
+/* script */
+var __vue_script__ = __webpack_require__(235)
+/* template */
+var __vue_template__ = __webpack_require__(236)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_pelotaris/HomeRRHHComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ef609144", Component.options)
+  } else {
+    hotAPI.reload("data-v-ef609144", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("router-view")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ef609144", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

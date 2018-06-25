@@ -191,6 +191,7 @@
       }
     },
     created: function() {
+      console.log("FichaComponent created");
       this.fetchMunicipios();
       this.fetchProvincias();
 

@@ -3,20 +3,112 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard DEFAULT</div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        @switch($role)
+            @case ('gerente')
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Dashboard GERENTE</div>
+                    <div class="card-body">
+                      @if (session('status'))
+                          <div class="alert alert-success" role="alert">
+                              {{ session('status') }}
+                          </div>
+                      @endif
 
-                    You are logged in! Your role is {{ $role }} !!
+                      You are logged in! Your role is {{ $role }} !!
+                    </div>
+                  </div>
                 </div>
-            </div>
-        </div>
+              </div>
+              @break
+            @case ('rrhh')
+              <home-component user-role="rrhh"></home-component>
+              @break
+            @case ('entrenador')
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Dashboard ENTRENADOR</div>
+                    <div class="card-body">
+                      @if (session('status'))
+                          <div class="alert alert-success" role="alert">
+                              {{ session('status') }}
+                          </div>
+                      @endif
+
+                      You are logged in! Your role is {{ $role }} !!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @break
+            @case ('intendente')
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Dashboard INTENDENTE</div>
+                    <div class="card-body">
+                      @if (session('status'))
+                          <div class="alert alert-success" role="alert">
+                              {{ session('status') }}
+                          </div>
+                      @endif
+
+                      You are logged in! Your role is {{ $role }} !!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @break
+            @case ('prensa')
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Dashboard PRENSA</div>
+                    <div class="card-body">
+                      @if (session('status'))
+                          <div class="alert alert-success" role="alert">
+                              {{ session('status') }}
+                          </div>
+                      @endif
+
+                      You are logged in! Your role is {{ $role }} !!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @break
+            @case ('medico')
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Dashboard MÉDICO</div>
+                    <div class="card-body">
+                      @if (session('status'))
+                          <div class="alert alert-success" role="alert">
+                              {{ session('status') }}
+                          </div>
+                      @endif
+
+                      You are logged in! Your role is {{ $role }} !!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @break
+            @default
+              <div class="col-md-8">
+                  <div class="card">
+                      <div class="card-header">Dashboard DEFAULT</div>
+                      <div class="card-body">
+                          @if (session('status'))
+                              <div class="alert alert-success" role="alert">
+                                  {{ session('status') }}
+                              </div>
+                          @endif
+
+                          You are logged in! Your role is {{ $role }} !!
+                      </div>
+                  </div>
+              </div>
+              @break
+        @endswitch
     </div>
 </div>
 @endsection

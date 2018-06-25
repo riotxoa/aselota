@@ -32,24 +32,24 @@ class HomeController extends Controller
           case 'admin':
             return redirect('admin');
             break;
-          case 'gerente':
-            return view('home_gerente', ['role' => $rol->name]);
-            break;
-          case 'rrhh':
-            return view('home_rrhh', ['role' => $rol->name]);
-            break;
-          case 'entrenador':
-            return view('home_entrenador', ['role' => $rol->name]);
-            break;
-          case 'intendente':
-            return view('home_intendente', ['role' => $rol->name]);
-            break;
-          case 'prensa':
-            return view('home_prensa', ['role' => $rol->name]);
-            break;
-          case 'medico':
-            return view('home_medico', ['role' => $rol->name]);
-            break;
+          // case 'gerente':
+          //   return view('home_gerente', ['role' => $rol->name]);
+          //   break;
+          // case 'rrhh':
+          //   return view('home_rrhh', ['role' => $rol->name]);
+          //   break;
+          // case 'entrenador':
+          //   return view('home_entrenador', ['role' => $rol->name]);
+          //   break;
+          // case 'intendente':
+          //   return view('home_intendente', ['role' => $rol->name]);
+          //   break;
+          // case 'prensa':
+          //   return view('home_prensa', ['role' => $rol->name]);
+          //   break;
+          // case 'medico':
+          //   return view('home_medico', ['role' => $rol->name]);
+          //   break;
           default:
             return view('home_default', ['role' => $rol->name]);
             break;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <b-row>
 
       <b-col class="col-sm-6 float-left my-1 mb-3">
@@ -15,7 +15,7 @@
 
       <b-col class="col-sm-6 text-right my-1 mb-3">
         <b-btn class="bg-danger mb-0" title="Crear Pelotari">
-          <router-link to="/pelotari/new" class="text-white">Nuevo Pelotari</router-link>
+          <router-link to="/rrhh/pelotari/new" class="text-white">Nuevo Pelotari</router-link>
         </b-btn>
       </b-col>
 
@@ -152,7 +152,7 @@
         },
         edit (id) {
           console.log("EDIT " + id);
-          this.$router.push('/pelotari/' + id + '/edit/');
+          this.$router.push('/rrhh/pelotari/' + id + '/edit/');
         },
         remove () {
           console.log("REMOVE: " + this.deleteId);
