@@ -122,9 +122,12 @@ However, delay the fade out process for 2.5 seconds */
 }
 
 .form-title {
-  font-size:1.75rem;
+  font-size:1.25rem;
   font-weight:bold;
   text-transform:uppercase;
+}
+form label.col-form-label {
+  padding-bottom:.25rem;
 }
 
 /* Animations to fade the snackbar in and out */

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use App\Pelotari;
 
 class PelotariController extends Controller
@@ -17,14 +19,14 @@ class PelotariController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
 
-        $pelotaris = DB::table('pelotaris')
+        $items = DB::table('pelotaris')
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
           ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
           ->orderBy('alias')
           ->get();
 
-        return response()->json($pelotaris, 200);
+        return response()->json($items, 200);
     }
 
     /**
@@ -47,19 +49,26 @@ class PelotariController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
+        $data = json_decode($request->get('form'));
+
         $item = new Pelotari([
-          'DNI' => $request->get('dni'),
-          'nombre' => $request->get('nombre'),
-          'apellidos' => $request->get('apellidos'),
-          'alias' => $request->get('alias'),
-          'posicion' => $request->get('posicion'),
-          'direccion' => $request->get('direccion'),
-          'cod_postal' => $request->get('cod_postal'),
-          'municipio_id' => $request->get('municipio_id'),
-          'provincia_id' => $request->get('provincia_id'),
-          'email' => $request->get('email'),
-          'telefono' => $request->get('telefono'),
+          'DNI' => $data->dni,
+          'nombre' => $data->nombre,
+          'apellidos' => $data->apellidos,
+          'alias' => $data->alias,
+          'posicion' => $data->posicion,
+          'direccion' => $data->direccion,
+          'cod_postal' => $data->cod_postal,
+          'municipio_id' => $data->municipio_id,
+          'provincia_id' => $data->provincia_id,
+          'email' => $data->email,
+          'telefono' => $data->telefono,
         ]);
+
+        if($request->file('photo')) {
+          $path = $request->file('photo')->storeAs('public/avatars', $data->fotoName);
+          $item->foto = Storage::url($path);
+        }
 
         $item->save();
 
@@ -76,14 +85,14 @@ class PelotariController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
 
-        $pelotari = DB::table('pelotaris')
+        $item = DB::table('pelotaris')
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
           ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
           ->where('pelotaris.id', $id)
           ->first();
 
-        return response()->json($pelotari, 200);
+        return response()->json($item, 200);
     }
 
     /**
@@ -108,23 +117,30 @@ class PelotariController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $pelotari = Pelotari::find($id);
+        $item = Pelotari::find($id);
 
-        $pelotari->DNI = $request->get('dni');
-        $pelotari->nombre = $request->get('nombre');
-        $pelotari->apellidos = $request->get('apellidos');
-        $pelotari->alias = $request->get('alias');
-        $pelotari->posicion = $request->get('posicion');
-        $pelotari->direccion = $request->get('direccion');
-        $pelotari->cod_postal = $request->get('cod_postal');
-        $pelotari->municipio_id = $request->get('municipio_id');
-        $pelotari->provincia_id = $request->get('provincia_id');
-        $pelotari->email = $request->get('email');
-        $pelotari->telefono = $request->get('telefono');
+        $data = json_decode($request->get('form'));
 
-        $pelotari->save();
+        $item->DNI = $data->dni;
+        $item->nombre = $data->nombre;
+        $item->apellidos = $data->apellidos;
+        $item->alias = $data->alias;
+        $item->posicion = $data->posicion;
+        $item->direccion = $data->direccion;
+        $item->cod_postal = $data->cod_postal;
+        $item->municipio_id = $data->municipio_id;
+        $item->provincia_id = $data->provincia_id;
+        $item->email = $data->email;
+        $item->telefono = $data->telefono;
 
-        return response()->json($pelotari, 200);
+        if($request->file('photo')) {
+          $path = $request->file('photo')->storeAs('public/avatars', $data->fotoName);
+          $item->foto = Storage::url($path);
+        }
+
+        $item->save();
+
+        return response()->json($item, 200);
     }
 
     /**

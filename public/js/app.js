@@ -67278,6 +67278,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -67567,57 +67574,87 @@ var render = function() {
                   [
                     _c(
                       "b-row",
-                      { staticClass: "mb-2" },
                       [
-                        _c(
-                          "b-col",
-                          { staticClass: "text-sm-right", attrs: { sm: "2" } },
-                          [_c("b", [_vm._v("Nombre y Apellidos:")])]
-                        ),
-                        _vm._v(" "),
-                        _c("b-col", { attrs: { sm: "4" } }, [
-                          _vm._v(
-                            _vm._s(row.item.nombre) +
-                              " " +
-                              _vm._s(row.item.apellidos)
-                          )
+                        _c("b-col", { attrs: { sm: "1" } }, [
+                          _c("img", {
+                            staticClass: "img-responsive",
+                            staticStyle: { width: "100%" },
+                            attrs: { src: row.item.foto }
+                          })
                         ]),
                         _vm._v(" "),
                         _c(
                           "b-col",
-                          { staticClass: "text-sm-right", attrs: { sm: "2" } },
-                          [_c("b", [_vm._v("DNI:")])]
-                        ),
-                        _vm._v(" "),
-                        _c("b-col", { attrs: { sm: "4" } }, [
-                          _vm._v(_vm._s(row.item.DNI))
-                        ])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      { staticClass: "mb-2" },
-                      [
-                        _c(
-                          "b-col",
-                          { staticClass: "text-sm-right", attrs: { sm: "2" } },
-                          [_c("b", [_vm._v("Dirección:")])]
-                        ),
-                        _vm._v(" "),
-                        _c("b-col", { attrs: { sm: "10" } }, [
-                          _vm._v(
-                            _vm._s(row.item.direccion) +
-                              " - " +
-                              _vm._s(row.item.cod_postal) +
-                              " " +
-                              _vm._s(row.item.municipio) +
-                              " (" +
-                              _vm._s(row.item.provincia) +
-                              ")"
-                          )
-                        ])
+                          { attrs: { sm: "11" } },
+                          [
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Nombre:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(
+                                    _vm._s(row.item.nombre) +
+                                      " " +
+                                      _vm._s(row.item.apellidos)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("DNI:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.DNI))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Dirección:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "10" } }, [
+                                  _vm._v(
+                                    _vm._s(row.item.direccion) +
+                                      " - " +
+                                      _vm._s(row.item.cod_postal) +
+                                      " " +
+                                      _vm._s(row.item.municipio) +
+                                      " (" +
+                                      _vm._s(row.item.provincia) +
+                                      ")"
+                                  )
+                                ])
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
                       ],
                       1
                     )
@@ -67937,6 +67974,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -67969,8 +68022,11 @@ var showSnackbar = function showSnackbar(msg) {
         municipio_id: null,
         cod_postal: '',
         email: '',
-        telefono: ''
+        telefono: '',
+        fotoName: null
       },
+      file: null,
+      image: '',
       posiciones: [{ value: null, text: 'Seleccionar posición' }, { value: 'Delantero', text: 'Delantero ' }, { value: 'Zaguero', text: 'Zaguero' }],
       provincias: [],
       municipios: [],
@@ -68034,6 +68090,8 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.form.cod_postal = pelotari.cod_postal;
         _this4.form.email = pelotari.email;
         _this4.form.telefono = pelotari.telefono;
+        _this4.form.fotoName = pelotari.foto;
+        _this4.image = pelotari.foto;
       });
     },
     onChangeProvincia: function onChangeProvincia(evt) {
@@ -68044,25 +68102,48 @@ var showSnackbar = function showSnackbar(msg) {
         this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
       }
     },
-    onSubmit: function onSubmit(evt) {
+    onPhotoChange: function onPhotoChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
+    },
+    createImage: function createImage(file) {
       var _this5 = this;
+
+      var reader = new FileReader();
+      var vm = this;
+      reader.onload = function (e) {
+        vm.image = e.target.result;
+        _this5.file = file;
+        _this5.form.fotoName = file.name;
+      };
+      reader.readAsDataURL(file);
+    },
+    onSubmit: function onSubmit(evt) {
+      var _this6 = this;
 
       evt.preventDefault();
 
+      var config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
       var uri = '/www/pelotaris';
+      var data = new FormData();
+
+      data.append('form', JSON.stringify(this.form));
+      if (this.file) data.append('photo', this.file);
 
       if (this.edit) {
-        this.axios.put(uri + '/' + this.form.id, this.form).then(function (response) {
+        this.axios.post(uri + '/' + this.form.id + '/update', data, config).then(function (response) {
           showSnackbar("Pelotari actualizado");
-          _this5.goBack();
+          _this6.goBack();
         }).catch(function (error) {
           console.log(error);
           showSnackbar("Se ha producido un ERROR");
         });
       } else {
-        this.axios.post(uri, this.form).then(function (response) {
+        this.axios.post(uri, data, config).then(function (response) {
           showSnackbar("Pelotari creado");
-          _this5.goBack();
+          _this6.goBack();
         }).catch(function (error) {
           console.log(error);
           showSnackbar("Se ha producido un ERROR");
@@ -68070,7 +68151,7 @@ var showSnackbar = function showSnackbar(msg) {
       }
     },
     onReset: function onReset(evt) {
-      var _this6 = this;
+      var _this7 = this;
 
       evt.preventDefault();
       /* Reset our form values */
@@ -68088,7 +68169,7 @@ var showSnackbar = function showSnackbar(msg) {
       /* Trick to reset/clear native browser form validation state */
       this.show = false;
       this.$nextTick(function () {
-        _this6.show = true;
+        _this7.show = true;
       });
     },
     onCancel: function onCancel(evt) {
@@ -68117,337 +68198,396 @@ var render = function() {
             "b-form",
             { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
             [
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "DNI:", "label-for": "dniInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "dniInput",
-                          type: "text",
-                          maxlength: "9",
-                          placeholder: "DNI"
-                        },
-                        model: {
-                          value: _vm.form.dni,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "dni", $$v)
+              _c("b-row", [
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c("img", {
+                    staticClass: "img-responsive",
+                    staticStyle: { width: "100%" },
+                    attrs: { src: _vm.image }
+                  })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-10" },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: { label: "DNI:", "label-for": "dniInput" }
                           },
-                          expression: "form.dni"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Nombre deportivo:",
-                        "label-for": "alias"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "alias",
-                          type: "text",
-                          maxlength: "30",
-                          required: "",
-                          placeholder: "Nombre deportivo"
-                        },
-                        model: {
-                          value: _vm.form.alias,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "alias", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "dniInput",
+                                type: "text",
+                                maxlength: "9",
+                                placeholder: "DNI"
+                              },
+                              model: {
+                                value: _vm.form.dni,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "dni", $$v)
+                                },
+                                expression: "form.dni"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Nombre deportivo:",
+                              "label-for": "alias"
+                            }
                           },
-                          expression: "form.alias"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Posicion:", "label-for": "posicion" }
-                    },
-                    [
-                      _c("b-form-select", {
-                        attrs: {
-                          id: "posicion",
-                          options: _vm.posiciones,
-                          required: ""
-                        },
-                        model: {
-                          value: _vm.form.posicion,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "posicion", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "alias",
+                                type: "text",
+                                maxlength: "30",
+                                required: "",
+                                placeholder: "Nombre deportivo"
+                              },
+                              model: {
+                                value: _vm.form.alias,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "alias", $$v)
+                                },
+                                expression: "form.alias"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Posicion:",
+                              "label-for": "posicion"
+                            }
                           },
-                          expression: "form.posicion"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-6 col-md-4",
-                      attrs: { label: "Nombre:", "label-for": "nombre" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "nombre",
-                          type: "text",
-                          maxlength: "30",
-                          placeholder: "Nombre"
-                        },
-                        model: {
-                          value: _vm.form.nombre,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "nombre", $$v)
+                          [
+                            _c("b-form-select", {
+                              attrs: {
+                                id: "posicion",
+                                options: _vm.posiciones,
+                                required: ""
+                              },
+                              model: {
+                                value: _vm.form.posicion,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "posicion", $$v)
+                                },
+                                expression: "form.posicion"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-6 col-md-4",
+                            attrs: { label: "Nombre:", "label-for": "nombre" }
                           },
-                          expression: "form.nombre"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-6 col-md-8",
-                      attrs: { label: "Apellidos:", "label-for": "apellidos" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "apellidos",
-                          type: "text",
-                          maxlength: "60",
-                          placeholder: "Apellidos"
-                        },
-                        model: {
-                          value: _vm.form.apellidos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "apellidos", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "nombre",
+                                type: "text",
+                                maxlength: "30",
+                                placeholder: "Nombre"
+                              },
+                              model: {
+                                value: _vm.form.nombre,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "nombre", $$v)
+                                },
+                                expression: "form.nombre"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-6 col-md-8",
+                            attrs: {
+                              label: "Apellidos:",
+                              "label-for": "apellidos"
+                            }
                           },
-                          expression: "form.apellidos"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-12",
-                      attrs: { label: "Dirección:", "label-for": "direccion" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "direccion",
-                          type: "text",
-                          maxlength: "100",
-                          placeholder: "Dirección completa"
-                        },
-                        model: {
-                          value: _vm.form.direccion,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "direccion", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "apellidos",
+                                type: "text",
+                                maxlength: "60",
+                                placeholder: "Apellidos"
+                              },
+                              model: {
+                                value: _vm.form.apellidos,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "apellidos", $$v)
+                                },
+                                expression: "form.apellidos"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-12",
+                            attrs: {
+                              label: "Dirección:",
+                              "label-for": "direccion"
+                            }
                           },
-                          expression: "form.direccion"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-md-4",
-                      attrs: { label: "Provincia:", "label-for": "provincia" }
-                    },
-                    [
-                      _c("b-form-select", {
-                        attrs: { id: "provincia", options: _vm.provincias },
-                        on: { change: _vm.onChangeProvincia },
-                        model: {
-                          value: _vm.form.provincia_id,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "provincia_id", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "direccion",
+                                type: "text",
+                                maxlength: "100",
+                                placeholder: "Dirección completa"
+                              },
+                              model: {
+                                value: _vm.form.direccion,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "direccion", $$v)
+                                },
+                                expression: "form.direccion"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Provincia:",
+                              "label-for": "provincia"
+                            }
                           },
-                          expression: "form.provincia_id"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-md-4",
-                      attrs: { label: "Municipio:", "label-for": "municipio" }
-                    },
-                    [
-                      _c("b-form-select", {
-                        attrs: {
-                          id: "municipio",
-                          options: _vm.municipios_filtered
-                        },
-                        model: {
-                          value: _vm.form.municipio_id,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "municipio_id", $$v)
+                          [
+                            _c("b-form-select", {
+                              attrs: {
+                                id: "provincia",
+                                options: _vm.provincias
+                              },
+                              on: { change: _vm.onChangeProvincia },
+                              model: {
+                                value: _vm.form.provincia_id,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "provincia_id", $$v)
+                                },
+                                expression: "form.provincia_id"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Municipio:",
+                              "label-for": "municipio"
+                            }
                           },
-                          expression: "form.municipio_id"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-md-4",
-                      attrs: {
-                        label: "Código Postal:",
-                        "label-for": "cod_postal"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "cod_postal",
-                          type: "text",
-                          maxlength: "5",
-                          required: "",
-                          placeholder: "Código Postal"
-                        },
-                        model: {
-                          value: _vm.form.cod_postal,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "cod_postal", $$v)
+                          [
+                            _c("b-form-select", {
+                              attrs: {
+                                id: "municipio",
+                                options: _vm.municipios_filtered
+                              },
+                              model: {
+                                value: _vm.form.municipio_id,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "municipio_id", $$v)
+                                },
+                                expression: "form.municipio_id"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Código Postal:",
+                              "label-for": "cod_postal"
+                            }
                           },
-                          expression: "form.cod_postal"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-md-6",
-                      attrs: {
-                        label: "Correo electrónico:",
-                        "label-for": "email"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "email",
-                          type: "email",
-                          maxlength: "50",
-                          placeholder: "example@example.com"
-                        },
-                        model: {
-                          value: _vm.form.email,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "email", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "cod_postal",
+                                type: "text",
+                                maxlength: "5",
+                                required: "",
+                                placeholder: "Código Postal"
+                              },
+                              model: {
+                                value: _vm.form.cod_postal,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "cod_postal", $$v)
+                                },
+                                expression: "form.cod_postal"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-6",
+                            attrs: {
+                              label: "Correo electrónico:",
+                              "label-for": "email"
+                            }
                           },
-                          expression: "form.email"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-md-6",
-                      attrs: { label: "Teléfono:", "label-for": "telefono" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "telefono",
-                          type: "text",
-                          maxlength: "15",
-                          placeholder: "Teléfono"
-                        },
-                        model: {
-                          value: _vm.form.telefono,
-                          callback: function($$v) {
-                            _vm.$set(_vm.form, "telefono", $$v)
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "email",
+                                type: "email",
+                                maxlength: "50",
+                                placeholder: "example@example.com"
+                              },
+                              model: {
+                                value: _vm.form.email,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "email", $$v)
+                                },
+                                expression: "form.email"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-6",
+                            attrs: {
+                              label: "Teléfono:",
+                              "label-for": "telefono"
+                            }
                           },
-                          expression: "form.telefono"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Guardar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
-                [_vm._v("Cancelar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "float-right",
-                  attrs: { type: "reset", variant: "danger" }
-                },
-                [_vm._v("Reset")]
-              )
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "telefono",
+                                type: "text",
+                                maxlength: "15",
+                                placeholder: "Teléfono"
+                              },
+                              model: {
+                                value: _vm.form.telefono,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "telefono", $$v)
+                                },
+                                expression: "form.telefono"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-12",
+                            attrs: { label: "Fotografía" }
+                          },
+                          [
+                            _c("b-form-file", {
+                              staticClass: "mt-3",
+                              attrs: { accept: ".jpg", plain: "" },
+                              on: { change: _vm.onPhotoChange }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      { attrs: { type: "submit", variant: "primary" } },
+                      [_vm._v("Guardar")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "default" },
+                        on: { click: _vm.onCancel }
+                      },
+                      [_vm._v("Cancelar")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        staticClass: "float-right",
+                        attrs: { type: "reset", variant: "danger" }
+                      },
+                      [_vm._v("Reset")]
+                    )
+                  ],
+                  1
+                )
+              ])
             ],
             1
           )

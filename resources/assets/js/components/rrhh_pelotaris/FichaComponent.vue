@@ -3,123 +3,139 @@
     <h1 class="form-title">{{ formTitle }}</h1>
     <hr/>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <div class="row">
-        <b-form-group label="DNI:"
-                      label-for="dniInput"
-                      class="col-sm-4">
-          <b-form-input id="dniInput"
-                        type="text"
-                        v-model="form.dni"
-                        maxlength="9"
-                        placeholder="DNI">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group label="Nombre deportivo:"
-                      label-for="alias"
-                      class="col-sm-4">
-          <b-form-input id="alias"
-                        type="text"
-                        v-model="form.alias"
-                        maxlength="30"
-                        required
-                        placeholder="Nombre deportivo">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group label="Posicion:"
-                      label-for="posicion"
-                      class="col-sm-4">
-          <b-form-select id="posicion"
-                        :options="posiciones"
-                        required
-                        v-model="form.posicion">
-          </b-form-select>
-        </b-form-group>
-      </div>
-      <div class="row">
-        <b-form-group label="Nombre:"
-                      label-for="nombre"
-                      class="col-sm-6 col-md-4">
-          <b-form-input id="nombre"
-                        type="text"
-                        v-model="form.nombre"
-                        maxlength="30"
-                        placeholder="Nombre">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group label="Apellidos:"
-                      label-for="apellidos"
-                      class="col-sm-6 col-md-8">
-          <b-form-input id="apellidos"
-                        type="text"
-                        v-model="form.apellidos"
-                        maxlength="60"
-                        placeholder="Apellidos">
-          </b-form-input>
-        </b-form-group>
-      </div>
-      <div class="row">
-        <b-form-group label="Dirección:"
-                      label-for="direccion"
-                      class="col-12">
-          <b-form-input id="direccion"
-                        type="text"
-                        v-model="form.direccion"
-                        maxlength="100"
-                        placeholder="Dirección completa">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group label="Provincia:"
-                      label-for="provincia"
-                      class="col-md-4">
-          <b-form-select id="provincia"
-                        :options="provincias"
-                        @change = "onChangeProvincia"
-                        v-model="form.provincia_id">
-          </b-form-select>
-        </b-form-group>
-        <b-form-group label="Municipio:"
-                      label-for="municipio"
-                      class="col-md-4">
-          <b-form-select id="municipio"
-                        :options="municipios_filtered"
-                        v-model="form.municipio_id">
-          </b-form-select>
-        </b-form-group>
-        <b-form-group label="Código Postal:"
-                      label-for="cod_postal"
-                      class="col-md-4">
-          <b-form-input id="cod_postal"
-                        type="text"
-                        v-model="form.cod_postal"
-                        maxlength="5"
-                        required
-                        placeholder="Código Postal">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group label="Correo electrónico:"
-                      label-for="email"
-                      class="col-md-6">
-          <b-form-input id="email"
-                        type="email"
-                        v-model="form.email"
-                        maxlength="50"
-                        placeholder="example@example.com">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group label="Teléfono:"
-                      label-for="telefono"
-                      class="col-md-6">
-          <b-form-input id="telefono"
-                        type="text"
-                        v-model="form.telefono"
-                        maxlength="15"
-                        placeholder="Teléfono">
-          </b-form-input>
-        </b-form-group>
-      </div>
-      <b-button type="submit" variant="primary">Guardar</b-button>
-      <b-button variant="default" @click="onCancel">Cancelar</b-button>
-      <b-button type="reset" variant="danger" class="float-right">Reset</b-button>
+      <b-row>
+        <div class="col-md-2">
+          <img :src="image" class="img-responsive" style="width:100%;">
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <b-form-group label="DNI:"
+                          label-for="dniInput"
+                          class="col-sm-4">
+              <b-form-input id="dniInput"
+                            type="text"
+                            v-model="form.dni"
+                            maxlength="9"
+                            placeholder="DNI">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Nombre deportivo:"
+                          label-for="alias"
+                          class="col-sm-4">
+              <b-form-input id="alias"
+                            type="text"
+                            v-model="form.alias"
+                            maxlength="30"
+                            required
+                            placeholder="Nombre deportivo">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Posicion:"
+                          label-for="posicion"
+                          class="col-sm-4">
+              <b-form-select id="posicion"
+                            :options="posiciones"
+                            required
+                            v-model="form.posicion">
+              </b-form-select>
+            </b-form-group>
+          </div>
+          <div class="row">
+            <b-form-group label="Nombre:"
+                          label-for="nombre"
+                          class="col-sm-6 col-md-4">
+              <b-form-input id="nombre"
+                            type="text"
+                            v-model="form.nombre"
+                            maxlength="30"
+                            placeholder="Nombre">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Apellidos:"
+                          label-for="apellidos"
+                          class="col-sm-6 col-md-8">
+              <b-form-input id="apellidos"
+                            type="text"
+                            v-model="form.apellidos"
+                            maxlength="60"
+                            placeholder="Apellidos">
+              </b-form-input>
+            </b-form-group>
+          </div>
+          <div class="row">
+            <b-form-group label="Dirección:"
+                          label-for="direccion"
+                          class="col-12">
+              <b-form-input id="direccion"
+                            type="text"
+                            v-model="form.direccion"
+                            maxlength="100"
+                            placeholder="Dirección completa">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Provincia:"
+                          label-for="provincia"
+                          class="col-md-4">
+              <b-form-select id="provincia"
+                            :options="provincias"
+                            @change = "onChangeProvincia"
+                            v-model="form.provincia_id">
+              </b-form-select>
+            </b-form-group>
+            <b-form-group label="Municipio:"
+                          label-for="municipio"
+                          class="col-md-4">
+              <b-form-select id="municipio"
+                            :options="municipios_filtered"
+                            v-model="form.municipio_id">
+              </b-form-select>
+            </b-form-group>
+            <b-form-group label="Código Postal:"
+                          label-for="cod_postal"
+                          class="col-md-4">
+              <b-form-input id="cod_postal"
+                            type="text"
+                            v-model="form.cod_postal"
+                            maxlength="5"
+                            required
+                            placeholder="Código Postal">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Correo electrónico:"
+                          label-for="email"
+                          class="col-md-6">
+              <b-form-input id="email"
+                            type="email"
+                            v-model="form.email"
+                            maxlength="50"
+                            placeholder="example@example.com">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Teléfono:"
+                          label-for="telefono"
+                          class="col-md-6">
+              <b-form-input id="telefono"
+                            type="text"
+                            v-model="form.telefono"
+                            maxlength="15"
+                            placeholder="Teléfono">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Fotografía"
+                          class="col-sm-12">
+              <b-form-file class="mt-3"
+                           v-on:change="onPhotoChange"
+                           accept=".jpg"
+                           plain>
+              </b-form-file>
+            </b-form-group>
+          </div>
+          <hr/>
+          <b-button type="submit" variant="primary">Guardar</b-button>
+          <b-button variant="default" @click="onCancel">Cancelar</b-button>
+          <b-button type="reset" variant="danger" class="float-right">Reset</b-button>
+        </div>
+      </b-row>
     </b-form>
   </div>
 </template>
@@ -153,7 +169,10 @@
           cod_postal: '',
           email: '',
           telefono: '',
+          fotoName: null,
         },
+        file: null,
+        image: '',
         posiciones: [
           { value: null, text: 'Seleccionar posición' },
           { value: 'Delantero', text: 'Delantero '},
@@ -216,6 +235,8 @@
             this.form.cod_postal = pelotari.cod_postal;
             this.form.email = pelotari.email;
             this.form.telefono = pelotari.telefono;
+            this.form.fotoName = pelotari.foto;
+            this.image = pelotari.foto;
         });
       },
       onChangeProvincia (evt) {
@@ -226,13 +247,36 @@
           this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
         }
       },
+      onPhotoChange(e) {
+          let files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+              return;
+          this.createImage(files[0]);
+      },
+      createImage(file) {
+          let reader = new FileReader();
+          let vm = this;
+          reader.onload = (e) => {
+            vm.image = e.target.result;
+            this.file = file;
+            this.form.fotoName = file.name;
+          };
+          reader.readAsDataURL(file);
+      },
       onSubmit (evt) {
         evt.preventDefault();
 
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
         let uri = '/www/pelotaris';
+        let data = new FormData();
+
+        data.append('form', JSON.stringify(this.form));
+        if(this.file)
+          data.append('photo', this.file);
 
         if(this.edit) {
-          this.axios.put(uri + '/' + this.form.id, this.form)
+          this.axios.post(uri + '/' + this.form.id + '/update', data, config)
             .then((response) => {
               showSnackbar("Pelotari actualizado");
               this.goBack();
@@ -242,7 +286,7 @@
               showSnackbar("Se ha producido un ERROR");
             });
         } else {
-          this.axios.post(uri, this.form)
+          this.axios.post(uri, data, config)
             .then((response) => {
               showSnackbar("Pelotari creado");
               this.goBack();

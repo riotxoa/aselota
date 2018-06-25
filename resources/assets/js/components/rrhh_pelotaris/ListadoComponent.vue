@@ -48,15 +48,22 @@
 
       <template slot="row-details" slot-scope="row">
         <b-card>
-          <b-row class="mb-2">
-            <b-col sm="2" class="text-sm-right"><b>Nombre y Apellidos:</b></b-col>
-            <b-col sm="4">{{ row.item.nombre }} {{ row.item.apellidos }}</b-col>
-            <b-col sm="2" class="text-sm-right"><b>DNI:</b></b-col>
-            <b-col sm="4">{{ row.item.DNI }}</b-col>
-          </b-row>
-          <b-row class="mb-2">
-            <b-col sm="2" class="text-sm-right"><b>Dirección:</b></b-col>
-            <b-col sm="10">{{ row.item.direccion }} - {{ row.item.cod_postal }} {{ row.item.municipio }} ({{ row.item.provincia }})</b-col>
+          <b-row>
+            <b-col sm="1">
+              <img :src="row.item.foto" class="img-responsive" style="width:100%;">
+            </b-col>
+            <b-col sm="11">
+              <b-row class="mb-2">
+                <b-col sm="2" class="text-sm-right"><b>Nombre:</b></b-col>
+                <b-col sm="4">{{ row.item.nombre }} {{ row.item.apellidos }}</b-col>
+                <b-col sm="2" class="text-sm-right"><b>DNI:</b></b-col>
+                <b-col sm="4">{{ row.item.DNI }}</b-col>
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="2" class="text-sm-right"><b>Dirección:</b></b-col>
+                <b-col sm="10">{{ row.item.direccion }} - {{ row.item.cod_postal }} {{ row.item.municipio }} ({{ row.item.provincia }})</b-col>
+              </b-row>
+            </b-col>
           </b-row>
         </b-card>
       </template>
