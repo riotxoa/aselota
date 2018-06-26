@@ -95,6 +95,13 @@
 }
 
 
+/* Navbar */
+.navbar-laravel a.dropdown-item i {
+  position:relative;
+  top:2px;
+}
+
+
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
    visibility: hidden; /* Hidden by default. Visible on click */
