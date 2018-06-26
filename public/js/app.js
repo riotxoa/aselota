@@ -67545,8 +67545,8 @@ var render = function() {
               _c(
                 "b-btn",
                 {
-                  staticClass: "bg-danger mb-0",
-                  attrs: { title: "Crear Pelotari" }
+                  staticClass: "mb-0",
+                  attrs: { variant: "danger", title: "Crear Pelotari" }
                 },
                 [
                   _c(
