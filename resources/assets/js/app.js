@@ -31,7 +31,7 @@ Vue.component('home-rrhh', require('./components/rrhh_pelotaris/HomeRRHHComponen
 Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));
 Vue.component('ficha-pelotari', require('./components/rrhh_pelotaris/FichaComponent.vue'));
 
-const HomeRRHH = { template: '<home-rrhh>' };
+const HomeRRHH = { template: '<home-rrhh></home-rrhh>' };
 const ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> '};
 const CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> '};
 const EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> '};
