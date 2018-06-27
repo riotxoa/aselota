@@ -49,12 +49,12 @@
                           @else
                               <li class="nav-item dropdown">
                                   <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                      <img src="/storage/{{ Auth::user()->avatar }}" height="30px" alt="Fotografía de {{ Auth::user()->name }}" title="{{ Auth::user()->name }}"/><span class="caret"></span>
+                                      <img src="/storage/{{ Auth::user()->avatar }}" height="30px" alt="Fotografía de {{ Auth::user()->name }}" title="{{ Auth::user()->name }}" class="rounded-circle"/><span class="caret"></span>
                                   </a>
 
                                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                       <div class="dropdown-item d-flex align-items-center">
-                                        <img src="/storage/{{ Auth::user()->avatar }}" height="60px" alt="Fotografía de {{ Auth::user()->name }}" title="{{ Auth::user()->name }}" class="profile-img d-inline-block" />
+                                        <img src="/storage/{{ Auth::user()->avatar }}" height="60px" alt="Fotografía de {{ Auth::user()->name }}" title="{{ Auth::user()->name }}" class="profile-img d-inline-block rounded-circle" />
                                         <div class="profile-body text-secondary d-inline-block ml-2">
                                           <h5 class="font-weight-bold mb-1"><small>{{ Auth::user()->name }}</small></h5>
                                           <h6 class="m-0"><small>{{ Auth::user()->email }}</small></h6>
