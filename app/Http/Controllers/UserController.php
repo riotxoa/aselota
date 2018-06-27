@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use TCG\Voyager\Models\Role;
 
 class UserController extends Controller
 {
@@ -65,7 +66,9 @@ class UserController extends Controller
 
         $user = User::find($id);
 
-        return view('user', ['user' => $user]);
+        $rol = Role::find($user->role_id);
+
+        return view('user', ['user' => $user, 'role' => $rol->name]);
     }
 
     /**
