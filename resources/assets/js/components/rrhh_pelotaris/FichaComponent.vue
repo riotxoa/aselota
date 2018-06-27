@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <h1 class="col-11 form-title d-inline-block">{{ formTitle }}</h1>
-    <b-button class="col-1 d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)"><span class="icon voyager-trash"></span></b-button>
+  <div style="min-height:625px;">
+    <h1 class="col-10 form-title d-inline-block">{{ formTitle }}</h1>
+    <b-button class="col-2 d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)"><span class="icon voyager-trash"></span></b-button>
     <hr/>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-row>
-        <div class="col-md-2">
+        <div class="col-md-2 mb-5">
           <img :src="image" class="img-responsive" style="width:100%;">
         </div>
         <div class="col-md-10">
@@ -193,7 +193,7 @@
         municipios: [],
         municipios_filtered: [],
         edit: false,
-        show: true,
+        show: false,
         goBack: () => {
           window.history.length > 1
             ? this.$router.go(-1)
@@ -209,6 +209,9 @@
       if(this.$route.params.id) {
         this.edit = true;
         this.fetchPelotari(this.$route.params.id);
+      } else {
+        this.edit = false;
+        this.show = true;
       }
     },
     methods: {
@@ -248,7 +251,10 @@
             this.form.email = pelotari.email;
             this.form.telefono = pelotari.telefono;
             this.form.fotoName = pelotari.foto;
+
             this.image = (pelotari.foto ? pelotari.foto : this.image);
+
+            this.show = true;
         });
       },
       onChangeProvincia (evt) {

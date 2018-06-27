@@ -68584,7 +68584,7 @@ var showSnackbar = function showSnackbar(msg) {
       municipios: [],
       municipios_filtered: [],
       edit: false,
-      show: true,
+      show: false,
       goBack: function goBack() {
         window.history.length > 1 ? _this.$router.go(-1) : _this.$router.push('/');
       }
@@ -68599,6 +68599,9 @@ var showSnackbar = function showSnackbar(msg) {
     if (this.$route.params.id) {
       this.edit = true;
       this.fetchPelotari(this.$route.params.id);
+    } else {
+      this.edit = false;
+      this.show = true;
     }
   },
   methods: {
@@ -68644,7 +68647,10 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.form.email = pelotari.email;
         _this4.form.telefono = pelotari.telefono;
         _this4.form.fotoName = pelotari.foto;
+
         _this4.image = pelotari.foto ? pelotari.foto : _this4.image;
+
+        _this4.show = true;
       });
     },
     onChangeProvincia: function onChangeProvincia(evt) {
@@ -68762,15 +68768,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticStyle: { "min-height": "625px" } },
     [
-      _c("h1", { staticClass: "col-11 form-title d-inline-block" }, [
+      _c("h1", { staticClass: "col-10 form-title d-inline-block" }, [
         _vm._v(_vm._s(_vm.formTitle))
       ]),
       _vm._v(" "),
       _c(
         "b-button",
         {
-          staticClass: "col-1 d-inline-block float-right text-right",
+          staticClass: "col-2 d-inline-block float-right text-right",
           staticStyle: { width: "30px" },
           attrs: {
             size: "sm",
@@ -68796,7 +68803,7 @@ var render = function() {
             { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
             [
               _c("b-row", [
-                _c("div", { staticClass: "col-md-2" }, [
+                _c("div", { staticClass: "col-md-2 mb-5" }, [
                   _c("img", {
                     staticClass: "img-responsive",
                     staticStyle: { width: "100%" },
