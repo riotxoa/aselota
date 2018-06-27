@@ -61,12 +61,17 @@
                                         </div>
                                       </div>
                                       <div class="dropdown-divider mt-3 mb-3"></div>
-                                      <a class="dropdown-item" href="/user">
+                                      <a class="dropdown-item mt-1" href="/user">
                                           <i class="voyager-person"></i> {{ __('Mi perfil') }}
                                       </a>
                                       <a class="dropdown-item mt-1" href="/">
                                           <i class="voyager-home"></i> {{ __('Inicio') }}
                                       </a>
+                                      @if ( $role == 'rrhh' )
+                                        <a class="dropdown-item mt-1" href="/admin">
+                                            <i class="voyager-settings"></i> {{ __('Admin') }}
+                                        </a>
+                                      @endif
                                       <div class="dropdown-divider mt-3 mb-3"></div>
                                       <a class="dropdown-item" href="{{ route('logout') }}"
                                          onclick="event.preventDefault();
