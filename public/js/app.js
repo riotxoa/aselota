@@ -68533,6 +68533,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -68718,6 +68729,27 @@ var showSnackbar = function showSnackbar(msg) {
     },
     onCancel: function onCancel(evt) {
       this.goBack();
+    },
+    remove: function remove() {
+      var _this8 = this;
+
+      var uri = '/www/pelotaris/' + this.form.id;
+      this.axios.delete(uri).then(function (response) {
+        _this8.$refs.modalDelete.hide();
+        showSnackbar("Pelotari BORRADO");
+        _this8.goBack();
+      }).catch(function (error) {
+        console.log("[remove] error: " + error);
+        _this8.$refs.modalDelete.hide();
+        showSnackbar("ERROR al borrar");
+      });
+    },
+    onClickDelete: function onClickDelete(id, name) {
+      jQuery('#deleteAlias').html(name);
+      this.$refs.modalDelete.show();
+    },
+    hideModalDelete: function hideModalDelete() {
+      this.$refs.modalDelete.hide();
     }
   }
 });
@@ -68733,7 +68765,30 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h1", { staticClass: "form-title" }, [_vm._v(_vm._s(_vm.formTitle))]),
+      _c("h1", { staticClass: "col-11 form-title d-inline-block" }, [
+        _vm._v(_vm._s(_vm.formTitle))
+      ]),
+      _vm._v(" "),
+      _c(
+        "b-button",
+        {
+          staticClass: "col-1 d-inline-block float-right text-right",
+          staticStyle: { width: "30px" },
+          attrs: {
+            size: "sm",
+            variant: "outline-secondary",
+            alt: "Borrar Pelotari",
+            title: "Borrar Pelotari"
+          },
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+              _vm.onClickDelete(_vm.form.id, _vm.form.alias)
+            }
+          }
+        },
+        [_c("span", { staticClass: "icon voyager-trash" })]
+      ),
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
@@ -69135,7 +69190,41 @@ var render = function() {
             ],
             1
           )
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalDelete",
+          attrs: { title: "BORRAR Pelotari", "hide-footer": "" }
+        },
+        [
+          _c("div", { staticClass: "modal-body" }, [
+            _c("p", [
+              _vm._v("Se va a borrar la ficha completa de "),
+              _c("strong", { attrs: { id: "deleteAlias" } }),
+              _vm._v(". ¿Desea continuar?")
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "modal-footer" },
+            [
+              _c(
+                "b-btn",
+                { attrs: { variant: "danger" }, on: { click: _vm.remove } },
+                [_vm._v("Borrar")]
+              ),
+              _vm._v(" "),
+              _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+                _vm._v("Cancelar")
+              ])
+            ],
+            1
+          )
+        ]
+      )
     ],
     1
   )

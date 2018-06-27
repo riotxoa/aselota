@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1 class="form-title">{{ formTitle }}</h1>
+    <h1 class="col-11 form-title d-inline-block">{{ formTitle }}</h1>
+    <b-button class="col-1 d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)"><span class="icon voyager-trash"></span></b-button>
     <hr/>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-row>
@@ -137,6 +138,16 @@
         </div>
       </b-row>
     </b-form>
+
+    <b-modal ref="modalDelete" title="BORRAR Pelotari" hide-footer>
+      <div class="modal-body">
+        <p>Se va a borrar la ficha completa de <strong id="deleteAlias"></strong>. ¿Desea continuar?</p>
+      </div>
+      <div class="modal-footer">
+        <b-btn variant="danger" @click="remove">Borrar</b-btn>
+        <b-btn @click="hideModalDelete">Cancelar</b-btn>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -318,6 +329,27 @@
       },
       onCancel (evt) {
         this.goBack();
+      },
+      remove () {
+        let uri = '/www/pelotaris/' + this.form.id;
+        this.axios.delete(uri)
+          .then((response) => {
+            this.$refs.modalDelete.hide();
+            showSnackbar("Pelotari BORRADO");
+            this.goBack();
+          })
+          .catch((error) => {
+            console.log("[remove] error: " + error);
+            this.$refs.modalDelete.hide();
+            showSnackbar("ERROR al borrar");
+          });
+      },
+      onClickDelete (id, name) {
+        jQuery('#deleteAlias').html(name);
+        this.$refs.modalDelete.show();
+      },
+      hideModalDelete() {
+        this.$refs.modalDelete.hide();
       }
     }
   }
