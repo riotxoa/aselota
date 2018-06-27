@@ -61,7 +61,7 @@
                                         </div>
                                       </div>
                                       <div class="dropdown-divider mt-3 mb-3"></div>
-                                      <a class="dropdown-item" href="/user/{{ Auth::user()->id }}/edit">
+                                      <a class="dropdown-item" href="/user">
                                           <i class="voyager-person"></i> {{ __('Mi perfil') }}
                                       </a>
                                       <a class="dropdown-item mt-1" href="/">

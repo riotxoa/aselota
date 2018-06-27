@@ -27,6 +27,8 @@ Vue.use(VueAxios, axios);
 
 Vue.component('home-component', require('./components/HomeComponent.vue'));
 
+Vue.component('profile-component', require('./components/common_profile/ProfileComponent.vue'));
+
 Vue.component('home-rrhh', require('./components/rrhh_pelotaris/HomeRRHHComponent.vue'));
 Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));
 Vue.component('ficha-pelotari', require('./components/rrhh_pelotaris/FichaComponent.vue'));
