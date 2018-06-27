@@ -14,9 +14,7 @@
       </b-col>
 
       <b-col class="col-sm-6 text-right my-1 mb-3">
-        <b-btn variant="danger" class="mb-0" title="Crear Pelotari">
-          <router-link to="/rrhh/pelotari/new" class="text-white">Nuevo Pelotari</router-link>
-        </b-btn>
+        <router-link to="/rrhh/pelotari/new" class="text-white"><b-btn variant="danger" class="mb-0" title="Crear Pelotari">Nuevo Pelotari</b-btn></router-link>
       </b-col>
 
     </b-row>

@@ -67823,8 +67823,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -67982,17 +67980,17 @@ var render = function() {
             { staticClass: "col-sm-6 text-right my-1 mb-3" },
             [
               _c(
-                "b-btn",
+                "router-link",
                 {
-                  staticClass: "mb-0",
-                  attrs: { variant: "danger", title: "Crear Pelotari" }
+                  staticClass: "text-white",
+                  attrs: { to: "/rrhh/pelotari/new" }
                 },
                 [
                   _c(
-                    "router-link",
+                    "b-btn",
                     {
-                      staticClass: "text-white",
-                      attrs: { to: "/rrhh/pelotari/new" }
+                      staticClass: "mb-0",
+                      attrs: { variant: "danger", title: "Crear Pelotari" }
                     },
                     [_vm._v("Nuevo Pelotari")]
                   )
