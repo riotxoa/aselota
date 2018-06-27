@@ -23,6 +23,7 @@ class PelotariController extends Controller
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
           ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
+          ->where('pelotaris.deleted_at', null)
           ->orderBy('alias')
           ->get();
 
