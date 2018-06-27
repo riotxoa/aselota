@@ -90,7 +90,7 @@ class UserController extends Controller
 
         $user->name = $data->name;
         $user->email = $data->email;
-        $user->password = bcrypt($data->password);
+        $user->password = ($data->password ? bcrypt($data->password) : $user->password);
 
         if($request->file('photo')) {
           $path = $request->file('photo')->store('public/users/' . date('FY'));
