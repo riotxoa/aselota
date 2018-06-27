@@ -1,15 +1,25 @@
 <template>
   <div style="min-height:625px;">
-    <h1 class="col-10 form-title d-inline-block">{{ formTitle }}</h1>
-    <b-button class="col-2 d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)"><span class="icon voyager-trash"></span></b-button>
-    <hr/>
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-row>
-        <div class="col-md-2 mb-5">
+
+      <b-row class="justify-content-center">
+        <div class="col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0">
           <img :src="image" class="img-responsive" style="width:100%;">
         </div>
-        <div class="col-md-10">
-          <div class="row">
+        <div class="col-10 col-md-9 col-lg-10">
+          <p class="d-inline-block text-secondary mb-1">{{ formTitle }}</p>
+          <h1 class="form-title text-secondary"><strong>{{ this.form.alias }}</strong> - <small class="text-capitalize">{{ this.form.posicion }}</small></h1>
+        </div>
+        <div class="col-2 col-md-1 col-lg-1">
+          <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)"><span class="icon voyager-trash"></span></b-button>
+        </div>
+      </b-row>
+
+      <hr/>
+
+      <b-row>
+        <div class="col-md-12">
+          <b-row>
             <b-form-group label="DNI:"
                           label-for="dniInput"
                           class="col-sm-4">
@@ -40,8 +50,8 @@
                             v-model="form.posicion">
               </b-form-select>
             </b-form-group>
-          </div>
-          <div class="row">
+          </b-row>
+          <b-row>
             <b-form-group label="Nombre:"
                           label-for="nombre"
                           class="col-sm-6 col-md-4">
@@ -62,8 +72,8 @@
                             placeholder="Apellidos">
               </b-form-input>
             </b-form-group>
-          </div>
-          <div class="row">
+          </b-row>
+          <b-row>
             <b-form-group label="Dirección:"
                           label-for="direccion"
                           class="col-12">
@@ -130,7 +140,7 @@
                            plain>
               </b-form-file>
             </b-form-group>
-          </div>
+          </b-row>
           <hr/>
           <b-button type="submit" variant="primary">Guardar</b-button>
           <b-button variant="default" @click="onCancel">Cancelar</b-button>

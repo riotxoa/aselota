@@ -68542,6 +68542,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -68770,54 +68780,78 @@ var render = function() {
     "div",
     { staticStyle: { "min-height": "625px" } },
     [
-      _c("h1", { staticClass: "col-10 form-title d-inline-block" }, [
-        _vm._v(_vm._s(_vm.formTitle))
-      ]),
-      _vm._v(" "),
-      _c(
-        "b-button",
-        {
-          staticClass: "col-2 d-inline-block float-right text-right",
-          staticStyle: { width: "30px" },
-          attrs: {
-            size: "sm",
-            variant: "outline-secondary",
-            alt: "Borrar Pelotari",
-            title: "Borrar Pelotari"
-          },
-          on: {
-            click: function($event) {
-              $event.stopPropagation()
-              _vm.onClickDelete(_vm.form.id, _vm.form.alias)
-            }
-          }
-        },
-        [_c("span", { staticClass: "icon voyager-trash" })]
-      ),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
       _vm.show
         ? _c(
             "b-form",
             { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
             [
-              _c("b-row", [
-                _c("div", { staticClass: "col-md-2 mb-5" }, [
-                  _c("img", {
-                    staticClass: "img-responsive",
-                    staticStyle: { width: "100%" },
-                    attrs: { src: _vm.image }
-                  })
+              _c("b-row", { staticClass: "justify-content-center" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0" },
+                  [
+                    _c("img", {
+                      staticClass: "img-responsive",
+                      staticStyle: { width: "100%" },
+                      attrs: { src: _vm.image }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-10 col-md-9 col-lg-10" }, [
+                  _c(
+                    "p",
+                    { staticClass: "d-inline-block text-secondary mb-1" },
+                    [_vm._v(_vm._s(_vm.formTitle))]
+                  ),
+                  _vm._v(" "),
+                  _c("h1", { staticClass: "form-title text-secondary" }, [
+                    _c("strong", [_vm._v(_vm._s(this.form.alias))]),
+                    _vm._v(" - "),
+                    _c("small", { staticClass: "text-capitalize" }, [
+                      _vm._v(_vm._s(this.form.posicion))
+                    ])
+                  ])
                 ]),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "col-md-10" },
+                  { staticClass: "col-2 col-md-1 col-lg-1" },
                   [
                     _c(
-                      "div",
-                      { staticClass: "row" },
+                      "b-button",
+                      {
+                        staticClass: "d-inline-block float-right text-right",
+                        staticStyle: { width: "30px" },
+                        attrs: {
+                          size: "sm",
+                          variant: "outline-secondary",
+                          alt: "Borrar Pelotari",
+                          title: "Borrar Pelotari"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.onClickDelete(_vm.form.id, _vm.form.alias)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "icon voyager-trash" })]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("b-row", [
+                _c(
+                  "div",
+                  { staticClass: "col-md-12" },
+                  [
+                    _c(
+                      "b-row",
                       [
                         _c(
                           "b-form-group",
@@ -68907,8 +68941,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "div",
-                      { staticClass: "row" },
+                      "b-row",
                       [
                         _c(
                           "b-form-group",
@@ -68969,8 +69002,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "div",
-                      { staticClass: "row" },
+                      "b-row",
                       [
                         _c(
                           "b-form-group",
