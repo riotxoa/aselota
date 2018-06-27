@@ -68818,26 +68818,29 @@ var render = function() {
                   "div",
                   { staticClass: "col-2 col-md-1 col-lg-1" },
                   [
-                    _c(
-                      "b-button",
-                      {
-                        staticClass: "d-inline-block float-right text-right",
-                        staticStyle: { width: "30px" },
-                        attrs: {
-                          size: "sm",
-                          variant: "outline-secondary",
-                          alt: "Borrar Pelotari",
-                          title: "Borrar Pelotari"
-                        },
-                        on: {
-                          click: function($event) {
-                            $event.stopPropagation()
-                            _vm.onClickDelete(_vm.form.id, _vm.form.alias)
-                          }
-                        }
-                      },
-                      [_c("span", { staticClass: "icon voyager-trash" })]
-                    )
+                    _vm.edit
+                      ? _c(
+                          "b-button",
+                          {
+                            staticClass:
+                              "d-inline-block float-right text-right",
+                            staticStyle: { width: "30px" },
+                            attrs: {
+                              size: "sm",
+                              variant: "outline-secondary",
+                              alt: "Borrar Pelotari",
+                              title: "Borrar Pelotari"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickDelete(_vm.form.id, _vm.form.alias)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-trash" })]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )

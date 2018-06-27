@@ -11,7 +11,7 @@
           <h1 class="form-title text-secondary"><strong>{{ this.form.alias }}</strong> - <small class="text-capitalize">{{ this.form.posicion }}</small></h1>
         </div>
         <div class="col-2 col-md-1 col-lg-1">
-          <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)"><span class="icon voyager-trash"></span></b-button>
+          <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)" v-if="edit"><span class="icon voyager-trash"></span></b-button>
         </div>
       </b-row>
 
