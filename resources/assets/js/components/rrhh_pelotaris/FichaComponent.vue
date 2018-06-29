@@ -8,7 +8,7 @@
       <div class="col-10 col-md-9 col-lg-10">
         <p class="d-inline-block text-secondary mb-1">{{ formTitle }}</p>
         <h1 class="form-title text-secondary"><strong>{{ this.pelotari.alias }}</strong> - <small class="text-capitalize">{{ this.pelotari.posicion }}</small></h1>
-        <p class="text-secondary m-0"><span class="icon voyager-calendar mr-1" title="Fecha de alta"></span> {{ this.pelotari.created | formatDate }} <span class="mx-1">-</span> <span class="icon voyager-pen mr-1" title="Fecha de última modificación"></span> {{ this.pelotari.updated | formatDate }}</p>
+        <p class="text-secondary m-0" v-if="edit"><span class="icon voyager-calendar mr-1" title="Fecha de alta"></span> {{ this.pelotari.created | formatDate }} <span class="mx-1">-</span> <span class="icon voyager-pen mr-1" title="Fecha de última modificación"></span> {{ this.pelotari.updated | formatDate }}</p>
       </div>
       <div class="col-2 col-md-1 col-lg-1">
         <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(pelotari.id, pelotari.alias)" v-if="edit"><span class="icon voyager-trash"></span></b-button>
