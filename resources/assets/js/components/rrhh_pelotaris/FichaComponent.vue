@@ -398,3 +398,27 @@
     }
   }
 </script>
+
+<style>
+  .nav-pills .nav-link {
+    background-color:#dddddd;
+    color:gray;
+    margin-right:.1rem;
+
+    -webkit-transition:.15s all ease-in-out;
+    -moz-transition:.15s all ease-in-out;
+    -ms-transition:.15s all ease-in-out;
+    -o-transition:.15s all ease-in-out;
+    transition:.15s all ease-in-out;
+  }
+  .nav-pills .nav-link.active,
+  .nav-pills .show > .nav-link {
+    background-color:#28a745;
+  }
+  .nav-pills .nav-link:hover,
+  .nav-pills .nav-link:active,
+  .nav-pills .nav-link:focus {
+    -webkit-filter:opacity(.85);
+    filter:opacity(.85);
+  }
+</style>
