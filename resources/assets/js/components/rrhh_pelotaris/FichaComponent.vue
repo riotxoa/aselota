@@ -1,152 +1,169 @@
 <template>
   <div style="min-height:625px;">
+
+    <b-row class="justify-content-center">
+      <div class="col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0">
+        <img :src="pelotari.image" class="img-responsive" style="width:100%;">
+      </div>
+      <div class="col-10 col-md-9 col-lg-10">
+        <p class="d-inline-block text-secondary mb-1">{{ formTitle }}</p>
+        <h1 class="form-title text-secondary"><strong>{{ this.pelotari.alias }}</strong> - <small class="text-capitalize">{{ this.pelotari.posicion }}</small></h1>
+      </div>
+      <div class="col-2 col-md-1 col-lg-1">
+        <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(pelotari.id, pelotari.alias)" v-if="edit"><span class="icon voyager-trash"></span></b-button>
+      </div>
+    </b-row>
+
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
 
-      <b-row class="justify-content-center">
-        <div class="col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0">
-          <img :src="image" class="img-responsive" style="width:100%;">
-        </div>
-        <div class="col-10 col-md-9 col-lg-10">
-          <p class="d-inline-block text-secondary mb-1">{{ formTitle }}</p>
-          <h1 class="form-title text-secondary"><strong>{{ this.form.alias }}</strong> - <small class="text-capitalize">{{ this.form.posicion }}</small></h1>
-        </div>
-        <div class="col-2 col-md-1 col-lg-1">
-          <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(form.id, form.alias)" v-if="edit"><span class="icon voyager-trash"></span></b-button>
-        </div>
-      </b-row>
+      <b-card no-body class="my-3">
+        <b-tabs card pills>
+          <b-tab title="Ficha" active>
+            <b-row>
+              <div class="col-md-12">
+                <b-row>
+                  <b-form-group label="DNI:"
+                                label-for="dniInput"
+                                class="col-sm-4">
+                    <b-form-input id="dniInput"
+                                  type="text"
+                                  v-model="pelotari.dni"
+                                  maxlength="9"
+                                  placeholder="DNI">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Nombre deportivo:"
+                                label-for="alias"
+                                class="col-sm-4">
+                    <b-form-input id="alias"
+                                  type="text"
+                                  v-model="pelotari.alias"
+                                  maxlength="30"
+                                  required
+                                  placeholder="Nombre deportivo">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Posicion:"
+                                label-for="posicion"
+                                class="col-sm-4">
+                    <b-form-select id="posicion"
+                                  :options="posiciones"
+                                  required
+                                  v-model="pelotari.posicion">
+                    </b-form-select>
+                  </b-form-group>
+                </b-row>
+                <b-row>
+                  <b-form-group label="Nombre:"
+                                label-for="nombre"
+                                class="col-sm-6 col-md-4">
+                    <b-form-input id="nombre"
+                                  type="text"
+                                  v-model="pelotari.nombre"
+                                  maxlength="30"
+                                  placeholder="Nombre">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Apellidos:"
+                                label-for="apellidos"
+                                class="col-sm-6 col-md-8">
+                    <b-form-input id="apellidos"
+                                  type="text"
+                                  v-model="pelotari.apellidos"
+                                  maxlength="60"
+                                  placeholder="Apellidos">
+                    </b-form-input>
+                  </b-form-group>
+                </b-row>
+                <b-row>
+                  <b-form-group label="Dirección:"
+                                label-for="direccion"
+                                class="col-12">
+                    <b-form-input id="direccion"
+                                  type="text"
+                                  v-model="pelotari.direccion"
+                                  maxlength="100"
+                                  placeholder="Dirección completa">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Provincia:"
+                                label-for="provincia"
+                                class="col-md-4">
+                    <b-form-select id="provincia"
+                                  :options="provincias"
+                                  @change = "onChangeProvincia"
+                                  v-model="pelotari.provincia_id">
+                    </b-form-select>
+                  </b-form-group>
+                  <b-form-group label="Municipio:"
+                                label-for="municipio"
+                                class="col-md-4">
+                    <b-form-select id="municipio"
+                                  :options="municipios_filtered"
+                                  v-model="pelotari.municipio_id">
+                    </b-form-select>
+                  </b-form-group>
+                  <b-form-group label="Código Postal:"
+                                label-for="cod_postal"
+                                class="col-md-4">
+                    <b-form-input id="cod_postal"
+                                  type="text"
+                                  v-model="pelotari.cod_postal"
+                                  maxlength="5"
+                                  required
+                                  placeholder="Código Postal">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Correo electrónico:"
+                                label-for="email"
+                                class="col-md-6">
+                    <b-form-input id="email"
+                                  type="email"
+                                  v-model="pelotari.email"
+                                  maxlength="50"
+                                  placeholder="example@example.com">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Teléfono:"
+                                label-for="telefono"
+                                class="col-md-6">
+                    <b-form-input id="telefono"
+                                  type="text"
+                                  v-model="pelotari.telefono"
+                                  maxlength="15"
+                                  placeholder="Teléfono">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Fotografía"
+                                class="col-sm-12">
+                    <b-form-file class="mt-3"
+                                 v-on:change="onPhotoChange"
+                                 accept=".jpg"
+                                 plain>
+                    </b-form-file>
+                  </b-form-group>
+                </b-row>
+              </div>
+            </b-row>
+          </b-tab>
+          <b-tab title="Contratos">
+            <listado-contratos :pelotari-id="this.pelotari.id"></listado-contratos>
+          </b-tab>
+          <b-tab title="Tarifas">
+            <h1>Tarifas</h1>
+            <p>Este dato no repercute en el cobro del pelotari. Solo presupuesto y facturación.</p>
+          </b-tab>
+          <b-tab title="Imagen">
+            <h1>Derechos de Imagen y Publicidad</h1>
+            <p>Liquidación aparte.</p>
+          </b-tab>
+        </b-tabs>
+      </b-card>
 
-      <hr/>
+      <b-button type="submit" variant="primary">Guardar</b-button>
+      <b-button variant="default" @click="onCancel">Cancelar</b-button>
+      <b-button type="reset" variant="danger" class="float-right">Reset</b-button>
 
-      <b-row>
-        <div class="col-md-12">
-          <b-row>
-            <b-form-group label="DNI:"
-                          label-for="dniInput"
-                          class="col-sm-4">
-              <b-form-input id="dniInput"
-                            type="text"
-                            v-model="form.dni"
-                            maxlength="9"
-                            placeholder="DNI">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Nombre deportivo:"
-                          label-for="alias"
-                          class="col-sm-4">
-              <b-form-input id="alias"
-                            type="text"
-                            v-model="form.alias"
-                            maxlength="30"
-                            required
-                            placeholder="Nombre deportivo">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Posicion:"
-                          label-for="posicion"
-                          class="col-sm-4">
-              <b-form-select id="posicion"
-                            :options="posiciones"
-                            required
-                            v-model="form.posicion">
-              </b-form-select>
-            </b-form-group>
-          </b-row>
-          <b-row>
-            <b-form-group label="Nombre:"
-                          label-for="nombre"
-                          class="col-sm-6 col-md-4">
-              <b-form-input id="nombre"
-                            type="text"
-                            v-model="form.nombre"
-                            maxlength="30"
-                            placeholder="Nombre">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Apellidos:"
-                          label-for="apellidos"
-                          class="col-sm-6 col-md-8">
-              <b-form-input id="apellidos"
-                            type="text"
-                            v-model="form.apellidos"
-                            maxlength="60"
-                            placeholder="Apellidos">
-              </b-form-input>
-            </b-form-group>
-          </b-row>
-          <b-row>
-            <b-form-group label="Dirección:"
-                          label-for="direccion"
-                          class="col-12">
-              <b-form-input id="direccion"
-                            type="text"
-                            v-model="form.direccion"
-                            maxlength="100"
-                            placeholder="Dirección completa">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Provincia:"
-                          label-for="provincia"
-                          class="col-md-4">
-              <b-form-select id="provincia"
-                            :options="provincias"
-                            @change = "onChangeProvincia"
-                            v-model="form.provincia_id">
-              </b-form-select>
-            </b-form-group>
-            <b-form-group label="Municipio:"
-                          label-for="municipio"
-                          class="col-md-4">
-              <b-form-select id="municipio"
-                            :options="municipios_filtered"
-                            v-model="form.municipio_id">
-              </b-form-select>
-            </b-form-group>
-            <b-form-group label="Código Postal:"
-                          label-for="cod_postal"
-                          class="col-md-4">
-              <b-form-input id="cod_postal"
-                            type="text"
-                            v-model="form.cod_postal"
-                            maxlength="5"
-                            required
-                            placeholder="Código Postal">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Correo electrónico:"
-                          label-for="email"
-                          class="col-md-6">
-              <b-form-input id="email"
-                            type="email"
-                            v-model="form.email"
-                            maxlength="50"
-                            placeholder="example@example.com">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Teléfono:"
-                          label-for="telefono"
-                          class="col-md-6">
-              <b-form-input id="telefono"
-                            type="text"
-                            v-model="form.telefono"
-                            maxlength="15"
-                            placeholder="Teléfono">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Fotografía"
-                          class="col-sm-12">
-              <b-form-file class="mt-3"
-                           v-on:change="onPhotoChange"
-                           accept=".jpg"
-                           plain>
-              </b-form-file>
-            </b-form-group>
-          </b-row>
-          <hr/>
-          <b-button type="submit" variant="primary">Guardar</b-button>
-          <b-button variant="default" @click="onCancel">Cancelar</b-button>
-          <b-button type="reset" variant="danger" class="float-right">Reset</b-button>
-        </div>
-      </b-row>
     </b-form>
 
     <b-modal ref="modalDelete" title="BORRAR Pelotari" hide-footer>
@@ -162,6 +179,7 @@
 </template>
 
 <script>
+  Vue.component('listado-contratos', require('../rrhh_contratos/ListadoComponent.vue'));
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
@@ -177,7 +195,7 @@
     props: ['formTitle'],
     data () {
       return {
-        form: {
+        pelotari: {
           id: null,
           dni: '',
           alias: '',
@@ -191,9 +209,9 @@
           email: '',
           telefono: '',
           fotoName: null,
+          file: null,
+          image: '/storage/avatars/default/default.jpg',
         },
-        file: null,
-        image: '/storage/avatars/default/default.jpg',
         posiciones: [
           { value: null, text: 'Seleccionar posición' },
           { value: 'Delantero', text: 'Delantero '},
@@ -217,6 +235,7 @@
       this.fetchProvincias();
 
       if(this.$route.params.id) {
+        this.pelotari.id = this.$route.params.id;
         this.edit = true;
         this.fetchPelotari(this.$route.params.id);
       } else {
@@ -248,21 +267,21 @@
             var stringified = JSON.stringify(response.data);
             var pelotari = JSON.parse(stringified);
 
-            this.form.id = id;
-            this.form.dni = pelotari.DNI;
-            this.form.alias = pelotari.alias;
-            this.form.posicion = pelotari.posicion;
-            this.form.nombre = pelotari.nombre;
-            this.form.apellidos = pelotari.apellidos;
-            this.form.direccion = pelotari.direccion;
-            this.form.provincia_id = pelotari.provincia_id;
-            this.form.municipio_id = pelotari.municipio_id;
-            this.form.cod_postal = pelotari.cod_postal;
-            this.form.email = pelotari.email;
-            this.form.telefono = pelotari.telefono;
-            this.form.fotoName = pelotari.foto;
+            this.pelotari.id = id;
+            this.pelotari.dni = pelotari.DNI;
+            this.pelotari.alias = pelotari.alias;
+            this.pelotari.posicion = pelotari.posicion;
+            this.pelotari.nombre = pelotari.nombre;
+            this.pelotari.apellidos = pelotari.apellidos;
+            this.pelotari.direccion = pelotari.direccion;
+            this.pelotari.provincia_id = pelotari.provincia_id;
+            this.pelotari.municipio_id = pelotari.municipio_id;
+            this.pelotari.cod_postal = pelotari.cod_postal;
+            this.pelotari.email = pelotari.email;
+            this.pelotari.telefono = pelotari.telefono;
+            this.pelotari.fotoName = pelotari.foto;
 
-            this.image = (pelotari.foto ? pelotari.foto : this.image);
+            this.pelotari.image = (pelotari.foto ? pelotari.foto : this.pelotari.image);
 
             this.show = true;
         });
@@ -285,9 +304,9 @@
           let reader = new FileReader();
           let vm = this;
           reader.onload = (e) => {
-            vm.image = e.target.result;
-            this.file = file;
-            this.form.fotoName = file.name;
+            vm.pelotari.image = e.target.result;
+            vm.pelotari.file = file;
+            vm.pelotari.fotoName = file.name;
           };
           reader.readAsDataURL(file);
       },
@@ -299,12 +318,12 @@
         let uri = '/www/pelotaris';
         let data = new FormData();
 
-        data.append('form', JSON.stringify(this.form));
-        if(this.file)
-          data.append('photo', this.file);
+        data.append('form', JSON.stringify(this.pelotari));
+        if(this.pelotari.file)
+          data.append('photo', this.pelotari.file);
 
         if(this.edit) {
-          this.axios.post(uri + '/' + this.form.id + '/update', data, config)
+          this.axios.post(uri + '/' + this.pelotari.id + '/update', data, config)
             .then((response) => {
               showSnackbar("Pelotari actualizado");
               this.goBack();
@@ -328,17 +347,17 @@
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.form.dni = '';
-        this.form.alias = '';
-        this.form.posicion = null;
-        this.form.nombre = '';
-        this.form.apellidos = '';
-        this.form.direccion = '';
-        this.form.provincia_id = null;
-        this.form.municipio_id = null;
-        this.form.cod_postal = '';
-        this.form.email = '';
-        this.form.telefono = '';
+        this.pelotari.dni = '';
+        this.pelotari.alias = '';
+        this.pelotari.posicion = null;
+        this.pelotari.nombre = '';
+        this.pelotari.apellidos = '';
+        this.pelotari.direccion = '';
+        this.pelotari.provincia_id = null;
+        this.pelotari.municipio_id = null;
+        this.pelotari.cod_postal = '';
+        this.pelotari.email = '';
+        this.pelotari.telefono = '';
         /* Trick to reset/clear native browser form validation state */
         this.show = false;
         this.$nextTick(() => { this.show = true });
@@ -347,7 +366,7 @@
         this.goBack();
       },
       remove () {
-        let uri = '/www/pelotaris/' + this.form.id;
+        let uri = '/www/pelotaris/' + this.pelotari.id;
         this.axios.delete(uri)
           .then((response) => {
             this.$refs.modalDelete.hide();

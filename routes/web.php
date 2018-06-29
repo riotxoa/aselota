@@ -22,6 +22,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('provincias', 'ProvinciaController');
     Route::resource('municipios', 'MunicipioController');
     Route::resource('pelotaris', 'PelotariController');
+    Route::resource('contratos', 'ContratoController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
