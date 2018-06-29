@@ -20278,6 +20278,8 @@ var ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> ' };
 var CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> ' };
 var EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> ' };
 
+Vue.component('contrato-pelotari', __webpack_require__(365));
+
 var routes = [{
   path: '/rrhh', component: HomeRRHH,
   children: [{
@@ -68948,6 +68950,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -68967,23 +68973,32 @@ var showSnackbar = function showSnackbar(msg) {
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['pelotariId'],
   data: function data() {
-    var _ref;
+    var _this = this,
+        _ref;
 
     return _ref = {
       create: true,
-      delete: true,
+      remove: true,
       update: true,
       display: false,
       filter: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'garantia_disp', label: '<span title="Garantía según disponibilidad">Garantía s/disp.</span>', class: 'text-right', sortable: false }],
+      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'garantia_disp', label: '<span title="Garantía según disponibilidad">Garantía s/disp.</span>', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false }],
       items: [],
       totalRows: 0,
       perPage: 10,
       currentPage: 1,
       pageOptions: [10, 25, 50]
-    }, _defineProperty(_ref, "filter", null), _defineProperty(_ref, "deleteId", null), _ref;
+    }, _defineProperty(_ref, "filter", null), _defineProperty(_ref, "deleteId", null), _defineProperty(_ref, "formTitle", ''), _defineProperty(_ref, "rowContrato", null), _defineProperty(_ref, "newContrato", true), _defineProperty(_ref, "cancelContratoForm", function cancelContratoForm() {
+      _this.hideContratoForm();
+    }), _defineProperty(_ref, "getContratoRow", function getContratoRow() {
+      return _this.rowContrato;
+    }), _defineProperty(_ref, "isNewContrato", function isNewContrato() {
+      return _this.newContrato;
+    }), _defineProperty(_ref, "formatRowAmount", function formatRowAmount(amount) {
+      return _this.formatAmount(amount);
+    }), _ref;
   },
   created: function created() {
     this.fetchContratos();
@@ -68991,7 +69006,7 @@ var showSnackbar = function showSnackbar(msg) {
 
   methods: {
     fetchContratos: function fetchContratos() {
-      var _this = this;
+      var _this2 = this;
 
       var uri = '/www/contratos';
       this.axios.get(uri, {
@@ -69000,9 +69015,8 @@ var showSnackbar = function showSnackbar(msg) {
         }
       }).then(function (response) {
         var stringified = JSON.stringify(response.data);
-        console.log("[fetchContratos] stringified: " + stringified);
-        _this.items = JSON.parse(stringified);
-        _this.totalRows = _this.items.length;
+        _this2.items = JSON.parse(stringified);
+        _this2.totalRows = _this2.items.length;
       });
     },
     onFiltered: function onFiltered(filteredItems) {
@@ -69010,30 +69024,30 @@ var showSnackbar = function showSnackbar(msg) {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    edit: function edit(id) {
-      alert("EDITAR CONTRATO: /rrhh/contrato/" + id + "/edit/");
-      // this.$router.push('/rrhh/contrato/' + id + '/edit/');
+    onClickEdit: function onClickEdit(item) {
+      this.rowContrato = item;
+      this.showContratoForm(item.id);
     },
-    remove: function remove() {
+    removeItem: function removeItem() {
+      var _this3 = this;
+
       var uri = '/www/contratos/' + this.deleteId;
-      alert("BORRAR CONTRATO: " + uri);
-      // this.axios.delete(uri)
-      //   .then((response) => {
-      //     this.deleteId = null;
-      //     this.$refs.modalDelete.hide();
-      //     this.fetchContratos();
-      //     showSnackbar("Contrato BORRADO");
-      //   })
-      //   .catch((error) => {
-      //     console.log("[remove] error: " + error);
-      //     this.deleteId = null;
-      //     this.$refs.modalDelete.hide();
-      //     showSnackbar("ERROR al borrar");
-      //   });
+      console.log("BORRAR CONTRATO: " + uri);
+      this.axios.delete(uri).then(function (response) {
+        _this3.deleteId = null;
+        _this3.$refs.modalDelete.hide();
+        _this3.fetchContratos();
+        showSnackbar("Contrato BORRADO");
+      }).catch(function (error) {
+        console.log("[removeItem] error: " + error);
+        _this3.deleteId = null;
+        _this3.$refs.modalDelete.hide();
+        showSnackbar("ERROR al borrar");
+      });
     },
     onClickDelete: function onClickDelete(id, fecha_ini, fecha_fin) {
       this.deleteId = id;
-      jQuery('#deleteAlias').html(fecha_ini + " al " + fecha_fin);
+      jQuery('#deleteAlias').html(this.formatDate(fecha_ini) + " al " + this.formatDate(fecha_fin));
       this.$refs.modalDelete.show();
     },
     hideModalDelete: function hideModalDelete() {
@@ -69041,10 +69055,31 @@ var showSnackbar = function showSnackbar(msg) {
       this.$refs.modalDelete.hide();
     },
     formatDate: function formatDate(date) {
-      return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');
+      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
+        return "";
+      }
     },
     formatAmount: function formatAmount(amount) {
-      return parseFloat(amount).toFixed(2);
+      if (amount) return parseFloat(amount).toFixed(2);else {
+        return "";
+      }
+    },
+    showContratoForm: function showContratoForm() {
+      var $id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+      if ($id) {
+        this.formTitle = 'Editar Contrato';
+        this.newContrato = false;
+        this.$refs.modalEdit.show();
+      } else {
+        this.formTitle = 'Nuevo Contrato';
+        this.newContrato = true;
+        this.$refs.modalEdit.show();
+      }
+    },
+    hideContratoForm: function hideContratoForm() {
+      this.$refs.modalEdit.hide();
+      this.fetchContratos();
     }
   }
 });
@@ -69068,7 +69103,7 @@ var render = function() {
             "b-col",
             { staticClass: "col-sm-6 float-left my-1 mb-3" },
             [
-              this.filter
+              _vm.filter
                 ? _c(
                     "b-form-group",
                     {
@@ -69127,26 +69162,21 @@ var render = function() {
             { staticClass: "col-sm-6 text-right float-right my-1 mb-3" },
             [
               _c(
-                "router-link",
+                "b-btn",
                 {
-                  staticClass: "text-white",
-                  attrs: { to: "/rrhh/contrato/new" }
+                  staticClass: "mb-0",
+                  attrs: {
+                    variant: "default",
+                    size: "sm",
+                    title: "Crear Contrato"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.showContratoForm(0)
+                    }
+                  }
                 },
-                [
-                  _c(
-                    "b-btn",
-                    {
-                      staticClass: "mb-0",
-                      attrs: {
-                        variant: "default",
-                        size: "sm",
-                        title: "Crear Contrato"
-                      }
-                    },
-                    [_vm._v("Nuevo Contrato")]
-                  )
-                ],
-                1
+                [_vm._v("Nuevo Contrato")]
               )
             ],
             1
@@ -69186,7 +69216,7 @@ var render = function() {
                 _c(
                   "b-button-group",
                   [
-                    this.delete
+                    _vm.remove
                       ? _c(
                           "b-button",
                           {
@@ -69210,7 +69240,7 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    this.update
+                    _vm.update
                       ? _c(
                           "b-button",
                           {
@@ -69222,7 +69252,7 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.stopPropagation()
-                                _vm.edit(row.item.id)
+                                _vm.onClickEdit(row.item)
                               }
                             }
                           },
@@ -69230,7 +69260,7 @@ var render = function() {
                         )
                       : _vm._e(),
                     _vm._v(" "),
-                    this.display
+                    _vm.display
                       ? _c(
                           "b-button",
                           {
@@ -69371,7 +69401,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      this.remove
+      _vm.remove
         ? _c(
             "b-modal",
             {
@@ -69393,7 +69423,10 @@ var render = function() {
                 [
                   _c(
                     "b-btn",
-                    { attrs: { variant: "danger" }, on: { click: _vm.remove } },
+                    {
+                      attrs: { variant: "danger" },
+                      on: { click: _vm.removeItem }
+                    },
                     [_vm._v("Borrar")]
                   ),
                   _vm._v(" "),
@@ -69405,7 +69438,33 @@ var render = function() {
               )
             ]
           )
-        : _vm._e()
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalEdit",
+          attrs: {
+            id: "contratoForm",
+            title: _vm.formTitle,
+            size: "lg",
+            "hide-footer": "",
+            lazy: ""
+          }
+        },
+        [
+          _c("contrato-pelotari", {
+            attrs: {
+              "pelotari-id": _vm.pelotariId,
+              "on-cancel": _vm.cancelContratoForm,
+              "get-contrato-row": _vm.getContratoRow,
+              "is-new-contrato": _vm.isNewContrato,
+              "format-amount": _vm.formatRowAmount
+            }
+          })
+        ],
+        1
+      )
     ],
     1
   )
@@ -86695,6 +86754,668 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 364;
+
+/***/ }),
+/* 365 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(16)
+/* script */
+var __vue_script__ = __webpack_require__(366)
+/* template */
+var __vue_template__ = __webpack_require__(367)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos/FichaComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-643edf18", Component.options)
+  } else {
+    hotAPI.reload("data-v-643edf18", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 366 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'onCancel', 'getContratoRow', 'isNewContrato', 'formatAmount'],
+  data: function data() {
+    var _this = this;
+
+    return {
+      contrato: {
+        id: null,
+        pelotari_id: null,
+        fecha_ini: null,
+        fecha_fin: null,
+        dieta_mes: null,
+        dieta_partido: null,
+        prima_partido: null,
+        prima_estelar: null,
+        prima_manomanista: null,
+        garantia: null,
+        garantia_disp: null,
+        created_at: null,
+        updated_at: null
+      },
+      edit: false,
+      show: true,
+      goBack: function goBack() {
+        _this.onCancel();
+      }
+    };
+  },
+
+  created: function created() {
+    console.log("FichaComponent created");
+
+    this.contrato.pelotari_id = this.pelotariId;
+
+    if (this.isNewContrato()) {
+      this.edit = false;
+    } else {
+      this.edit = true;
+
+      var rowContrato = this.getContratoRow();
+
+      this.contrato.id = rowContrato.id;
+      this.contrato.fecha_ini = rowContrato.fecha_ini;
+      this.contrato.fecha_fin = rowContrato.fecha_fin;
+      this.contrato.dieta_mes = this.formatAmount(rowContrato.dieta_mes);
+      this.contrato.dieta_partido = this.formatAmount(rowContrato.dieta_partido);
+      this.contrato.prima_partido = this.formatAmount(rowContrato.prima_partido);
+      this.contrato.prima_estelar = this.formatAmount(rowContrato.prima_estelar);
+      this.contrato.prima_manomanista = this.formatAmount(rowContrato.prima_manomanista);
+      this.contrato.garantia = rowContrato.garantia;
+      this.contrato.garantia_disp = rowContrato.garantia_disp;
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit(evt) {
+      var _this2 = this;
+
+      evt.preventDefault();
+
+      var uri = '/www/contratos';
+
+      if (this.edit) {
+        console.log("[onSumbimt] this.contrato: " + JSON.stringify(this.contrato));
+        this.axios.post(uri + '/' + this.contrato.id + '/update', this.contrato).then(function (response) {
+          console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
+          showSnackbar("Contrato actualizado");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      } else {
+        this.axios.post(uri, this.contrato).then(function (response) {
+          console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
+          showSnackbar("Contrato creado");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      }
+    },
+    onReset: function onReset(evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+      this.contrato.fecha_ini = null;
+      this.contrato.fecha_fin = null;
+      this.contrato.dieta_mes = null;
+      this.contrato.dieta_partido = null;
+      this.contrato.prima_partido = null;
+      this.contrato.prima_estelar = null;
+      this.contrato.prima_manomanista = null;
+      this.contrato.garantia = null;
+      this.contrato.garantia_disp = null;
+    }
+  }
+});
+
+/***/ }),
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.show
+        ? _c(
+            "b-form",
+            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+            [
+              _c("b-row", [
+                _c(
+                  "div",
+                  { staticClass: "col-md-12" },
+                  [
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Fecha Inicio:",
+                              "label-for": "fecha_iniInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "fecha_iniInput",
+                                type: "date",
+                                maxlength: "9",
+                                placeholder: "dd/mm/yyyy"
+                              },
+                              model: {
+                                value: _vm.contrato.fecha_ini,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "fecha_ini", $$v)
+                                },
+                                expression: "contrato.fecha_ini"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Fecha Fin:",
+                              "label-for": "fecha_finInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "fecha_finInput",
+                                type: "date",
+                                maxlength: "30",
+                                required: "",
+                                placeholder: "dd/mm/yyyy"
+                              },
+                              model: {
+                                value: _vm.contrato.fecha_fin,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "fecha_fin", $$v)
+                                },
+                                expression: "contrato.fecha_fin"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Dieta básica mensual:",
+                              "label-for": "d_basicaInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              staticStyle: { "background-color": "#c3e6cb" },
+                              attrs: {
+                                id: "d_basicaInput",
+                                type: "text",
+                                maxlength: "8",
+                                placeholder: "000.00"
+                              },
+                              model: {
+                                value: _vm.contrato.dieta_mes,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "dieta_mes", $$v)
+                                },
+                                expression: "contrato.dieta_mes"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Dieta por partido:",
+                              "label-for": "dieta_partidoInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              staticStyle: { "background-color": "#c3e6cb" },
+                              attrs: {
+                                id: "dieta_partidoInput",
+                                type: "text",
+                                maxlength: "8",
+                                placeholder: "000.00"
+                              },
+                              model: {
+                                value: _vm.contrato.dieta_partido,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "dieta_partido", $$v)
+                                },
+                                expression: "contrato.dieta_partido"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Prima por partido ganado:",
+                              "label-for": "prima_partidoInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              staticStyle: { "background-color": "#ffeeba" },
+                              attrs: {
+                                id: "prima_partidoInput",
+                                type: "text",
+                                maxlength: "8",
+                                placeholder: "000.00"
+                              },
+                              model: {
+                                value: _vm.contrato.prima_partido,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "prima_partido", $$v)
+                                },
+                                expression: "contrato.prima_partido"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Prima por estelar ganado:",
+                              "label-for": "prima_estelarInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              staticStyle: { "background-color": "#ffeeba" },
+                              attrs: {
+                                id: "prima_estelarInput",
+                                type: "text",
+                                maxlength: "8",
+                                placeholder: "000.00"
+                              },
+                              model: {
+                                value: _vm.contrato.prima_estelar,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "prima_estelar", $$v)
+                                },
+                                expression: "contrato.prima_estelar"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Prima Campeón Manomanista:",
+                              "label-for": "prima_manomanistaInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              staticStyle: { "background-color": "#ffeeba" },
+                              attrs: {
+                                id: "prima_manomanistaInput",
+                                type: "text",
+                                maxlength: "8",
+                                placeholder: "000.00"
+                              },
+                              model: {
+                                value: _vm.contrato.prima_manomanista,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contrato,
+                                    "prima_manomanista",
+                                    $$v
+                                  )
+                                },
+                                expression: "contrato.prima_manomanista"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Partidos garantía:",
+                              "label-for": "garantiaInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              attrs: {
+                                id: "garantiaInput",
+                                type: "text",
+                                maxlength: "4",
+                                placeholder: "00"
+                              },
+                              model: {
+                                value: _vm.contrato.garantia,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "garantia", $$v)
+                                },
+                                expression: "contrato.garantia"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Garantía según disponibilidad:",
+                              "label-for": "garantia_dispInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              attrs: {
+                                id: "garantia_dispInput",
+                                type: "text",
+                                maxlength: "4",
+                                placeholder: "00"
+                              },
+                              model: {
+                                value: _vm.contrato.garantia_disp,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "garantia_disp", $$v)
+                                },
+                                expression: "contrato.garantia_disp"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { type: "submit", variant: "primary" } },
+                [_vm._v("Guardar")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
+                [_vm._v("Cancelar")]
+              ),
+              _vm._v(" "),
+              !_vm.edit
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "float-right mr-1",
+                      attrs: { type: "reset", variant: "danger" }
+                    },
+                    [_vm._v("Reset")]
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-643edf18", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

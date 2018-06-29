@@ -3,7 +3,7 @@
     <b-row>
 
       <b-col class="col-sm-6 float-left my-1 mb-3">
-        <b-form-group v-if="this.filter" horizontal label="Filtro" class="mb-0">
+        <b-form-group v-if="filter" horizontal label="Filtro" class="mb-0">
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
             <b-input-group-append>
@@ -14,7 +14,7 @@
       </b-col>
 
       <b-col class="col-sm-6 text-right float-right my-1 mb-3">
-        <router-link to="/rrhh/contrato/new" class="text-white"><b-btn variant="default" class="mb-0" size="sm" title="Crear Contrato">Nuevo Contrato</b-btn></router-link>
+        <b-btn variant="default" class="mb-0" size="sm" title="Crear Contrato" @click="showContratoForm(0)">Nuevo Contrato</b-btn>
       </b-col>
 
     </b-row>
@@ -32,13 +32,13 @@
       <template slot="actions" slot-scope="row">
         <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
         <b-button-group>
-          <b-button v-if="this.delete" size="sm" variant="danger" @click.stop="onClickDelete(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
+          <b-button v-if="remove" size="sm" variant="danger" @click.stop="onClickDelete(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
             <span class="icon voyager-trash"></span>
           </b-button>
-          <b-button v-if="this.update" size="sm" variant="primary" @click.stop="edit(row.item.id)" title="Editar">
+          <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item)" title="Editar">
             <span class="icon voyager-edit"></span>
           </b-button>
-          <b-button v-if="this.display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+          <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
             <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
           </b-button>
         </b-button-group>
@@ -73,14 +73,18 @@
       </b-col>
     </b-row>
 
-    <b-modal v-if="this.remove" ref="modalDelete" title="BORRAR Contrato" hide-footer>
+    <b-modal v-if="remove" ref="modalDelete" title="BORRAR Contrato" hide-footer>
       <div class="modal-body">
         <p>Se va a borrar el contrato de <strong id="deleteAlias"></strong>. ¿Desea continuar?</p>
       </div>
       <div class="modal-footer">
-        <b-btn variant="danger" @click="remove">Borrar</b-btn>
+        <b-btn variant="danger" @click="removeItem">Borrar</b-btn>
         <b-btn @click="hideModalDelete">Cancelar</b-btn>
       </div>
+    </b-modal>
+
+    <b-modal id="contratoForm" ref="modalEdit" :title="formTitle" size="lg" hide-footer lazy>
+      <contrato-pelotari :pelotari-id="pelotariId" :on-cancel="cancelContratoForm" :get-contrato-row="getContratoRow" :is-new-contrato="isNewContrato" :format-amount="formatRowAmount"></contrato-pelotari>
     </b-modal>
 
   </div>
@@ -105,7 +109,7 @@
       data () {
         return {
           create: true,
-          delete: true,
+          remove: true,
           update: true,
           display: false,
           filter: false,
@@ -121,6 +125,7 @@
             { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false },
             { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false },
             { key: 'garantia_disp', label: '<span title="Garantía según disponibilidad">Garantía s/disp.</span>', class: 'text-right', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false },
           ],
           items: [],
           totalRows: 0,
@@ -129,6 +134,13 @@
           pageOptions: [ 10, 25, 50 ],
           filter: null,
           deleteId: null,
+          formTitle: '',
+          rowContrato: null,
+          newContrato: true,
+          cancelContratoForm: () => { this.hideContratoForm(); },
+          getContratoRow: () => { return this.rowContrato; },
+          isNewContrato: () => { return this.newContrato; },
+          formatRowAmount: (amount) => { return this.formatAmount(amount); },
         }
       },
       created() {
@@ -144,7 +156,6 @@
           })
           .then((response) => {
             var stringified = JSON.stringify(response.data);
-            console.log("[fetchContratos] stringified: " + stringified);
             this.items = JSON.parse(stringified);
             this.totalRows = this.items.length;
           });
@@ -154,30 +165,30 @@
           this.totalRows = filteredItems.length;
           this.currentPage = 1;
         },
-        edit (id) {
-          alert("EDITAR CONTRATO: /rrhh/contrato/" + id + "/edit/");
-          // this.$router.push('/rrhh/contrato/' + id + '/edit/');
+        onClickEdit (item) {
+          this.rowContrato = item;
+          this.showContratoForm(item.id);
         },
-        remove () {
+        removeItem () {
           let uri = '/www/contratos/' + this.deleteId;
-          alert("BORRAR CONTRATO: " + uri);
-          // this.axios.delete(uri)
-          //   .then((response) => {
-          //     this.deleteId = null;
-          //     this.$refs.modalDelete.hide();
-          //     this.fetchContratos();
-          //     showSnackbar("Contrato BORRADO");
-          //   })
-          //   .catch((error) => {
-          //     console.log("[remove] error: " + error);
-          //     this.deleteId = null;
-          //     this.$refs.modalDelete.hide();
-          //     showSnackbar("ERROR al borrar");
-          //   });
+          console.log("BORRAR CONTRATO: " + uri);
+          this.axios.delete(uri)
+            .then((response) => {
+              this.deleteId = null;
+              this.$refs.modalDelete.hide();
+              this.fetchContratos();
+              showSnackbar("Contrato BORRADO");
+            })
+            .catch((error) => {
+              console.log("[removeItem] error: " + error);
+              this.deleteId = null;
+              this.$refs.modalDelete.hide();
+              showSnackbar("ERROR al borrar");
+            });
         },
         onClickDelete (id, fecha_ini, fecha_fin) {
           this.deleteId = id;
-          jQuery('#deleteAlias').html(fecha_ini + " al " + fecha_fin);
+          jQuery('#deleteAlias').html(this.formatDate(fecha_ini) + " al " + this.formatDate(fecha_fin));
           this.$refs.modalDelete.show();
         },
         hideModalDelete() {
@@ -185,10 +196,33 @@
           this.$refs.modalDelete.hide();
         },
         formatDate (date) {
-          return moment(String(date)).format('DD/MM/YYYY');
+          if(date)
+            return moment(String(date)).format('DD/MM/YYYY');
+          else {
+            return "";
+          }
         },
         formatAmount (amount) {
-          return parseFloat(amount).toFixed(2);
+          if(amount)
+            return parseFloat(amount).toFixed(2);
+          else {
+            return "";
+          }
+        },
+        showContratoForm ($id = 0) {
+          if($id) {
+            this.formTitle = 'Editar Contrato';
+            this.newContrato = false;
+            this.$refs.modalEdit.show();
+          } else {
+            this.formTitle = 'Nuevo Contrato';
+            this.newContrato = true;
+            this.$refs.modalEdit.show();
+          }
+        },
+        hideContratoForm () {
+          this.$refs.modalEdit.hide();
+          this.fetchContratos();
         }
       }
   }

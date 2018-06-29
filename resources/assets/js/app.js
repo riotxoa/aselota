@@ -45,6 +45,8 @@ const ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> '};
 const CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> '};
 const EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> '};
 
+Vue.component('contrato-pelotari', require('./components/rrhh_contratos/FichaComponent.vue'));
+
 const routes = [
   {
     path: '/rrhh', component: HomeRRHH,
@@ -57,7 +59,7 @@ const routes = [
       },
       {
         path: 'pelotari/:id/edit', component: EditPelotari
-      }
+      },
     ]
   },
 

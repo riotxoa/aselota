@@ -41,32 +41,24 @@ class ContratoController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->user()->authorizeRoles(['admin', 'rrhh']);
-        //
-        // $data = json_decode($request->get('form'));
-        //
-        // $item = new Pelotari([
-        //   'DNI' => $data->dni,
-        //   'nombre' => $data->nombre,
-        //   'apellidos' => $data->apellidos,
-        //   'alias' => $data->alias,
-        //   'posicion' => $data->posicion,
-        //   'direccion' => $data->direccion,
-        //   'cod_postal' => $data->cod_postal,
-        //   'municipio_id' => $data->municipio_id,
-        //   'provincia_id' => $data->provincia_id,
-        //   'email' => $data->email,
-        //   'telefono' => $data->telefono,
-        // ]);
-        //
-        // if($request->file('photo')) {
-        //   $path = $request->file('photo')->storeAs('public/avatars', $data->fotoName);
-        //   $item->foto = Storage::url($path);
-        // }
-        //
-        // $item->save();
-        //
-        // return response()->json($item, 200);
+        $request->user()->authorizeRoles(['admin', 'rrhh']);
+
+        $item = new Contrato([
+          'pelotari_id' => $request->get('pelotari_id'),
+          'fecha_ini' => $request->get('fecha_ini'),
+          'fecha_fin' => $request->get('fecha_fin'),
+          'dieta_mes' => $request->get('dieta_mes'),
+          'dieta_partido' => $request->get('dieta_partido'),
+          'prima_partido' => $request->get('prima_partido'),
+          'prima_estelar' => $request->get('prima_estelar'),
+          'prima_manomanista' => $request->get('prima_manomanista'),
+          'garantia' => $request->get('garantia'),
+          'garantia_disp' => $request->get('garantia_disp'),
+        ]);
+
+        $item->save();
+
+        return response()->json($request, 200);
     }
 
     /**
@@ -75,16 +67,11 @@ class ContratoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
+        $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = DB::table('pelotaris')
-          ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
-          ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
-          ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
-          ->where('pelotaris.id', $id)
-          ->first();
+        $item = Contrato::find($id);
 
         return response()->json($item, 200);
     }
@@ -109,32 +96,23 @@ class ContratoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $request->user()->authorizeRoles(['admin', 'rrhh']);
-        //
-        // $item = Pelotari::find($id);
-        //
-        // $data = json_decode($request->get('form'));
-        //
-        // $item->DNI = $data->dni;
-        // $item->nombre = $data->nombre;
-        // $item->apellidos = $data->apellidos;
-        // $item->alias = $data->alias;
-        // $item->posicion = $data->posicion;
-        // $item->direccion = $data->direccion;
-        // $item->cod_postal = $data->cod_postal;
-        // $item->municipio_id = $data->municipio_id;
-        // $item->provincia_id = $data->provincia_id;
-        // $item->email = $data->email;
-        // $item->telefono = $data->telefono;
-        //
-        // if($request->file('photo')) {
-        //   $path = $request->file('photo')->storeAs('public/avatars', $data->fotoName);
-        //   $item->foto = Storage::url($path);
-        // }
-        //
-        // $item->save();
-        //
-        // return response()->json($item, 200);
+        $request->user()->authorizeRoles(['admin', 'rrhh']);
+
+        $item = Contrato::find($id);
+
+        $item->fecha_ini = $request->get('fecha_ini');
+        $item->fecha_fin = $request->get('fecha_fin');
+        $item->dieta_mes = $request->get('dieta_mes');
+        $item->dieta_partido = $request->get('dieta_partido');
+        $item->prima_partido = $request->get('prima_partido');
+        $item->prima_estelar = $request->get('prima_estelar');
+        $item->prima_manomanista = $request->get('prima_manomanista');
+        $item->garantia = $request->get('garantia');
+        $item->garantia_disp = $request->get('garantia_disp');
+
+        $item->save();
+
+        return response()->json($item, 200);
     }
 
     /**
@@ -145,10 +123,10 @@ class ContratoController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        // $request->user()->authorizeRoles(['admin', 'rrhh']);
-        //
-        // Pelotari::destroy($id);
-        //
-        // return response()->json("LARAVEL REMOVED", 200);
+        $request->user()->authorizeRoles(['admin', 'rrhh']);
+
+        Contrato::destroy($id);
+
+        return response()->json("CONTRATO REMOVED", 200);
     }
 }

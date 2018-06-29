@@ -26,6 +26,7 @@ Route::group(['prefix' => 'www'], function () {
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
+    Route::post('contratos/{id}/update', 'ContratoController@update');
 });
 
 Auth::routes();
