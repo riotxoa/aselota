@@ -68569,6 +68569,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 Vue.component('listado-contratos', __webpack_require__(232));
 var showSnackbar = function showSnackbar(msg) {
@@ -69873,11 +69877,43 @@ var render = function() {
                                         attrs: { label: "Fotografía" }
                                       },
                                       [
-                                        _c("b-form-file", {
-                                          staticClass: "mt-3",
-                                          attrs: { accept: ".jpg", plain: "" },
-                                          on: { change: _vm.onPhotoChange }
-                                        })
+                                        _c(
+                                          "b-row",
+                                          [
+                                            _c("b-form-file", {
+                                              staticClass: "mt-0 col-sm-10",
+                                              attrs: {
+                                                accept: ".jpg",
+                                                plain: ""
+                                              },
+                                              on: { change: _vm.onPhotoChange }
+                                            }),
+                                            _vm._v(" "),
+                                            !_vm.edit
+                                              ? _c(
+                                                  "div",
+                                                  { staticClass: "col-sm-2" },
+                                                  [
+                                                    _c(
+                                                      "b-button",
+                                                      {
+                                                        staticClass:
+                                                          "float-right mr-1",
+                                                        attrs: {
+                                                          type: "reset",
+                                                          variant: "danger",
+                                                          size: "sm"
+                                                        }
+                                                      },
+                                                      [_vm._v("Reset")]
+                                                    )
+                                                  ],
+                                                  1
+                                                )
+                                              : _vm._e()
+                                          ],
+                                          1
+                                        )
                                       ],
                                       1
                                     )
@@ -69935,15 +69971,6 @@ var render = function() {
                 "b-button",
                 { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
                 [_vm._v("Cancelar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "float-right",
-                  attrs: { type: "reset", variant: "danger" }
-                },
-                [_vm._v("Reset")]
               )
             ],
             1

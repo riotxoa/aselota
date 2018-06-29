@@ -136,11 +136,16 @@
                   </b-form-group>
                   <b-form-group label="Fotografía"
                                 class="col-sm-12">
-                    <b-form-file class="mt-3"
-                                 v-on:change="onPhotoChange"
-                                 accept=".jpg"
-                                 plain>
-                    </b-form-file>
+                    <b-row>
+                      <b-form-file class="mt-0 col-sm-10"
+                                   v-on:change="onPhotoChange"
+                                   accept=".jpg"
+                                   plain>
+                      </b-form-file>
+                      <div class="col-sm-2" v-if="!edit">
+                        <b-button type="reset" variant="danger" class="float-right mr-1" size="sm">Reset</b-button>
+                      </div>
+                    </b-row>
                   </b-form-group>
                 </b-row>
               </div>
@@ -162,7 +167,6 @@
 
       <b-button type="submit" variant="primary">Guardar</b-button>
       <b-button variant="default" @click="onCancel">Cancelar</b-button>
-      <b-button type="reset" variant="danger" class="float-right">Reset</b-button>
 
     </b-form>
 
