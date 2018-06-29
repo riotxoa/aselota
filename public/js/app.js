@@ -20229,6 +20229,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -20249,6 +20251,13 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_axios___default.a, __WEBPACK_IMPORTED_MODULE_2_axios___default.a);
+
+
+Vue.filter('formatDate', function (value) {
+  if (value) {
+    return __WEBPACK_IMPORTED_MODULE_3_moment___default()(String(value)).format('DD/MM/YYYY');
+  }
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -68573,6 +68582,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 Vue.component('listado-contratos', __webpack_require__(232));
 var showSnackbar = function showSnackbar(msg) {
@@ -68609,7 +68619,9 @@ var showSnackbar = function showSnackbar(msg) {
         telefono: '',
         fotoName: null,
         file: null,
-        image: '/storage/avatars/default/default.jpg'
+        image: '/storage/avatars/default/default.jpg',
+        created: null,
+        updated: null
       },
       posiciones: [{ value: null, text: 'Seleccionar posición' }, { value: 'Delantero', text: 'Delantero ' }, { value: 'Zaguero', text: 'Zaguero' }],
       provincias: [],
@@ -68680,6 +68692,8 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.pelotari.email = pelotari.email;
         _this4.pelotari.telefono = pelotari.telefono;
         _this4.pelotari.fotoName = pelotari.foto;
+        _this4.pelotari.created = pelotari.created_at;
+        _this4.pelotari.updated = pelotari.updated_at;
 
         _this4.pelotari.image = pelotari.foto ? pelotari.foto : _this4.pelotari.image;
 
@@ -69442,6 +69456,23 @@ var render = function() {
             _c("small", { staticClass: "text-capitalize" }, [
               _vm._v(_vm._s(this.pelotari.posicion))
             ])
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "text-secondary m-0" }, [
+            _c("span", {
+              staticClass: "icon voyager-calendar mr-1",
+              attrs: { title: "Fecha de alta" }
+            }),
+            _vm._v(
+              " " + _vm._s(_vm._f("formatDate")(this.pelotari.created)) + " "
+            ),
+            _c("span", { staticClass: "mx-1" }, [_vm._v("-")]),
+            _vm._v(" "),
+            _c("span", {
+              staticClass: "icon voyager-pen mr-1",
+              attrs: { title: "Fecha de última modificación" }
+            }),
+            _vm._v(" " + _vm._s(_vm._f("formatDate")(this.pelotari.updated)))
           ])
         ]),
         _vm._v(" "),
