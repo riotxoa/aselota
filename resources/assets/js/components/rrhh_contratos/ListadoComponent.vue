@@ -125,7 +125,7 @@
             { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false },
             { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false },
             { key: 'garantia_disp', label: '<span title="Garantía según disponibilidad">Garantía s/disp.</span>', class: 'text-right', sortable: false },
-            { key: 'actions', label: 'Acciones', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
           items: [],
           totalRows: 0,

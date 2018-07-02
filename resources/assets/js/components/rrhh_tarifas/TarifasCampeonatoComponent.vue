@@ -147,7 +147,7 @@
             { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
-            { key: 'actions', label: 'Acciones', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
           items: [],
           totalRows: 0,

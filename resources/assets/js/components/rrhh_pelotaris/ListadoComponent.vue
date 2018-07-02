@@ -120,7 +120,7 @@
             { key: 'provincia', label: 'Provincia', sortable: true },
             { key: 'email', label: 'Correo', sortable: true },
             { key: 'telefono', label: 'Teléfono', sortable: false },
-            { key: 'actions', label: 'Acciones', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" },
           ],
           items: [],
           defaultPhoto: '/storage/avatars/default/default.jpg',

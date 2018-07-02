@@ -121,7 +121,7 @@
             { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true },
             { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true },
             { key: 'amount', label: '<span title="Importe">Importe</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
-            { key: 'actions', label: 'Acciones', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
           items: [],
           totalRows: 0,
