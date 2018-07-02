@@ -158,7 +158,7 @@
           <b-tab title="Tarifas">
             <listado-tarifas :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-tarifas>
           </b-tab>
-          <b-tab title="Imagen">
+          <b-tab title="Dchos.Imagen">
             <listado-derechos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-derechos>
           </b-tab>
         </b-tabs>

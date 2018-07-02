@@ -86998,7 +86998,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "b-tab",
-                        { attrs: { title: "Imagen" } },
+                        { attrs: { title: "Dchos.Imagen" } },
                         [
                           _c("listado-derechos", {
                             attrs: {
