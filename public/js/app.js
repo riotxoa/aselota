@@ -85680,7 +85680,9 @@ var showSnackbar = function showSnackbar(msg) {
       } else {
         this.axios.post(uri, data, config).then(function (response) {
           showSnackbar("Pelotari creado");
-          _this5.goBack();
+          _this5.pelotari.id = response.data.id;
+          _this5.edit = true;
+          // this.goBack();
         }).catch(function (error) {
           console.log(error);
           showSnackbar("Se ha producido un ERROR");
@@ -86968,47 +86970,53 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c(
-                        "b-tab",
-                        { attrs: { title: "Contratos" } },
-                        [
-                          _c("listado-contratos", {
-                            attrs: {
-                              "pelotari-id": this.pelotari.id,
-                              "pelotari-alias": this.pelotari.alias
-                            }
-                          })
-                        ],
-                        1
-                      ),
+                      _vm.edit
+                        ? _c(
+                            "b-tab",
+                            { attrs: { title: "Contratos" } },
+                            [
+                              _c("listado-contratos", {
+                                attrs: {
+                                  "pelotari-id": this.pelotari.id,
+                                  "pelotari-alias": this.pelotari.alias
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "b-tab",
-                        { attrs: { title: "Tarifas" } },
-                        [
-                          _c("listado-tarifas", {
-                            attrs: {
-                              "pelotari-id": this.pelotari.id,
-                              "pelotari-alias": this.pelotari.alias
-                            }
-                          })
-                        ],
-                        1
-                      ),
+                      _vm.edit
+                        ? _c(
+                            "b-tab",
+                            { attrs: { title: "Tarifas" } },
+                            [
+                              _c("listado-tarifas", {
+                                attrs: {
+                                  "pelotari-id": this.pelotari.id,
+                                  "pelotari-alias": this.pelotari.alias
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
-                      _c(
-                        "b-tab",
-                        { attrs: { title: "Dchos.Imagen" } },
-                        [
-                          _c("listado-derechos", {
-                            attrs: {
-                              "pelotari-id": this.pelotari.id,
-                              "pelotari-alias": this.pelotari.alias
-                            }
-                          })
-                        ],
-                        1
-                      )
+                      _vm.edit
+                        ? _c(
+                            "b-tab",
+                            { attrs: { title: "Dchos.Imagen" } },
+                            [
+                              _c("listado-derechos", {
+                                attrs: {
+                                  "pelotari-id": this.pelotari.id,
+                                  "pelotari-alias": this.pelotari.alias
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e()
                     ],
                     1
                   )

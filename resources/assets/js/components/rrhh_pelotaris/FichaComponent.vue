@@ -152,13 +152,13 @@
               </div>
             </b-row>
           </b-tab>
-          <b-tab title="Contratos">
+          <b-tab v-if="edit" title="Contratos">
             <listado-contratos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-contratos>
           </b-tab>
-          <b-tab title="Tarifas">
+          <b-tab v-if="edit" title="Tarifas">
             <listado-tarifas :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-tarifas>
           </b-tab>
-          <b-tab title="Dchos.Imagen">
+          <b-tab v-if="edit" title="Dchos.Imagen">
             <listado-derechos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-derechos>
           </b-tab>
         </b-tabs>
@@ -345,7 +345,9 @@
           this.axios.post(uri, data, config)
             .then((response) => {
               showSnackbar("Pelotari creado");
-              this.goBack();
+              this.pelotari.id = response.data.id;
+              this.edit = true;
+              // this.goBack();
             })
             .catch((error) => {
               console.log(error);
