@@ -43,3 +43,27 @@
     }
   }
 </script>
+
+<style>
+  .card,
+  .card-header,
+  .card-header:first-child,
+  .btn,
+  .page-item:first-child .page-link,
+  .page-item:last-child .page-link,
+  .nav-pills a,
+  .modal-content,
+  .modal-header,
+  input, select {
+    border-radius:0!important;
+  }
+
+  .modal-content {
+    border:none;
+  }
+  .modal-header {
+    background-color: #007fff;
+    color:white;
+    text-transform:uppercase;
+  }
+</style>
