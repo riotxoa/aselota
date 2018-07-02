@@ -88516,7 +88516,8 @@ var render = function() {
                       "pelotari-id": _vm.pelotariId,
                       "pelotari-alias": _vm.pelotariAlias,
                       "campeonato-id": "" + tab.id,
-                      "campeonato-name": "" + tab.name
+                      "campeonato-name": "" + tab.name,
+                      "campeonato-desc": "" + tab.desc
                     }
                   })
                 ],
@@ -88748,6 +88749,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -88767,7 +88771,7 @@ var showSnackbar = function showSnackbar(msg) {
   }, 3000);
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName'],
+  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'campeonatoDesc'],
   data: function data() {
     var _this = this,
         _ref;
@@ -88906,7 +88910,7 @@ var render = function() {
         [
           _c(
             "b-col",
-            { staticClass: "col-sm-6 float-left mt-0 mb-3" },
+            { staticClass: "col-sm-6 float-left mt-0 mb-1" },
             [
               _vm.filter
                 ? _c(
@@ -88957,7 +88961,11 @@ var render = function() {
                     ],
                     1
                   )
-                : _vm._e()
+                : _c("div", { staticClass: "mt-2 mb-0" }, [
+                    _c("h6", { staticClass: "text-danger font-weight-bold" }, [
+                      _vm._v(_vm._s(_vm.campeonatoDesc))
+                    ])
+                  ])
             ],
             1
           ),

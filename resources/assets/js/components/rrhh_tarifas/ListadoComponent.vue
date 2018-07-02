@@ -3,7 +3,7 @@
     <b-card no-body>
       <b-tabs pills card vertical>
         <b-tab :title="`${tab.name}`" v-for="tab in campeonatos">
-          <tarifas-campeonato :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :campeonato-id="`${tab.id}`" :campeonato-name="`${tab.name}`"></tarifas-campeonato>
+          <tarifas-campeonato :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :campeonato-id="`${tab.id}`" :campeonato-name="`${tab.name}`" :campeonato-desc="`${tab.desc}`"></tarifas-campeonato>
         </b-tab>
       </b-tabs>
     </b-card>

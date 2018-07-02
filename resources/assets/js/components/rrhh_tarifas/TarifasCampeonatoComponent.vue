@@ -2,7 +2,7 @@
   <div id="tarifas-campeonato" class="container-fluid p-0">
     <b-row>
 
-      <b-col class="col-sm-6 float-left mt-0 mb-3">
+      <b-col class="col-sm-6 float-left mt-0 mb-1">
         <b-form-group v-if="filter" horizontal label="Filtro" class="mb-0">
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
@@ -11,6 +11,9 @@
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
+        <div v-else class="mt-2 mb-0">
+          <h6 class="text-danger font-weight-bold">{{ campeonatoDesc }}</h6>
+        </div>
       </b-col>
 
       <b-col class="col-sm-6 text-right float-right mt-0 mb-3">
@@ -121,7 +124,13 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
-      props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName'],
+      props: [
+        'pelotariId',
+        'pelotariAlias',
+        'campeonatoId',
+        'campeonatoName',
+        'campeonatoDesc'
+      ],
       data () {
         return {
           create: true,
