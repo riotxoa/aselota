@@ -88576,7 +88576,7 @@ exports = module.exports = __webpack_require__(18)(false);
 
 
 // module
-exports.push([module.i, "\n#rrhh-tarifas .card {\n  border:none;\n}\n#rrhh-tarifas .nav-pills.card-header {\n  background-color:transparent;\n}\n#rrhh-tarifas .nav-pills .nav-link {\n  margin-bottom:.25rem;\n}\n#rrhh-tarifas .nav-pills .nav-link.active,\n#rrhh-tarifas .nav-pills .show > .nav-link {\n  background-color:#d82a1f;\n}\n#rrhh-tarifas .tabs .card-header {\n  padding-left:0;\n}\n#rrhh-tarifas .tab-pane.card-body {\n  padding:0;\n}\n", ""]);
+exports.push([module.i, "\n#rrhh-tarifas .card {\n  border:none;\n}\n#rrhh-tarifas .nav-pills.card-header {\n  background-color:transparent;\n}\n#rrhh-tarifas .nav-pills .nav-link {\n  margin-bottom:.25rem;\n}\n#rrhh-tarifas .nav-pills .nav-link.active,\n#rrhh-tarifas .nav-pills .show > .nav-link {\n  background-color:#d82a1f;\n}\n#rrhh-tarifas .tabs .card-header {\n  padding-left:0;\n  padding-top:0;\n}\n#rrhh-tarifas .tab-pane.card-body {\n  padding:0;\n}\n", ""]);
 
 // exports
 
@@ -88906,7 +88906,7 @@ var render = function() {
         [
           _c(
             "b-col",
-            { staticClass: "col-sm-6 float-left my-1 mb-3" },
+            { staticClass: "col-sm-6 float-left mt-0 mb-3" },
             [
               _vm.filter
                 ? _c(
@@ -88964,7 +88964,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "col-sm-6 text-right float-right my-1 mb-3" },
+            { staticClass: "col-sm-6 text-right float-right mt-0 mb-3" },
             [
               _c(
                 "b-btn",

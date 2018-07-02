@@ -2,7 +2,7 @@
   <div id="tarifas-campeonato" class="container-fluid p-0">
     <b-row>
 
-      <b-col class="col-sm-6 float-left my-1 mb-3">
+      <b-col class="col-sm-6 float-left mt-0 mb-3">
         <b-form-group v-if="filter" horizontal label="Filtro" class="mb-0">
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
@@ -13,7 +13,7 @@
         </b-form-group>
       </b-col>
 
-      <b-col class="col-sm-6 text-right float-right my-1 mb-3">
+      <b-col class="col-sm-6 text-right float-right mt-0 mb-3">
         <b-btn variant="default" class="mb-0" size="sm" title="Crear Tarifa" @click="showTarifaForm(0)">Nueva Tarifa</b-btn>
       </b-col>
 

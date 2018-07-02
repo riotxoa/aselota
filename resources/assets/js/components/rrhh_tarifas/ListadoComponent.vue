@@ -55,6 +55,7 @@
   }
   #rrhh-tarifas .tabs .card-header {
     padding-left:0;
+    padding-top:0;
   }
   #rrhh-tarifas .tab-pane.card-body {
     padding:0;
