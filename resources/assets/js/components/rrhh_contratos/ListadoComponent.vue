@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div id="listado-contratos" class="container-fluid">
     <b-row>
 
       <b-col class="col-sm-6 float-left my-1 mb-3">
@@ -235,3 +235,18 @@
       }
   }
 </script>
+
+<style>
+  #listado-contratos .b-table th,
+  #listado-contratos .b-table td {
+    border-color:#e5e5e5;
+  }
+  #listado-contratos .b-table th.table-success,
+  #listado-contratos .b-table th.table-warning {
+    border-bottom-color:white;
+  }
+  #listado-contratos .b-table td.table-success,
+  #listado-contratos .b-table td.table-warning {
+    border-color:white;
+  }
+</style>
