@@ -421,4 +421,8 @@
     -webkit-filter:opacity(.85);
     filter:opacity(.85);
   }
+  form label,
+  form legend {
+    font-weight:bold;
+  }
 </style>
