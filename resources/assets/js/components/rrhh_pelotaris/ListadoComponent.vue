@@ -78,7 +78,7 @@
         </b-form-group>
       </b-col>
       <b-col md="4" class="my-1">
-        <b-form-group horizontal label="NºLíneas" class="mb-0">
+        <b-form-group horizontal label="Mostrar" class="mb-0">
           <b-form-select :options="pageOptions" v-model="perPage" />
         </b-form-group>
       </b-col>
