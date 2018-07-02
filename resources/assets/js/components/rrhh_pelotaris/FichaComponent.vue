@@ -156,8 +156,7 @@
             <listado-contratos :pelotari-id="this.pelotari.id"></listado-contratos>
           </b-tab>
           <b-tab title="Tarifas">
-            <h1>Tarifas</h1>
-            <p>Este dato no repercute en el cobro del pelotari. Solo presupuesto y facturación.</p>
+            <listado-tarifas :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-tarifas>
           </b-tab>
           <b-tab title="Imagen">
             <h1>Derechos de Imagen y Publicidad</h1>
@@ -185,6 +184,7 @@
 
 <script>
   Vue.component('listado-contratos', require('../rrhh_contratos/ListadoComponent.vue'));
+  Vue.component('listado-tarifas', require('../rrhh_tarifas/ListadoComponent.vue'));
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");

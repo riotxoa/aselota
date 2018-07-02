@@ -21,12 +21,15 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'www'], function () {
     Route::resource('provincias', 'ProvinciaController');
     Route::resource('municipios', 'MunicipioController');
+    Route::resource('campeonatos', 'CampeonatoController');
     Route::resource('pelotaris', 'PelotariController');
     Route::resource('contratos', 'ContratoController');
+    Route::resource('tarifas', 'TarifaController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
     Route::post('contratos/{id}/update', 'ContratoController@update');
+    Route::post('tarifas/{id}/update', 'TarifaController@update');
 });
 
 Auth::routes();
