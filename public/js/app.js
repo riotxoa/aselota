@@ -87237,7 +87237,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -87388,7 +87387,7 @@ var render = function() {
                               attrs: {
                                 id: "fecha_iniInput",
                                 type: "date",
-                                maxlength: "9",
+                                required: "",
                                 placeholder: "dd/mm/yyyy"
                               },
                               model: {
@@ -87417,7 +87416,6 @@ var render = function() {
                               attrs: {
                                 id: "fecha_finInput",
                                 type: "date",
-                                maxlength: "30",
                                 required: "",
                                 placeholder: "dd/mm/yyyy"
                               },
@@ -87454,9 +87452,9 @@ var render = function() {
                               staticStyle: { "background-color": "#c3e6cb" },
                               attrs: {
                                 id: "d_basicaInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "8",
-                                placeholder: "000.00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.dieta_mes,
@@ -87485,9 +87483,9 @@ var render = function() {
                               staticStyle: { "background-color": "#c3e6cb" },
                               attrs: {
                                 id: "dieta_partidoInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "8",
-                                placeholder: "000.00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.dieta_partido,
@@ -87522,9 +87520,9 @@ var render = function() {
                               staticStyle: { "background-color": "#ffeeba" },
                               attrs: {
                                 id: "prima_partidoInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "8",
-                                placeholder: "000.00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.prima_partido,
@@ -87553,9 +87551,9 @@ var render = function() {
                               staticStyle: { "background-color": "#ffeeba" },
                               attrs: {
                                 id: "prima_estelarInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "8",
-                                placeholder: "000.00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.prima_estelar,
@@ -87584,9 +87582,9 @@ var render = function() {
                               staticStyle: { "background-color": "#ffeeba" },
                               attrs: {
                                 id: "prima_manomanistaInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "8",
-                                placeholder: "000.00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.prima_manomanista,
@@ -87624,9 +87622,9 @@ var render = function() {
                               staticClass: "text-right",
                               attrs: {
                                 id: "garantiaInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "4",
-                                placeholder: "00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.garantia,
@@ -87654,9 +87652,9 @@ var render = function() {
                               staticClass: "text-right",
                               attrs: {
                                 id: "garantia_dispInput",
-                                type: "text",
+                                type: "number",
                                 maxlength: "4",
-                                placeholder: "00"
+                                placeholder: "0"
                               },
                               model: {
                                 value: _vm.contrato.garantia_disp,

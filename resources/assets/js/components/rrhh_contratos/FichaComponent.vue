@@ -12,7 +12,7 @@
               <b-form-input id="fecha_iniInput"
                             type="date"
                             v-model="contrato.fecha_ini"
-                            maxlength="9"
+                            required
                             placeholder="dd/mm/yyyy">
               </b-form-input>
             </b-form-group>
@@ -22,7 +22,6 @@
               <b-form-input id="fecha_finInput"
                             type="date"
                             v-model="contrato.fecha_fin"
-                            maxlength="30"
                             required
                             placeholder="dd/mm/yyyy">
               </b-form-input>
@@ -34,10 +33,10 @@
                           class="col-sm-4">
               <b-form-input id="d_basicaInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.dieta_mes"
                             maxlength="8"
-                            placeholder="000.00"
+                            placeholder="0"
                             style="background-color:#c3e6cb">
               </b-form-input>
             </b-form-group>
@@ -46,10 +45,10 @@
                           class="col-sm-4">
               <b-form-input id="dieta_partidoInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.dieta_partido"
                             maxlength="8"
-                            placeholder="000.00"
+                            placeholder="0"
                             style="background-color:#c3e6cb">
               </b-form-input>
             </b-form-group>
@@ -60,10 +59,10 @@
                           class="col-sm-4">
               <b-form-input id="prima_partidoInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.prima_partido"
                             maxlength="8"
-                            placeholder="000.00"
+                            placeholder="0"
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
@@ -72,10 +71,10 @@
                           class="col-sm-4">
               <b-form-input id="prima_estelarInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.prima_estelar"
                             maxlength="8"
-                            placeholder="000.00"
+                            placeholder="0"
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
@@ -84,10 +83,10 @@
                           class="col-sm-4">
               <b-form-input id="prima_manomanistaInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.prima_manomanista"
                             maxlength="8"
-                            placeholder="000.00"
+                            placeholder="0"
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
@@ -98,10 +97,10 @@
                           class="col-sm-4">
               <b-form-input id="garantiaInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.garantia"
                             maxlength="4"
-                            placeholder="00">
+                            placeholder="0">
               </b-form-input>
             </b-form-group>
             <b-form-group label="Garantía según disponibilidad:"
@@ -109,10 +108,10 @@
                           class="col-sm-4">
               <b-form-input id="garantia_dispInput"
                             class="text-right"
-                            type="text"
+                            type="number"
                             v-model="contrato.garantia_disp"
                             maxlength="4"
-                            placeholder="00">
+                            placeholder="0">
               </b-form-input>
             </b-form-group>
           </b-row>
