@@ -1,0 +1,236 @@
+<template>
+  <div id="listado-derechos" class="container-fluid">
+    <b-row>
+
+      <b-col class="col-sm-6 float-left my-1 mb-3">
+        <b-form-group v-if="filter" horizontal label="Filtro" class="mb-0">
+          <b-input-group>
+            <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
+            <b-input-group-append>
+              <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+
+      <b-col class="col-sm-6 text-right float-right my-1 mb-3">
+        <b-btn variant="default" class="mb-0" size="sm" title="Crear Derecho" @click="showDerechoForm(0)">Nuevo Contrato D.Imagen</b-btn>
+      </b-col>
+
+    </b-row>
+
+    <b-table striped hover small responsive
+      :sort-by.sync="sortBy"
+      :sort-desc.sync="sortDesc"
+      :per-page="perPage"
+      :current-page="currentPage"
+      :items="items"
+      :fields="fields"
+      :filter="filter"
+      @filtered="onFiltered">
+
+      <template slot="actions" slot-scope="row">
+        <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+        <b-button-group>
+          <b-button v-if="remove" size="sm" variant="danger" @click.stop="onClickDelete(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
+            <span class="icon voyager-trash"></span>
+          </b-button>
+          <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item)" title="Editar">
+            <span class="icon voyager-edit"></span>
+          </b-button>
+          <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+            <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+          </b-button>
+        </b-button-group>
+      </template>
+
+      <template v-if="display" slot="row-details" slot-scope="row">
+        <b-card>
+          <b-row>
+            <b-col sm="6">
+            </b-col>
+            <b-col sm="6">
+            </b-col>
+          </b-row>
+        </b-card>
+      </template>
+
+    </b-table>
+
+    <b-row>
+      <b-col md="5" class="my-1">
+        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+      </b-col>
+      <b-col md="3" class="my-1 text-right">
+        <b-form-group horizontal class="mb-0" label="Total: ">
+          <b-form-input readonly plaintext v-model="totalRows"></b-form-input>
+        </b-form-group>
+      </b-col>
+      <b-col md="4" class="my-1">
+        <b-form-group horizontal label="Mostrar" class="mb-0">
+          <b-form-select :options="pageOptions" v-model="perPage" />
+        </b-form-group>
+      </b-col>
+    </b-row>
+
+    <b-modal v-if="remove" ref="modalDelete" title="BORRAR Derecho" hide-footer>
+      <div class="modal-body">
+        <p>Se van a borrar los Derechos de imagen de <strong id="deleteDerechoAlias"></strong>¿Desea continuar?</p>
+      </div>
+      <div class="modal-footer">
+        <b-btn variant="danger" @click="removeItem">Borrar</b-btn>
+        <b-btn @click="hideModalDelete">Cancelar</b-btn>
+      </div>
+    </b-modal>
+
+    <b-modal id="derechoForm" ref="modalEdit" :title="formTitle" size="lg" hide-footer lazy>
+      <derecho-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelDerechoForm" :get-derecho-row="getDerechoRow" :is-new-derecho="isNewDerecho" :format-amount="formatRowAmount"></derecho-pelotari>
+    </b-modal>
+
+  </div>
+</template>
+
+<script>
+  import moment from 'moment';
+
+  Vue.component('derecho-pelotari', require('./FichaComponent.vue'));
+
+  const showSnackbar = (msg) => {
+    // Get the snackbar DIV
+    var x = document.getElementById("snackbar");
+
+    // Add the "show" class to DIV
+    x.className = "show";
+    x.innerHTML = msg;
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+  export default {
+      props: ['pelotariId', 'pelotariAlias'],
+      data () {
+        return {
+          create: true,
+          remove: true,
+          update: true,
+          display: false,
+          filter: false,
+          sortBy: 'fecha_ini',
+          sortDesc: true,
+          fields: [
+            { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true },
+            { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true },
+            { key: 'amount', label: '<span title="Importe">Importe</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false },
+          ],
+          items: [],
+          totalRows: 0,
+          perPage: 10,
+          currentPage: 1,
+          pageOptions: [ 10, 25, 50 ],
+          filter: null,
+          deleteId: null,
+          formTitle: '',
+          rowDerecho: null,
+          newDerecho: true,
+          cancelDerechoForm: () => { this.hideDerechoForm(); },
+          getDerechoRow: () => { return this.rowDerecho; },
+          isNewDerecho: () => { return this.newDerecho; },
+          formatRowAmount: (amount) => { return this.formatAmount(amount); },
+        }
+      },
+      created() {
+        this.fetchDerechos();
+      },
+      methods: {
+        fetchDerechos() {
+          let uri = '/www/derechos';
+          this.axios.get(uri, {
+              params: {
+                pelotari_id: this.pelotariId
+              }
+          })
+          .then((response) => {
+            var stringified = JSON.stringify(response.data);
+            this.items = JSON.parse(stringified);
+            this.totalRows = this.items.length;
+          });
+        },
+        onFiltered (filteredItems) {
+          // Trigger pagination to update the number of buttons/pages due to filtering
+          this.totalRows = filteredItems.length;
+          this.currentPage = 1;
+        },
+        onClickEdit (item) {
+          this.rowDerecho = item;
+          this.showDerechoForm(item.id);
+        },
+        removeItem () {
+          let uri = '/www/derechos/' + this.deleteId;
+          this.axios.delete(uri)
+            .then((response) => {
+              this.deleteId = null;
+              this.$refs.modalDelete.hide();
+              this.fetchDerechos();
+              showSnackbar("Derecho BORRADO");
+            })
+            .catch((error) => {
+              console.log("[removeItem] error: " + error);
+              this.deleteId = null;
+              this.$refs.modalDelete.hide();
+              showSnackbar("ERROR al borrar");
+            });
+        },
+        onClickDelete (id, fecha_ini, fecha_fin) {
+          this.deleteId = id;
+
+          var msg = " \
+            <div class='px-5 py-2'> \
+              <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+              <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
+            </div>";
+
+          jQuery('#deleteDerechoAlias').html(msg);
+
+          this.$refs.modalDelete.show();
+        },
+        hideModalDelete() {
+          this.deleteId = null;
+          this.$refs.modalDelete.hide();
+        },
+        formatDate (date) {
+          if(date)
+            return moment(String(date)).format('DD/MM/YYYY');
+          else {
+            return "";
+          }
+        },
+        formatAmount (amount) {
+          if(amount)
+            return parseFloat(amount).toFixed(2);
+          else {
+            return "";
+          }
+        },
+        showDerechoForm ($id = 0) {
+          if($id) {
+            this.formTitle = 'Editar Contrato Derechos Imagen';
+            this.newDerecho = false;
+            this.$refs.modalEdit.show();
+          } else {
+            this.formTitle = 'Nuevo Contrato Derechos Imagen';
+            this.newDerecho = true;
+            this.$refs.modalEdit.show();
+          }
+        },
+        hideDerechoForm () {
+          this.$refs.modalEdit.hide();
+          this.fetchDerechos();
+        }
+      }
+  }
+</script>
+
+<style>
+
+</style>

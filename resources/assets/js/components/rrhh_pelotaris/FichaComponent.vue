@@ -159,8 +159,7 @@
             <listado-tarifas :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-tarifas>
           </b-tab>
           <b-tab title="Imagen">
-            <h1>Derechos de Imagen y Publicidad</h1>
-            <p>Liquidación aparte.</p>
+            <listado-derechos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-derechos>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -185,6 +184,7 @@
 <script>
   Vue.component('listado-contratos', require('../rrhh_contratos/ListadoComponent.vue'));
   Vue.component('listado-tarifas', require('../rrhh_tarifas/ListadoComponent.vue'));
+  Vue.component('listado-derechos', require('../rrhh_derechos/ListadoComponent.vue'));
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
