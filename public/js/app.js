@@ -86235,7 +86235,7 @@ var render = function() {
           {
             key: "row-details",
             fn: function(row) {
-              return this.display
+              return _vm.display
                 ? [
                     _c(
                       "b-card",

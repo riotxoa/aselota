@@ -44,7 +44,7 @@
         </b-button-group>
       </template>
 
-      <template v-if="this.display" slot="row-details" slot-scope="row">
+      <template v-if="display" slot="row-details" slot-scope="row">
         <b-card>
           <b-row>
             <b-col sm="6">
