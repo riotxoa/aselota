@@ -3,6 +3,10 @@
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
 
+      <b-row class="mb-3 bg-danger py-3">
+        <div class="col-12 text-white"><strong>{{ pelotariAlias }}</strong></div>
+      </b-row>
+
       <b-row>
         <div class="col-md-12">
           <b-row>
@@ -140,7 +144,7 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
-    props: ['pelotariId', 'onCancel', 'getContratoRow', 'isNewContrato', 'formatAmount'],
+    props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getContratoRow', 'isNewContrato', 'formatAmount'],
     data () {
       return {
         contrato: {

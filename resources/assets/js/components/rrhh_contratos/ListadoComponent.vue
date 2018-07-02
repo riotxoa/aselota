@@ -84,7 +84,7 @@
     </b-modal>
 
     <b-modal id="contratoForm" ref="modalEdit" :title="formTitle" size="lg" hide-footer lazy>
-      <contrato-pelotari :pelotari-id="pelotariId" :on-cancel="cancelContratoForm" :get-contrato-row="getContratoRow" :is-new-contrato="isNewContrato" :format-amount="formatRowAmount"></contrato-pelotari>
+      <contrato-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelContratoForm" :get-contrato-row="getContratoRow" :is-new-contrato="isNewContrato" :format-amount="formatRowAmount"></contrato-pelotari>
     </b-modal>
 
   </div>

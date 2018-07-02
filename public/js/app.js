@@ -86395,6 +86395,7 @@ var render = function() {
           _c("contrato-pelotari", {
             attrs: {
               "pelotari-id": _vm.pelotariId,
+              "pelotari-alias": _vm.pelotariAlias,
               "on-cancel": _vm.cancelContratoForm,
               "get-contrato-row": _vm.getContratoRow,
               "is-new-contrato": _vm.isNewContrato,
@@ -87248,6 +87249,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -87263,7 +87268,7 @@ var showSnackbar = function showSnackbar(msg) {
   }, 3000);
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'onCancel', 'getContratoRow', 'isNewContrato', 'formatAmount'],
+  props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getContratoRow', 'isNewContrato', 'formatAmount'],
   data: function data() {
     var _this = this;
 
@@ -87376,6 +87381,12 @@ var render = function() {
             "b-form",
             { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
             [
+              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
+                _c("div", { staticClass: "col-12 text-white" }, [
+                  _c("strong", [_vm._v(_vm._s(_vm.pelotariAlias))])
+                ])
+              ]),
+              _vm._v(" "),
               _c("b-row", [
                 _c(
                   "div",
