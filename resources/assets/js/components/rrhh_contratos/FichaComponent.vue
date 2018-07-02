@@ -122,6 +122,8 @@
         </div>
       </b-row>
 
+      <hr/>
+
       <b-button type="submit" variant="primary">Guardar</b-button>
       <b-button variant="default" @click="onCancel">Cancelar</b-button>
       <b-button v-if="!edit" type="reset" variant="danger" class="float-right mr-1">Reset</b-button>

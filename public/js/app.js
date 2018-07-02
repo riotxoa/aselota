@@ -87265,6 +87265,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -87708,6 +87710,8 @@ var render = function() {
                   1
                 )
               ]),
+              _vm._v(" "),
+              _c("hr"),
               _vm._v(" "),
               _c(
                 "b-button",
