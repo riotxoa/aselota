@@ -85059,7 +85059,7 @@ exports = module.exports = __webpack_require__(18)(false);
 
 
 // module
-exports.push([module.i, "\n.nav-pills .nav-link {\n  background-color:#dddddd;\n  color:gray;\n  margin-right:.1rem;\n\n  -webkit-transition:.15s all ease-in-out;\n  transition:.15s all ease-in-out;\n}\n.nav-pills .nav-link.active,\n.nav-pills .show > .nav-link {\n  background-color:#28a745;\n}\n.nav-pills .nav-link:hover,\n.nav-pills .nav-link:active,\n.nav-pills .nav-link:focus {\n  -webkit-filter:opacity(.85);\n  filter:opacity(.85);\n}\n", ""]);
+exports.push([module.i, "\n.nav-pills .nav-link {\n  background-color:#dddddd;\n  color:gray;\n  margin-right:.25rem;\n\n  -webkit-transition:.15s all ease-in-out;\n  transition:.15s all ease-in-out;\n}\n.nav-pills .nav-link.active,\n.nav-pills .show > .nav-link {\n  background-color:#28a745;\n}\n.nav-pills .nav-link:hover,\n.nav-pills .nav-link:active,\n.nav-pills .nav-link:focus {\n  -webkit-filter:opacity(.85);\n  filter:opacity(.85);\n}\n", ""]);
 
 // exports
 

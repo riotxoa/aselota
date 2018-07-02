@@ -403,7 +403,7 @@
   .nav-pills .nav-link {
     background-color:#dddddd;
     color:gray;
-    margin-right:.1rem;
+    margin-right:.25rem;
 
     -webkit-transition:.15s all ease-in-out;
     -moz-transition:.15s all ease-in-out;
