@@ -85902,7 +85902,7 @@ var showSnackbar = function showSnackbar(msg) {
   }, 3000);
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId'],
+  props: ['pelotariId', 'pelotariAlias'],
   data: function data() {
     var _this = this,
         _ref;
@@ -85978,7 +85978,15 @@ var showSnackbar = function showSnackbar(msg) {
     },
     onClickDelete: function onClickDelete(id, fecha_ini, fecha_fin) {
       this.deleteId = id;
-      jQuery('#deleteAlias').html(this.formatDate(fecha_ini) + " al " + this.formatDate(fecha_fin));
+
+      var msg = " \
+          <div class='px-5 py-2'> \
+            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
+          </div>";
+
+      jQuery('#deleteContratoAlias').html(msg);
+
       this.$refs.modalDelete.show();
     },
     hideModalDelete: function hideModalDelete() {
@@ -86343,8 +86351,8 @@ var render = function() {
               _c("div", { staticClass: "modal-body" }, [
                 _c("p", [
                   _vm._v("Se va a borrar el contrato de "),
-                  _c("strong", { attrs: { id: "deleteAlias" } }),
-                  _vm._v(". ¿Desea continuar?")
+                  _c("strong", { attrs: { id: "deleteContratoAlias" } }),
+                  _vm._v("¿Desea continuar?")
                 ])
               ]),
               _vm._v(" "),
@@ -86960,7 +86968,10 @@ var render = function() {
                         { attrs: { title: "Contratos" } },
                         [
                           _c("listado-contratos", {
-                            attrs: { "pelotari-id": this.pelotari.id }
+                            attrs: {
+                              "pelotari-id": this.pelotari.id,
+                              "pelotari-alias": this.pelotari.alias
+                            }
                           })
                         ],
                         1

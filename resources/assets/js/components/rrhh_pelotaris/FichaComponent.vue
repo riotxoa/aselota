@@ -153,7 +153,7 @@
             </b-row>
           </b-tab>
           <b-tab title="Contratos">
-            <listado-contratos :pelotari-id="this.pelotari.id"></listado-contratos>
+            <listado-contratos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-contratos>
           </b-tab>
           <b-tab title="Tarifas">
             <listado-tarifas :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-tarifas>

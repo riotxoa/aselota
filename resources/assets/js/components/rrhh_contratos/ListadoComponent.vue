@@ -75,7 +75,7 @@
 
     <b-modal v-if="remove" ref="modalDelete" title="BORRAR Contrato" hide-footer>
       <div class="modal-body">
-        <p>Se va a borrar el contrato de <strong id="deleteAlias"></strong>. ¿Desea continuar?</p>
+        <p>Se va a borrar el contrato de <strong id="deleteContratoAlias"></strong>¿Desea continuar?</p>
       </div>
       <div class="modal-footer">
         <b-btn variant="danger" @click="removeItem">Borrar</b-btn>
@@ -105,7 +105,7 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
-      props: ['pelotariId'],
+      props: ['pelotariId', 'pelotariAlias'],
       data () {
         return {
           create: true,
@@ -188,7 +188,15 @@
         },
         onClickDelete (id, fecha_ini, fecha_fin) {
           this.deleteId = id;
-          jQuery('#deleteAlias').html(this.formatDate(fecha_ini) + " al " + this.formatDate(fecha_fin));
+
+          var msg = " \
+            <div class='px-5 py-2'> \
+              <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+              <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
+            </div>";
+
+          jQuery('#deleteContratoAlias').html(msg);
+
           this.$refs.modalDelete.show();
         },
         hideModalDelete() {
