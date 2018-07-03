@@ -24,7 +24,7 @@
 <body>
     <div id="app">
         @guest
-          <p>Debes identificarte para poder acceder a la aplicación</p>
+          <!-- <p>Debes identificarte para poder acceder a la aplicación</p> -->
         @else
           <nav class="navbar navbar-expand-md navbar-light navbar-laravel p-sm-0">
               <div class="container">
