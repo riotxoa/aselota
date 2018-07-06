@@ -161,7 +161,7 @@
                                 class="col-sm-6 col-lg-4 col-xl-3">
                     <b-form-input id="telefono_mov"
                                   type="text"
-                                  v-model="pelotari.telefono2"
+                                  v-model="pelotari.telefono_2"
                                   maxlength="15"
                                   placeholder="Teléfono Móvil">
                     </b-form-input>
@@ -171,7 +171,7 @@
                                 class="col-sm-6 col-lg-4 col-xl-3">
                     <b-form-input id="telefono_alt"
                                   type="text"
-                                  v-model="pelotari.telefono3"
+                                  v-model="pelotari.telefono_3"
                                   maxlength="15"
                                   placeholder="Teléfono Alternativo">
                     </b-form-input>
@@ -283,8 +283,8 @@
           image: '/storage/avatars/default/default.jpg',
           num_ss: '',
           fecha_nac: null,
-          telefono2: '',
-          telefono3: '',
+          telefono_2: '',
+          telefono_3: '',
           iban: '',
           num_hijos: null,
           created: null,
@@ -360,8 +360,8 @@
             this.pelotari.fotoName = pelotari.foto;
             this.pelotari.num_ss = pelotari.num_ss;
             this.pelotari.fecha_nac = pelotari.fecha_nac;
-            this.pelotari.telefono2 = pelotari.telefono2;
-            this.pelotari.telefono3 = pelotari.telefono3;
+            this.pelotari.telefono_2 = pelotari.telefono_2;
+            this.pelotari.telefono_3 = pelotari.telefono_3;
             this.pelotari.iban = pelotari.iban;
             this.pelotari.num_hijos = pelotari.num_hijos;
             this.pelotari.created = pelotari.created_at;
@@ -448,8 +448,8 @@
         this.pelotari.telefono = '';
         this.pelotari.num_ss = '';
         this.pelotari.fecha_nac = null;
-        this.pelotari.telefono2 = '';
-        this.pelotari.telefono3 = '';
+        this.pelotari.telefono_2 = '';
+        this.pelotari.telefono_3 = '';
         this.pelotari.iban = '';
         this.pelotari.num_hijos = null;
         /* Trick to reset/clear native browser form validation state */
