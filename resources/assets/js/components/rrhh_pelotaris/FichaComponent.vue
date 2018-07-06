@@ -23,19 +23,9 @@
             <b-row>
               <div class="col-md-12">
                 <b-row>
-                  <b-form-group label="DNI:"
-                                label-for="dniInput"
-                                class="col-sm-4">
-                    <b-form-input id="dniInput"
-                                  type="text"
-                                  v-model="pelotari.dni"
-                                  maxlength="9"
-                                  placeholder="DNI">
-                    </b-form-input>
-                  </b-form-group>
                   <b-form-group label="Nombre deportivo:"
                                 label-for="alias"
-                                class="col-sm-4">
+                                class="col-sm-6 col-md-3">
                     <b-form-input id="alias"
                                   type="text"
                                   v-model="pelotari.alias"
@@ -46,18 +36,38 @@
                   </b-form-group>
                   <b-form-group label="Posicion:"
                                 label-for="posicion"
-                                class="col-sm-4">
+                                class="col-sm-6 col-md-3">
                     <b-form-select id="posicion"
                                   :options="posiciones"
                                   required
                                   v-model="pelotari.posicion">
                     </b-form-select>
                   </b-form-group>
+                  <b-form-group label="DNI:"
+                                label-for="dniInput"
+                                class="col-sm-6 col-md-3">
+                    <b-form-input id="dniInput"
+                                  type="text"
+                                  v-model="pelotari.dni"
+                                  maxlength="9"
+                                  placeholder="DNI">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="NºSeg.Social:"
+                                label-for="ssInput"
+                                class="col-sm-6 col-md-3">
+                    <b-form-input id="ssInput"
+                                  type="text"
+                                  v-model="pelotari.num_ss"
+                                  maxlength="12"
+                                  placeholder="NºSeg.Social">
+                    </b-form-input>
+                  </b-form-group>
                 </b-row>
                 <b-row>
                   <b-form-group label="Nombre:"
                                 label-for="nombre"
-                                class="col-sm-6 col-md-4">
+                                class="col-sm-6 col-md-4 col-lg-3">
                     <b-form-input id="nombre"
                                   type="text"
                                   v-model="pelotari.nombre"
@@ -67,12 +77,21 @@
                   </b-form-group>
                   <b-form-group label="Apellidos:"
                                 label-for="apellidos"
-                                class="col-sm-6 col-md-8">
+                                class="col-sm-6 col-md-4 col-lg-6">
                     <b-form-input id="apellidos"
                                   type="text"
                                   v-model="pelotari.apellidos"
                                   maxlength="60"
                                   placeholder="Apellidos">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Fecha nacimiento:"
+                                label-for="fecha_nac"
+                                class="col-sm-6 col-md-4 col-lg-3">
+                    <b-form-input id="fecha_nac"
+                                  type="date"
+                                  v-model="pelotari.fecha_nac"
+                                  placeholder="dd/mm/yyyy">
                     </b-form-input>
                   </b-form-group>
                 </b-row>
@@ -89,7 +108,7 @@
                   </b-form-group>
                   <b-form-group label="Provincia:"
                                 label-for="provincia"
-                                class="col-md-4">
+                                class="col-sm-6 col-md-4">
                     <b-form-select id="provincia"
                                   :options="provincias"
                                   @change = "onChangeProvincia"
@@ -98,7 +117,7 @@
                   </b-form-group>
                   <b-form-group label="Municipio:"
                                 label-for="municipio"
-                                class="col-md-4">
+                                class="col-sm-6 col-md-4">
                     <b-form-select id="municipio"
                                   :options="municipios_filtered"
                                   v-model="pelotari.municipio_id">
@@ -106,7 +125,7 @@
                   </b-form-group>
                   <b-form-group label="Código Postal:"
                                 label-for="cod_postal"
-                                class="col-md-4">
+                                class="col-sm-6 col-md-4">
                     <b-form-input id="cod_postal"
                                   type="text"
                                   v-model="pelotari.cod_postal"
@@ -115,9 +134,10 @@
                                   placeholder="Código Postal">
                     </b-form-input>
                   </b-form-group>
+                  <div class="w-100 d-md-none"></div>
                   <b-form-group label="Correo electrónico:"
                                 label-for="email"
-                                class="col-md-6">
+                                class="col-sm-6 col-lg-4 col-xl-3">
                     <b-form-input id="email"
                                   type="email"
                                   v-model="pelotari.email"
@@ -125,9 +145,10 @@
                                   placeholder="example@example.com">
                     </b-form-input>
                   </b-form-group>
-                  <b-form-group label="Teléfono:"
+                  <div class="w-100 d-none d-sm-none d-lg-block d-xl-none"></div>
+                  <b-form-group label="Teléfono Fijo:"
                                 label-for="telefono"
-                                class="col-md-6">
+                                class="col-sm-6 col-lg-4 col-xl-3">
                     <b-form-input id="telefono"
                                   type="text"
                                   v-model="pelotari.telefono"
@@ -135,6 +156,50 @@
                                   placeholder="Teléfono">
                     </b-form-input>
                   </b-form-group>
+                  <b-form-group label="Teléfono Móvil:"
+                                label-for="telefono_mov"
+                                class="col-sm-6 col-lg-4 col-xl-3">
+                    <b-form-input id="telefono_mov"
+                                  type="text"
+                                  v-model="pelotari.telefono2"
+                                  maxlength="15"
+                                  placeholder="Teléfono Móvil">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Teléfono Alternativo:"
+                                label-for="telefono_alt"
+                                class="col-sm-6 col-lg-4 col-xl-3">
+                    <b-form-input id="telefono_alt"
+                                  type="text"
+                                  v-model="pelotari.telefono3"
+                                  maxlength="15"
+                                  placeholder="Teléfono Alternativo">
+                    </b-form-input>
+                  </b-form-group>
+                </b-row>
+                <b-row>
+                  <b-form-group label="NºHijos:"
+                                label-for="num_hijos"
+                                class="col-sm-3 col-lg-4 col-xl-3">
+                    <b-form-input id="num_hijos"
+                                  type="number"
+                                  v-model="pelotari.num_hijos"
+                                  maxlength="1"
+                                  placeholder="NºHijos">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group label="Cód.IBAN:"
+                                label-for="iban"
+                                class="col-sm-9 col-lg-8 col-xl-9">
+                    <b-form-input id="iban"
+                                  type="text"
+                                  v-model="pelotari.iban"
+                                  maxlength="28"
+                                  placeholder="Cód.IBAN">
+                    </b-form-input>
+                  </b-form-group>
+                </b-row>
+                <b-row>
                   <b-form-group label="Fotografía"
                                 class="col-sm-12">
                     <b-row>
@@ -216,6 +281,12 @@
           fotoName: null,
           file: null,
           image: '/storage/avatars/default/default.jpg',
+          num_ss: '',
+          fecha_nac: null,
+          telefono2: '',
+          telefono3: '',
+          iban: '',
+          num_hijos: null,
           created: null,
           updated: null,
         },
@@ -287,6 +358,12 @@
             this.pelotari.email = pelotari.email;
             this.pelotari.telefono = pelotari.telefono;
             this.pelotari.fotoName = pelotari.foto;
+            this.pelotari.num_ss = pelotari.num_ss;
+            this.pelotari.fecha_nac = pelotari.fecha_nac;
+            this.pelotari.telefono2 = pelotari.telefono2;
+            this.pelotari.telefono3 = pelotari.telefono3;
+            this.pelotari.iban = pelotari.iban;
+            this.pelotari.num_hijos = pelotari.num_hijos;
             this.pelotari.created = pelotari.created_at;
             this.pelotari.updated = pelotari.updated_at;
 
@@ -369,6 +446,12 @@
         this.pelotari.cod_postal = '';
         this.pelotari.email = '';
         this.pelotari.telefono = '';
+        this.pelotari.num_ss = '';
+        this.pelotari.fecha_nac = null;
+        this.pelotari.telefono2 = '';
+        this.pelotari.telefono3 = '';
+        this.pelotari.iban = '';
+        this.pelotari.num_hijos = null;
         /* Trick to reset/clear native browser form validation state */
         this.show = false;
         this.$nextTick(() => { this.show = true });
