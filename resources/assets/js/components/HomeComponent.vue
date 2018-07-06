@@ -1,23 +1,5 @@
 <template>
-  <div class="container">
-      <div class="row justify-content-center">
-          <div class="col-12">
-              <div class="card">
-                  <div class="card-header bg-primary">
-                    <div class="row">
-                      <div class="col-sm-8 col-md-9 col-lg-10">
-                        <router-link class="text-white" :to="this.home">{{ this.title }}</router-link>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <router-view></router-view>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div id="snackbar"></div>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -36,6 +18,10 @@
           this.title = "Gestión de RRHH";
           this.$router.push('/rrhh');
           break;
+        case 'gerente':
+          this.home = '/gerente';
+          this.title = "Gestión de Festivales";
+          this.$router.push('/gerente');
         default:
           this.title = "SIN PERMISOS";
           break;

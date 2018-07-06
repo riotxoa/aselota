@@ -5,7 +5,8 @@
     <div class="row justify-content-center">
         @switch($role)
             @case ('gerente')
-            <div class="col-md-8">
+              <home-component user-role="gerente"></home-component>
+            <!-- <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Dashboard GERENTE</div>
                     <div class="card-body">
@@ -19,7 +20,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               @break
             @case ('rrhh')
               <home-component user-role="rrhh"></home-component>

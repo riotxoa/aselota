@@ -36,7 +36,7 @@ Vue.component('home-component', require('./components/HomeComponent.vue'));
 
 Vue.component('profile-component', require('./components/common_profile/ProfileComponent.vue'));
 
-Vue.component('home-rrhh', require('./components/rrhh_pelotaris/HomeRRHHComponent.vue'));
+Vue.component('home-rrhh', require('./components/HomeRRHHComponent.vue'));
 Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));
 Vue.component('ficha-pelotari', require('./components/rrhh_pelotaris/FichaComponent.vue'));
 
@@ -46,6 +46,12 @@ const CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari">
 const EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> '};
 
 Vue.component('contrato-pelotari', require('./components/rrhh_contratos/FichaComponent.vue'));
+
+Vue.component('home-gerente', require('./components/HomeGerenteComponent.vue'));
+Vue.component('listado-festivales', require('./components/festivales/ListadoComponent.vue'));
+
+const HomeGerente = { template: '<home-gerente></home-gerente>' };
+const ListFestivales = { template: '<listado-festivales></listado-festivales>' };
 
 const routes = [
   {
@@ -60,6 +66,14 @@ const routes = [
       {
         path: 'pelotari/:id/edit', component: EditPelotari
       },
+    ]
+  },
+  {
+    path: '/gerente', component: HomeGerente,
+    children: [
+      {
+        path: '', component: ListFestivales
+      }
     ]
   },
 
