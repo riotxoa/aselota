@@ -53,7 +53,9 @@ class ContratoController extends Controller
           'prima_estelar' => $request->get('prima_estelar'),
           'prima_manomanista' => $request->get('prima_manomanista'),
           'garantia' => $request->get('garantia'),
-          'garantia_disp' => $request->get('garantia_disp'),
+          'coste' => $request->get('coste'),
+          'formacion' => $request->get('formacion'),
+          'd_imagen' => $request->get('d_imagen'),
         ]);
 
         $item->save();
@@ -108,7 +110,9 @@ class ContratoController extends Controller
         $item->prima_estelar = $request->get('prima_estelar');
         $item->prima_manomanista = $request->get('prima_manomanista');
         $item->garantia = $request->get('garantia');
-        $item->garantia_disp = $request->get('garantia_disp');
+        $item->coste = $request->get('coste');
+        $item->formacion = $request->get('formacion');
+        $item->d_imagen = $request->get('d_imagen');
 
         $item->save();
 

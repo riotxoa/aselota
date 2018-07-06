@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Tarifa;
+use App\ContratoCampeonato;
 
-class TarifaController extends Controller
+class ContratoCampeonatoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class TarifaController extends Controller
         $pelotari_id = $request->get('pelotari_id');
         $campeonato_id = $request->get('campeonato_id');
 
-        $items = Tarifa::where('pelotari_id', $pelotari_id)->where('campeonato_id', $campeonato_id)->get();
+        $items = ContratoCampeonato::where('pelotari_id', $pelotari_id)->where('campeonato_id', $campeonato_id)->get();
 
         return response()->json($items, 200);
     }
@@ -44,7 +44,7 @@ class TarifaController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = new Tarifa([
+        $item = new ContratoCampeonato([
           'pelotari_id' => $request->get('pelotari_id'),
           'campeonato_id' => $request->get('campeonato_id'),
           'fecha_ini' => $request->get('fecha_ini'),
@@ -56,6 +56,8 @@ class TarifaController extends Controller
           'semifinal' => $request->get('semifinal'),
           'cuartos' => $request->get('cuartos'),
           'octavos' => $request->get('octavos'),
+          'dieciseisavos' => $request->get('dieciseisavos'),
+          'treintaidosavos' => $request->get('treintaidosavos'),
         ]);
 
         $item->save();
@@ -73,7 +75,7 @@ class TarifaController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = Tarifa::find($id);
+        $item = ContratoCampeonato::find($id);
 
         return response()->json($item, 200);
     }
@@ -100,7 +102,7 @@ class TarifaController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = Tarifa::find($id);
+        $item = ContratoCampeonato::find($id);
 
         $item->fecha_ini = $request->get('fecha_ini');
         $item->fecha_fin = $request->get('fecha_fin');
@@ -111,6 +113,8 @@ class TarifaController extends Controller
         $item->semifinal = $request->get('semifinal');
         $item->cuartos = $request->get('cuartos');
         $item->octavos = $request->get('octavos');
+        $item->dieciseisavos = $request->get('dieciseisavos');
+        $item->treintaidosavos = $request->get('treintaidosavos');
 
         $item->save();
 
@@ -127,8 +131,8 @@ class TarifaController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        Tarifa::destroy($id);
+        ContratoCampeonato::destroy($id);
 
-        return response()->json("TARIFA REMOVED", 200);
+        return response()->json("CONTRATO CAMPEONATO REMOVED", 200);
     }
 }

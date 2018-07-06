@@ -19,6 +19,8 @@ class Contrato extends Model
     'prima_estelar',
     'prima_manomanista',
     'garantia',
-    'garantia_disp'
+    'coste',
+    'formacion',
+    'd_imagen',
   ];
 }

@@ -58,7 +58,7 @@
             </b-form-group>
           </b-row>
           <b-row>
-            <b-form-group label="Prima por partido ganado:"
+            <b-form-group label="Prima por partido:"
                           label-for="prima_partidoInput"
                           class="col-sm-4">
               <b-form-input id="prima_partidoInput"
@@ -70,7 +70,7 @@
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Prima por estelar ganado:"
+            <b-form-group label="Prima por estelar:"
                           label-for="prima_estelarInput"
                           class="col-sm-4">
               <b-form-input id="prima_estelarInput"
@@ -96,6 +96,28 @@
             </b-form-group>
           </b-row>
           <b-row>
+            <b-form-group label="Dchos.Imagen (mes):"
+                          label-for="d_imagenInput"
+                          class="col-sm-4">
+              <b-form-input id="d_imagenInput"
+                            class="text-right"
+                            type="number"
+                            v-model="contrato.d_imagen"
+                            maxlength="8"
+                            placeholder="0">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Coste por partido:"
+                          label-for="costeInput"
+                          class="col-sm-4">
+              <b-form-input id="costeInput"
+                            class="text-right"
+                            type="number"
+                            v-model="contrato.coste"
+                            maxlength="8"
+                            placeholder="0">
+              </b-form-input>
+            </b-form-group>
             <b-form-group label="Partidos garantía:"
                           label-for="garantiaInput"
                           class="col-sm-4">
@@ -103,17 +125,6 @@
                             class="text-right"
                             type="number"
                             v-model="contrato.garantia"
-                            maxlength="4"
-                            placeholder="0">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Garantía según disponibilidad:"
-                          label-for="garantia_dispInput"
-                          class="col-sm-4">
-              <b-form-input id="garantia_dispInput"
-                            class="text-right"
-                            type="number"
-                            v-model="contrato.garantia_disp"
                             maxlength="4"
                             placeholder="0">
               </b-form-input>
@@ -160,7 +171,9 @@
           prima_estelar: null,
           prima_manomanista: null,
           garantia: null,
-          garantia_disp: null,
+          coste: null,
+          formacion: false,
+          d_imagen: null,
           created_at: null,
           updated_at: null,
         },
@@ -192,7 +205,9 @@
         this.contrato.prima_estelar = this.formatAmount(rowContrato.prima_estelar);
         this.contrato.prima_manomanista = this.formatAmount(rowContrato.prima_manomanista);
         this.contrato.garantia = rowContrato.garantia;
-        this.contrato.garantia_disp = rowContrato.garantia_disp;
+        this.contrato.coste = this.formatAmount(rowContrato.coste);
+        this.contrato.formacion = rowContrato.formacion;
+        this.contrato.d_imagen = this.formatAmount(rowContrato.d_imagen);
       }
     },
     methods: {
@@ -237,7 +252,9 @@
         this.contrato.prima_estelar = null;
         this.contrato.prima_manomanista = null;
         this.contrato.garantia = null;
-        this.contrato.garantia_disp = null;
+        this.contrato.coste = null;
+        this.contrato.formacion = false;
+        this.contrato.d_imagen = null;
       },
     }
   }

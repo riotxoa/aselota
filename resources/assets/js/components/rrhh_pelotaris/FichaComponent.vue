@@ -220,11 +220,8 @@
           <b-tab v-if="edit" title="Contratos">
             <listado-contratos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-contratos>
           </b-tab>
-          <b-tab v-if="edit" title="Tarifas">
-            <listado-tarifas :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-tarifas>
-          </b-tab>
-          <b-tab v-if="edit" title="Dchos.Imagen">
-            <listado-derechos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-derechos>
+          <b-tab v-if="edit" title="Campeonatos">
+            <listado-campeonatos :pelotari-id="this.pelotari.id" :pelotari-alias="this.pelotari.alias"></listado-campeonatos>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -248,8 +245,7 @@
 
 <script>
   Vue.component('listado-contratos', require('../rrhh_contratos/ListadoComponent.vue'));
-  Vue.component('listado-tarifas', require('../rrhh_tarifas/ListadoComponent.vue'));
-  Vue.component('listado-derechos', require('../rrhh_derechos/ListadoComponent.vue'));
+  Vue.component('listado-campeonatos', require('../rrhh_contratos_campeonatos/ListadoComponent.vue'));
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");

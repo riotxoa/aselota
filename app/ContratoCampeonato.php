@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Tarifa extends Model
+class ContratoCampeonato extends Model
 {
   use SoftDeletes;
 
@@ -20,6 +20,8 @@ class Tarifa extends Model
     'liga_cuartos',
     'semifinal',
     'cuartos',
-    'octavos'
+    'octavos',
+    'dieciseisavos',
+    'treintaidosavos',
   ];
 }

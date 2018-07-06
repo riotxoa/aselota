@@ -24,13 +24,13 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('campeonatos', 'CampeonatoController');
     Route::resource('pelotaris', 'PelotariController');
     Route::resource('contratos', 'ContratoController');
-    Route::resource('tarifas', 'TarifaController');
+    Route::resource('tarifas', 'ContratoCampeonatoController');
     Route::resource('derechos', 'DerechoController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
     Route::post('contratos/{id}/update', 'ContratoController@update');
-    Route::post('tarifas/{id}/update', 'TarifaController@update');
+    Route::post('tarifas/{id}/update', 'ContratoCampeonatoController@update');
     Route::post('derechos/{id}/update', 'DerechoController@update');
 });
 

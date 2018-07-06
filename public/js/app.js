@@ -85802,13 +85802,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 Vue.component('listado-contratos', __webpack_require__(363));
-Vue.component('listado-tarifas', __webpack_require__(368));
-Vue.component('listado-derechos', __webpack_require__(381));
+Vue.component('listado-campeonatos', __webpack_require__(403));
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
   var x = document.getElementById("snackbar");
@@ -86270,7 +86266,7 @@ var showSnackbar = function showSnackbar(msg) {
       filter: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'garantia_disp', label: '<span title="Garantía según disponibilidad">Garantía s/disp.</span>', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false }, { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       items: [],
       totalRows: 0,
       perPage: 10,
@@ -86775,2836 +86771,27 @@ if (false) {
 }
 
 /***/ }),
-/* 368 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(369)
-}
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(371)
-/* template */
-var __vue_template__ = __webpack_require__(380)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_tarifas/ListadoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0942bc02", Component.options)
-  } else {
-    hotAPI.reload("data-v-0942bc02", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 369 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(370);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(19)("2c50ae8e", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0942bc02\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0942bc02\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 370 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#rrhh-tarifas .card {\n  border:none;\n}\n#rrhh-tarifas .nav-pills.card-header {\n  background-color:transparent;\n}\n#rrhh-tarifas .nav-pills .nav-link {\n  margin-bottom:.25rem;\n}\n#rrhh-tarifas .nav-pills .nav-link.active,\n#rrhh-tarifas .nav-pills .show > .nav-link {\n  background-color:#d82a1f;\n}\n#rrhh-tarifas .tabs .card-header {\n  padding-left:0;\n  padding-top:0;\n}\n#rrhh-tarifas .tab-pane.card-body {\n  padding:0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 371 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-Vue.component('tarifas-campeonato', __webpack_require__(372));
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias'],
-  data: function data() {
-    return {
-      campeonatos: [],
-      tabs: []
-    };
-  },
-  created: function created() {
-    this.fetchCampeonatos();
-  },
-
-  methods: {
-    fetchCampeonatos: function fetchCampeonatos() {
-      var _this = this;
-
-      var uri = '/www/campeonatos';
-      this.axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this.campeonatos = JSON.parse(stringified);
-        _this.campeonatos.map(function (val, key) {
-          _this.tabs.push(val.name);
-        });
-      });
-    }
-  }
-});
-
-/***/ }),
-/* 372 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(373)
-}
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(375)
-/* template */
-var __vue_template__ = __webpack_require__(379)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_tarifas/TarifasCampeonatoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3a0d44c3", Component.options)
-  } else {
-    hotAPI.reload("data-v-3a0d44c3", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 373 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(374);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(19)("68836154", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3a0d44c3\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3a0d44c3\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 374 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#tarifas-campeonato legend {\n  font-size:0.7875rem;\n  padding: 0.25rem 0rem;\n}\n#tarifaDetails .border-secondary {\n  border-color:lightgray!important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 375 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-Vue.component('tarifa-pelotari', __webpack_require__(376));
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'campeonatoDesc'],
-  data: function data() {
-    var _this = this,
-        _ref;
-
-    return _ref = {
-      create: true,
-      remove: true,
-      update: true,
-      display: true,
-      filter: false,
-      sortBy: 'fecha_ini',
-      sortDesc: true,
-      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
-      items: [],
-      totalRows: 0,
-      perPage: 10,
-      currentPage: 1,
-      pageOptions: [10, 25, 50]
-    }, _defineProperty(_ref, 'filter', null), _defineProperty(_ref, 'deleteId', null), _defineProperty(_ref, 'formTitle', ''), _defineProperty(_ref, 'rowTarifa', null), _defineProperty(_ref, 'newTarifa', true), _defineProperty(_ref, 'cancelTarifaForm', function cancelTarifaForm() {
-      _this.hideTarifaForm();
-    }), _defineProperty(_ref, 'getTarifaRow', function getTarifaRow() {
-      return _this.rowTarifa;
-    }), _defineProperty(_ref, 'isNewTarifa', function isNewTarifa() {
-      return _this.newTarifa;
-    }), _defineProperty(_ref, 'formatRowAmount', function formatRowAmount(amount) {
-      return _this.formatAmount(amount);
-    }), _ref;
-  },
-  created: function created() {
-    this.fetchTarifas();
-  },
-
-  methods: {
-    fetchTarifas: function fetchTarifas() {
-      var _this2 = this;
-
-      var uri = '/www/tarifas';
-      this.axios.get(uri, {
-        params: {
-          pelotari_id: this.pelotariId,
-          campeonato_id: this.campeonatoId
-        }
-      }).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this2.items = JSON.parse(stringified);
-        _this2.totalRows = _this2.items.length;
-      });
-    },
-    onFiltered: function onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
-    },
-    onClickEdit: function onClickEdit(item) {
-      this.rowTarifa = item;
-      this.showTarifaForm(item.id);
-    },
-    removeItem: function removeItem() {
-      var _this3 = this;
-
-      var uri = '/www/tarifas/' + this.deleteId;
-      this.axios.delete(uri).then(function (response) {
-        _this3.deleteId = null;
-        _this3.$refs.modalDelete.hide();
-        _this3.fetchTarifas();
-        showSnackbar("Tarifa BORRADA");
-      }).catch(function (error) {
-        console.log("[removeItem] error: " + error);
-        _this3.deleteId = null;
-        _this3.$refs.modalDelete.hide();
-        showSnackbar("ERROR al borrar");
-      });
-    },
-    onClickDelete: function onClickDelete(tarifa) {
-      this.deleteId = tarifa.id;
-
-      var msg = " \
-          <div class='px-5 py-2'> \
-            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
-            <p class='mb-0'><strong>Campeonato:</strong> " + this.campeonatoName + "</p> \
-            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(tarifa.fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(tarifa.fecha_fin) + "</p> \
-          </div>";
-
-      jQuery('#deleteTarifaAlias').html(msg);
-
-      this.$refs.modalDelete.show();
-    },
-    hideModalDelete: function hideModalDelete() {
-      this.deleteId = null;
-      this.$refs.modalDelete.hide();
-    },
-    formatDate: function formatDate(date) {
-      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
-        return "";
-      }
-    },
-    formatAmount: function formatAmount(amount) {
-      if (amount) return parseFloat(amount).toFixed(2);else {
-        return "";
-      }
-    },
-    showTarifaForm: function showTarifaForm() {
-      var $id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-      if ($id) {
-        this.formTitle = 'Editar Tarifa';
-        this.newTarifa = false;
-        this.$refs.modalEdit.show();
-      } else {
-        this.formTitle = 'Nueva Tarifa';
-        this.newTarifa = true;
-        this.$refs.modalEdit.show();
-      }
-    },
-    hideTarifaForm: function hideTarifaForm() {
-      this.$refs.modalEdit.hide();
-      this.fetchTarifas();
-    }
-  }
-});
-
-/***/ }),
-/* 376 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(377)
-/* template */
-var __vue_template__ = __webpack_require__(378)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_tarifas/FichaComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3daa9212", Component.options)
-  } else {
-    hotAPI.reload("data-v-3daa9212", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 377 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'onCancel', 'getTarifaRow', 'isNewTarifa', 'formatAmount'],
-  data: function data() {
-    var _this = this;
-
-    return {
-      tarifa: {
-        id: null,
-        pelotari_id: null,
-        campeonato_id: null,
-        fecha_ini: null,
-        fecha_fin: null,
-        campeon: null,
-        subcampeon: null,
-        liga_semifinal: null,
-        liga_cuartos: null,
-        semifinal: null,
-        cuartos: null,
-        octavos: null,
-        created_at: null,
-        updated_at: null
-      },
-      edit: false,
-      show: true,
-      goBack: function goBack() {
-        _this.onCancel();
-      }
-    };
-  },
-
-  created: function created() {
-    console.log("FichaComponent created");
-
-    this.tarifa.pelotari_id = this.pelotariId;
-    this.tarifa.campeonato_id = this.campeonatoId;
-
-    if (this.isNewTarifa()) {
-      this.edit = false;
-    } else {
-      this.edit = true;
-
-      var rowTarifa = this.getTarifaRow();
-
-      this.tarifa.id = rowTarifa.id;
-      this.tarifa.fecha_ini = rowTarifa.fecha_ini;
-      this.tarifa.fecha_fin = rowTarifa.fecha_fin;
-      this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
-      this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
-      this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
-      this.tarifa.liga_cuartos = this.formatAmount(rowTarifa.liga_cuartos);
-      this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
-      this.tarifa.cuartos = this.formatAmount(rowTarifa.cuartos);
-      this.tarifa.octavos = this.formatAmount(rowTarifa.octavos);
-    }
-  },
-  methods: {
-    onSubmit: function onSubmit(evt) {
-      var _this2 = this;
-
-      evt.preventDefault();
-
-      var uri = '/www/tarifas';
-      if (this.edit) {
-        this.axios.post(uri + '/' + this.tarifa.id + '/update', this.tarifa).then(function (response) {
-          showSnackbar("Tarifa actualizada");
-          _this2.goBack();
-        }).catch(function (error) {
-          console.log(error);
-          showSnackbar("Se ha producido un ERROR");
-        });
-      } else {
-        this.axios.post(uri, this.tarifa).then(function (response) {
-          showSnackbar("Tarifa creada");
-          _this2.goBack();
-        }).catch(function (error) {
-          console.log(error);
-          showSnackbar("Se ha producido un ERROR");
-        });
-      }
-    },
-    onReset: function onReset(evt) {
-      evt.preventDefault();
-      /* Reset our form values */
-      this.tarifa.fecha_ini = null;
-      this.tarifa.fecha_fin = null;
-      this.tarifa.campeon = null;
-      this.tarifa.subcampeon = null;
-      this.tarifa.liga_semifinal = null;
-      this.tarifa.liga_cuartos = null;
-      this.tarifa.semifinal = null;
-      this.tarifa.cuartos = null;
-      this.tarifa.octavos = null;
-    }
-  }
-});
-
-/***/ }),
-/* 378 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.show
-        ? _c(
-            "b-form",
-            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
-            [
-              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
-                _c("div", { staticClass: "col-12 text-white" }, [
-                  _c("strong", [
-                    _vm._v(
-                      _vm._s(_vm.pelotariAlias) +
-                        " - " +
-                        _vm._s(_vm.campeonatoName)
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Fecha Inicio:",
-                        "label-for": "fecha_iniInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "fecha_iniInput",
-                          type: "date",
-                          required: "",
-                          placeholder: "dd/mm/yyyy"
-                        },
-                        model: {
-                          value: _vm.tarifa.fecha_ini,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "fecha_ini", $$v)
-                          },
-                          expression: "tarifa.fecha_ini"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Fecha Fin:",
-                        "label-for": "fecha_finInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "fecha_finInput",
-                          type: "date",
-                          required: "",
-                          placeholder: "dd/mm/yyyy"
-                        },
-                        model: {
-                          value: _vm.tarifa.fecha_fin,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "fecha_fin", $$v)
-                          },
-                          expression: "tarifa.fecha_fin"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Campeón:", "label-for": "campeonInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "campeonInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.campeon,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "campeon", $$v)
-                          },
-                          expression: "tarifa.campeon"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Subampeón:",
-                        "label-for": "dieta_partidoInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "dieta_partidoInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.subcampeon,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "subcampeon", $$v)
-                          },
-                          expression: "tarifa.subcampeon"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Liguilla Semifinales:",
-                        "label-for": "liga_semifinalInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "liga_semifinalInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.liga_semifinal,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "liga_semifinal", $$v)
-                          },
-                          expression: "tarifa.liga_semifinal"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Liguilla Cuartos:",
-                        "label-for": "liga_cuartosInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "liga_cuartosInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.liga_cuartos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "liga_cuartos", $$v)
-                          },
-                          expression: "tarifa.liga_cuartos"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Semifinales:",
-                        "label-for": "semfifinalInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "semfifinalInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.semifinal,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "semifinal", $$v)
-                          },
-                          expression: "tarifa.semifinal"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Cuartos:", "label-for": "cuartosInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "cuartosInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.cuartos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "cuartos", $$v)
-                          },
-                          expression: "tarifa.cuartos"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Octavos:", "label-for": "octavosInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "octavosInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.octavos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "octavos", $$v)
-                          },
-                          expression: "tarifa.octavos"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Guardar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
-                [_vm._v("Cancelar")]
-              ),
-              _vm._v(" "),
-              !_vm.edit
-                ? _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right mr-1",
-                      attrs: { type: "reset", variant: "danger" }
-                    },
-                    [_vm._v("Reset")]
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3daa9212", module.exports)
-  }
-}
-
-/***/ }),
-/* 379 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid p-0", attrs: { id: "tarifas-campeonato" } },
-    [
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 float-left mt-0 mb-1" },
-            [
-              _vm.filter
-                ? _c(
-                    "b-form-group",
-                    {
-                      staticClass: "mb-0",
-                      attrs: { horizontal: "", label: "Filtro" }
-                    },
-                    [
-                      _c(
-                        "b-input-group",
-                        [
-                          _c("b-form-input", {
-                            attrs: { placeholder: "Texto de búsqueda" },
-                            model: {
-                              value: _vm.filter,
-                              callback: function($$v) {
-                                _vm.filter = $$v
-                              },
-                              expression: "filter"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-input-group-append",
-                            [
-                              _c(
-                                "b-btn",
-                                {
-                                  attrs: {
-                                    disabled: !_vm.filter,
-                                    title: "Limpiar filtro"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.filter = ""
-                                    }
-                                  }
-                                },
-                                [_vm._v("Limpiar")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                : _c("div", { staticClass: "mt-2 mb-0" }, [
-                    _c("h6", { staticClass: "text-danger font-weight-bold" }, [
-                      _vm._v(_vm._s(_vm.campeonatoDesc))
-                    ])
-                  ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 text-right float-right mt-0 mb-3" },
-            [
-              _c(
-                "b-btn",
-                {
-                  staticClass: "mb-0",
-                  attrs: {
-                    variant: "default",
-                    size: "sm",
-                    title: "Crear Tarifa"
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.showTarifaForm(0)
-                    }
-                  }
-                },
-                [_vm._v("Nueva Tarifa")]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          striped: "",
-          hover: "",
-          small: "",
-          responsive: "",
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "per-page": _vm.perPage,
-          "current-page": _vm.currentPage,
-          items: _vm.items,
-          fields: _vm.fields,
-          filter: _vm.filter
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          },
-          filtered: _vm.onFiltered
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "actions",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button-group",
-                  [
-                    _vm.remove
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "danger",
-                              title: "Eliminar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickDelete(row.item)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-trash" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.update
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "primary",
-                              title: "Editar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickEdit(row.item)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-edit" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.display
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "secondary",
-                              title: "Mostrar/Ocultar Detalle"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return row.toggleDetails($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("span", {
-                              staticClass: "icon",
-                              class: {
-                                "voyager-x": row.detailsShowing,
-                                "voyager-eye": !row.detailsShowing
-                              }
-                            })
-                          ]
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                )
-              ]
-            }
-          },
-          {
-            key: "row-details",
-            fn: function(row) {
-              return _vm.display
-                ? [
-                    _c(
-                      "b-card",
-                      { attrs: { id: "tarifaDetails" } },
-                      [
-                        _c(
-                          "b-row",
-                          {
-                            staticClass:
-                              "mb-2 py-2 border-bottom border-top border-secondary"
-                          },
-                          [
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Campeón:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.campeon)) +
-                                  " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Subcampeón:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.subcampeon)) +
-                                  " €"
-                              )
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          {
-                            staticClass:
-                              "mb-2 pb-2 border-bottom border-secondary"
-                          },
-                          [
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("L. Semifinales:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatAmount(row.item.liga_semifinal)
-                                ) + " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("L. Cuartos:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatAmount(row.item.liga_cuartos)
-                                ) + " €"
-                              )
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          {
-                            staticClass:
-                              "mb-2 pb-2 border-bottom border-secondary"
-                          },
-                          [
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Semifinales:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.semifinal)) +
-                                  " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Cuartos:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.cuartos)) +
-                                  " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Octavos:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.octavos)) +
-                                  " €"
-                              )
-                            ])
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                : undefined
-            }
-          }
-        ])
-      }),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "5" } },
-            [
-              _c("b-pagination", {
-                staticClass: "my-0",
-                attrs: {
-                  "total-rows": _vm.totalRows,
-                  "per-page": _vm.perPage,
-                  size: "sm"
-                },
-                model: {
-                  value: _vm.currentPage,
-                  callback: function($$v) {
-                    _vm.currentPage = $$v
-                  },
-                  expression: "currentPage"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1 text-right", attrs: { md: "3" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Total: " }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: { readonly: "", plaintext: "", size: "sm" },
-                    model: {
-                      value: _vm.totalRows,
-                      callback: function($$v) {
-                        _vm.totalRows = $$v
-                      },
-                      expression: "totalRows"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "4" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Mostrar" }
-                },
-                [
-                  _c("b-form-select", {
-                    attrs: { options: _vm.pageOptions, size: "sm" },
-                    model: {
-                      value: _vm.perPage,
-                      callback: function($$v) {
-                        _vm.perPage = $$v
-                      },
-                      expression: "perPage"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.remove
-        ? _c(
-            "b-modal",
-            {
-              ref: "modalDelete",
-              attrs: { title: "BORRAR Tarifa", "hide-footer": "" }
-            },
-            [
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [
-                  _vm._v("Se va a borrar la tarifa de "),
-                  _c("span", { attrs: { id: "deleteTarifaAlias" } }),
-                  _vm._v("¿Desea continuar?")
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "modal-footer" },
-                [
-                  _c(
-                    "b-btn",
-                    {
-                      attrs: { variant: "danger" },
-                      on: { click: _vm.removeItem }
-                    },
-                    [_vm._v("Borrar")]
-                  ),
-                  _vm._v(" "),
-                  _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
-                    _vm._v("Cancelar")
-                  ])
-                ],
-                1
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "modalEdit",
-          attrs: {
-            id: "tarifaForm",
-            title: _vm.formTitle,
-            size: "lg",
-            "hide-footer": "",
-            lazy: ""
-          }
-        },
-        [
-          _c("tarifa-pelotari", {
-            attrs: {
-              "pelotari-id": _vm.pelotariId,
-              "pelotari-alias": _vm.pelotariAlias,
-              "campeonato-id": _vm.campeonatoId,
-              "campeonato-name": _vm.campeonatoName,
-              "on-cancel": _vm.cancelTarifaForm,
-              "get-tarifa-row": _vm.getTarifaRow,
-              "is-new-tarifa": _vm.isNewTarifa,
-              "format-amount": _vm.formatRowAmount
-            }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3a0d44c3", module.exports)
-  }
-}
-
-/***/ }),
-/* 380 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "rrhh-tarifas" } },
-    [
-      _c(
-        "b-card",
-        { attrs: { "no-body": "" } },
-        [
-          _c(
-            "b-tabs",
-            { attrs: { pills: "", card: "", vertical: "" } },
-            _vm._l(_vm.campeonatos, function(tab) {
-              return _c(
-                "b-tab",
-                { attrs: { title: "" + tab.name } },
-                [
-                  _c("tarifas-campeonato", {
-                    attrs: {
-                      "pelotari-id": _vm.pelotariId,
-                      "pelotari-alias": _vm.pelotariAlias,
-                      "campeonato-id": "" + tab.id,
-                      "campeonato-name": "" + tab.name,
-                      "campeonato-desc": "" + tab.desc
-                    }
-                  })
-                ],
-                1
-              )
-            })
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0942bc02", module.exports)
-  }
-}
-
-/***/ }),
-/* 381 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(382)
-}
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(384)
-/* template */
-var __vue_template__ = __webpack_require__(388)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_derechos/ListadoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b620834e", Component.options)
-  } else {
-    hotAPI.reload("data-v-b620834e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 382 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(383);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(19)("27189459", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b620834e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-b620834e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 383 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 384 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-Vue.component('derecho-pelotari', __webpack_require__(385));
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias'],
-  data: function data() {
-    var _this = this,
-        _ref;
-
-    return _ref = {
-      create: true,
-      remove: true,
-      update: true,
-      display: false,
-      filter: false,
-      sortBy: 'fecha_ini',
-      sortDesc: true,
-      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'amount', label: '<span title="Importe">Importe</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
-      items: [],
-      totalRows: 0,
-      perPage: 10,
-      currentPage: 1,
-      pageOptions: [10, 25, 50]
-    }, _defineProperty(_ref, 'filter', null), _defineProperty(_ref, 'deleteId', null), _defineProperty(_ref, 'formTitle', ''), _defineProperty(_ref, 'rowDerecho', null), _defineProperty(_ref, 'newDerecho', true), _defineProperty(_ref, 'cancelDerechoForm', function cancelDerechoForm() {
-      _this.hideDerechoForm();
-    }), _defineProperty(_ref, 'getDerechoRow', function getDerechoRow() {
-      return _this.rowDerecho;
-    }), _defineProperty(_ref, 'isNewDerecho', function isNewDerecho() {
-      return _this.newDerecho;
-    }), _defineProperty(_ref, 'formatRowAmount', function formatRowAmount(amount) {
-      return _this.formatAmount(amount);
-    }), _ref;
-  },
-  created: function created() {
-    this.fetchDerechos();
-  },
-
-  methods: {
-    fetchDerechos: function fetchDerechos() {
-      var _this2 = this;
-
-      var uri = '/www/derechos';
-      this.axios.get(uri, {
-        params: {
-          pelotari_id: this.pelotariId
-        }
-      }).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this2.items = JSON.parse(stringified);
-        _this2.totalRows = _this2.items.length;
-      });
-    },
-    onFiltered: function onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
-    },
-    onClickEdit: function onClickEdit(item) {
-      this.rowDerecho = item;
-      this.showDerechoForm(item.id);
-    },
-    removeItem: function removeItem() {
-      var _this3 = this;
-
-      var uri = '/www/derechos/' + this.deleteId;
-      this.axios.delete(uri).then(function (response) {
-        _this3.deleteId = null;
-        _this3.$refs.modalDelete.hide();
-        _this3.fetchDerechos();
-        showSnackbar("Derecho BORRADO");
-      }).catch(function (error) {
-        console.log("[removeItem] error: " + error);
-        _this3.deleteId = null;
-        _this3.$refs.modalDelete.hide();
-        showSnackbar("ERROR al borrar");
-      });
-    },
-    onClickDelete: function onClickDelete(id, fecha_ini, fecha_fin) {
-      this.deleteId = id;
-
-      var msg = " \
-          <div class='px-5 py-2'> \
-            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
-            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
-          </div>";
-
-      jQuery('#deleteDerechoAlias').html(msg);
-
-      this.$refs.modalDelete.show();
-    },
-    hideModalDelete: function hideModalDelete() {
-      this.deleteId = null;
-      this.$refs.modalDelete.hide();
-    },
-    formatDate: function formatDate(date) {
-      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
-        return "";
-      }
-    },
-    formatAmount: function formatAmount(amount) {
-      if (amount) return parseFloat(amount).toFixed(2);else {
-        return "";
-      }
-    },
-    showDerechoForm: function showDerechoForm() {
-      var $id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-      if ($id) {
-        this.formTitle = 'Editar Contrato Derechos Imagen';
-        this.newDerecho = false;
-        this.$refs.modalEdit.show();
-      } else {
-        this.formTitle = 'Nuevo Contrato Derechos Imagen';
-        this.newDerecho = true;
-        this.$refs.modalEdit.show();
-      }
-    },
-    hideDerechoForm: function hideDerechoForm() {
-      this.$refs.modalEdit.hide();
-      this.fetchDerechos();
-    }
-  }
-});
-
-/***/ }),
-/* 385 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(386)
-/* template */
-var __vue_template__ = __webpack_require__(387)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_derechos/FichaComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cfdb39e4", Component.options)
-  } else {
-    hotAPI.reload("data-v-cfdb39e4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 386 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getDerechoRow', 'isNewDerecho', 'formatAmount'],
-  data: function data() {
-    var _this = this;
-
-    return {
-      derecho: {
-        id: null,
-        pelotari_id: null,
-        contrato_id: null,
-        fecha_ini: null,
-        fecha_fin: null,
-        amount: null,
-        created_at: null,
-        updated_at: null
-      },
-      edit: false,
-      show: true,
-      goBack: function goBack() {
-        _this.onCancel();
-      }
-    };
-  },
-
-  created: function created() {
-    console.log("FichaComponent created");
-
-    this.derecho.pelotari_id = this.pelotariId;
-
-    if (this.isNewDerecho()) {
-      this.edit = false;
-    } else {
-      this.edit = true;
-
-      var rowDerecho = this.getDerechoRow();
-
-      this.derecho.id = rowDerecho.id;
-      this.derecho.fecha_ini = rowDerecho.fecha_ini;
-      this.derecho.fecha_fin = rowDerecho.fecha_fin;
-      this.derecho.amount = this.formatAmount(rowDerecho.amount);
-    }
-  },
-  methods: {
-    onSubmit: function onSubmit(evt) {
-      var _this2 = this;
-
-      evt.preventDefault();
-
-      var uri = '/www/derechos';
-
-      if (this.edit) {
-        this.axios.post(uri + '/' + this.derecho.id + '/update', this.derecho).then(function (response) {
-          showSnackbar("Derecho actualizado");
-          _this2.goBack();
-        }).catch(function (error) {
-          console.log(error);
-          showSnackbar("Se ha producido un ERROR");
-        });
-      } else {
-        this.axios.post(uri, this.derecho).then(function (response) {
-          showSnackbar("Derecho creado");
-          _this2.goBack();
-        }).catch(function (error) {
-          console.log(error);
-          showSnackbar("Se ha producido un ERROR");
-        });
-      }
-    },
-    onReset: function onReset(evt) {
-      evt.preventDefault();
-      /* Reset our form values */
-      this.derecho.fecha_ini = null;
-      this.derecho.fecha_fin = null;
-      this.derecho.amount = null;
-    }
-  }
-});
-
-/***/ }),
-/* 387 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.show
-        ? _c(
-            "b-form",
-            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
-            [
-              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
-                _c("div", { staticClass: "col-12 text-white" }, [
-                  _c("strong", [_vm._v(_vm._s(_vm.pelotariAlias))])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("b-row", [
-                _c(
-                  "div",
-                  { staticClass: "col-md-12" },
-                  [
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Fecha Inicio:",
-                              "label-for": "fecha_iniInput"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "fecha_iniInput",
-                                type: "date",
-                                required: "",
-                                placeholder: "dd/mm/yyyy"
-                              },
-                              model: {
-                                value: _vm.derecho.fecha_ini,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.derecho, "fecha_ini", $$v)
-                                },
-                                expression: "derecho.fecha_ini"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Fecha Fin:",
-                              "label-for": "fecha_finInput"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "fecha_finInput",
-                                type: "date",
-                                required: "",
-                                placeholder: "dd/mm/yyyy"
-                              },
-                              model: {
-                                value: _vm.derecho.fecha_fin,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.derecho, "fecha_fin", $$v)
-                                },
-                                expression: "derecho.fecha_fin"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Importe:",
-                              "label-for": "amountInput"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              attrs: {
-                                id: "amountInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.derecho.amount,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.derecho, "amount", $$v)
-                                },
-                                expression: "derecho.amount"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Guardar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
-                [_vm._v("Cancelar")]
-              ),
-              _vm._v(" "),
-              !_vm.edit
-                ? _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right mr-1",
-                      attrs: { type: "reset", variant: "danger" }
-                    },
-                    [_vm._v("Reset")]
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cfdb39e4", module.exports)
-  }
-}
-
-/***/ }),
-/* 388 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid", attrs: { id: "listado-derechos" } },
-    [
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 float-left my-1 mb-3" },
-            [
-              _vm.filter
-                ? _c(
-                    "b-form-group",
-                    {
-                      staticClass: "mb-0",
-                      attrs: { horizontal: "", label: "Filtro" }
-                    },
-                    [
-                      _c(
-                        "b-input-group",
-                        [
-                          _c("b-form-input", {
-                            attrs: { placeholder: "Texto de búsqueda" },
-                            model: {
-                              value: _vm.filter,
-                              callback: function($$v) {
-                                _vm.filter = $$v
-                              },
-                              expression: "filter"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-input-group-append",
-                            [
-                              _c(
-                                "b-btn",
-                                {
-                                  attrs: {
-                                    disabled: !_vm.filter,
-                                    title: "Limpiar filtro"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.filter = ""
-                                    }
-                                  }
-                                },
-                                [_vm._v("Limpiar")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e()
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 text-right float-right my-1 mb-3" },
-            [
-              _c(
-                "b-btn",
-                {
-                  staticClass: "mb-0",
-                  attrs: {
-                    variant: "default",
-                    size: "sm",
-                    title: "Crear Derecho"
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.showDerechoForm(0)
-                    }
-                  }
-                },
-                [_vm._v("Nuevo Contrato D.Imagen")]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          striped: "",
-          hover: "",
-          small: "",
-          responsive: "",
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "per-page": _vm.perPage,
-          "current-page": _vm.currentPage,
-          items: _vm.items,
-          fields: _vm.fields,
-          filter: _vm.filter
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          },
-          filtered: _vm.onFiltered
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "actions",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button-group",
-                  [
-                    _vm.remove
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "danger",
-                              title: "Eliminar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickDelete(
-                                  row.item.id,
-                                  row.item.fecha_ini,
-                                  row.item.fecha_fin
-                                )
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-trash" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.update
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "primary",
-                              title: "Editar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickEdit(row.item)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-edit" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.display
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "secondary",
-                              title: "Mostrar/Ocultar Detalle"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return row.toggleDetails($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("span", {
-                              staticClass: "icon",
-                              class: {
-                                "voyager-x": row.detailsShowing,
-                                "voyager-eye": !row.detailsShowing
-                              }
-                            })
-                          ]
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                )
-              ]
-            }
-          },
-          {
-            key: "row-details",
-            fn: function(row) {
-              return _vm.display
-                ? [
-                    _c(
-                      "b-card",
-                      [
-                        _c(
-                          "b-row",
-                          [
-                            _c("b-col", { attrs: { sm: "6" } }),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "6" } })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                : undefined
-            }
-          }
-        ])
-      }),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "5" } },
-            [
-              _c("b-pagination", {
-                staticClass: "my-0",
-                attrs: { "total-rows": _vm.totalRows, "per-page": _vm.perPage },
-                model: {
-                  value: _vm.currentPage,
-                  callback: function($$v) {
-                    _vm.currentPage = $$v
-                  },
-                  expression: "currentPage"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1 text-right", attrs: { md: "3" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Total: " }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: { readonly: "", plaintext: "" },
-                    model: {
-                      value: _vm.totalRows,
-                      callback: function($$v) {
-                        _vm.totalRows = $$v
-                      },
-                      expression: "totalRows"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "4" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Mostrar" }
-                },
-                [
-                  _c("b-form-select", {
-                    attrs: { options: _vm.pageOptions },
-                    model: {
-                      value: _vm.perPage,
-                      callback: function($$v) {
-                        _vm.perPage = $$v
-                      },
-                      expression: "perPage"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.remove
-        ? _c(
-            "b-modal",
-            {
-              ref: "modalDelete",
-              attrs: { title: "BORRAR Derecho", "hide-footer": "" }
-            },
-            [
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [
-                  _vm._v("Se van a borrar los Derechos de imagen de "),
-                  _c("strong", { attrs: { id: "deleteDerechoAlias" } }),
-                  _vm._v("¿Desea continuar?")
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "modal-footer" },
-                [
-                  _c(
-                    "b-btn",
-                    {
-                      attrs: { variant: "danger" },
-                      on: { click: _vm.removeItem }
-                    },
-                    [_vm._v("Borrar")]
-                  ),
-                  _vm._v(" "),
-                  _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
-                    _vm._v("Cancelar")
-                  ])
-                ],
-                1
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "modalEdit",
-          attrs: {
-            id: "derechoForm",
-            title: _vm.formTitle,
-            size: "lg",
-            "hide-footer": "",
-            lazy: ""
-          }
-        },
-        [
-          _c("derecho-pelotari", {
-            attrs: {
-              "pelotari-id": _vm.pelotariId,
-              "pelotari-alias": _vm.pelotariAlias,
-              "on-cancel": _vm.cancelDerechoForm,
-              "get-derecho-row": _vm.getDerechoRow,
-              "is-new-derecho": _vm.isNewDerecho,
-              "format-amount": _vm.formatRowAmount
-            }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b620834e", module.exports)
-  }
-}
-
-/***/ }),
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
 /* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -90395,25 +87582,9 @@ var render = function() {
                       _vm.edit
                         ? _c(
                             "b-tab",
-                            { attrs: { title: "Tarifas" } },
+                            { attrs: { title: "Campeonatos" } },
                             [
-                              _c("listado-tarifas", {
-                                attrs: {
-                                  "pelotari-id": this.pelotari.id,
-                                  "pelotari-alias": this.pelotari.alias
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.edit
-                        ? _c(
-                            "b-tab",
-                            { attrs: { title: "Dchos.Imagen" } },
-                            [
-                              _c("listado-derechos", {
+                              _c("listado-campeonatos", {
                                 attrs: {
                                   "pelotari-id": this.pelotari.id,
                                   "pelotari-alias": this.pelotari.alias
@@ -90681,6 +87852,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -90712,7 +87894,9 @@ var showSnackbar = function showSnackbar(msg) {
         prima_estelar: null,
         prima_manomanista: null,
         garantia: null,
-        garantia_disp: null,
+        coste: null,
+        formacion: false,
+        d_imagen: null,
         created_at: null,
         updated_at: null
       },
@@ -90745,7 +87929,9 @@ var showSnackbar = function showSnackbar(msg) {
       this.contrato.prima_estelar = this.formatAmount(rowContrato.prima_estelar);
       this.contrato.prima_manomanista = this.formatAmount(rowContrato.prima_manomanista);
       this.contrato.garantia = rowContrato.garantia;
-      this.contrato.garantia_disp = rowContrato.garantia_disp;
+      this.contrato.coste = this.formatAmount(rowContrato.coste);
+      this.contrato.formacion = rowContrato.formacion;
+      this.contrato.d_imagen = this.formatAmount(rowContrato.d_imagen);
     }
   },
   methods: {
@@ -90788,7 +87974,9 @@ var showSnackbar = function showSnackbar(msg) {
       this.contrato.prima_estelar = null;
       this.contrato.prima_manomanista = null;
       this.contrato.garantia = null;
-      this.contrato.garantia_disp = null;
+      this.contrato.coste = null;
+      this.contrato.formacion = false;
+      this.contrato.d_imagen = null;
     }
   }
 });
@@ -90960,7 +88148,7 @@ var render = function() {
                           {
                             staticClass: "col-sm-4",
                             attrs: {
-                              label: "Prima por partido ganado:",
+                              label: "Prima por partido:",
                               "label-for": "prima_partidoInput"
                             }
                           },
@@ -90991,7 +88179,7 @@ var render = function() {
                           {
                             staticClass: "col-sm-4",
                             attrs: {
-                              label: "Prima por estelar ganado:",
+                              label: "Prima por estelar:",
                               "label-for": "prima_estelarInput"
                             }
                           },
@@ -91063,6 +88251,66 @@ var render = function() {
                           {
                             staticClass: "col-sm-4",
                             attrs: {
+                              label: "Dchos.Imagen (mes):",
+                              "label-for": "d_imagenInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              attrs: {
+                                id: "d_imagenInput",
+                                type: "number",
+                                maxlength: "8",
+                                placeholder: "0"
+                              },
+                              model: {
+                                value: _vm.contrato.d_imagen,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "d_imagen", $$v)
+                                },
+                                expression: "contrato.d_imagen"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
+                              label: "Coste por partido:",
+                              "label-for": "costeInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              staticClass: "text-right",
+                              attrs: {
+                                id: "costeInput",
+                                type: "number",
+                                maxlength: "8",
+                                placeholder: "0"
+                              },
+                              model: {
+                                value: _vm.contrato.coste,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.contrato, "coste", $$v)
+                                },
+                                expression: "contrato.coste"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-4",
+                            attrs: {
                               label: "Partidos garantía:",
                               "label-for": "garantiaInput"
                             }
@@ -91082,36 +88330,6 @@ var render = function() {
                                   _vm.$set(_vm.contrato, "garantia", $$v)
                                 },
                                 expression: "contrato.garantia"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Garantía según disponibilidad:",
-                              "label-for": "garantia_dispInput"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              attrs: {
-                                id: "garantia_dispInput",
-                                type: "number",
-                                maxlength: "4",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.contrato.garantia_disp,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.contrato, "garantia_disp", $$v)
-                                },
-                                expression: "contrato.garantia_disp"
                               }
                             })
                           ],
@@ -91378,6 +88596,1733 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 400 */,
+/* 401 */,
+/* 402 */,
+/* 403 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(404)
+}
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(406)
+/* template */
+var __vue_template__ = __webpack_require__(415)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/ListadoComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-75c35ea4", Component.options)
+  } else {
+    hotAPI.reload("data-v-75c35ea4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 404 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(405);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(19)("74710f37", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c35ea4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c35ea4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 405 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#rrhh-tarifas .card {\n  border:none;\n}\n#rrhh-tarifas .nav-pills.card-header {\n  background-color:transparent;\n}\n#rrhh-tarifas .nav-pills .nav-link {\n  margin-bottom:.25rem;\n}\n#rrhh-tarifas .nav-pills .nav-link.active,\n#rrhh-tarifas .nav-pills .show > .nav-link {\n  background-color:#d82a1f;\n}\n#rrhh-tarifas .tabs .card-header {\n  padding-left:0;\n  padding-top:0;\n}\n#rrhh-tarifas .tab-pane.card-body {\n  padding:0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 406 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+Vue.component('tarifas-campeonato', __webpack_require__(407));
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias'],
+  data: function data() {
+    return {
+      campeonatos: [],
+      tabs: []
+    };
+  },
+  created: function created() {
+    this.fetchCampeonatos();
+  },
+
+  methods: {
+    fetchCampeonatos: function fetchCampeonatos() {
+      var _this = this;
+
+      var uri = '/www/campeonatos';
+      this.axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this.campeonatos = JSON.parse(stringified);
+        _this.campeonatos.map(function (val, key) {
+          _this.tabs.push(val.name);
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 407 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(408)
+}
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(410)
+/* template */
+var __vue_template__ = __webpack_require__(414)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/TarifasCampeonatoComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0f36f636", Component.options)
+  } else {
+    hotAPI.reload("data-v-0f36f636", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 408 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(409);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(19)("260e8a5c", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0f36f636\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0f36f636\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 409 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(10)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#tarifas-campeonato legend {\n  font-size:0.7875rem;\n  padding: 0.25rem 0rem;\n}\n#tarifaDetails .border-secondary {\n  border-color:lightgray!important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 410 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+Vue.component('tarifa-pelotari', __webpack_require__(411));
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'campeonatoDesc'],
+  data: function data() {
+    var _this = this,
+        _ref;
+
+    return _ref = {
+      create: true,
+      remove: true,
+      update: true,
+      display: true,
+      filter: false,
+      sortBy: 'fecha_ini',
+      sortDesc: true,
+      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      items: [],
+      totalRows: 0,
+      perPage: 10,
+      currentPage: 1,
+      pageOptions: [10, 25, 50]
+    }, _defineProperty(_ref, 'filter', null), _defineProperty(_ref, 'deleteId', null), _defineProperty(_ref, 'formTitle', ''), _defineProperty(_ref, 'rowTarifa', null), _defineProperty(_ref, 'newTarifa', true), _defineProperty(_ref, 'cancelTarifaForm', function cancelTarifaForm() {
+      _this.hideTarifaForm();
+    }), _defineProperty(_ref, 'getTarifaRow', function getTarifaRow() {
+      return _this.rowTarifa;
+    }), _defineProperty(_ref, 'isNewTarifa', function isNewTarifa() {
+      return _this.newTarifa;
+    }), _defineProperty(_ref, 'formatRowAmount', function formatRowAmount(amount) {
+      return _this.formatAmount(amount);
+    }), _ref;
+  },
+  created: function created() {
+    this.fetchTarifas();
+  },
+
+  methods: {
+    fetchTarifas: function fetchTarifas() {
+      var _this2 = this;
+
+      var uri = '/www/tarifas';
+      this.axios.get(uri, {
+        params: {
+          pelotari_id: this.pelotariId,
+          campeonato_id: this.campeonatoId
+        }
+      }).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this2.items = JSON.parse(stringified);
+        _this2.totalRows = _this2.items.length;
+      });
+    },
+    onFiltered: function onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    onClickEdit: function onClickEdit(item) {
+      this.rowTarifa = item;
+      this.showTarifaForm(item.id);
+    },
+    removeItem: function removeItem() {
+      var _this3 = this;
+
+      var uri = '/www/tarifas/' + this.deleteId;
+      this.axios.delete(uri).then(function (response) {
+        _this3.deleteId = null;
+        _this3.$refs.modalDelete.hide();
+        _this3.fetchTarifas();
+        showSnackbar("Tarifa BORRADA");
+      }).catch(function (error) {
+        console.log("[removeItem] error: " + error);
+        _this3.deleteId = null;
+        _this3.$refs.modalDelete.hide();
+        showSnackbar("ERROR al borrar");
+      });
+    },
+    onClickDelete: function onClickDelete(tarifa) {
+      this.deleteId = tarifa.id;
+
+      var msg = " \
+          <div class='px-5 py-2'> \
+            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+            <p class='mb-0'><strong>Campeonato:</strong> " + this.campeonatoName + "</p> \
+            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(tarifa.fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(tarifa.fecha_fin) + "</p> \
+          </div>";
+
+      jQuery('#deleteTarifaAlias').html(msg);
+
+      this.$refs.modalDelete.show();
+    },
+    hideModalDelete: function hideModalDelete() {
+      this.deleteId = null;
+      this.$refs.modalDelete.hide();
+    },
+    formatDate: function formatDate(date) {
+      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
+        return "";
+      }
+    },
+    formatAmount: function formatAmount(amount) {
+      if (amount) return parseFloat(amount).toFixed(2);else {
+        return "";
+      }
+    },
+    showTarifaForm: function showTarifaForm() {
+      var $id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+      if ($id) {
+        this.formTitle = 'Editar Tarifa';
+        this.newTarifa = false;
+        this.$refs.modalEdit.show();
+      } else {
+        this.formTitle = 'Nueva Tarifa';
+        this.newTarifa = true;
+        this.$refs.modalEdit.show();
+      }
+    },
+    hideTarifaForm: function hideTarifaForm() {
+      this.$refs.modalEdit.hide();
+      this.fetchTarifas();
+    }
+  }
+});
+
+/***/ }),
+/* 411 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(412)
+/* template */
+var __vue_template__ = __webpack_require__(413)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/FichaComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b550cbce", Component.options)
+  } else {
+    hotAPI.reload("data-v-b550cbce", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 412 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'onCancel', 'getTarifaRow', 'isNewTarifa', 'formatAmount'],
+  data: function data() {
+    var _this = this;
+
+    return {
+      tarifa: {
+        id: null,
+        pelotari_id: null,
+        campeonato_id: null,
+        fecha_ini: null,
+        fecha_fin: null,
+        campeon: null,
+        subcampeon: null,
+        liga_semifinal: null,
+        liga_cuartos: null,
+        semifinal: null,
+        cuartos: null,
+        octavos: null,
+        created_at: null,
+        updated_at: null
+      },
+      edit: false,
+      show: true,
+      goBack: function goBack() {
+        _this.onCancel();
+      }
+    };
+  },
+
+  created: function created() {
+    console.log("FichaComponent created");
+
+    this.tarifa.pelotari_id = this.pelotariId;
+    this.tarifa.campeonato_id = this.campeonatoId;
+
+    if (this.isNewTarifa()) {
+      this.edit = false;
+    } else {
+      this.edit = true;
+
+      var rowTarifa = this.getTarifaRow();
+
+      this.tarifa.id = rowTarifa.id;
+      this.tarifa.fecha_ini = rowTarifa.fecha_ini;
+      this.tarifa.fecha_fin = rowTarifa.fecha_fin;
+      this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
+      this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
+      this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
+      this.tarifa.liga_cuartos = this.formatAmount(rowTarifa.liga_cuartos);
+      this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
+      this.tarifa.cuartos = this.formatAmount(rowTarifa.cuartos);
+      this.tarifa.octavos = this.formatAmount(rowTarifa.octavos);
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit(evt) {
+      var _this2 = this;
+
+      evt.preventDefault();
+
+      var uri = '/www/tarifas';
+      if (this.edit) {
+        this.axios.post(uri + '/' + this.tarifa.id + '/update', this.tarifa).then(function (response) {
+          showSnackbar("Tarifa actualizada");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      } else {
+        this.axios.post(uri, this.tarifa).then(function (response) {
+          showSnackbar("Tarifa creada");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      }
+    },
+    onReset: function onReset(evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+      this.tarifa.fecha_ini = null;
+      this.tarifa.fecha_fin = null;
+      this.tarifa.campeon = null;
+      this.tarifa.subcampeon = null;
+      this.tarifa.liga_semifinal = null;
+      this.tarifa.liga_cuartos = null;
+      this.tarifa.semifinal = null;
+      this.tarifa.cuartos = null;
+      this.tarifa.octavos = null;
+    }
+  }
+});
+
+/***/ }),
+/* 413 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.show
+        ? _c(
+            "b-form",
+            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+            [
+              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
+                _c("div", { staticClass: "col-12 text-white" }, [
+                  _c("strong", [
+                    _vm._v(
+                      _vm._s(_vm.pelotariAlias) +
+                        " - " +
+                        _vm._s(_vm.campeonatoName)
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: {
+                        label: "Fecha Inicio:",
+                        "label-for": "fecha_iniInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          id: "fecha_iniInput",
+                          type: "date",
+                          required: "",
+                          placeholder: "dd/mm/yyyy"
+                        },
+                        model: {
+                          value: _vm.tarifa.fecha_ini,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "fecha_ini", $$v)
+                          },
+                          expression: "tarifa.fecha_ini"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: {
+                        label: "Fecha Fin:",
+                        "label-for": "fecha_finInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          id: "fecha_finInput",
+                          type: "date",
+                          required: "",
+                          placeholder: "dd/mm/yyyy"
+                        },
+                        model: {
+                          value: _vm.tarifa.fecha_fin,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "fecha_fin", $$v)
+                          },
+                          expression: "tarifa.fecha_fin"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: { label: "Campeón:", "label-for": "campeonInput" }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "campeonInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.campeon,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "campeon", $$v)
+                          },
+                          expression: "tarifa.campeon"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: {
+                        label: "Subampeón:",
+                        "label-for": "dieta_partidoInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "dieta_partidoInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.subcampeon,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "subcampeon", $$v)
+                          },
+                          expression: "tarifa.subcampeon"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: {
+                        label: "Liguilla Semifinales:",
+                        "label-for": "liga_semifinalInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "liga_semifinalInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.liga_semifinal,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "liga_semifinal", $$v)
+                          },
+                          expression: "tarifa.liga_semifinal"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: {
+                        label: "Liguilla Cuartos:",
+                        "label-for": "liga_cuartosInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "liga_cuartosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.liga_cuartos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "liga_cuartos", $$v)
+                          },
+                          expression: "tarifa.liga_cuartos"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: {
+                        label: "Semifinales:",
+                        "label-for": "semfifinalInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "semfifinalInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.semifinal,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "semifinal", $$v)
+                          },
+                          expression: "tarifa.semifinal"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: { label: "Cuartos:", "label-for": "cuartosInput" }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "cuartosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.cuartos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "cuartos", $$v)
+                          },
+                          expression: "tarifa.cuartos"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: { label: "Octavos:", "label-for": "octavosInput" }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "octavosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.octavos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "octavos", $$v)
+                          },
+                          expression: "tarifa.octavos"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { type: "submit", variant: "primary" } },
+                [_vm._v("Guardar")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
+                [_vm._v("Cancelar")]
+              ),
+              _vm._v(" "),
+              !_vm.edit
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "float-right mr-1",
+                      attrs: { type: "reset", variant: "danger" }
+                    },
+                    [_vm._v("Reset")]
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b550cbce", module.exports)
+  }
+}
+
+/***/ }),
+/* 414 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid p-0", attrs: { id: "tarifas-campeonato" } },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 float-left mt-0 mb-1" },
+            [
+              _vm.filter
+                ? _c(
+                    "b-form-group",
+                    {
+                      staticClass: "mb-0",
+                      attrs: { horizontal: "", label: "Filtro" }
+                    },
+                    [
+                      _c(
+                        "b-input-group",
+                        [
+                          _c("b-form-input", {
+                            attrs: { placeholder: "Texto de búsqueda" },
+                            model: {
+                              value: _vm.filter,
+                              callback: function($$v) {
+                                _vm.filter = $$v
+                              },
+                              expression: "filter"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "b-input-group-append",
+                            [
+                              _c(
+                                "b-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.filter,
+                                    title: "Limpiar filtro"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.filter = ""
+                                    }
+                                  }
+                                },
+                                [_vm._v("Limpiar")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _c("div", { staticClass: "mt-2 mb-0" }, [
+                    _c("h6", { staticClass: "text-danger font-weight-bold" }, [
+                      _vm._v(_vm._s(_vm.campeonatoDesc))
+                    ])
+                  ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 text-right float-right mt-0 mb-3" },
+            [
+              _c(
+                "b-btn",
+                {
+                  staticClass: "mb-0",
+                  attrs: {
+                    variant: "default",
+                    size: "sm",
+                    title: "Crear Tarifa"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.showTarifaForm(0)
+                    }
+                  }
+                },
+                [_vm._v("Nueva Tarifa")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: {
+          striped: "",
+          hover: "",
+          small: "",
+          responsive: "",
+          "sort-by": _vm.sortBy,
+          "sort-desc": _vm.sortDesc,
+          "per-page": _vm.perPage,
+          "current-page": _vm.currentPage,
+          items: _vm.items,
+          fields: _vm.fields,
+          filter: _vm.filter
+        },
+        on: {
+          "update:sortBy": function($event) {
+            _vm.sortBy = $event
+          },
+          "update:sortDesc": function($event) {
+            _vm.sortDesc = $event
+          },
+          filtered: _vm.onFiltered
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "actions",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button-group",
+                  [
+                    _vm.remove
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "danger",
+                              title: "Eliminar"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickDelete(row.item)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-trash" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.update
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "primary",
+                              title: "Editar"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickEdit(row.item)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-edit" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.display
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "secondary",
+                              title: "Mostrar/Ocultar Detalle"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                return row.toggleDetails($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "icon",
+                              class: {
+                                "voyager-x": row.detailsShowing,
+                                "voyager-eye": !row.detailsShowing
+                              }
+                            })
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]
+            }
+          },
+          {
+            key: "row-details",
+            fn: function(row) {
+              return _vm.display
+                ? [
+                    _c(
+                      "b-card",
+                      { attrs: { id: "tarifaDetails" } },
+                      [
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 py-2 border-bottom border-top border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Campeón:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.campeon)) +
+                                  " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Subcampeón:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.subcampeon)) +
+                                  " €"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 pb-2 border-bottom border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("L. Semifinales:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatAmount(row.item.liga_semifinal)
+                                ) + " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("L. Cuartos:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatAmount(row.item.liga_cuartos)
+                                ) + " €"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 pb-2 border-bottom border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Semifinales:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.semifinal)) +
+                                  " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Cuartos:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.cuartos)) +
+                                  " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Octavos:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.octavos)) +
+                                  " €"
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                : undefined
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "5" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: {
+                  "total-rows": _vm.totalRows,
+                  "per-page": _vm.perPage,
+                  size: "sm"
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Total: " }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "", plaintext: "", size: "sm" },
+                    model: {
+                      value: _vm.totalRows,
+                      callback: function($$v) {
+                        _vm.totalRows = $$v
+                      },
+                      expression: "totalRows"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "4" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Mostrar" }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { options: _vm.pageOptions, size: "sm" },
+                    model: {
+                      value: _vm.perPage,
+                      callback: function($$v) {
+                        _vm.perPage = $$v
+                      },
+                      expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.remove
+        ? _c(
+            "b-modal",
+            {
+              ref: "modalDelete",
+              attrs: { title: "BORRAR Tarifa", "hide-footer": "" }
+            },
+            [
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [
+                  _vm._v("Se va a borrar la tarifa de "),
+                  _c("span", { attrs: { id: "deleteTarifaAlias" } }),
+                  _vm._v("¿Desea continuar?")
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-footer" },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      attrs: { variant: "danger" },
+                      on: { click: _vm.removeItem }
+                    },
+                    [_vm._v("Borrar")]
+                  ),
+                  _vm._v(" "),
+                  _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+                    _vm._v("Cancelar")
+                  ])
+                ],
+                1
+              )
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalEdit",
+          attrs: {
+            id: "tarifaForm",
+            title: _vm.formTitle,
+            size: "lg",
+            "hide-footer": "",
+            lazy: ""
+          }
+        },
+        [
+          _c("tarifa-pelotari", {
+            attrs: {
+              "pelotari-id": _vm.pelotariId,
+              "pelotari-alias": _vm.pelotariAlias,
+              "campeonato-id": _vm.campeonatoId,
+              "campeonato-name": _vm.campeonatoName,
+              "on-cancel": _vm.cancelTarifaForm,
+              "get-tarifa-row": _vm.getTarifaRow,
+              "is-new-tarifa": _vm.isNewTarifa,
+              "format-amount": _vm.formatRowAmount
+            }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0f36f636", module.exports)
+  }
+}
+
+/***/ }),
+/* 415 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "rrhh-tarifas" } },
+    [
+      _c(
+        "b-card",
+        { attrs: { "no-body": "" } },
+        [
+          _c(
+            "b-tabs",
+            { attrs: { pills: "", card: "", vertical: "" } },
+            _vm._l(_vm.campeonatos, function(tab) {
+              return _c(
+                "b-tab",
+                { attrs: { title: "" + tab.name } },
+                [
+                  _c("tarifas-campeonato", {
+                    attrs: {
+                      "pelotari-id": _vm.pelotariId,
+                      "pelotari-alias": _vm.pelotariAlias,
+                      "campeonato-id": "" + tab.id,
+                      "campeonato-name": "" + tab.name,
+                      "campeonato-desc": "" + tab.desc
+                    }
+                  })
+                ],
+                1
+              )
+            })
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-75c35ea4", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
