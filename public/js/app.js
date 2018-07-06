@@ -85690,8 +85690,8 @@ var showSnackbar = function showSnackbar(msg) {
         image: '/storage/avatars/default/default.jpg',
         num_ss: '',
         fecha_nac: null,
-        telefono2: '',
-        telefono3: '',
+        telefono_2: '',
+        telefono_3: '',
         iban: '',
         num_hijos: null,
         created: null,
@@ -85768,8 +85768,8 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.pelotari.fotoName = pelotari.foto;
         _this4.pelotari.num_ss = pelotari.num_ss;
         _this4.pelotari.fecha_nac = pelotari.fecha_nac;
-        _this4.pelotari.telefono2 = pelotari.telefono2;
-        _this4.pelotari.telefono3 = pelotari.telefono3;
+        _this4.pelotari.telefono_2 = pelotari.telefono_2;
+        _this4.pelotari.telefono_3 = pelotari.telefono_3;
         _this4.pelotari.iban = pelotari.iban;
         _this4.pelotari.num_hijos = pelotari.num_hijos;
         _this4.pelotari.created = pelotari.created_at;
@@ -85854,8 +85854,8 @@ var showSnackbar = function showSnackbar(msg) {
       this.pelotari.telefono = '';
       this.pelotari.num_ss = '';
       this.pelotari.fecha_nac = null;
-      this.pelotari.telefono2 = '';
-      this.pelotari.telefono3 = '';
+      this.pelotari.telefono_2 = '';
+      this.pelotari.telefono_3 = '';
       this.pelotari.iban = '';
       this.pelotari.num_hijos = null;
       /* Trick to reset/clear native browser form validation state */
@@ -90033,15 +90033,15 @@ var render = function() {
                                             placeholder: "Teléfono Móvil"
                                           },
                                           model: {
-                                            value: _vm.pelotari.telefono2,
+                                            value: _vm.pelotari.telefono_2,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.pelotari,
-                                                "telefono2",
+                                                "telefono_2",
                                                 $$v
                                               )
                                             },
-                                            expression: "pelotari.telefono2"
+                                            expression: "pelotari.telefono_2"
                                           }
                                         })
                                       ],
@@ -90067,15 +90067,15 @@ var render = function() {
                                             placeholder: "Teléfono Alternativo"
                                           },
                                           model: {
-                                            value: _vm.pelotari.telefono3,
+                                            value: _vm.pelotari.telefono_3,
                                             callback: function($$v) {
                                               _vm.$set(
                                                 _vm.pelotari,
-                                                "telefono3",
+                                                "telefono_3",
                                                 $$v
                                               )
                                             },
-                                            expression: "pelotari.telefono3"
+                                            expression: "pelotari.telefono_3"
                                           }
                                         })
                                       ],

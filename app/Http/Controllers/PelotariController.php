@@ -64,6 +64,12 @@ class PelotariController extends Controller
           'provincia_id' => $data->provincia_id,
           'email' => $data->email,
           'telefono' => $data->telefono,
+          'num_ss' => $data->num_ss,
+          'fecha_nac' => $data->fecha_nac,
+          'telefono_2' => $data->telefono_2,
+          'telefono_3' => $data->telefono_3,
+          'iban' => $data->iban,
+          'num_hijos' => $data->num_hijos,
         ]);
 
         if($request->file('photo')) {
@@ -133,6 +139,12 @@ class PelotariController extends Controller
         $item->provincia_id = $data->provincia_id;
         $item->email = $data->email;
         $item->telefono = $data->telefono;
+        $item->num_ss = $data->num_ss;
+        $item->fecha_nac = $data->fecha_nac;
+        $item->telefono_2 = $data->telefono_2;
+        $item->telefono_3 = $data->telefono_3;
+        $item->iban = $data->iban;
+        $item->num_hijos = $data->num_hijos;
 
         if($request->file('photo')) {
           $path = $request->file('photo')->storeAs('public/avatars', $data->fotoName);
