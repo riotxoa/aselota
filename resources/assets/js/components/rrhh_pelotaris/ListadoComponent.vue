@@ -54,12 +54,36 @@
               <b-row class="mb-2">
                 <b-col sm="2" class="text-sm-right"><b>Nombre:</b></b-col>
                 <b-col sm="4">{{ row.item.nombre }} {{ row.item.apellidos }}</b-col>
+                <b-col sm="2" class="text-sm-right"><b>F.Nacimiento:</b></b-col>
+                <b-col sm="4">{{ row.item.fecha_nac }}</b-col>
+              </b-row>
+              <b-row class="mb-2">
                 <b-col sm="2" class="text-sm-right"><b>DNI:</b></b-col>
                 <b-col sm="4">{{ row.item.DNI }}</b-col>
+                <b-col sm="2" class="text-sm-right"><b>NºSS:</b></b-col>
+                <b-col sm="4">{{ row.item.num_ss }}</b-col>
               </b-row>
               <b-row class="mb-2">
                 <b-col sm="2" class="text-sm-right"><b>Dirección:</b></b-col>
                 <b-col sm="10">{{ row.item.direccion }} - {{ row.item.cod_postal }} {{ row.item.municipio }} ({{ row.item.provincia }})</b-col>
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="2" class="text-sm-right"><b>E-Mail:</b></b-col>
+                <b-col sm="4">{{ row.item.email }}</b-col>
+                <b-col sm="2" class="text-sm-right"><b>Tel.Fijo:</b></b-col>
+                <b-col sm="4">{{ row.item.telefono }}</b-col>
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="2" class="text-sm-right"><b>Tel.Móvil:</b></b-col>
+                <b-col sm="4">{{ row.item.telefono_2 }}</b-col>
+                <b-col sm="2" class="text-sm-right"><b>Tel.Alternativo:</b></b-col>
+                <b-col sm="4">{{ row.item.telefono_3 }}</b-col>
+              </b-row>
+              <b-row class="mb-2">
+                <b-col sm="2" class="text-sm-right"><b>NºHijos:</b></b-col>
+                <b-col sm="4">{{ row.item.num_hijos }}</b-col>
+                <b-col sm="2" class="text-sm-right"><b>IBAN:</b></b-col>
+                <b-col sm="4">{{ row.item.iban }}</b-col>
               </b-row>
             </b-col>
           </b-row>

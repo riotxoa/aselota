@@ -84791,6 +84791,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -85123,11 +85147,44 @@ var render = function() {
                                     staticClass: "text-sm-right",
                                     attrs: { sm: "2" }
                                   },
+                                  [_c("b", [_vm._v("F.Nacimiento:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.fecha_nac))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
                                   [_c("b", [_vm._v("DNI:")])]
                                 ),
                                 _vm._v(" "),
                                 _c("b-col", { attrs: { sm: "4" } }, [
                                   _vm._v(_vm._s(row.item.DNI))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("NºSS:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.num_ss))
                                 ])
                               ],
                               1
@@ -85157,6 +85214,105 @@ var render = function() {
                                       _vm._s(row.item.provincia) +
                                       ")"
                                   )
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("E-Mail:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.email))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Fijo:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Móvil:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono_2))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Alternativo:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono_3))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("NºHijos:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.num_hijos))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("IBAN:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.iban))
                                 ])
                               ],
                               1
