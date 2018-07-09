@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\ContratoCampeonato;
 
@@ -19,7 +20,19 @@ class ContratoCampeonatoController extends Controller
         $pelotari_id = $request->get('pelotari_id');
         $campeonato_id = $request->get('campeonato_id');
 
-        $items = ContratoCampeonato::where('pelotari_id', $pelotari_id)->where('campeonato_id', $campeonato_id)->get();
+        // $items = ContratoCampeonato::where('pelotari_id', $pelotari_id)->where('campeonato_id', $campeonato_id)->get();
+
+        $items = DB::table('contrato_campeonatos')
+          ->select(
+              'contrato_campeonatos.*',
+              'contratos.fecha_ini',
+              'contratos.fecha_fin'
+            )
+          ->leftJoin('contratos', 'contratos.id', '=', 'contrato_campeonatos.contrato_id')
+          ->where('contrato_campeonatos.pelotari_id', '=', $pelotari_id)
+          ->where('contrato_campeonatos.campeonato_id', '=', $campeonato_id)
+          ->where('contrato_campeonatos.deleted_at', '=', null)
+          ->get();
 
         return response()->json($items, 200);
     }
@@ -45,10 +58,9 @@ class ContratoCampeonatoController extends Controller
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
         $item = new ContratoCampeonato([
+          'contrato_id' => $request->get('contrato_id'),
           'pelotari_id' => $request->get('pelotari_id'),
           'campeonato_id' => $request->get('campeonato_id'),
-          'fecha_ini' => $request->get('fecha_ini'),
-          'fecha_fin' => $request->get('fecha_fin'),
           'campeon' => $request->get('campeon'),
           'subcampeon' => $request->get('subcampeon'),
           'liga_semifinal' => $request->get('liga_semifinal'),
@@ -104,8 +116,7 @@ class ContratoCampeonatoController extends Controller
 
         $item = ContratoCampeonato::find($id);
 
-        $item->fecha_ini = $request->get('fecha_ini');
-        $item->fecha_fin = $request->get('fecha_fin');
+        $item->contrato_id = $request->get('contrato_id');
         $item->campeon = $request->get('campeon');
         $item->subcampeon = $request->get('subcampeon');
         $item->liga_semifinal = $request->get('liga_semifinal');

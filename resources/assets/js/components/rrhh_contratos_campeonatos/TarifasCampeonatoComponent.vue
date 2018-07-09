@@ -64,10 +64,16 @@
           <b-row class="mb-2 pb-2 border-bottom border-secondary">
             <b-col sm="2" class="font-weight-bold">Semifinales:</b-col>
             <b-col sm="2">{{ formatAmount(row.item.semifinal) }}&nbsp;&euro;</b-col>
-            <b-col sm="2" class="font-weight-bold">Cuartos:</b-col>
+            <b-col sm="2" class="font-weight-bold">1/4&nbsp;Final:</b-col>
             <b-col sm="2">{{ formatAmount(row.item.cuartos) }}&nbsp;&euro;</b-col>
-            <b-col sm="2" class="font-weight-bold">Octavos:</b-col>
+          </b-row>
+          <b-row class="mb-2 pb-2 border-bottom border-secondary">
+            <b-col sm="2" class="font-weight-bold">1/8&nbsp;Final::</b-col>
             <b-col sm="2">{{ formatAmount(row.item.octavos) }}&nbsp;&euro;</b-col>
+            <b-col sm="2" class="font-weight-bold">1/16&nbsp;Final:</b-col>
+            <b-col sm="2">{{ formatAmount(row.item.dieciseisavos) }}&nbsp;&euro;</b-col>
+            <b-col sm="2" class="font-weight-bold">1/32&nbsp;Final:</b-col>
+            <b-col sm="2">{{ formatAmount(row.item.treintaidosavos) }}&nbsp;&euro;</b-col>
           </b-row>
         </b-card>
       </template>

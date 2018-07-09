@@ -11,9 +11,8 @@ class ContratoCampeonato extends Model
 
   protected $fillable = [
     'pelotari_id',
+    'contrato_id',
     'campeonato_id',
-    'fecha_ini',
-    'fecha_fin',
     'campeon',
     'subcampeon',
     'liga_semifinal',

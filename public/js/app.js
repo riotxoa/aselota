@@ -5198,115 +5198,6 @@ var eventOff = function eventOff(el, evtName, handler) {
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5616,6 +5507,115 @@ module.exports = {
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5633,88 +5633,6 @@ function warn(message) {
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5955,6 +5873,88 @@ function clickHandlerFactory(_ref3) {
     return h(tag, componentData, children);
   }
 });
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
 
 /***/ }),
 /* 12 */
@@ -8656,6 +8656,175 @@ function pluckProps(keysToPluck, objToPluck) {
 
 /***/ }),
 /* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = observeDOM;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(5);
+
+
+
+/**
+ * Observe a DOM element changes, falls back to eventListener mode
+ * @param {Element} el The DOM element to observe
+ * @param {Function} callback callback to be called on change
+ * @param {object} [opts={childList: true, subtree: true}] observe options
+ * @see http://stackoverflow.com/questions/3219758
+ */
+function observeDOM(el, callback, opts) {
+  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+  var eventListenerSupported = window.addEventListener;
+
+  // Handle case where we might be passed a vue instance
+  el = el ? el.$el || el : null;
+  /* istanbul ignore next: dificult to test in JSDOM */
+  if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["l" /* isElement */])(el)) {
+    // We can't observe somthing that isn't an element
+    return null;
+  }
+
+  var obs = null;
+
+  /* istanbul ignore next: dificult to test in JSDOM */
+  if (MutationObserver) {
+    // Define a new observer
+    obs = new MutationObserver(function (mutations) {
+      var changed = false;
+      // A Mutation can contain several change records, so we loop through them to see what has changed.
+      // We break out of the loop early if any "significant" change has been detected
+      for (var i = 0; i < mutations.length && !changed; i++) {
+        // The muttion record
+        var mutation = mutations[i];
+        // Mutation Type
+        var type = mutation.type;
+        // DOM Node (could be any DOM Node type - HTMLElement, Text, comment, etc)
+        var target = mutation.target;
+        if (type === 'characterData' && target.nodeType === Node.TEXT_NODE) {
+          // We ignore nodes that are not TEXt (i.e. comments, etc) as they don't change layout
+          changed = true;
+        } else if (type === 'attributes') {
+          changed = true;
+        } else if (type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)) {
+          // This includes HTMLElement and Text Nodes being added/removed/re-arranged
+          changed = true;
+        }
+      }
+      if (changed) {
+        // We only call the callback if a change that could affect layout/size truely happened.
+        callback();
+      }
+    });
+
+    // Have the observer observe foo for changes in children, etc
+    obs.observe(el, Object(__WEBPACK_IMPORTED_MODULE_0__object__["a" /* assign */])({ childList: true, subtree: true }, opts));
+  } else if (eventListenerSupported) {
+    // Legacy interface. most likely not used in modern browsers
+    el.addEventListener('DOMNodeInserted', callback, false);
+    el.addEventListener('DOMNodeRemoved', callback, false);
+  }
+
+  // We return a reference to the observer so that obs.disconnect() can be called if necessary
+  // To reduce overhead when the root element is hiiden
+  return obs;
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_array__ = __webpack_require__(4);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+
+/**
+ * Issue #569: collapse::toggle::state triggered too many times
+ * @link https://github.com/bootstrap-vue/bootstrap-vue/issues/569
+ */
+
+var BVRL = '__BV_root_listeners__';
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  methods: {
+    /**
+         * Safely register event listeners on the root Vue node.
+         * While Vue automatically removes listeners for individual components,
+         * when a component registers a listener on root and is destroyed,
+         * this orphans a callback because the node is gone,
+         * but the root does not clear the callback.
+         *
+         * This adds a non-reactive prop to a vm on the fly
+         * in order to avoid object observation and its performance costs
+         * to something that needs no reactivity.
+         * It should be highly unlikely there are any naming collisions.
+         * @param {string} event
+         * @param {function} callback
+         * @chainable
+         */
+    listenOnRoot: function listenOnRoot(event, callback) {
+      if (!this[BVRL] || !Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
+        this[BVRL] = [];
+      }
+      this[BVRL].push({ event: event, callback: callback });
+      this.$root.$on(event, callback);
+      return this;
+    },
+
+
+    /**
+         * Convenience method for calling vm.$emit on vm.$root.
+         * @param {string} event
+         * @param {*} args
+         * @chainable
+         */
+    emitOnRoot: function emitOnRoot(event) {
+      var _$root;
+
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      (_$root = this.$root).$emit.apply(_$root, [event].concat(_toConsumableArray(args)));
+      return this;
+    }
+  },
+
+  beforeDestroy: function beforeDestroy() {
+    if (this[BVRL] && Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
+      while (this[BVRL].length > 0) {
+        // shift to process in order
+        var _BVRL$shift = this[BVRL].shift(),
+            event = _BVRL$shift.event,
+            callback = _BVRL$shift.callback;
+
+        this.$root.$off(event, callback);
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  computed: {
+    custom: function custom() {
+      return !this.plain;
+    }
+  },
+  props: {
+    plain: {
+      type: Boolean,
+      default: false
+    }
+  }
+});
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -8881,175 +9050,6 @@ function applyToTag (styleElement, obj) {
   }
 }
 
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = observeDOM;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(5);
-
-
-
-/**
- * Observe a DOM element changes, falls back to eventListener mode
- * @param {Element} el The DOM element to observe
- * @param {Function} callback callback to be called on change
- * @param {object} [opts={childList: true, subtree: true}] observe options
- * @see http://stackoverflow.com/questions/3219758
- */
-function observeDOM(el, callback, opts) {
-  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-  var eventListenerSupported = window.addEventListener;
-
-  // Handle case where we might be passed a vue instance
-  el = el ? el.$el || el : null;
-  /* istanbul ignore next: dificult to test in JSDOM */
-  if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["l" /* isElement */])(el)) {
-    // We can't observe somthing that isn't an element
-    return null;
-  }
-
-  var obs = null;
-
-  /* istanbul ignore next: dificult to test in JSDOM */
-  if (MutationObserver) {
-    // Define a new observer
-    obs = new MutationObserver(function (mutations) {
-      var changed = false;
-      // A Mutation can contain several change records, so we loop through them to see what has changed.
-      // We break out of the loop early if any "significant" change has been detected
-      for (var i = 0; i < mutations.length && !changed; i++) {
-        // The muttion record
-        var mutation = mutations[i];
-        // Mutation Type
-        var type = mutation.type;
-        // DOM Node (could be any DOM Node type - HTMLElement, Text, comment, etc)
-        var target = mutation.target;
-        if (type === 'characterData' && target.nodeType === Node.TEXT_NODE) {
-          // We ignore nodes that are not TEXt (i.e. comments, etc) as they don't change layout
-          changed = true;
-        } else if (type === 'attributes') {
-          changed = true;
-        } else if (type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)) {
-          // This includes HTMLElement and Text Nodes being added/removed/re-arranged
-          changed = true;
-        }
-      }
-      if (changed) {
-        // We only call the callback if a change that could affect layout/size truely happened.
-        callback();
-      }
-    });
-
-    // Have the observer observe foo for changes in children, etc
-    obs.observe(el, Object(__WEBPACK_IMPORTED_MODULE_0__object__["a" /* assign */])({ childList: true, subtree: true }, opts));
-  } else if (eventListenerSupported) {
-    // Legacy interface. most likely not used in modern browsers
-    el.addEventListener('DOMNodeInserted', callback, false);
-    el.addEventListener('DOMNodeRemoved', callback, false);
-  }
-
-  // We return a reference to the observer so that obs.disconnect() can be called if necessary
-  // To reduce overhead when the root element is hiiden
-  return obs;
-}
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_array__ = __webpack_require__(4);
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-
-/**
- * Issue #569: collapse::toggle::state triggered too many times
- * @link https://github.com/bootstrap-vue/bootstrap-vue/issues/569
- */
-
-var BVRL = '__BV_root_listeners__';
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  methods: {
-    /**
-         * Safely register event listeners on the root Vue node.
-         * While Vue automatically removes listeners for individual components,
-         * when a component registers a listener on root and is destroyed,
-         * this orphans a callback because the node is gone,
-         * but the root does not clear the callback.
-         *
-         * This adds a non-reactive prop to a vm on the fly
-         * in order to avoid object observation and its performance costs
-         * to something that needs no reactivity.
-         * It should be highly unlikely there are any naming collisions.
-         * @param {string} event
-         * @param {function} callback
-         * @chainable
-         */
-    listenOnRoot: function listenOnRoot(event, callback) {
-      if (!this[BVRL] || !Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
-        this[BVRL] = [];
-      }
-      this[BVRL].push({ event: event, callback: callback });
-      this.$root.$on(event, callback);
-      return this;
-    },
-
-
-    /**
-         * Convenience method for calling vm.$emit on vm.$root.
-         * @param {string} event
-         * @param {*} args
-         * @chainable
-         */
-    emitOnRoot: function emitOnRoot(event) {
-      var _$root;
-
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      (_$root = this.$root).$emit.apply(_$root, [event].concat(_toConsumableArray(args)));
-      return this;
-    }
-  },
-
-  beforeDestroy: function beforeDestroy() {
-    if (this[BVRL] && Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
-      while (this[BVRL].length > 0) {
-        // shift to process in order
-        var _BVRL$shift = this[BVRL].shift(),
-            event = _BVRL$shift.event,
-            callback = _BVRL$shift.callback;
-
-        this.$root.$off(event, callback);
-      }
-    }
-  }
-});
-
-/***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  computed: {
-    custom: function custom() {
-      return !this.plain;
-    }
-  },
-  props: {
-    plain: {
-      type: Boolean,
-      default: false
-    }
-  }
-});
 
 /***/ }),
 /* 23 */
@@ -9501,7 +9501,7 @@ function copyProps(props) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 var normalizeHeaderName = __webpack_require__(209);
 
 var DEFAULT_CONTENT_TYPE = {
@@ -9668,7 +9668,7 @@ var props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_dom__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__link_link__ = __webpack_require__(10);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -22027,7 +22027,7 @@ process.umask = function() { return 0; };
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 var settle = __webpack_require__(210);
 var buildURL = __webpack_require__(212);
 var parseHeaders = __webpack_require__(213);
@@ -22329,7 +22329,7 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_1__utils_object__["a" /* assign */]
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__link_link__ = __webpack_require__(10);
 
 
 
@@ -22807,7 +22807,7 @@ var unbindTargets = function unbindTargets(vnode, binding, listenTypes) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__clickout__ = __webpack_require__(261);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listen_on_root__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listen_on_root__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_array__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_key_codes__ = __webpack_require__(15);
@@ -23424,7 +23424,7 @@ var props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_loose_equal__ = __webpack_require__(36);
 
@@ -23946,7 +23946,7 @@ Object(__WEBPACK_IMPORTED_MODULE_6__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_range__ = __webpack_require__(313);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_key_codes__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_dom__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_link_link__ = __webpack_require__(10);
 /*
  * Comon props, computed, data, render function, and methods for b-pagination and b-pagination-nav
  */
@@ -24539,7 +24539,7 @@ var PopOver = function (_ToolTip) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_dom__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_ssr__ = __webpack_require__(318);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(19);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*
@@ -36829,7 +36829,7 @@ var OBSERVER_CONFIG = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(202);
-module.exports = __webpack_require__(399);
+module.exports = __webpack_require__(391);
 
 
 /***/ }),
@@ -36892,10 +36892,10 @@ var ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> ' };
 var CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> ' };
 var EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> ' };
 
-Vue.component('contrato-pelotari', __webpack_require__(390));
+Vue.component('contrato-pelotari', __webpack_require__(382));
 
-Vue.component('home-gerente', __webpack_require__(393));
-Vue.component('listado-festivales', __webpack_require__(396));
+Vue.component('home-gerente', __webpack_require__(385));
+Vue.component('listado-festivales', __webpack_require__(388));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales = { template: '<listado-festivales></listado-festivales>' };
@@ -58037,7 +58037,7 @@ if (token) {
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 var bind = __webpack_require__(42);
 var Axios = __webpack_require__(208);
 var defaults = __webpack_require__(27);
@@ -58124,7 +58124,7 @@ function isSlowBuffer (obj) {
 
 
 var defaults = __webpack_require__(27);
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 var InterceptorManager = __webpack_require__(217);
 var dispatchRequest = __webpack_require__(218);
 
@@ -58209,7 +58209,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -58289,7 +58289,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -58362,7 +58362,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 // Headers whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -58422,7 +58422,7 @@ module.exports = function parseHeaders(headers) {
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -58540,7 +58540,7 @@ module.exports = btoa;
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -58600,7 +58600,7 @@ module.exports = (
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -58659,7 +58659,7 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 var transformData = __webpack_require__(219);
 var isCancel = __webpack_require__(46);
 var defaults = __webpack_require__(27);
@@ -58752,7 +58752,7 @@ module.exports = function dispatchRequest(config) {
 "use strict";
 
 
-var utils = __webpack_require__(8);
+var utils = __webpack_require__(7);
 
 /**
  * Transform the data for a request or a response
@@ -70484,7 +70484,7 @@ if(false) {
 /* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -70622,7 +70622,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__link_link__ = __webpack_require__(10);
 
 
 
@@ -71383,7 +71383,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_observe_dom__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_observe_dom__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_key_codes__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_dom__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_id__ = __webpack_require__(6);
@@ -72250,7 +72250,7 @@ function suffixPropName(suffix, str) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(5);
 
 
@@ -72713,7 +72713,7 @@ if(false) {
 /* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -72730,7 +72730,7 @@ exports.push([module.i, "/* workaround for https://github.com/bootstrap-vue/boot
 "use strict";
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__link_link__ = __webpack_require__(10);
 
 
 
@@ -73343,7 +73343,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_options__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_checkbox__ = __webpack_require__(67);
 
 
@@ -73492,7 +73492,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_radio__ = __webpack_require__(69);
 
 
@@ -73824,7 +73824,7 @@ if(false) {
 /* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -74048,7 +74048,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_state__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_custom__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_custom__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_array__ = __webpack_require__(4);
 
 
@@ -74333,7 +74333,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(4);
 
 
@@ -74795,7 +74795,7 @@ var props = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__link__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_plugins__ = __webpack_require__(2);
 
 
@@ -74888,7 +74888,7 @@ var props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_array__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__link_link__ = __webpack_require__(10);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -75069,8 +75069,8 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__button_button__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__button_button_close__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_id__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_listen_on_root__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_listen_on_root__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warn__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_key_codes__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_bv_event_class__ = __webpack_require__(35);
@@ -75931,7 +75931,7 @@ var props = {
 "use strict";
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__link_link__ = __webpack_require__(10);
 
 
 
@@ -76233,7 +76233,7 @@ var props = {
 
 "use strict";
 /* unused harmony export props */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__link_link__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_functional_data_merge__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_pluck_props__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
@@ -76276,7 +76276,7 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_3__utils_object__["a" /* assign */]
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(20);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -76458,7 +76458,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_pagination__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__link_link__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__link_link__ = __webpack_require__(10);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 
@@ -76782,7 +76782,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_array__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__mixins_id__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixins_listen_on_root__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixins_listen_on_root__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__table_css__ = __webpack_require__(326);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__table_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__table_css__);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -79312,7 +79312,7 @@ if(false) {
 /* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -79355,7 +79355,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_key_codes__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_id__ = __webpack_require__(6);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -80101,7 +80101,7 @@ function removeBVSS(el) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warn__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_dom__ = __webpack_require__(5);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83897,7 +83897,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(345)
 }
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(348)
 /* template */
@@ -83950,7 +83950,7 @@ var content = __webpack_require__(346);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(19)("6ef06d12", content, false, {});
+var update = __webpack_require__(22)("6ef06d12", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -83969,7 +83969,7 @@ if(false) {
 /* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -84075,7 +84075,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(351)
 /* template */
@@ -84512,7 +84512,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(354)
 /* template */
@@ -84644,7 +84644,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(357)
 /* template */
@@ -85469,11 +85469,11 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(360)
 }
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(362)
 /* template */
-var __vue_template__ = __webpack_require__(389)
+var __vue_template__ = __webpack_require__(381)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85522,7 +85522,7 @@ var content = __webpack_require__(361);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(19)("a59e1c16", content, false, {});
+var update = __webpack_require__(22)("a59e1c16", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -85541,7 +85541,7 @@ if(false) {
 /* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -85804,7 +85804,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 Vue.component('listado-contratos', __webpack_require__(363));
-Vue.component('listado-campeonatos', __webpack_require__(403));
+Vue.component('listado-campeonatos', __webpack_require__(368));
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
   var x = document.getElementById("snackbar");
@@ -86052,7 +86052,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(364)
 }
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(366)
 /* template */
@@ -86105,7 +86105,7 @@ var content = __webpack_require__(365);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(19)("35893cbd", content, false, {});
+var update = __webpack_require__(22)("35893cbd", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -86124,7 +86124,7 @@ if(false) {
 /* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(false);
+exports = module.exports = __webpack_require__(11)(false);
 // imports
 
 
@@ -86771,28 +86771,1924 @@ if (false) {
 }
 
 /***/ }),
-/* 368 */,
-/* 369 */,
-/* 370 */,
-/* 371 */,
-/* 372 */,
-/* 373 */,
-/* 374 */,
-/* 375 */,
-/* 376 */,
-/* 377 */,
-/* 378 */,
-/* 379 */,
-/* 380 */,
-/* 381 */,
-/* 382 */,
-/* 383 */,
-/* 384 */,
-/* 385 */,
-/* 386 */,
-/* 387 */,
-/* 388 */,
-/* 389 */
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(369)
+}
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(371)
+/* template */
+var __vue_template__ = __webpack_require__(380)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/ListadoComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-75c35ea4", Component.options)
+  } else {
+    hotAPI.reload("data-v-75c35ea4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 369 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(370);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(22)("74710f37", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c35ea4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c35ea4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 370 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#rrhh-tarifas .card {\n  border:none;\n}\n#rrhh-tarifas .nav-pills.card-header {\n  background-color:transparent;\n}\n#rrhh-tarifas .nav-pills .nav-link {\n  margin-bottom:.25rem;\n}\n#rrhh-tarifas .nav-pills .nav-link.active,\n#rrhh-tarifas .nav-pills .show > .nav-link {\n  background-color:#d82a1f;\n}\n#rrhh-tarifas .tabs .card-header {\n  padding-left:0;\n  padding-top:0;\n}\n#rrhh-tarifas .tab-pane.card-body {\n  padding:0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 371 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+Vue.component('tarifas-campeonato', __webpack_require__(372));
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias'],
+  data: function data() {
+    return {
+      campeonatos: [],
+      tabs: []
+    };
+  },
+  created: function created() {
+    this.fetchCampeonatos();
+  },
+
+  methods: {
+    fetchCampeonatos: function fetchCampeonatos() {
+      var _this = this;
+
+      var uri = '/www/campeonatos';
+      this.axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this.campeonatos = JSON.parse(stringified);
+        _this.campeonatos.map(function (val, key) {
+          _this.tabs.push(val.name);
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 372 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(373)
+}
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(375)
+/* template */
+var __vue_template__ = __webpack_require__(379)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/TarifasCampeonatoComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0f36f636", Component.options)
+  } else {
+    hotAPI.reload("data-v-0f36f636", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 373 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(374);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(22)("260e8a5c", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0f36f636\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0f36f636\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 374 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#tarifas-campeonato legend {\n  font-size:0.7875rem;\n  padding: 0.25rem 0rem;\n}\n#tarifaDetails .border-secondary {\n  border-color:lightgray!important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 375 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+Vue.component('tarifa-pelotari', __webpack_require__(376));
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'campeonatoDesc'],
+  data: function data() {
+    var _this = this,
+        _ref;
+
+    return _ref = {
+      create: true,
+      remove: true,
+      update: true,
+      display: true,
+      filter: false,
+      sortBy: 'fecha_ini',
+      sortDesc: true,
+      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      items: [],
+      totalRows: 0,
+      perPage: 10,
+      currentPage: 1,
+      pageOptions: [10, 25, 50]
+    }, _defineProperty(_ref, 'filter', null), _defineProperty(_ref, 'deleteId', null), _defineProperty(_ref, 'formTitle', ''), _defineProperty(_ref, 'rowTarifa', null), _defineProperty(_ref, 'newTarifa', true), _defineProperty(_ref, 'cancelTarifaForm', function cancelTarifaForm() {
+      _this.hideTarifaForm();
+    }), _defineProperty(_ref, 'getTarifaRow', function getTarifaRow() {
+      return _this.rowTarifa;
+    }), _defineProperty(_ref, 'isNewTarifa', function isNewTarifa() {
+      return _this.newTarifa;
+    }), _defineProperty(_ref, 'formatRowAmount', function formatRowAmount(amount) {
+      return _this.formatAmount(amount);
+    }), _ref;
+  },
+  created: function created() {
+    this.fetchTarifas();
+  },
+
+  methods: {
+    fetchTarifas: function fetchTarifas() {
+      var _this2 = this;
+
+      var uri = '/www/tarifas';
+      this.axios.get(uri, {
+        params: {
+          pelotari_id: this.pelotariId,
+          campeonato_id: this.campeonatoId
+        }
+      }).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this2.items = JSON.parse(stringified);
+        _this2.totalRows = _this2.items.length;
+      });
+    },
+    onFiltered: function onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    onClickEdit: function onClickEdit(item) {
+      this.rowTarifa = item;
+      this.showTarifaForm(item.id);
+    },
+    removeItem: function removeItem() {
+      var _this3 = this;
+
+      var uri = '/www/tarifas/' + this.deleteId;
+      this.axios.delete(uri).then(function (response) {
+        _this3.deleteId = null;
+        _this3.$refs.modalDelete.hide();
+        _this3.fetchTarifas();
+        showSnackbar("Tarifa BORRADA");
+      }).catch(function (error) {
+        console.log("[removeItem] error: " + error);
+        _this3.deleteId = null;
+        _this3.$refs.modalDelete.hide();
+        showSnackbar("ERROR al borrar");
+      });
+    },
+    onClickDelete: function onClickDelete(tarifa) {
+      this.deleteId = tarifa.id;
+
+      var msg = " \
+          <div class='px-5 py-2'> \
+            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+            <p class='mb-0'><strong>Campeonato:</strong> " + this.campeonatoName + "</p> \
+            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(tarifa.fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(tarifa.fecha_fin) + "</p> \
+          </div>";
+
+      jQuery('#deleteTarifaAlias').html(msg);
+
+      this.$refs.modalDelete.show();
+    },
+    hideModalDelete: function hideModalDelete() {
+      this.deleteId = null;
+      this.$refs.modalDelete.hide();
+    },
+    formatDate: function formatDate(date) {
+      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
+        return "";
+      }
+    },
+    formatAmount: function formatAmount(amount) {
+      if (amount) return parseFloat(amount).toFixed(2);else {
+        return "";
+      }
+    },
+    showTarifaForm: function showTarifaForm() {
+      var $id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+      if ($id) {
+        this.formTitle = 'Editar Tarifa';
+        this.newTarifa = false;
+        this.$refs.modalEdit.show();
+      } else {
+        this.formTitle = 'Nueva Tarifa';
+        this.newTarifa = true;
+        this.$refs.modalEdit.show();
+      }
+    },
+    hideTarifaForm: function hideTarifaForm() {
+      this.$refs.modalEdit.hide();
+      this.fetchTarifas();
+    }
+  }
+});
+
+/***/ }),
+/* 376 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(377)
+/* template */
+var __vue_template__ = __webpack_require__(378)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/FichaComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b550cbce", Component.options)
+  } else {
+    hotAPI.reload("data-v-b550cbce", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 377 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'onCancel', 'getTarifaRow', 'isNewTarifa', 'formatAmount'],
+  data: function data() {
+    var _this = this;
+
+    return {
+      tarifa: {
+        id: null,
+        pelotari_id: null,
+        campeonato_id: null,
+        contrato_id: null,
+        fecha_ini: null,
+        fecha_fin: null,
+        campeon: null,
+        subcampeon: null,
+        liga_semifinal: null,
+        liga_cuartos: null,
+        semifinal: null,
+        cuartos: null,
+        octavos: null,
+        dieciseisavos: null,
+        treintaidosavos: null,
+        created_at: null,
+        updated_at: null
+      },
+      contratos: [],
+      edit: false,
+      show: true,
+      goBack: function goBack() {
+        _this.onCancel();
+      }
+    };
+  },
+
+  created: function created() {
+    console.log("FichaComponent created");
+
+    this.tarifa.pelotari_id = this.pelotariId;
+    this.tarifa.campeonato_id = this.campeonatoId;
+
+    this.fetchContratos();
+
+    if (this.isNewTarifa()) {
+      this.edit = false;
+    } else {
+      this.edit = true;
+
+      var rowTarifa = this.getTarifaRow();
+
+      this.tarifa.id = rowTarifa.id;
+      this.tarifa.contrato_id = rowTarifa.contrato_id;
+      this.tarifa.fecha_ini = rowTarifa.fecha_ini;
+      this.tarifa.fecha_fin = rowTarifa.fecha_fin;
+      this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
+      this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
+      this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
+      this.tarifa.liga_cuartos = this.formatAmount(rowTarifa.liga_cuartos);
+      this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
+      this.tarifa.cuartos = this.formatAmount(rowTarifa.cuartos);
+      this.tarifa.octavos = this.formatAmount(rowTarifa.octavos);
+      this.tarifa.dieciseisavos = this.formatAmount(rowTarifa.dieciseisavos);
+      this.tarifa.treintaidosavos = this.formatAmount(rowTarifa.treintaidosavos);
+    }
+  },
+  methods: {
+    fetchContratos: function fetchContratos() {
+      var _this2 = this;
+
+      var uri = '/www/contratos';
+      this.axios.get(uri, {
+        params: {
+          pelotari_id: this.pelotariId
+        }
+      }).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/periodo/g, "text");;
+        _this2.contratos = JSON.parse(stringified);
+      });
+    },
+    onSubmit: function onSubmit(evt) {
+      var _this3 = this;
+
+      evt.preventDefault();
+      var uri = '/www/tarifas';
+      if (this.edit) {
+        this.axios.post(uri + '/' + this.tarifa.id + '/update', this.tarifa).then(function (response) {
+          showSnackbar("Tarifa actualizada");
+          _this3.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      } else {
+        this.axios.post(uri, this.tarifa).then(function (response) {
+          showSnackbar("Tarifa creada");
+          _this3.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      }
+    },
+    onReset: function onReset(evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+      this.tarfia.contrato_id = null;
+      this.tarifa.fecha_ini = null;
+      this.tarifa.fecha_fin = null;
+      this.tarifa.campeon = null;
+      this.tarifa.subcampeon = null;
+      this.tarifa.liga_semifinal = null;
+      this.tarifa.liga_cuartos = null;
+      this.tarifa.semifinal = null;
+      this.tarifa.cuartos = null;
+      this.tarifa.octavos = null;
+      this.tarifa.dieciseisavos = null;
+      this.tarifa.treintaidosavos = null;
+    },
+    changeContrato: function changeContrato(evt) {
+      var contrato = _.filter(this.contratos, { 'value': evt });
+      this.tarifa.fecha_ini = contrato[0].fecha_inicio;
+      this.tarifa.fecha_fin = contrato[0].fecha_final;
+    }
+  }
+});
+
+/***/ }),
+/* 378 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.show
+        ? _c(
+            "b-form",
+            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+            [
+              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
+                _c("div", { staticClass: "col-12 text-white" }, [
+                  _c("strong", [
+                    _vm._v(
+                      _vm._s(_vm.pelotariAlias) +
+                        " - " +
+                        _vm._s(_vm.campeonatoName)
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-4",
+                      attrs: { label: "Contrato", "label-for": "contratoInput" }
+                    },
+                    [
+                      _c("b-form-select", {
+                        attrs: {
+                          id: "contrato",
+                          options: _vm.contratos,
+                          required: ""
+                        },
+                        on: { change: _vm.changeContrato },
+                        model: {
+                          value: _vm.tarifa.contrato_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "contrato_id", $$v)
+                          },
+                          expression: "tarifa.contrato_id"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-3",
+                      attrs: {
+                        label: "Fecha Inicio:",
+                        "label-for": "fecha_iniInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          id: "fecha_iniInput",
+                          type: "text",
+                          readonly: "",
+                          placeholder: "dd/mm/yyyy"
+                        },
+                        model: {
+                          value: _vm.tarifa.fecha_ini,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "fecha_ini", $$v)
+                          },
+                          expression: "tarifa.fecha_ini"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-3",
+                      attrs: {
+                        label: "Fecha Fin:",
+                        "label-for": "fecha_finInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          id: "fecha_finInput",
+                          type: "text",
+                          readonly: "",
+                          placeholder: "dd/mm/yyyy"
+                        },
+                        model: {
+                          value: _vm.tarifa.fecha_fin,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "fecha_fin", $$v)
+                          },
+                          expression: "tarifa.fecha_fin"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: { label: "Campeón:", "label-for": "campeonInput" }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "campeonInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.campeon,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "campeon", $$v)
+                          },
+                          expression: "tarifa.campeon"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: {
+                        label: "Subampeón:",
+                        "label-for": "dieta_partidoInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "dieta_partidoInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.subcampeon,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "subcampeon", $$v)
+                          },
+                          expression: "tarifa.subcampeon"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("b-form-group", { staticClass: "col-sm-2" }),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: {
+                        label: "Lig.Semifinales:",
+                        "label-for": "liga_semifinalInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "liga_semifinalInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.liga_semifinal,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "liga_semifinal", $$v)
+                          },
+                          expression: "tarifa.liga_semifinal"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: {
+                        label: "Lig.Cuartos:",
+                        "label-for": "liga_cuartosInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "liga_cuartosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.liga_cuartos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "liga_cuartos", $$v)
+                          },
+                          expression: "tarifa.liga_cuartos"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                [
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: {
+                        label: "Semifinales:",
+                        "label-for": "semfifinalInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "semfifinalInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.semifinal,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "semifinal", $$v)
+                          },
+                          expression: "tarifa.semifinal"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: { label: "Cuartos:", "label-for": "cuartosInput" }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "cuartosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.cuartos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "cuartos", $$v)
+                          },
+                          expression: "tarifa.cuartos"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: { label: "Octavos:", "label-for": "octavosInput" }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "octavosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.octavos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "octavos", $$v)
+                          },
+                          expression: "tarifa.octavos"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: {
+                        label: "Dieciseisavos:",
+                        "label-for": "dieciseisavosInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "dieciseisavosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.dieciseisavos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "dieciseisavos", $$v)
+                          },
+                          expression: "tarifa.dieciseisavos"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      staticClass: "col-sm-2",
+                      attrs: {
+                        label: "Treintaidosavos:",
+                        "label-for": "treintaidosavosInput"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        staticClass: "text-right",
+                        attrs: {
+                          id: "treintaidosavosInput",
+                          type: "number",
+                          maxlength: "8",
+                          placeholder: "0"
+                        },
+                        model: {
+                          value: _vm.tarifa.treintaidosavos,
+                          callback: function($$v) {
+                            _vm.$set(_vm.tarifa, "treintaidosavos", $$v)
+                          },
+                          expression: "tarifa.treintaidosavos"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { type: "submit", variant: "primary" } },
+                [_vm._v("Guardar")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
+                [_vm._v("Cancelar")]
+              ),
+              _vm._v(" "),
+              !_vm.edit
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "float-right mr-1",
+                      attrs: { type: "reset", variant: "danger" }
+                    },
+                    [_vm._v("Reset")]
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b550cbce", module.exports)
+  }
+}
+
+/***/ }),
+/* 379 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid p-0", attrs: { id: "tarifas-campeonato" } },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 float-left mt-0 mb-1" },
+            [
+              _vm.filter
+                ? _c(
+                    "b-form-group",
+                    {
+                      staticClass: "mb-0",
+                      attrs: { horizontal: "", label: "Filtro" }
+                    },
+                    [
+                      _c(
+                        "b-input-group",
+                        [
+                          _c("b-form-input", {
+                            attrs: { placeholder: "Texto de búsqueda" },
+                            model: {
+                              value: _vm.filter,
+                              callback: function($$v) {
+                                _vm.filter = $$v
+                              },
+                              expression: "filter"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "b-input-group-append",
+                            [
+                              _c(
+                                "b-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.filter,
+                                    title: "Limpiar filtro"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.filter = ""
+                                    }
+                                  }
+                                },
+                                [_vm._v("Limpiar")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                : _c("div", { staticClass: "mt-2 mb-0" }, [
+                    _c("h6", { staticClass: "text-danger font-weight-bold" }, [
+                      _vm._v(_vm._s(_vm.campeonatoDesc))
+                    ])
+                  ])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 text-right float-right mt-0 mb-3" },
+            [
+              _c(
+                "b-btn",
+                {
+                  staticClass: "mb-0",
+                  attrs: {
+                    variant: "default",
+                    size: "sm",
+                    title: "Crear Tarifa"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.showTarifaForm(0)
+                    }
+                  }
+                },
+                [_vm._v("Nueva Tarifa")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: {
+          striped: "",
+          hover: "",
+          small: "",
+          responsive: "",
+          "sort-by": _vm.sortBy,
+          "sort-desc": _vm.sortDesc,
+          "per-page": _vm.perPage,
+          "current-page": _vm.currentPage,
+          items: _vm.items,
+          fields: _vm.fields,
+          filter: _vm.filter
+        },
+        on: {
+          "update:sortBy": function($event) {
+            _vm.sortBy = $event
+          },
+          "update:sortDesc": function($event) {
+            _vm.sortDesc = $event
+          },
+          filtered: _vm.onFiltered
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "actions",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button-group",
+                  [
+                    _vm.remove
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "danger",
+                              title: "Eliminar"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickDelete(row.item)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-trash" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.update
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "primary",
+                              title: "Editar"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickEdit(row.item)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-edit" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.display
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "secondary",
+                              title: "Mostrar/Ocultar Detalle"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                return row.toggleDetails($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "icon",
+                              class: {
+                                "voyager-x": row.detailsShowing,
+                                "voyager-eye": !row.detailsShowing
+                              }
+                            })
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]
+            }
+          },
+          {
+            key: "row-details",
+            fn: function(row) {
+              return _vm.display
+                ? [
+                    _c(
+                      "b-card",
+                      { attrs: { id: "tarifaDetails" } },
+                      [
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 py-2 border-bottom border-top border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Campeón:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.campeon)) +
+                                  " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Subcampeón:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.subcampeon)) +
+                                  " €"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 pb-2 border-bottom border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("L. Semifinales:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatAmount(row.item.liga_semifinal)
+                                ) + " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("L. Cuartos:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatAmount(row.item.liga_cuartos)
+                                ) + " €"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 pb-2 border-bottom border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("Semifinales:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.semifinal)) +
+                                  " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("1/4 Final:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.cuartos)) +
+                                  " €"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          {
+                            staticClass:
+                              "mb-2 pb-2 border-bottom border-secondary"
+                          },
+                          [
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("1/8 Final::")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(_vm.formatAmount(row.item.octavos)) +
+                                  " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("1/16 Final:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatAmount(row.item.dieciseisavos)
+                                ) + " €"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              {
+                                staticClass: "font-weight-bold",
+                                attrs: { sm: "2" }
+                              },
+                              [_vm._v("1/32 Final:")]
+                            ),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "2" } }, [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.formatAmount(row.item.treintaidosavos)
+                                ) + " €"
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                : undefined
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "5" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: {
+                  "total-rows": _vm.totalRows,
+                  "per-page": _vm.perPage,
+                  size: "sm"
+                },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Total: " }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "", plaintext: "", size: "sm" },
+                    model: {
+                      value: _vm.totalRows,
+                      callback: function($$v) {
+                        _vm.totalRows = $$v
+                      },
+                      expression: "totalRows"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "4" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Mostrar" }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { options: _vm.pageOptions, size: "sm" },
+                    model: {
+                      value: _vm.perPage,
+                      callback: function($$v) {
+                        _vm.perPage = $$v
+                      },
+                      expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.remove
+        ? _c(
+            "b-modal",
+            {
+              ref: "modalDelete",
+              attrs: { title: "BORRAR Tarifa", "hide-footer": "" }
+            },
+            [
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [
+                  _vm._v("Se va a borrar la tarifa de "),
+                  _c("span", { attrs: { id: "deleteTarifaAlias" } }),
+                  _vm._v("¿Desea continuar?")
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-footer" },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      attrs: { variant: "danger" },
+                      on: { click: _vm.removeItem }
+                    },
+                    [_vm._v("Borrar")]
+                  ),
+                  _vm._v(" "),
+                  _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+                    _vm._v("Cancelar")
+                  ])
+                ],
+                1
+              )
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalEdit",
+          attrs: {
+            id: "tarifaForm",
+            title: _vm.formTitle,
+            size: "lg",
+            "hide-footer": "",
+            lazy: ""
+          }
+        },
+        [
+          _c("tarifa-pelotari", {
+            attrs: {
+              "pelotari-id": _vm.pelotariId,
+              "pelotari-alias": _vm.pelotariAlias,
+              "campeonato-id": _vm.campeonatoId,
+              "campeonato-name": _vm.campeonatoName,
+              "on-cancel": _vm.cancelTarifaForm,
+              "get-tarifa-row": _vm.getTarifaRow,
+              "is-new-tarifa": _vm.isNewTarifa,
+              "format-amount": _vm.formatRowAmount
+            }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0f36f636", module.exports)
+  }
+}
+
+/***/ }),
+/* 380 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { attrs: { id: "rrhh-tarifas" } },
+    [
+      _c(
+        "b-card",
+        { attrs: { "no-body": "" } },
+        [
+          _c(
+            "b-tabs",
+            { attrs: { pills: "", card: "", vertical: "" } },
+            _vm._l(_vm.campeonatos, function(tab) {
+              return _c(
+                "b-tab",
+                { attrs: { title: "" + tab.name } },
+                [
+                  _c("tarifas-campeonato", {
+                    attrs: {
+                      "pelotari-id": _vm.pelotariId,
+                      "pelotari-alias": _vm.pelotariAlias,
+                      "campeonato-id": "" + tab.id,
+                      "campeonato-name": "" + tab.name,
+                      "campeonato-desc": "" + tab.desc
+                    }
+                  })
+                ],
+                1
+              )
+            })
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-75c35ea4", module.exports)
+  }
+}
+
+/***/ }),
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -87665,15 +89561,15 @@ if (false) {
 }
 
 /***/ }),
-/* 390 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
-var __vue_script__ = __webpack_require__(391)
+var __vue_script__ = __webpack_require__(383)
 /* template */
-var __vue_template__ = __webpack_require__(392)
+var __vue_template__ = __webpack_require__(384)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87712,7 +89608,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 391 */
+/* 383 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -87982,7 +89878,7 @@ var showSnackbar = function showSnackbar(msg) {
 });
 
 /***/ }),
-/* 392 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88386,15 +90282,15 @@ if (false) {
 }
 
 /***/ }),
-/* 393 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
-var __vue_script__ = __webpack_require__(394)
+var __vue_script__ = __webpack_require__(386)
 /* template */
-var __vue_template__ = __webpack_require__(395)
+var __vue_template__ = __webpack_require__(387)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88433,7 +90329,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 394 */
+/* 386 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88456,7 +90352,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 395 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88481,15 +90377,15 @@ if (false) {
 }
 
 /***/ }),
-/* 396 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(7)
+var normalizeComponent = __webpack_require__(8)
 /* script */
-var __vue_script__ = __webpack_require__(397)
+var __vue_script__ = __webpack_require__(389)
 /* template */
-var __vue_template__ = __webpack_require__(398)
+var __vue_template__ = __webpack_require__(390)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88528,7 +90424,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 397 */
+/* 389 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88563,7 +90459,7 @@ var showSnackbar = function showSnackbar(msg) {
 });
 
 /***/ }),
-/* 398 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88592,1737 +90488,10 @@ if (false) {
 }
 
 /***/ }),
-/* 399 */
+/* 391 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 400 */,
-/* 401 */,
-/* 402 */,
-/* 403 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(404)
-}
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(406)
-/* template */
-var __vue_template__ = __webpack_require__(415)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/ListadoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-75c35ea4", Component.options)
-  } else {
-    hotAPI.reload("data-v-75c35ea4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 404 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(405);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(19)("74710f37", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c35ea4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c35ea4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 405 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#rrhh-tarifas .card {\n  border:none;\n}\n#rrhh-tarifas .nav-pills.card-header {\n  background-color:transparent;\n}\n#rrhh-tarifas .nav-pills .nav-link {\n  margin-bottom:.25rem;\n}\n#rrhh-tarifas .nav-pills .nav-link.active,\n#rrhh-tarifas .nav-pills .show > .nav-link {\n  background-color:#d82a1f;\n}\n#rrhh-tarifas .tabs .card-header {\n  padding-left:0;\n  padding-top:0;\n}\n#rrhh-tarifas .tab-pane.card-body {\n  padding:0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 406 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-Vue.component('tarifas-campeonato', __webpack_require__(407));
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias'],
-  data: function data() {
-    return {
-      campeonatos: [],
-      tabs: []
-    };
-  },
-  created: function created() {
-    this.fetchCampeonatos();
-  },
-
-  methods: {
-    fetchCampeonatos: function fetchCampeonatos() {
-      var _this = this;
-
-      var uri = '/www/campeonatos';
-      this.axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this.campeonatos = JSON.parse(stringified);
-        _this.campeonatos.map(function (val, key) {
-          _this.tabs.push(val.name);
-        });
-      });
-    }
-  }
-});
-
-/***/ }),
-/* 407 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(408)
-}
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(410)
-/* template */
-var __vue_template__ = __webpack_require__(414)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/TarifasCampeonatoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0f36f636", Component.options)
-  } else {
-    hotAPI.reload("data-v-0f36f636", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 408 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(409);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(19)("260e8a5c", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0f36f636\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0f36f636\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TarifasCampeonatoComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 409 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(10)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#tarifas-campeonato legend {\n  font-size:0.7875rem;\n  padding: 0.25rem 0rem;\n}\n#tarifaDetails .border-secondary {\n  border-color:lightgray!important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 410 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-Vue.component('tarifa-pelotari', __webpack_require__(411));
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'campeonatoDesc'],
-  data: function data() {
-    var _this = this,
-        _ref;
-
-    return _ref = {
-      create: true,
-      remove: true,
-      update: true,
-      display: true,
-      filter: false,
-      sortBy: 'fecha_ini',
-      sortDesc: true,
-      fields: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true }, { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
-      items: [],
-      totalRows: 0,
-      perPage: 10,
-      currentPage: 1,
-      pageOptions: [10, 25, 50]
-    }, _defineProperty(_ref, 'filter', null), _defineProperty(_ref, 'deleteId', null), _defineProperty(_ref, 'formTitle', ''), _defineProperty(_ref, 'rowTarifa', null), _defineProperty(_ref, 'newTarifa', true), _defineProperty(_ref, 'cancelTarifaForm', function cancelTarifaForm() {
-      _this.hideTarifaForm();
-    }), _defineProperty(_ref, 'getTarifaRow', function getTarifaRow() {
-      return _this.rowTarifa;
-    }), _defineProperty(_ref, 'isNewTarifa', function isNewTarifa() {
-      return _this.newTarifa;
-    }), _defineProperty(_ref, 'formatRowAmount', function formatRowAmount(amount) {
-      return _this.formatAmount(amount);
-    }), _ref;
-  },
-  created: function created() {
-    this.fetchTarifas();
-  },
-
-  methods: {
-    fetchTarifas: function fetchTarifas() {
-      var _this2 = this;
-
-      var uri = '/www/tarifas';
-      this.axios.get(uri, {
-        params: {
-          pelotari_id: this.pelotariId,
-          campeonato_id: this.campeonatoId
-        }
-      }).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this2.items = JSON.parse(stringified);
-        _this2.totalRows = _this2.items.length;
-      });
-    },
-    onFiltered: function onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
-    },
-    onClickEdit: function onClickEdit(item) {
-      this.rowTarifa = item;
-      this.showTarifaForm(item.id);
-    },
-    removeItem: function removeItem() {
-      var _this3 = this;
-
-      var uri = '/www/tarifas/' + this.deleteId;
-      this.axios.delete(uri).then(function (response) {
-        _this3.deleteId = null;
-        _this3.$refs.modalDelete.hide();
-        _this3.fetchTarifas();
-        showSnackbar("Tarifa BORRADA");
-      }).catch(function (error) {
-        console.log("[removeItem] error: " + error);
-        _this3.deleteId = null;
-        _this3.$refs.modalDelete.hide();
-        showSnackbar("ERROR al borrar");
-      });
-    },
-    onClickDelete: function onClickDelete(tarifa) {
-      this.deleteId = tarifa.id;
-
-      var msg = " \
-          <div class='px-5 py-2'> \
-            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
-            <p class='mb-0'><strong>Campeonato:</strong> " + this.campeonatoName + "</p> \
-            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(tarifa.fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(tarifa.fecha_fin) + "</p> \
-          </div>";
-
-      jQuery('#deleteTarifaAlias').html(msg);
-
-      this.$refs.modalDelete.show();
-    },
-    hideModalDelete: function hideModalDelete() {
-      this.deleteId = null;
-      this.$refs.modalDelete.hide();
-    },
-    formatDate: function formatDate(date) {
-      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
-        return "";
-      }
-    },
-    formatAmount: function formatAmount(amount) {
-      if (amount) return parseFloat(amount).toFixed(2);else {
-        return "";
-      }
-    },
-    showTarifaForm: function showTarifaForm() {
-      var $id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-      if ($id) {
-        this.formTitle = 'Editar Tarifa';
-        this.newTarifa = false;
-        this.$refs.modalEdit.show();
-      } else {
-        this.formTitle = 'Nueva Tarifa';
-        this.newTarifa = true;
-        this.$refs.modalEdit.show();
-      }
-    },
-    hideTarifaForm: function hideTarifaForm() {
-      this.$refs.modalEdit.hide();
-      this.fetchTarifas();
-    }
-  }
-});
-
-/***/ }),
-/* 411 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(7)
-/* script */
-var __vue_script__ = __webpack_require__(412)
-/* template */
-var __vue_template__ = __webpack_require__(413)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/rrhh_contratos_campeonatos/FichaComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b550cbce", Component.options)
-  } else {
-    hotAPI.reload("data-v-b550cbce", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 412 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['pelotariId', 'pelotariAlias', 'campeonatoId', 'campeonatoName', 'onCancel', 'getTarifaRow', 'isNewTarifa', 'formatAmount'],
-  data: function data() {
-    var _this = this;
-
-    return {
-      tarifa: {
-        id: null,
-        pelotari_id: null,
-        campeonato_id: null,
-        fecha_ini: null,
-        fecha_fin: null,
-        campeon: null,
-        subcampeon: null,
-        liga_semifinal: null,
-        liga_cuartos: null,
-        semifinal: null,
-        cuartos: null,
-        octavos: null,
-        created_at: null,
-        updated_at: null
-      },
-      edit: false,
-      show: true,
-      goBack: function goBack() {
-        _this.onCancel();
-      }
-    };
-  },
-
-  created: function created() {
-    console.log("FichaComponent created");
-
-    this.tarifa.pelotari_id = this.pelotariId;
-    this.tarifa.campeonato_id = this.campeonatoId;
-
-    if (this.isNewTarifa()) {
-      this.edit = false;
-    } else {
-      this.edit = true;
-
-      var rowTarifa = this.getTarifaRow();
-
-      this.tarifa.id = rowTarifa.id;
-      this.tarifa.fecha_ini = rowTarifa.fecha_ini;
-      this.tarifa.fecha_fin = rowTarifa.fecha_fin;
-      this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
-      this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
-      this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
-      this.tarifa.liga_cuartos = this.formatAmount(rowTarifa.liga_cuartos);
-      this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
-      this.tarifa.cuartos = this.formatAmount(rowTarifa.cuartos);
-      this.tarifa.octavos = this.formatAmount(rowTarifa.octavos);
-    }
-  },
-  methods: {
-    onSubmit: function onSubmit(evt) {
-      var _this2 = this;
-
-      evt.preventDefault();
-
-      var uri = '/www/tarifas';
-      if (this.edit) {
-        this.axios.post(uri + '/' + this.tarifa.id + '/update', this.tarifa).then(function (response) {
-          showSnackbar("Tarifa actualizada");
-          _this2.goBack();
-        }).catch(function (error) {
-          console.log(error);
-          showSnackbar("Se ha producido un ERROR");
-        });
-      } else {
-        this.axios.post(uri, this.tarifa).then(function (response) {
-          showSnackbar("Tarifa creada");
-          _this2.goBack();
-        }).catch(function (error) {
-          console.log(error);
-          showSnackbar("Se ha producido un ERROR");
-        });
-      }
-    },
-    onReset: function onReset(evt) {
-      evt.preventDefault();
-      /* Reset our form values */
-      this.tarifa.fecha_ini = null;
-      this.tarifa.fecha_fin = null;
-      this.tarifa.campeon = null;
-      this.tarifa.subcampeon = null;
-      this.tarifa.liga_semifinal = null;
-      this.tarifa.liga_cuartos = null;
-      this.tarifa.semifinal = null;
-      this.tarifa.cuartos = null;
-      this.tarifa.octavos = null;
-    }
-  }
-});
-
-/***/ }),
-/* 413 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.show
-        ? _c(
-            "b-form",
-            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
-            [
-              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
-                _c("div", { staticClass: "col-12 text-white" }, [
-                  _c("strong", [
-                    _vm._v(
-                      _vm._s(_vm.pelotariAlias) +
-                        " - " +
-                        _vm._s(_vm.campeonatoName)
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Fecha Inicio:",
-                        "label-for": "fecha_iniInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "fecha_iniInput",
-                          type: "date",
-                          required: "",
-                          placeholder: "dd/mm/yyyy"
-                        },
-                        model: {
-                          value: _vm.tarifa.fecha_ini,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "fecha_ini", $$v)
-                          },
-                          expression: "tarifa.fecha_ini"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Fecha Fin:",
-                        "label-for": "fecha_finInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        attrs: {
-                          id: "fecha_finInput",
-                          type: "date",
-                          required: "",
-                          placeholder: "dd/mm/yyyy"
-                        },
-                        model: {
-                          value: _vm.tarifa.fecha_fin,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "fecha_fin", $$v)
-                          },
-                          expression: "tarifa.fecha_fin"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Campeón:", "label-for": "campeonInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "campeonInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.campeon,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "campeon", $$v)
-                          },
-                          expression: "tarifa.campeon"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Subampeón:",
-                        "label-for": "dieta_partidoInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "dieta_partidoInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.subcampeon,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "subcampeon", $$v)
-                          },
-                          expression: "tarifa.subcampeon"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Liguilla Semifinales:",
-                        "label-for": "liga_semifinalInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "liga_semifinalInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.liga_semifinal,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "liga_semifinal", $$v)
-                          },
-                          expression: "tarifa.liga_semifinal"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Liguilla Cuartos:",
-                        "label-for": "liga_cuartosInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "liga_cuartosInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.liga_cuartos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "liga_cuartos", $$v)
-                          },
-                          expression: "tarifa.liga_cuartos"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-row",
-                [
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: {
-                        label: "Semifinales:",
-                        "label-for": "semfifinalInput"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "semfifinalInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.semifinal,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "semifinal", $$v)
-                          },
-                          expression: "tarifa.semifinal"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Cuartos:", "label-for": "cuartosInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "cuartosInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.cuartos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "cuartos", $$v)
-                          },
-                          expression: "tarifa.cuartos"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      staticClass: "col-sm-4",
-                      attrs: { label: "Octavos:", "label-for": "octavosInput" }
-                    },
-                    [
-                      _c("b-form-input", {
-                        staticClass: "text-right",
-                        attrs: {
-                          id: "octavosInput",
-                          type: "number",
-                          maxlength: "8",
-                          placeholder: "0"
-                        },
-                        model: {
-                          value: _vm.tarifa.octavos,
-                          callback: function($$v) {
-                            _vm.$set(_vm.tarifa, "octavos", $$v)
-                          },
-                          expression: "tarifa.octavos"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Guardar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
-                [_vm._v("Cancelar")]
-              ),
-              _vm._v(" "),
-              !_vm.edit
-                ? _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right mr-1",
-                      attrs: { type: "reset", variant: "danger" }
-                    },
-                    [_vm._v("Reset")]
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b550cbce", module.exports)
-  }
-}
-
-/***/ }),
-/* 414 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid p-0", attrs: { id: "tarifas-campeonato" } },
-    [
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 float-left mt-0 mb-1" },
-            [
-              _vm.filter
-                ? _c(
-                    "b-form-group",
-                    {
-                      staticClass: "mb-0",
-                      attrs: { horizontal: "", label: "Filtro" }
-                    },
-                    [
-                      _c(
-                        "b-input-group",
-                        [
-                          _c("b-form-input", {
-                            attrs: { placeholder: "Texto de búsqueda" },
-                            model: {
-                              value: _vm.filter,
-                              callback: function($$v) {
-                                _vm.filter = $$v
-                              },
-                              expression: "filter"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-input-group-append",
-                            [
-                              _c(
-                                "b-btn",
-                                {
-                                  attrs: {
-                                    disabled: !_vm.filter,
-                                    title: "Limpiar filtro"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.filter = ""
-                                    }
-                                  }
-                                },
-                                [_vm._v("Limpiar")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                : _c("div", { staticClass: "mt-2 mb-0" }, [
-                    _c("h6", { staticClass: "text-danger font-weight-bold" }, [
-                      _vm._v(_vm._s(_vm.campeonatoDesc))
-                    ])
-                  ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 text-right float-right mt-0 mb-3" },
-            [
-              _c(
-                "b-btn",
-                {
-                  staticClass: "mb-0",
-                  attrs: {
-                    variant: "default",
-                    size: "sm",
-                    title: "Crear Tarifa"
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.showTarifaForm(0)
-                    }
-                  }
-                },
-                [_vm._v("Nueva Tarifa")]
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          striped: "",
-          hover: "",
-          small: "",
-          responsive: "",
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "per-page": _vm.perPage,
-          "current-page": _vm.currentPage,
-          items: _vm.items,
-          fields: _vm.fields,
-          filter: _vm.filter
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          },
-          filtered: _vm.onFiltered
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "actions",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button-group",
-                  [
-                    _vm.remove
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "danger",
-                              title: "Eliminar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickDelete(row.item)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-trash" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.update
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "primary",
-                              title: "Editar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickEdit(row.item)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-edit" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.display
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "secondary",
-                              title: "Mostrar/Ocultar Detalle"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return row.toggleDetails($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("span", {
-                              staticClass: "icon",
-                              class: {
-                                "voyager-x": row.detailsShowing,
-                                "voyager-eye": !row.detailsShowing
-                              }
-                            })
-                          ]
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                )
-              ]
-            }
-          },
-          {
-            key: "row-details",
-            fn: function(row) {
-              return _vm.display
-                ? [
-                    _c(
-                      "b-card",
-                      { attrs: { id: "tarifaDetails" } },
-                      [
-                        _c(
-                          "b-row",
-                          {
-                            staticClass:
-                              "mb-2 py-2 border-bottom border-top border-secondary"
-                          },
-                          [
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Campeón:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.campeon)) +
-                                  " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Subcampeón:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.subcampeon)) +
-                                  " €"
-                              )
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          {
-                            staticClass:
-                              "mb-2 pb-2 border-bottom border-secondary"
-                          },
-                          [
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("L. Semifinales:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatAmount(row.item.liga_semifinal)
-                                ) + " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("L. Cuartos:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formatAmount(row.item.liga_cuartos)
-                                ) + " €"
-                              )
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          {
-                            staticClass:
-                              "mb-2 pb-2 border-bottom border-secondary"
-                          },
-                          [
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Semifinales:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.semifinal)) +
-                                  " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Cuartos:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.cuartos)) +
-                                  " €"
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "b-col",
-                              {
-                                staticClass: "font-weight-bold",
-                                attrs: { sm: "2" }
-                              },
-                              [_vm._v("Octavos:")]
-                            ),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "2" } }, [
-                              _vm._v(
-                                _vm._s(_vm.formatAmount(row.item.octavos)) +
-                                  " €"
-                              )
-                            ])
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                : undefined
-            }
-          }
-        ])
-      }),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "5" } },
-            [
-              _c("b-pagination", {
-                staticClass: "my-0",
-                attrs: {
-                  "total-rows": _vm.totalRows,
-                  "per-page": _vm.perPage,
-                  size: "sm"
-                },
-                model: {
-                  value: _vm.currentPage,
-                  callback: function($$v) {
-                    _vm.currentPage = $$v
-                  },
-                  expression: "currentPage"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1 text-right", attrs: { md: "3" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Total: " }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: { readonly: "", plaintext: "", size: "sm" },
-                    model: {
-                      value: _vm.totalRows,
-                      callback: function($$v) {
-                        _vm.totalRows = $$v
-                      },
-                      expression: "totalRows"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "4" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Mostrar" }
-                },
-                [
-                  _c("b-form-select", {
-                    attrs: { options: _vm.pageOptions, size: "sm" },
-                    model: {
-                      value: _vm.perPage,
-                      callback: function($$v) {
-                        _vm.perPage = $$v
-                      },
-                      expression: "perPage"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.remove
-        ? _c(
-            "b-modal",
-            {
-              ref: "modalDelete",
-              attrs: { title: "BORRAR Tarifa", "hide-footer": "" }
-            },
-            [
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [
-                  _vm._v("Se va a borrar la tarifa de "),
-                  _c("span", { attrs: { id: "deleteTarifaAlias" } }),
-                  _vm._v("¿Desea continuar?")
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "modal-footer" },
-                [
-                  _c(
-                    "b-btn",
-                    {
-                      attrs: { variant: "danger" },
-                      on: { click: _vm.removeItem }
-                    },
-                    [_vm._v("Borrar")]
-                  ),
-                  _vm._v(" "),
-                  _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
-                    _vm._v("Cancelar")
-                  ])
-                ],
-                1
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "modalEdit",
-          attrs: {
-            id: "tarifaForm",
-            title: _vm.formTitle,
-            size: "lg",
-            "hide-footer": "",
-            lazy: ""
-          }
-        },
-        [
-          _c("tarifa-pelotari", {
-            attrs: {
-              "pelotari-id": _vm.pelotariId,
-              "pelotari-alias": _vm.pelotariAlias,
-              "campeonato-id": _vm.campeonatoId,
-              "campeonato-name": _vm.campeonatoName,
-              "on-cancel": _vm.cancelTarifaForm,
-              "get-tarifa-row": _vm.getTarifaRow,
-              "is-new-tarifa": _vm.isNewTarifa,
-              "format-amount": _vm.formatRowAmount
-            }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0f36f636", module.exports)
-  }
-}
-
-/***/ }),
-/* 415 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "rrhh-tarifas" } },
-    [
-      _c(
-        "b-card",
-        { attrs: { "no-body": "" } },
-        [
-          _c(
-            "b-tabs",
-            { attrs: { pills: "", card: "", vertical: "" } },
-            _vm._l(_vm.campeonatos, function(tab) {
-              return _c(
-                "b-tab",
-                { attrs: { title: "" + tab.name } },
-                [
-                  _c("tarifas-campeonato", {
-                    attrs: {
-                      "pelotari-id": _vm.pelotariId,
-                      "pelotari-alias": _vm.pelotariAlias,
-                      "campeonato-id": "" + tab.id,
-                      "campeonato-name": "" + tab.name,
-                      "campeonato-desc": "" + tab.desc
-                    }
-                  })
-                ],
-                1
-              )
-            })
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-75c35ea4", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

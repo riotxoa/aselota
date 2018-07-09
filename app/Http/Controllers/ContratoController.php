@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Contrato;
 
@@ -18,7 +19,19 @@ class ContratoController extends Controller
 
         $id = $request->get('pelotari_id');
 
-        $items = Contrato::where('pelotari_id', $id)->get();
+        // $items = Contrato::where('pelotari_id', $id)->get();
+
+        $items = DB::table('contratos')
+          ->select(
+            'contratos.*',
+            DB::raw('DATE_FORMAT(contratos.fecha_ini, "%d-%m-%Y") AS fecha_inicio'),
+            DB::raw('DATE_FORMAT(contratos.fecha_fin, "%d-%m-%Y") AS fecha_final'),
+            DB::raw('CONCAT("Del ", DATE_FORMAT(contratos.fecha_ini, "%d-%m-%Y"), " al ", DATE_FORMAT(contratos.fecha_fin, "%d-%m-%Y")) AS periodo')
+            )
+          ->where('pelotari_id', $id)
+          ->where('deleted_at', null)
+          ->orderBy('fecha_ini', 'desc')
+          ->get();
 
         return response()->json($items, 200);
     }

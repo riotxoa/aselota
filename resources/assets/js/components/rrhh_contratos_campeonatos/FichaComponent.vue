@@ -8,23 +8,33 @@
       </b-row>
 
       <b-row>
+        <b-form-group label="Contrato"
+                      label-for="contratoInput"
+                      class="col-sm-4">
+          <b-form-select id="contrato"
+                        :options="contratos"
+                        required
+                        v-model="tarifa.contrato_id"
+                        v-on:change="changeContrato">
+          </b-form-select>
+        </b-form-group>
         <b-form-group label="Fecha Inicio:"
                       label-for="fecha_iniInput"
-                      class="col-sm-4">
+                      class="col-sm-3">
           <b-form-input id="fecha_iniInput"
-                        type="date"
+                        type="text"
+                        readonly
                         v-model="tarifa.fecha_ini"
-                        required
                         placeholder="dd/mm/yyyy">
           </b-form-input>
         </b-form-group>
         <b-form-group label="Fecha Fin:"
                       label-for="fecha_finInput"
-                      class="col-sm-4">
+                      class="col-sm-3">
           <b-form-input id="fecha_finInput"
-                        type="date"
+                        type="text"
+                        readonly
                         v-model="tarifa.fecha_fin"
-                        required
                         placeholder="dd/mm/yyyy">
           </b-form-input>
         </b-form-group>
@@ -32,7 +42,7 @@
       <b-row>
         <b-form-group label="Campeón:"
                       label-for="campeonInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="campeonInput"
                         class="text-right"
                         type="number"
@@ -43,7 +53,7 @@
         </b-form-group>
         <b-form-group label="Subampeón:"
                       label-for="dieta_partidoInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="dieta_partidoInput"
                         class="text-right"
                         type="number"
@@ -52,11 +62,11 @@
                         placeholder="0">
           </b-form-input>
         </b-form-group>
-      </b-row>
-      <b-row>
-        <b-form-group label="Liguilla Semifinales:"
+        <b-form-group class="col-sm-2">
+        </b-form-group>
+        <b-form-group label="Lig.Semifinales:"
                       label-for="liga_semifinalInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="liga_semifinalInput"
                         class="text-right"
                         type="number"
@@ -65,9 +75,9 @@
                         placeholder="0">
           </b-form-input>
         </b-form-group>
-        <b-form-group label="Liguilla Cuartos:"
+        <b-form-group label="Lig.Cuartos:"
                       label-for="liga_cuartosInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="liga_cuartosInput"
                         class="text-right"
                         type="number"
@@ -80,7 +90,7 @@
       <b-row>
         <b-form-group label="Semifinales:"
                       label-for="semfifinalInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="semfifinalInput"
                         class="text-right"
                         type="number"
@@ -91,7 +101,7 @@
         </b-form-group>
         <b-form-group label="Cuartos:"
                       label-for="cuartosInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="cuartosInput"
                         class="text-right"
                         type="number"
@@ -102,11 +112,33 @@
         </b-form-group>
         <b-form-group label="Octavos:"
                       label-for="octavosInput"
-                      class="col-sm-4">
+                      class="col-sm-2">
           <b-form-input id="octavosInput"
                         class="text-right"
                         type="number"
                         v-model="tarifa.octavos"
+                        maxlength="8"
+                        placeholder="0">
+          </b-form-input>
+        </b-form-group>
+        <b-form-group label="Dieciseisavos:"
+                      label-for="dieciseisavosInput"
+                      class="col-sm-2">
+          <b-form-input id="dieciseisavosInput"
+                        class="text-right"
+                        type="number"
+                        v-model="tarifa.dieciseisavos"
+                        maxlength="8"
+                        placeholder="0">
+          </b-form-input>
+        </b-form-group>
+        <b-form-group label="Treintaidosavos:"
+                      label-for="treintaidosavosInput"
+                      class="col-sm-2">
+          <b-form-input id="treintaidosavosInput"
+                        class="text-right"
+                        type="number"
+                        v-model="tarifa.treintaidosavos"
                         maxlength="8"
                         placeholder="0">
           </b-form-input>
@@ -144,6 +176,7 @@
           id: null,
           pelotari_id: null,
           campeonato_id: null,
+          contrato_id: null,
           fecha_ini: null,
           fecha_fin: null,
           campeon: null,
@@ -153,9 +186,12 @@
           semifinal: null,
           cuartos: null,
           octavos: null,
+          dieciseisavos: null,
+          treintaidosavos: null,
           created_at: null,
           updated_at: null,
         },
+        contratos: [],
         edit: false,
         show: true,
         goBack: () => {
@@ -169,6 +205,8 @@
       this.tarifa.pelotari_id = this.pelotariId;
       this.tarifa.campeonato_id = this.campeonatoId;
 
+      this.fetchContratos();
+
       if( this.isNewTarifa() ) {
         this.edit = false;
       } else {
@@ -177,6 +215,7 @@
         var rowTarifa = this.getTarifaRow();
 
         this.tarifa.id = rowTarifa.id;
+        this.tarifa.contrato_id = rowTarifa.contrato_id;
         this.tarifa.fecha_ini = rowTarifa.fecha_ini;
         this.tarifa.fecha_fin = rowTarifa.fecha_fin;
         this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
@@ -186,12 +225,25 @@
         this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
         this.tarifa.cuartos = this.formatAmount(rowTarifa.cuartos);
         this.tarifa.octavos = this.formatAmount(rowTarifa.octavos);
+        this.tarifa.dieciseisavos = this.formatAmount(rowTarifa.dieciseisavos);
+        this.tarifa.treintaidosavos = this.formatAmount(rowTarifa.treintaidosavos);
       }
     },
     methods: {
+      fetchContratos() {
+        let uri = '/www/contratos';
+        this.axios.get(uri, {
+            params: {
+              pelotari_id: this.pelotariId
+            }
+        })
+        .then((response) => {
+          var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/periodo/g, "text");;
+          this.contratos = JSON.parse(stringified);
+        });
+      },
       onSubmit (evt) {
         evt.preventDefault();
-
         let uri = '/www/tarifas';
         if(this.edit) {
           this.axios.post(uri + '/' + this.tarifa.id + '/update', this.tarifa)
@@ -218,6 +270,7 @@
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
+        this.tarfia.contrato_id = null;
         this.tarifa.fecha_ini = null;
         this.tarifa.fecha_fin = null;
         this.tarifa.campeon = null;
@@ -227,7 +280,14 @@
         this.tarifa.semifinal = null;
         this.tarifa.cuartos = null;
         this.tarifa.octavos = null;
+        this.tarifa.dieciseisavos = null;
+        this.tarifa.treintaidosavos = null;
       },
+      changeContrato (evt) {
+        var contrato = _.filter(this.contratos, { 'value': evt });
+        this.tarifa.fecha_ini = contrato[0].fecha_inicio;
+        this.tarifa.fecha_fin = contrato[0].fecha_final;
+      }
     }
   }
 </script>
