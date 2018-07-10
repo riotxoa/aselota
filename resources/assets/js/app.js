@@ -49,9 +49,12 @@ Vue.component('contrato-pelotari', require('./components/rrhh_contratos/FichaCom
 
 Vue.component('home-gerente', require('./components/HomeGerenteComponent.vue'));
 Vue.component('listado-festivales', require('./components/festivales/ListadoComponent.vue'));
+Vue.component('ficha-festival', require('./components/festivales/FichaComponent.vue'));
 
 const HomeGerente = { template: '<home-gerente></home-gerente>' };
 const ListFestivales = { template: '<listado-festivales></listado-festivales>' };
+const CreateFestival = { template: '<ficha-festival form-title="Nuevo Festival" is-new-festival="true"></ficha-festival>'};
+const EditFestival = { template: '<ficha-festival form-title="Editar Festival" is-new-festival="false"></ficha-festival>'};
 
 const routes = [
   {
@@ -73,7 +76,13 @@ const routes = [
     children: [
       {
         path: '', component: ListFestivales
-      }
+      },
+      {
+        path: 'festival/new', component: CreateFestival
+      },
+      {
+        path: 'festival/:id/edit', component: EditFestival
+      },
     ]
   },
 

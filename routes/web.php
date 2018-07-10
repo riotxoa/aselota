@@ -26,12 +26,16 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('contratos', 'ContratoController');
     Route::resource('tarifas', 'ContratoCampeonatoController');
     Route::resource('derechos', 'DerechoController');
+    Route::resource('frontones', 'FrontonController');
+    Route::resource('festival-estados', 'EstadoFestivalController');
+    Route::resource('festivales', 'FestivaleController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
     Route::post('contratos/{id}/update', 'ContratoController@update');
     Route::post('tarifas/{id}/update', 'ContratoCampeonatoController@update');
     Route::post('derechos/{id}/update', 'DerechoController@update');
+    Route::post('festivales/{id}/update', 'FestivaleController@update');
 });
 
 Auth::routes();

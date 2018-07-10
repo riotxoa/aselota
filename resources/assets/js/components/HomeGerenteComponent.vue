@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="w-100">
       <router-view></router-view>
       <div id="snackbar"></div>
   </div>

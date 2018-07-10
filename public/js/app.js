@@ -36896,9 +36896,12 @@ Vue.component('contrato-pelotari', __webpack_require__(382));
 
 Vue.component('home-gerente', __webpack_require__(385));
 Vue.component('listado-festivales', __webpack_require__(388));
+Vue.component('ficha-festival', __webpack_require__(395));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales = { template: '<listado-festivales></listado-festivales>' };
+var CreateFestival = { template: '<ficha-festival form-title="Nuevo Festival" is-new-festival="true"></ficha-festival>' };
+var EditFestival = { template: '<ficha-festival form-title="Editar Festival" is-new-festival="false"></ficha-festival>' };
 
 var routes = [{
   path: '/rrhh', component: HomeRRHH,
@@ -36913,6 +36916,10 @@ var routes = [{
   path: '/gerente', component: HomeGerente,
   children: [{
     path: '', component: ListFestivales
+  }, {
+    path: 'festival/new', component: CreateFestival
+  }, {
+    path: 'festival/:id/edit', component: EditFestival
   }]
 }];
 
@@ -90361,7 +90368,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container" },
+    { staticClass: "w-100" },
     [_c("router-view"), _vm._v(" "), _c("div", { attrs: { id: "snackbar" } })],
     1
   )
@@ -90381,6 +90388,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(400)
+}
 var normalizeComponent = __webpack_require__(8)
 /* script */
 var __vue_script__ = __webpack_require__(389)
@@ -90389,7 +90400,7 @@ var __vue_template__ = __webpack_require__(390)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -90429,6 +90440,77 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_utils_js__ = __webpack_require__(414);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -90436,26 +90518,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
 
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
+Vue.component('delete-modal', __webpack_require__(415));
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_utils_js__["a" /* default */]],
   data: function data() {
-    return {};
+    return {
+      filter: true,
+      remove: true,
+      update: true,
+      display: false,
+      sortBy: 'fecha_ini',
+      sortDesc: true,
+      fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" }],
+      items: [],
+      totalRows: 0,
+      perPage: 10,
+      currentPage: 1,
+      pageOptions: [10, 25, 50],
+      deleteId: null
+    };
   },
-  created: function created() {},
+  created: function created() {
+    this.fetchFestivales();
+  },
 
-  methods: {}
+  methods: {
+    fetchFestivales: function fetchFestivales() {
+      var _this = this;
+
+      var uri = '/www/festivales';
+      this.axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this.items = JSON.parse(stringified);
+        _this.totalRows = _this.items.length;
+      });
+    },
+    onClickDelete: function onClickDelete(item) {
+      this.$root.$emit('bv::show::modal', 'modalDelete');
+      var msg = "Se va a borrar el Festival que se celebrará en el frontón <strong>" + item.fronton + "</strong> de <strong>" + item.municipio + "</strong> el próximo <strong>" + this.formatDateES(item.fecha) + "</strong> a las <strong>" + item.hora + "</strong>.";
+      this.deleteId = item.id;
+      jQuery('#deleteMsg').html(msg);
+    },
+    removeItem: function removeItem() {
+      var _this2 = this;
+
+      var uri = '/www/festivales/' + this.deleteId;
+      this.axios.delete(uri).then(function (response) {
+        _this2.deleteId = null;
+        _this2.$root.$emit('bv::hide::modal', 'modalDelete');
+        _this2.fetchFestivales();
+        _this2.showSnackbar("Festival BORRADO");
+      }).catch(function (error) {
+        console.log("[remove] error: " + error);
+        _this2.deleteId = null;
+        _this2.$root.$emit('bv::hide::modal', 'modalDelete');
+        _this2.showSnackbar("ERROR al borrar");
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -90466,18 +90587,262 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c(
+        "b-row",
+        [
+          _c("b-col", { staticClass: "col-sm-6 float-left my-1 mb-3" }),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 text-right my-1 mb-3" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "text-white",
+                  attrs: { to: "/gerente/festival/new" }
+                },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      staticClass: "mb-0",
+                      attrs: { variant: "danger", title: "Crear Festival" }
+                    },
+                    [_vm._v("Nuevo Festival")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: {
+          striped: "",
+          hover: "",
+          small: "",
+          responsive: "",
+          "sort-by": _vm.sortBy,
+          "sort-desc": _vm.sortDesc,
+          "per-page": _vm.perPage,
+          "current-page": _vm.currentPage,
+          items: _vm.items,
+          fields: _vm.fields
+        },
+        on: {
+          "update:sortBy": function($event) {
+            _vm.sortBy = $event
+          },
+          "update:sortDesc": function($event) {
+            _vm.sortDesc = $event
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "actions",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button-group",
+                  [
+                    _vm.remove
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "danger",
+                              title: "Eliminar"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickDelete(row.item)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-trash" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.update
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "primary",
+                              title: "Editar"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickEdit(row.item)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-edit" })]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.display
+                      ? _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "secondary",
+                              title: "Mostrar/Ocultar Detalle"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                return row.toggleDetails($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "icon",
+                              class: {
+                                "voyager-x": row.detailsShowing,
+                                "voyager-eye": !row.detailsShowing
+                              }
+                            })
+                          ]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]
+            }
+          },
+          {
+            key: "row-details",
+            fn: function(row) {
+              return _vm.display
+                ? [
+                    _c(
+                      "b-card",
+                      [
+                        _c(
+                          "b-row",
+                          [
+                            _c("b-col", { attrs: { sm: "6" } }),
+                            _vm._v(" "),
+                            _c("b-col", { attrs: { sm: "6" } })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                : undefined
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "5" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: { "total-rows": _vm.totalRows, "per-page": _vm.perPage },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Total: " }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "", plaintext: "" },
+                    model: {
+                      value: _vm.totalRows,
+                      callback: function($$v) {
+                        _vm.totalRows = $$v
+                      },
+                      expression: "totalRows"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "4" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Mostrar" }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { options: _vm.pageOptions },
+                    model: {
+                      value: _vm.perPage,
+                      callback: function($$v) {
+                        _vm.perPage = $$v
+                      },
+                      expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("delete-modal", {
+        attrs: { "object-name": "Festival", "remove-item": _vm.removeItem }
+      })
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container-fluid" }, [
-      _c("h1", [_vm._v("Festivales")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -90492,6 +90857,1283 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(398)
+/* template */
+var __vue_template__ = __webpack_require__(399)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/festivales/FichaComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8d9a1eb4", Component.options)
+  } else {
+    hotAPI.reload("data-v-8d9a1eb4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 396 */,
+/* 397 */,
+/* 398 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+Vue.component('festival-header', __webpack_require__(402));
+Vue.component('festival-body', __webpack_require__(407));
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['formTitle', 'isNewFestival'],
+  data: function data() {
+    return {
+      id: null,
+      edit: null
+    };
+  },
+
+  created: function created() {
+    console.log("FichaComponent created");
+    this.edit = !this.isNewFestival;
+  },
+  methods: {}
+});
+
+/***/ }),
+/* 399 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("festival-header", {
+        attrs: {
+          "form-title": _vm.formTitle,
+          "festival-id": _vm.id,
+          edit: _vm.edit
+        },
+        on: {
+          "toggle-edit": function($event) {
+            _vm.edit = !_vm.edit
+            _vm.id = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _vm.edit
+        ? _c("festival-body", {
+            attrs: { "festival-id": _vm.id, edit: _vm.edit }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8d9a1eb4", module.exports)
+  }
+}
+
+/***/ }),
+/* 400 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(401);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(22)("7658e5c0", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-002345f1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-002345f1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 401 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 402 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(403)
+}
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(405)
+/* template */
+var __vue_template__ = __webpack_require__(406)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/festivales/FestivalHeaderComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5bff4626", Component.options)
+  } else {
+    hotAPI.reload("data-v-5bff4626", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 403 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(404);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(22)("79c72d4c", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5bff4626\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalHeaderComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5bff4626\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalHeaderComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 404 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom:10px solid slategray;\n  margin-top:-1.45rem;\n  padding-bottom:1.25rem;\n  padding-top:0;\n}\n.header .toolbar {\n  background-color:slategray;\n}\n.header h4 {\n  line-height:1.75;\n}\n.header label {\n  font-weight:bold;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 405 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(412);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_nav_js__ = __webpack_require__(413);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(414);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__utils_nav_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
+  props: ['formTitle', 'edit'],
+  data: function data() {
+    return {
+      header: {
+        id: null,
+        fecha: '',
+        hora: '',
+        fronton_id: null,
+        television: 0,
+        television_txt: '',
+        estado_id: 1
+      },
+      dia: '',
+      provincia_id: null,
+      municipio_id: null,
+      television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
+      show: true
+    };
+  },
+
+  created: function created() {
+    console.log("FestivalHeaderComponent created");
+    this.getMunicipios();
+    this.getProvincias();
+    this.getFrontones();
+    this.getFestivalEstados();
+
+    this.header.fecha = this.formatDateEN();
+  },
+  methods: {
+    onChangeDate: function onChangeDate() {
+      switch (new Date(this.header.fecha).getDay()) {
+        case 0:
+          this.dia = "Domingo";
+          break;
+        case 1:
+          this.dia = "Lunes";
+          break;
+        case 2:
+          this.dia = "Martes";
+          break;
+        case 3:
+          this.dia = "Miércoles";
+          break;
+        case 4:
+          this.dia = "Jueves";
+          break;
+        case 5:
+          this.dia = "Viernes";
+          break;
+        case 6:
+          this.dia = "Sábado";
+          break;
+      }
+    },
+    onSubmit: function onSubmit(evt) {
+      var _this = this;
+
+      evt.preventDefault();
+
+      this.header.municipio_id = this.municipio_id;
+      this.header.provincia_id = this.provincia_id;
+
+      var uri = '/www/festivales';
+
+      if (this.edit) {
+        this.axios.post(uri + '/' + this.header.id + '/update', this.header).then(function (response) {
+          _this.showSnackbar("Festival actualizado");
+          _this.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          _this.showSnackbar("Se ha producido un ERROR");
+        });
+      } else {
+        this.axios.post(uri, this.header).then(function (response) {
+          _this.header.id = response.data.id;
+
+          _this.showSnackbar("Festival creado");
+          _this.$emit('toggle-edit', _this.header.id);
+        }).catch(function (error) {
+          console.log(error);
+          _this.showSnackbar("Se ha producido un ERROR");
+        });
+      }
+    },
+    onReset: function onReset(evt) {
+      this.goBack();
+    }
+  }
+});
+
+/***/ }),
+/* 406 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "header" },
+    [
+      _vm.show
+        ? _c("b-form", { on: { submit: _vm.onSubmit, reset: _vm.onReset } }, [
+            _c("div", { staticClass: "toolbar mb-4 py-3" }, [
+              _c(
+                "div",
+                { staticClass: "container" },
+                [
+                  _c("b-row", [
+                    _c(
+                      "h4",
+                      {
+                        staticClass: "col-sm-6 text-white font-weight-bold m-0"
+                      },
+                      [_vm._v(_vm._s(this.formTitle))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "col-sm-6 text-right" },
+                      [
+                        _c(
+                          "b-button",
+                          { attrs: { type: "submit", variant: "danger" } },
+                          [_vm._v("Guardar")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-button",
+                          { attrs: { type: "reset", variant: "default" } },
+                          [_vm._v("Volver")]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "container" },
+              [
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: { label: "Fecha:", "label-for": "fechaInput" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: {
+                            id: "fechaInput",
+                            type: "date",
+                            change: _vm.onChangeDate(),
+                            required: ""
+                          },
+                          model: {
+                            value: _vm.header.fecha,
+                            callback: function($$v) {
+                              _vm.$set(_vm.header, "fecha", $$v)
+                            },
+                            expression: "header.fecha"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: { label: "Día:", "label-for": "diaInput" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: { id: "diaInput", type: "text", readonly: "" },
+                          model: {
+                            value: _vm.dia,
+                            callback: function($$v) {
+                              _vm.dia = $$v
+                            },
+                            expression: "dia"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: { label: "Hora:", "label-for": "hourInput" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: {
+                            id: "hourInput",
+                            type: "time",
+                            required: ""
+                          },
+                          model: {
+                            value: _vm.header.hora,
+                            callback: function($$v) {
+                              _vm.$set(_vm.header, "hora", $$v)
+                            },
+                            expression: "header.hora"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: {
+                          label: "Provincia:",
+                          "label-for": "provinciaInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "provinciaInput",
+                            options: _vm.provincias
+                          },
+                          on: { change: _vm.onChangeProvincia },
+                          model: {
+                            value: _vm.provincia_id,
+                            callback: function($$v) {
+                              _vm.provincia_id = $$v
+                            },
+                            expression: "provincia_id"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Municipio:",
+                          "label-for": "municipioInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "municipioInput",
+                            options: _vm.municipios_filtered
+                          },
+                          on: { change: _vm.onChangeMunicipio },
+                          model: {
+                            value: _vm.municipio_id,
+                            callback: function($$v) {
+                              _vm.municipio_id = $$v
+                            },
+                            expression: "municipio_id"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Frontón:",
+                          "label-for": "frontonInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "frontonInput",
+                            options: _vm.frontones_filtered,
+                            required: ""
+                          },
+                          on: { change: _vm.onChangeFronton },
+                          model: {
+                            value: _vm.header.fronton_id,
+                            callback: function($$v) {
+                              _vm.$set(_vm.header, "fronton_id", $$v)
+                            },
+                            expression: "header.fronton_id"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: {
+                          label: "Televisión:",
+                          "label-for": "televisionInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "televisionInput",
+                            options: _vm.television,
+                            required: ""
+                          },
+                          model: {
+                            value: _vm.header.television,
+                            callback: function($$v) {
+                              _vm.$set(_vm.header, "television", $$v)
+                            },
+                            expression: "header.television"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4 mt-1",
+                        attrs: { label: " ", "label-for": "televisionTxtInput" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: { id: "televisionTxtInput" },
+                          model: {
+                            value: _vm.header.television_txt,
+                            callback: function($$v) {
+                              _vm.$set(_vm.header, "television_txt", $$v)
+                            },
+                            expression: "header.television_txt"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Estado festival:",
+                          "label-for": "estadoInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "estadoInput",
+                            options: _vm.festivalEstados,
+                            required: ""
+                          },
+                          model: {
+                            value: _vm.header.estado_id,
+                            callback: function($$v) {
+                              _vm.$set(_vm.header, "estado_id", $$v)
+                            },
+                            expression: "header.estado_id"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ])
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5bff4626", module.exports)
+  }
+}
+
+/***/ }),
+/* 407 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(410)
+}
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(408)
+/* template */
+var __vue_template__ = __webpack_require__(409)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/festivales/FestivalBodyComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0ec0e8b1", Component.options)
+  } else {
+    hotAPI.reload("data-v-0ec0e8b1", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 408 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['festivalId'],
+  data: function data() {
+    return {};
+  },
+
+  created: function created() {
+    console.log("FestivalBodyComponent created");
+  },
+  methods: {}
+});
+
+/***/ }),
+/* 409 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "body" },
+    [
+      _c(
+        "b-tabs",
+        { staticClass: "container", attrs: { pills: "", card: "" } },
+        [
+          _c("b-tab", { attrs: { title: "Partidos" } }, [
+            _c("h6", [_vm._v("Partidos " + _vm._s(this.festivalId))])
+          ]),
+          _vm._v(" "),
+          _c("b-tab", { attrs: { title: "Costes" } }, [
+            _c("h6", [_vm._v("Costes " + _vm._s(this.festivalId))])
+          ]),
+          _vm._v(" "),
+          _c("b-tab", { attrs: { title: "Facturación" } }, [
+            _c("h6", [_vm._v("Facturación " + _vm._s(this.festivalId))])
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0ec0e8b1", module.exports)
+  }
+}
+
+/***/ }),
+/* 410 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(411);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(22)("3f430b7e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0ec0e8b1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalBodyComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0ec0e8b1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalBodyComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 411 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(11)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.card-header {\n  background:transparent;\n  border:none;\n  padding:0;\n}\n.card-header .nav-item {\n  background-color:#ffffff;\n  font-weight:bold;\n  text-align:center;\n  /* width:calc(100% / 3); */\n}\n.card-header .nav-item {\n  -ms-flex-preferred-size: 0;\n  flex-basis: 0;\n  -webkit-box-flex: 1;\n  -ms-flex-positive: 1;\n  flex-grow: 1;\n  max-width: 100%;\n}\n.card-header .nav-item:first-child {\n  border-right:2.5px solid #f5f8fa;\n}\n.card-header .nav-item:last-child {\n  border-left:2.5px solid #f5f8fa;\n}\n.card-header .nav-item:not(:first-child):not(:last-child) {\n  border-left:1.25px solid #f5f8fa;\n  border-right:1.25px solid #f5f8fa;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 412 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var APIGetters = {
+  data: function data() {
+    return {
+      provincias: [],
+      municipios: [],
+      municipios_filtered: [],
+      frontones: [],
+      frontones_filtered: [],
+      festivalEstados: []
+    };
+  },
+
+  methods: {
+    getProvincias: function getProvincias() {
+      var _this = this;
+
+      var uri = '/www/provincias';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/name/g, "text");
+        _this.provincias = JSON.parse(stringified);
+        _this.provincias.unshift({ value: null, text: "Seleccionar provincia" });
+      });
+    },
+    onChangeProvincia: function onChangeProvincia(evt) {
+      this.provincia_id = evt;
+      if (null === evt) {
+        this.municipios_filtered = this.municipios;
+        this.frontones_filterd = this.frontones;
+      } else {
+        this.municipios_filtered = _.filter(this.municipios, { 'provincia_value': evt });
+        this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
+
+        this.frontones_filtered = _.filter(this.frontones, { 'provincia_value': evt });
+        this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+      }
+    },
+    getMunicipios: function getMunicipios() {
+      var _this2 = this;
+
+      var uri = '/www/municipios';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/name/g, "text");
+        _this2.municipios = JSON.parse(stringified);
+        _this2.municipios.unshift({ value: null, text: "Seleccionar municipio" });
+        _this2.municipios_filtered = _this2.municipios;
+      });
+    },
+    onChangeMunicipio: function onChangeMunicipio(evt) {
+      if (null !== evt) {
+        if (null === this.provincia_id) {
+          this.provincia_id = _.filter(this.municipios, { 'value': evt })[0].provincia_value;
+          this.onChangeProvincia(this.provincia_id);
+        }
+
+        this.frontones_filtered = _.filter(this.frontones, { 'municipio_value': evt });
+        this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+      } else {
+        if (null === this.provincia_id) {
+          this.frontones_filtered = this.frontones;
+        } else {
+          this.frontones_filtered = _.filter(this.frontones, { 'provincia_value': this.provincia_id });
+          this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+        }
+      }
+    },
+    getFrontones: function getFrontones() {
+      var _this3 = this;
+
+      var uri = '/www/frontones';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/name/g, "text");
+        _this3.frontones = JSON.parse(stringified);
+        _this3.frontones.unshift({ value: null, text: "Seleccionar frontón" });
+        _this3.frontones_filtered = _this3.frontones;
+      });
+    },
+    onChangeFronton: function onChangeFronton(evt) {
+      if (null === this.municipio_id) {
+        this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_value;
+        this.onChangeMunicipio(this.municipio_id);
+      }
+    },
+    getFestivalEstados: function getFestivalEstados() {
+      var _this4 = this;
+
+      var uri = '/www/festival-estados';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/name/g, "text");
+        _this4.festivalEstados = JSON.parse(stringified);
+        _this4.festivalEstados.unshift({ value: null, text: "Seleccionar estado" });
+      });
+    }
+  }
+
+};
+/* harmony default export */ __webpack_exports__["a"] = (APIGetters);
+
+/***/ }),
+/* 413 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var Nav = {
+
+  methods: {
+    goBack: function goBack() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+    },
+    goRoot: function goRoot() {
+      window.location.href = '/';
+    }
+  }
+
+};
+/* harmony default export */ __webpack_exports__["a"] = (Nav);
+
+/***/ }),
+/* 414 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+
+
+var Utils = {
+
+  methods: {
+    formatDateES: function formatDateES(date) {
+      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
+        return __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('DD/MM/YYYY');
+      }
+    },
+    formatDateEN: function formatDateEN(date) {
+      if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('YYYY-MM-DD');else return __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD');
+    },
+    showSnackbar: function showSnackbar(msg) {
+      // Get the snackbar DIV
+      var x = document.getElementById("snackbar");
+
+      // Add the "show" class to DIV
+      x.className = "show";
+      x.innerHTML = msg;
+
+      // After 3 seconds, remove the show class from DIV
+      setTimeout(function () {
+        x.className = x.className.replace("show", "");
+      }, 1500);
+    }
+  }
+
+};
+/* harmony default export */ __webpack_exports__["a"] = (Utils);
+
+/***/ }),
+/* 415 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(8)
+/* script */
+var __vue_script__ = __webpack_require__(416)
+/* template */
+var __vue_template__ = __webpack_require__(417)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/modals/ModalDeleteComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f74ff07", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f74ff07", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 416 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['objectName', 'removeItem'],
+  data: function data() {
+    return {
+      title: ''
+    };
+  },
+  created: function created() {
+    console.log("ModalDeleteComponent created");
+    this.title = "BORRAR " + this.objectName;
+    // this.removeItem();
+  },
+
+  methods: {
+    hideModalDelete: function hideModalDelete() {
+      this.$refs.modalDelete.hide();
+    }
+  }
+});
+
+/***/ }),
+/* 417 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      ref: "modalDelete",
+      attrs: {
+        id: "modalDelete",
+        title: _vm.title,
+        "data-id": "",
+        "hide-footer": ""
+      }
+    },
+    [
+      _c("div", { staticClass: "modal-body" }, [
+        _c("p", { attrs: { id: "deleteMsg" } }),
+        _vm._v(" "),
+        _c("p", [_vm._v("¿Desea continuar?")])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "modal-footer" },
+        [
+          _c(
+            "b-btn",
+            { attrs: { variant: "danger" }, on: { click: _vm.removeItem } },
+            [_vm._v("Borrar")]
+          ),
+          _vm._v(" "),
+          _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+            _vm._v("Cancelar")
+          ])
+        ],
+        1
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5f74ff07", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
