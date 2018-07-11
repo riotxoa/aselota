@@ -112,7 +112,7 @@
 
   export default {
     mixins: [APIGetters, Nav, Utils],
-    props: ['formTitle', 'edit'],
+    props: ['formTitle', 'festivalId', 'edit'],
     data () {
       return {
         header: {
@@ -142,8 +142,33 @@
       this.getFestivalEstados();
 
       this.header.fecha = this.formatDateEN();
+
+      if (this.edit) {
+        this.header.id = (this.festivalId ? this.festivalId : this.$route.params.id);
+        this.fetchFestivalHeader();
+      }
     },
     methods: {
+      fetchFestivalHeader () {
+        this.showPreloader();
+        let uri = '/www/festivales/' + this.header.id;
+        this.axios.get(uri).then((response) => {
+            var stringified = JSON.stringify(response.data);
+            var header = JSON.parse(stringified);
+
+            this.header.fecha = header.fecha;
+            this.header.hora = header.hora;
+            this.header.fronton_id = header.fronton_id;
+            this.header.television = header.television;
+            this.header.television_txt = header.television_txt;
+            this.header.estado_id = header.estado_id;
+
+            this.provincia_id = header.provincia_id;
+            this.municipio_id = header.municipio_id;
+
+            this.hidePreloader();
+        });
+      },
       onChangeDate () {
         switch (new Date(this.header.fecha).getDay()) {
           case 0:
@@ -191,7 +216,7 @@
           this.axios.post(uri, this.header)
             .then((response) => {
               this.header.id = response.data.id;
-              
+
               this.showSnackbar("Festival creado");
               this.$emit('toggle-edit', this.header.id);
             })

@@ -33,7 +33,7 @@
           <b-button v-if="remove" size="sm" variant="danger" @click.stop="onClickDelete(row.item)" title="Eliminar">
             <span class="icon voyager-trash"></span>
           </b-button>
-          <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item)" title="Editar">
+          <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item.id)" title="Editar">
             <span class="icon voyager-edit"></span>
           </b-button>
           <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
@@ -121,6 +121,9 @@
           var msg = "Se va a borrar el Festival que se celebrará en el frontón <strong>" + item.fronton + "</strong> de <strong>" + item.municipio + "</strong> el próximo <strong>" + this.formatDateES(item.fecha) + "</strong> a las <strong>" + item.hora + "</strong>.";
           this.deleteId = item.id;
           jQuery('#deleteMsg').html(msg);
+        },
+        onClickEdit (id) {
+          this.$router.push('/gerente/festival/' + id + '/edit/');
         },
         removeItem () {
           let uri = '/www/festivales/' + this.deleteId;

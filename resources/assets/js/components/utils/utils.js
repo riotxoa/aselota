@@ -19,6 +19,14 @@ var Utils = {
         return moment().format('YYYY-MM-DD');
     },
 
+    showPreloader($) {
+      jQuery("body").addClass("preloader");
+    },
+
+    hidePreloader() {
+      setTimeout(function(){ jQuery("body").removeClass("preloader"); }, 250);
+    },
+
     showSnackbar (msg) {
       // Get the snackbar DIV
       var x = document.getElementById("snackbar");

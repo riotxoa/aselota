@@ -27,7 +27,9 @@ class FestivaleController extends Controller
           ->select(
               'festivales.*',
               DB::raw('IF(festivales.television, "Sí", "No") AS television_txt'),
+              'provincias.id as provincia_id',
               'provincias.name as provincia',
+              'municipios.id as municipio_id',
               'municipios.name as municipio',
               'frontones.name as fronton',
               'estado_festivals.name as estado'
@@ -87,7 +89,14 @@ class FestivaleController extends Controller
           ->leftJoin('frontones', 'festivales.fronton_id', '=', 'frontones.id')
           ->leftJoin('provincias', 'frontones.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'frontones.municipio_id', '=', 'municipios.id')
-          ->select('festivales.*', 'provincias.name as provincia', 'municipios.name as municipio', 'frontones.name as fronton')
+          ->select(
+              'festivales.*',
+              'provincias.id as provincia_id',
+              'provincias.name as provincia',
+              'municipios.id as municipio_id',
+              'municipios.name as municipio',
+              'frontones.name as fronton'
+            )
           ->where('festivales.id', $id)
           ->first();
 

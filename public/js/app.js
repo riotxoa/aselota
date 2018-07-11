@@ -36844,6 +36844,14 @@ var Utils = {
     formatDateEN: function formatDateEN(date) {
       if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('YYYY-MM-DD');else return __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD');
     },
+    showPreloader: function showPreloader($) {
+      jQuery("body").addClass("preloader");
+    },
+    hidePreloader: function hidePreloader() {
+      setTimeout(function () {
+        jQuery("body").removeClass("preloader");
+      }, 250);
+    },
     showSnackbar: function showSnackbar(msg) {
       // Get the snackbar DIV
       var x = document.getElementById("snackbar");
@@ -36938,8 +36946,8 @@ Vue.component('ficha-festival', __webpack_require__(397));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales = { template: '<listado-festivales></listado-festivales>' };
-var CreateFestival = { template: '<ficha-festival form-title="Nuevo Festival" is-new-festival="true"></ficha-festival>' };
-var EditFestival = { template: '<ficha-festival form-title="Editar Festival" is-new-festival="false"></ficha-festival>' };
+var CreateFestival = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival="true"></ficha-festival>' };
+var EditFestival = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false"></ficha-festival>' };
 
 var routes = [{
   path: '/rrhh', component: HomeRRHH,
@@ -90507,7 +90515,7 @@ exports = module.exports = __webpack_require__(9)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -90637,6 +90645,9 @@ Vue.component('delete-modal', __webpack_require__(393));
       var msg = "Se va a borrar el Festival que se celebrará en el frontón <strong>" + item.fronton + "</strong> de <strong>" + item.municipio + "</strong> el próximo <strong>" + this.formatDateES(item.fecha) + "</strong> a las <strong>" + item.hora + "</strong>.";
       this.deleteId = item.id;
       jQuery('#deleteMsg').html(msg);
+    },
+    onClickEdit: function onClickEdit(id) {
+      this.$router.push('/gerente/festival/' + id + '/edit/');
     },
     removeItem: function removeItem() {
       var _this2 = this;
@@ -90906,7 +90917,7 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.stopPropagation()
-                                _vm.onClickEdit(row.item)
+                                _vm.onClickEdit(row.item.id)
                               }
                             }
                           },
@@ -91077,6 +91088,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(416)
+}
 var normalizeComponent = __webpack_require__(7)
 /* script */
 var __vue_script__ = __webpack_require__(398)
@@ -91085,7 +91100,7 @@ var __vue_template__ = __webpack_require__(411)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -91378,7 +91393,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__utils_nav_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
-  props: ['formTitle', 'edit'],
+  props: ['formTitle', 'festivalId', 'edit'],
   data: function data() {
     return {
       header: {
@@ -91406,8 +91421,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.getFestivalEstados();
 
     this.header.fecha = this.formatDateEN();
+
+    if (this.edit) {
+      this.header.id = this.festivalId ? this.festivalId : this.$route.params.id;
+      this.fetchFestivalHeader();
+    }
   },
   methods: {
+    fetchFestivalHeader: function fetchFestivalHeader() {
+      var _this = this;
+
+      this.showPreloader();
+      var uri = '/www/festivales/' + this.header.id;
+      this.axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        var header = JSON.parse(stringified);
+
+        _this.header.fecha = header.fecha;
+        _this.header.hora = header.hora;
+        _this.header.fronton_id = header.fronton_id;
+        _this.header.television = header.television;
+        _this.header.television_txt = header.television_txt;
+        _this.header.estado_id = header.estado_id;
+
+        _this.provincia_id = header.provincia_id;
+        _this.municipio_id = header.municipio_id;
+
+        _this.hidePreloader();
+      });
+    },
     onChangeDate: function onChangeDate() {
       switch (new Date(this.header.fecha).getDay()) {
         case 0:
@@ -91434,7 +91476,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     onSubmit: function onSubmit(evt) {
-      var _this = this;
+      var _this2 = this;
 
       evt.preventDefault();
 
@@ -91445,21 +91487,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       if (this.edit) {
         this.axios.post(uri + '/' + this.header.id + '/update', this.header).then(function (response) {
-          _this.showSnackbar("Festival actualizado");
-          _this.goBack();
+          _this2.showSnackbar("Festival actualizado");
+          _this2.goBack();
         }).catch(function (error) {
           console.log(error);
-          _this.showSnackbar("Se ha producido un ERROR");
+          _this2.showSnackbar("Se ha producido un ERROR");
         });
       } else {
         this.axios.post(uri, this.header).then(function (response) {
-          _this.header.id = response.data.id;
+          _this2.header.id = response.data.id;
 
-          _this.showSnackbar("Festival creado");
-          _this.$emit('toggle-edit', _this.header.id);
+          _this2.showSnackbar("Festival creado");
+          _this2.$emit('toggle-edit', _this2.header.id);
         }).catch(function (error) {
           console.log(error);
-          _this.showSnackbar("Se ha producido un ERROR");
+          _this2.showSnackbar("Se ha producido un ERROR");
         });
       }
     },
@@ -92090,6 +92132,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { attrs: { id: "preloader" } },
     [
       _c("festival-header", {
         attrs: {
@@ -92129,6 +92172,49 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 413 */,
+/* 414 */,
+/* 415 */,
+/* 416 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(417);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(14)("05afdcad", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8d9a1eb4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FichaComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8d9a1eb4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FichaComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 417 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

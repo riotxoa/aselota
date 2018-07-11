@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="preloader">
     <festival-header :form-title="formTitle" :festival-id="id" :edit="edit" v-on:toggle-edit="edit = !edit; id = $event"></festival-header>
     <festival-body v-if="edit" :festival-id="id" :edit="edit"></festival-body>
   </div>
@@ -35,3 +35,7 @@
     }
   }
 </script>
+
+<style>
+
+</style>
