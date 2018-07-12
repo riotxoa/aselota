@@ -250,4 +250,13 @@
   .header label {
     font-weight:bold;
   }
+  .form-group {
+    margin-bottom:.5rem;
+  }
+  .form-control {
+    padding: 0.075rem 0.75rem;
+  }
+  select.form-control:not([size]):not([multiple]) {
+    height: calc(1.71rem + 2px);
+  }
 </style>
