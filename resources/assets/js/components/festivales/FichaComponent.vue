@@ -1,6 +1,6 @@
 <template>
   <div id="preloader">
-    <festival-header :form-title="formTitle" :festival-id="id" :edit="edit" v-on:toggle-edit="edit = !edit; id = $event"></festival-header>
+    <festival-header :form-title="formTitle" :festival-id="id" :edit="edit" v-on:toggle-edit="edit = !edit; id = $event.id"></festival-header>
     <festival-body v-if="edit" :festival-id="id" :edit="edit"></festival-body>
   </div>
 </template>

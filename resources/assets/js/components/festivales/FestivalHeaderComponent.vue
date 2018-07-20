@@ -19,11 +19,17 @@
                           label-for="fechaInput"
                           class="col-sm-3">
               <b-form-input id="fechaInput"
+                            class="d-inline-block px-1"
+                            style="min-width:127px;width:calc(100% - 25px);"
+                            :readonly="!editdate"
                             type="date"
                             v-model="header.fecha"
                             :change="onChangeDate()"
                             required>
               </b-form-input>
+              <b-link v-if="edit" class="pl-1 d-inline-block" @click="editDate(true)">
+                <i class="voyager-pen"></i>
+              </b-link>
             </b-form-group>
             <b-form-group label="Día:"
                           label-for="diaInput"
@@ -38,6 +44,7 @@
                           label-for="hourInput"
                           class="col-sm-2">
               <b-form-input id="hourInput"
+                            :readonly="editdate"
                             type="time"
                             required
                             v-model="header.hora">
@@ -47,6 +54,7 @@
                           label-for="provinciaInput"
                           class="col-sm-2">
               <b-form-select id="provinciaInput"
+                             :readonly="editdate"
                              :options="provincias"
                              @change="onChangeProvincia"
                              v-model="provincia_id">
@@ -56,6 +64,7 @@
                           label-for="municipioInput"
                           class="col-sm-3">
               <b-form-select id="municipioInput"
+                             :readonly="editdate"
                              :options="municipios_filtered"
                              @change="onChangeMunicipio"
                              v-model="municipio_id">
@@ -67,6 +76,7 @@
                           label-for="frontonInput"
                           class="col-sm-3">
               <b-form-select id="frontonInput"
+                             :readonly="editdate"
                              :options="frontones_filtered"
                              @change="onChangeFronton"
                              required
@@ -77,6 +87,7 @@
                           label-for="televisionInput"
                           class="col-sm-2">
               <b-form-select id="televisionInput"
+                            :readonly="editdate"
                             :options="television"
                             required
                             v-model="header.television">
@@ -86,6 +97,7 @@
                           label-for="televisionTxtInput"
                           class="col-sm-4 mt-1">
               <b-form-input id="televisionTxtInput"
+                            :readonly="editdate"
                             v-model="header.television_txt">
               </b-form-input>
             </b-form-group>
@@ -93,6 +105,7 @@
                           label-for="estadoInput"
                           class="col-sm-3">
               <b-form-select id="estadoInput"
+                             :readonly="editdate"
                              :options="festivalEstados"
                              required
                              v-model="header.estado_id">
@@ -131,6 +144,7 @@
           { value: 0, text: "No" },
           { value: 1, text: "Sí" },
         ],
+        editdate: !this.edit,
         show: true
       }
     },
@@ -194,6 +208,10 @@
             break;
         }
       },
+      editDate (edit) {
+        this.editdate = edit;
+        this.$emit('toggle-edit', this.header);
+      },
       onSubmit (evt) {
         evt.preventDefault();
 
@@ -202,11 +220,15 @@
 
         let uri = '/www/festivales';
 
-        if(this.edit) {
+        if(this.edit || this.header.id) {
           this.axios.post(uri + '/' + this.header.id + '/update', this.header)
             .then((response) => {
               this.showSnackbar("Festival actualizado");
-              this.goBack();
+              if(this.editdate) {
+                this.editDate(false);
+              } else {
+                this.goBack();
+              }
             })
             .catch((error) => {
               console.log(error);
@@ -217,8 +239,9 @@
             .then((response) => {
               this.header.id = response.data.id;
 
+              this.editdate = false;
               this.showSnackbar("Festival creado");
-              this.$emit('toggle-edit', this.header.id);
+              this.$emit('toggle-edit', this.header);
             })
             .catch((error) => {
               console.log(error);
@@ -227,7 +250,10 @@
         }
       },
       onReset (evt) {
-        this.goBack();
+        if(this.editdate)
+          this.editDate(false)
+        else
+          this.goBack();
       }
     }
   }

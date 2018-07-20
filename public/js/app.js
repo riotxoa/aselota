@@ -91612,6 +91612,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -91635,6 +91648,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       provincia_id: null,
       municipio_id: null,
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
+      editdate: !this.edit,
       show: true
     };
   },
@@ -91701,6 +91715,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           break;
       }
     },
+    editDate: function editDate(edit) {
+      this.editdate = edit;
+      this.$emit('toggle-edit', this.header);
+    },
     onSubmit: function onSubmit(evt) {
       var _this2 = this;
 
@@ -91711,10 +91729,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       var uri = '/www/festivales';
 
-      if (this.edit) {
+      if (this.edit || this.header.id) {
         this.axios.post(uri + '/' + this.header.id + '/update', this.header).then(function (response) {
           _this2.showSnackbar("Festival actualizado");
-          _this2.goBack();
+          if (_this2.editdate) {
+            _this2.editDate(false);
+          } else {
+            _this2.goBack();
+          }
         }).catch(function (error) {
           console.log(error);
           _this2.showSnackbar("Se ha producido un ERROR");
@@ -91723,8 +91745,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.axios.post(uri, this.header).then(function (response) {
           _this2.header.id = response.data.id;
 
+          _this2.editdate = false;
           _this2.showSnackbar("Festival creado");
-          _this2.$emit('toggle-edit', _this2.header.id);
+          _this2.$emit('toggle-edit', _this2.header);
         }).catch(function (error) {
           console.log(error);
           _this2.showSnackbar("Se ha producido un ERROR");
@@ -91732,7 +91755,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     onReset: function onReset(evt) {
-      this.goBack();
+      if (this.editdate) this.editDate(false);else this.goBack();
     }
   }
 });
@@ -91823,8 +91846,14 @@ var render = function() {
                       },
                       [
                         _c("b-form-input", {
+                          staticClass: "d-inline-block px-1",
+                          staticStyle: {
+                            "min-width": "127px",
+                            width: "calc(100% - 25px)"
+                          },
                           attrs: {
                             id: "fechaInput",
+                            readonly: !_vm.editdate,
                             type: "date",
                             change: _vm.onChangeDate(),
                             required: ""
@@ -91836,7 +91865,22 @@ var render = function() {
                             },
                             expression: "header.fecha"
                           }
-                        })
+                        }),
+                        _vm._v(" "),
+                        _vm.edit
+                          ? _c(
+                              "b-link",
+                              {
+                                staticClass: "pl-1 d-inline-block",
+                                on: {
+                                  click: function($event) {
+                                    _vm.editDate(true)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "voyager-pen" })]
+                            )
+                          : _vm._e()
                       ],
                       1
                     ),
@@ -91872,6 +91916,7 @@ var render = function() {
                         _c("b-form-input", {
                           attrs: {
                             id: "hourInput",
+                            readonly: _vm.editdate,
                             type: "time",
                             required: ""
                           },
@@ -91900,6 +91945,7 @@ var render = function() {
                         _c("b-form-select", {
                           attrs: {
                             id: "provinciaInput",
+                            readonly: _vm.editdate,
                             options: _vm.provincias
                           },
                           on: { change: _vm.onChangeProvincia },
@@ -91928,6 +91974,7 @@ var render = function() {
                         _c("b-form-select", {
                           attrs: {
                             id: "municipioInput",
+                            readonly: _vm.editdate,
                             options: _vm.municipios_filtered
                           },
                           on: { change: _vm.onChangeMunicipio },
@@ -91962,6 +92009,7 @@ var render = function() {
                         _c("b-form-select", {
                           attrs: {
                             id: "frontonInput",
+                            readonly: _vm.editdate,
                             options: _vm.frontones_filtered,
                             required: ""
                           },
@@ -91991,6 +92039,7 @@ var render = function() {
                         _c("b-form-select", {
                           attrs: {
                             id: "televisionInput",
+                            readonly: _vm.editdate,
                             options: _vm.television,
                             required: ""
                           },
@@ -92014,7 +92063,10 @@ var render = function() {
                       },
                       [
                         _c("b-form-input", {
-                          attrs: { id: "televisionTxtInput" },
+                          attrs: {
+                            id: "televisionTxtInput",
+                            readonly: _vm.editdate
+                          },
                           model: {
                             value: _vm.header.television_txt,
                             callback: function($$v) {
@@ -92040,6 +92092,7 @@ var render = function() {
                         _c("b-form-select", {
                           attrs: {
                             id: "estadoInput",
+                            readonly: _vm.editdate,
                             options: _vm.festivalEstados,
                             required: ""
                           },
@@ -94148,7 +94201,7 @@ var render = function() {
         on: {
           "toggle-edit": function($event) {
             _vm.edit = !_vm.edit
-            _vm.id = $event
+            _vm.id = $event.id
           }
         }
       }),
