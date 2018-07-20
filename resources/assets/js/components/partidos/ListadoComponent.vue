@@ -2,7 +2,7 @@
   <div v-if="partidos" class="list-partidos-festival">
     <ul class="mt-3 px-3">
       <li v-for="partido in partidos">
-        <partido :partido="partido" v-on:delete-partido="removePartido($event)"></partido>
+        <partido :festival-header="festivalHeader" :partido="partido" v-on:delete-partido="removePartido($event)"></partido>
       </li>
     </ul>
     <delete-modal object-name="Partido" :remove-item="deletePartidoFromDB"></delete-modal>
@@ -17,9 +17,8 @@
 
   export default {
     mixins: [Utils],
-    props: ['festivalId', 'partidos'],
+    props: ['festivalHeader', 'partidos'],
     data() {
-      console.log("data");
       return {
         deleteID: null,
       }

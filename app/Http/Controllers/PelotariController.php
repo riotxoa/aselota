@@ -23,9 +23,18 @@ class PelotariController extends Controller
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
           ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
-          ->where('pelotaris.deleted_at', null)
-          ->orderBy('alias')
-          ->get();
+          ->where('pelotaris.deleted_at', null);
+
+        if($request->get('fecha')) {
+          $fecha = $request->get('fecha');
+          $items = $items->leftJoin('contratos', 'pelotaris.id', '=', 'contratos.pelotari_id')
+                         ->whereDate('contratos.fecha_ini', '<=', $fecha)
+                         ->whereDate('contratos.fecha_fin', '>=', $fecha)
+                         ->where('contratos.deleted_at', null);
+        }
+
+        $items = $items->orderBy('alias')
+                       ->get();
 
         return response()->json($items, 200);
     }

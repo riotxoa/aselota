@@ -21,7 +21,7 @@
               <b-form-input id="fechaInput"
                             class="d-inline-block px-1"
                             style="min-width:127px;width:calc(100% - 25px);"
-                            :readonly="!editdate"
+                            :readonly="!editdate && edit"
                             type="date"
                             v-model="header.fecha"
                             :change="onChangeDate()"
@@ -144,7 +144,7 @@
           { value: 0, text: "No" },
           { value: 1, text: "Sí" },
         ],
-        editdate: !this.edit,
+        editdate: false,
         show: true
       }
     },
@@ -180,6 +180,8 @@
             this.provincia_id = header.provincia_id;
             this.municipio_id = header.municipio_id;
 
+            this.$emit('update-header', this.header);
+
             this.hidePreloader();
         });
       },
@@ -210,7 +212,8 @@
       },
       editDate (edit) {
         this.editdate = edit;
-        this.$emit('toggle-edit', this.header);
+        this.$emit('toggle-edit');
+        this.$emit('update-header', this.header);
       },
       onSubmit (evt) {
         evt.preventDefault();
@@ -241,7 +244,8 @@
 
               this.editdate = false;
               this.showSnackbar("Festival creado");
-              this.$emit('toggle-edit', this.header);
+              this.$emit('toggle-edit');
+              this.$emit('update-header', this.header);
             })
             .catch((error) => {
               console.log(error);

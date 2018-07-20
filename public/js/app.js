@@ -36965,7 +36965,6 @@ var APIGetters = {
       });
     },
     onChangeFronton: function onChangeFronton(evt) {
-      console.log("[onChangeFronton] evt: " + evt);
       if (null === this.municipio_id) {
         this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_value;
         this.onChangeMunicipio(this.municipio_id);
@@ -37040,11 +37039,15 @@ var APIGetters = {
 
 
     /* PELOTARIS */
-    getPelotaris: function getPelotaris() {
+    getPelotaris: function getPelotaris(date) {
       var _this7 = this;
 
       var uri = '/www/pelotaris';
-      axios.get(uri).then(function (response) {
+      axios.get(uri, {
+        params: {
+          fecha: date
+        }
+      }).then(function (response) {
         var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
         _this7.pelotaris = JSON.parse(stringified);
         _this7.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
@@ -91354,7 +91357,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -91392,7 +91395,15 @@ var showSnackbar = function showSnackbar(msg) {
   props: ['formTitle', 'isNewFestival'],
   data: function data() {
     return {
-      id: null,
+      header: {
+        id: null,
+        fecha: '',
+        hora: '',
+        fronton_id: null,
+        television: 0,
+        television_txt: '',
+        estado_id: 1
+      },
       edit: null
     };
   },
@@ -91400,9 +91411,13 @@ var showSnackbar = function showSnackbar(msg) {
   created: function created() {
     console.log("FichaComponent created");
     this.edit = !this.isNewFestival;
-    this.id = this.$route.params.id;
+    this.header.id = this.$route.params.id;
   },
-  methods: {}
+  methods: {
+    updateHeader: function updateHeader(h) {
+      this.header = h;
+    }
+  }
 });
 
 /***/ }),
@@ -91648,7 +91663,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       provincia_id: null,
       municipio_id: null,
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
-      editdate: !this.edit,
+      editdate: false,
       show: true
     };
   },
@@ -91687,6 +91702,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.provincia_id = header.provincia_id;
         _this.municipio_id = header.municipio_id;
 
+        _this.$emit('update-header', _this.header);
+
         _this.hidePreloader();
       });
     },
@@ -91717,7 +91734,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     editDate: function editDate(edit) {
       this.editdate = edit;
-      this.$emit('toggle-edit', this.header);
+      this.$emit('toggle-edit');
+      this.$emit('update-header', this.header);
     },
     onSubmit: function onSubmit(evt) {
       var _this2 = this;
@@ -91747,7 +91765,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
           _this2.editdate = false;
           _this2.showSnackbar("Festival creado");
-          _this2.$emit('toggle-edit', _this2.header);
+          _this2.$emit('toggle-edit');
+          _this2.$emit('update-header', _this2.header);
         }).catch(function (error) {
           console.log(error);
           _this2.showSnackbar("Se ha producido un ERROR");
@@ -91853,7 +91872,7 @@ var render = function() {
                           },
                           attrs: {
                             id: "fechaInput",
-                            readonly: !_vm.editdate,
+                            readonly: !_vm.editdate && _vm.edit,
                             type: "date",
                             change: _vm.onChangeDate(),
                             required: ""
@@ -92247,16 +92266,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Vue.component('festival-partidos', __webpack_require__(412));
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['festivalId', 'edit'],
+  props: ['festivalHeader', 'edit'],
   data: function data() {
-    return {
-      id: null
-    };
+    return {};
   },
 
   created: function created() {
     console.log("FestivalBodyComponent created");
-    this.id = this.festivalId ? this.festivalId : this.$route.params.id;
+    // this.header.id = (this.festivalHeader.id ? this.festivalHeader.id : this.$route.params.id);
   },
   methods: {}
 });
@@ -92347,7 +92364,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -92369,11 +92386,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Vue.component('add-new-partido-form', __webpack_require__(416));
 Vue.component('list-partidos', __webpack_require__(425));
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['festivalId'],
+  props: ['festivalHeader'],
   data: function data() {
     return {
-      partidos: null,
-      festival_id: this.festivalId
+      partidos: null
     };
   },
 
@@ -92387,11 +92403,11 @@ Vue.component('list-partidos', __webpack_require__(425));
 
       var uri = '/www/partidos';
       var data = {
-        festival_id: this.festivalId
+        festival_id: this.festivalHeader.id
       };
       this.axios.get(uri, {
         params: {
-          festival_id: this.festivalId
+          festival_id: this.festivalHeader.id
         }
       }).then(function (response) {
         var stringified = JSON.stringify(response.data);
@@ -92522,7 +92538,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Vue.component('form-partido', __webpack_require__(420));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['festivalId'],
+  props: ['festivalHeader'],
   data: function data() {
     return {};
   },
@@ -92530,11 +92546,7 @@ Vue.component('form-partido', __webpack_require__(420));
   created: function created() {
     console.log("FestivalNuevoPartidoComponent created");
   },
-  methods: {
-    addPartido: function addPartido(p) {
-      console.log("[addPartido] p: " + JSON.stringify(p));
-    }
-  }
+  methods: {}
 });
 
 /***/ }),
@@ -92742,10 +92754,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__["a" /* default */]],
-  props: ['festivalId', 'edit', 'partido', 'modalId'],
+  props: ['festivalHeader', 'edit', 'partido', 'modalId'],
   data: function data() {
     return {
       id: null,
+      fecha_festival: null,
       festival_id: null,
       orden: 0,
       estelar: 0,
@@ -92768,7 +92781,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.getCampeonatos();
     this.getTiposPartido();
     this.getFasesCampeonato();
-    this.getPelotaris();
+    // this.getPelotaris(this.festivalHeader.fecha);
 
     if (this.edit) {
       this.id = this.partido.id;
@@ -92783,6 +92796,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.pelotari_3 = this.partido.pelotari_3 ? this.partido.pelotari_3.id : null;
       this.pelotari_4 = this.partido.pelotari_4 ? this.partido.pelotari_4.id : null;
       this.is_partido_parejas = this.partido.is_partido_parejas;
+    }
+  },
+  updated: function updated() {
+    if (!this.fecha_festival) {
+      this.fecha_festival = this.festivalHeader.fecha;
+      this.getPelotaris(this.fecha_festival);
     }
   },
   methods: {
@@ -92839,7 +92858,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
 
       var data = {
-        festival_id: this.festivalId ? this.festivalId : this.festival_id,
+        festival_id: this.festivalHeader.id ? this.festivalHeader.id : this.festival_id,
         orden: this.orden,
         estelar: this.estelar,
         campeonato_id: this.campeonato_id,
@@ -93332,9 +93351,8 @@ Vue.component('delete-modal', __webpack_require__(394));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_utils_js__["a" /* default */]],
-  props: ['festivalId', 'partidos'],
+  props: ['festivalHeader', 'partidos'],
   data: function data() {
-    console.log("data");
     return {
       deleteID: null
     };
@@ -93566,7 +93584,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Vue.component('form-partido', __webpack_require__(420));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['partido'],
+  props: ['festivalHeader', 'partido'],
   data: function data() {
     return {
       data: null,
@@ -93581,8 +93599,6 @@ Vue.component('form-partido', __webpack_require__(420));
   },
   methods: {
     onClickEdit: function onClickEdit(p) {
-      console.log("[onClickEdit] this.modalID: " + this.modalID);
-
       this.$root.$emit('bv::show::modal', this.modalID);
     },
     onClickDelete: function onClickDelete(p) {
@@ -93917,6 +93933,7 @@ var render = function() {
           _c("form-partido", {
             attrs: {
               edit: true,
+              "festival-header": _vm.festivalHeader,
               partido: _vm.partido,
               "modal-id": _vm.modalID
             },
@@ -93964,7 +93981,10 @@ var render = function() {
                 "li",
                 [
                   _c("partido", {
-                    attrs: { partido: partido },
+                    attrs: {
+                      "festival-header": _vm.festivalHeader,
+                      partido: partido
+                    },
                     on: {
                       "delete-partido": function($event) {
                         _vm.removePartido($event)
@@ -94054,7 +94074,10 @@ var render = function() {
                 "b-card-body",
                 [
                   _c("form-partido", {
-                    attrs: { "festival-id": _vm.festivalId, edit: false },
+                    attrs: {
+                      "festival-header": _vm.festivalHeader,
+                      edit: false
+                    },
                     on: {
                       "new-partido": function() {
                         return this$1.$emit("new-partido")
@@ -94096,12 +94119,15 @@ var render = function() {
     "div",
     [
       _c("add-new-partido-form", {
-        attrs: { "festival-id": _vm.festivalId },
+        attrs: { "festival-header": _vm.festivalHeader },
         on: { "new-partido": _vm.fetchPartidos }
       }),
       _vm._v(" "),
       _c("list-partidos", {
-        attrs: { "festival-id": _vm.festivalId, partidos: _vm.partidos },
+        attrs: {
+          "festival-header": _vm.festivalHeader,
+          partidos: _vm.partidos
+        },
         on: {
           "delete-partido": function($event) {
             _vm.deletePartido($event)
@@ -94147,18 +94173,20 @@ var render = function() {
                 { staticClass: "px-0 py-4", attrs: { title: "Partidos" } },
                 [
                   _c("festival-partidos", {
-                    attrs: { "festival-id": _vm.festivalId }
+                    attrs: { "festival-header": _vm.festivalHeader }
                   })
                 ],
                 1
               ),
               _vm._v(" "),
               _c("b-tab", { attrs: { title: "Costes" } }, [
-                _c("h6", [_vm._v("Costes " + _vm._s(this.id))])
+                _c("h6", [_vm._v("Costes " + _vm._s(this.festivalHeader.id))])
               ]),
               _vm._v(" "),
               _c("b-tab", { attrs: { title: "Facturación" } }, [
-                _c("h6", [_vm._v("Facturación " + _vm._s(this.id))])
+                _c("h6", [
+                  _vm._v("Facturación " + _vm._s(this.festivalHeader.id))
+                ])
               ])
             ],
             1
@@ -94195,20 +94223,22 @@ var render = function() {
       _c("festival-header", {
         attrs: {
           "form-title": _vm.formTitle,
-          "festival-id": _vm.id,
+          "festival-id": _vm.header.id,
           edit: _vm.edit
         },
         on: {
           "toggle-edit": function($event) {
             _vm.edit = !_vm.edit
-            _vm.id = $event.id
+          },
+          "update-header": function($event) {
+            _vm.updateHeader($event)
           }
         }
       }),
       _vm._v(" "),
       _vm.edit
         ? _c("festival-body", {
-            attrs: { "festival-id": _vm.id, edit: _vm.edit }
+            attrs: { "festival-header": _vm.header, edit: _vm.edit }
           })
         : _vm._e()
     ],

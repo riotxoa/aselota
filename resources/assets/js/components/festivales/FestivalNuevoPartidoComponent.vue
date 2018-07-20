@@ -6,7 +6,7 @@
       </b-card-header>
       <b-collapse id="accordionPartido" accordion="accordion-partido" role="tabpanel">
         <b-card-body>
-          <form-partido :festival-id="festivalId" :edit="false"  v-on:new-partido="() => this.$emit('new-partido')"></form-partido>
+          <form-partido :festival-header="festivalHeader" :edit="false"  v-on:new-partido="() => this.$emit('new-partido')"></form-partido>
         </b-card-body>
       </b-collapse>
     </b-card>
@@ -17,7 +17,7 @@
   Vue.component('form-partido', require('../partidos/FichaComponent.vue'));
 
   export default {
-    props: ['festivalId'],
+    props: ['festivalHeader'],
     data () {
       return {
       }
@@ -26,9 +26,6 @@
       console.log("FestivalNuevoPartidoComponent created");
     },
     methods: {
-      addPartido(p) {
-        console.log("[addPartido] p: " + JSON.stringify(p));
-      }
     }
   }
 </script>

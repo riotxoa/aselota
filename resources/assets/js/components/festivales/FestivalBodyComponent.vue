@@ -3,13 +3,13 @@
     <b-card no-body>
       <b-tabs pills card class="container">
         <b-tab title="Partidos" class="px-0 py-4">
-          <festival-partidos :festival-id="festivalId"></festival-partidos>
+          <festival-partidos :festival-header="festivalHeader"></festival-partidos>
         </b-tab>
         <b-tab title="Costes">
-          <h6>Costes {{ this.id }}</h6>
+          <h6>Costes {{ this.festivalHeader.id }}</h6>
         </b-tab>
         <b-tab title="Facturación">
-          <h6>Facturación {{ this.id }}</h6>
+          <h6>Facturación {{ this.festivalHeader.id }}</h6>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -19,15 +19,14 @@
 <script>
   Vue.component('festival-partidos', require('./FestivalListadoPartidosComponent.vue'));
   export default {
-    props: ['festivalId', 'edit'],
+    props: ['festivalHeader', 'edit'],
     data () {
       return {
-        id: null,
       }
     },
     created: function () {
       console.log("FestivalBodyComponent created");
-      this.id = (this.festivalId ? this.festivalId : this.$route.params.id);
+      // this.header.id = (this.festivalHeader.id ? this.festivalHeader.id : this.$route.params.id);
     },
     methods: {
 

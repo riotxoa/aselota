@@ -83,7 +83,6 @@ var APIGetters = {
     },
 
     onChangeFronton (evt) {
-      console.log("[onChangeFronton] evt: " + evt);
       if (null === this.municipio_id) {
         this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_value;
         this.onChangeMunicipio(this.municipio_id);
@@ -160,9 +159,13 @@ var APIGetters = {
     },
 
     /* PELOTARIS */
-    getPelotaris () {
+    getPelotaris (date) {
       let uri = '/www/pelotaris';
-      axios.get(uri).then((response) => {
+      axios.get(uri, {
+          params: {
+            fecha: date
+          }
+      }).then((response) => {
         var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
         this.pelotaris = JSON.parse(stringified);
         this.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });

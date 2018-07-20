@@ -88,7 +88,7 @@
     </b-row>
 
     <b-modal class="modalEditPartido" :id="modalID" :ref="modalID" size="lg" hideFooter lazy>
-      <form-partido :edit="true" :partido="partido" :modal-id="modalID" v-on:update-partido="updatePartido($event)"></form-partido>
+      <form-partido :edit="true" :festival-header="festivalHeader" :partido="partido" :modal-id="modalID" v-on:update-partido="updatePartido($event)"></form-partido>
     </b-modal>
 
   </div>
@@ -98,7 +98,7 @@
   Vue.component('form-partido', require('../partidos/FichaComponent.vue'));
 
   export default {
-    props: ['partido'],
+    props: ['festivalHeader', 'partido'],
     data () {
       return {
         data: null,
@@ -112,8 +112,6 @@
     },
     methods: {
       onClickEdit(p) {
-        console.log("[onClickEdit] this.modalID: " + this.modalID);
-
         this.$root.$emit('bv::show::modal', this.modalID);
       },
       onClickDelete(p) {

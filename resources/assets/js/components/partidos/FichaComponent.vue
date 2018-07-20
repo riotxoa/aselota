@@ -104,10 +104,11 @@
 
   export default {
     mixins: [APIGetters, Utils],
-    props: ['festivalId', 'edit', 'partido', 'modalId'],
+    props: ['festivalHeader', 'edit', 'partido', 'modalId'],
     data () {
       return {
         id: null,
+        fecha_festival: null,
         festival_id: null,
         orden: 0,
         estelar: 0,
@@ -129,7 +130,7 @@
       this.getCampeonatos();
       this.getTiposPartido();
       this.getFasesCampeonato();
-      this.getPelotaris();
+      // this.getPelotaris(this.festivalHeader.fecha);
 
       if( this.edit ) {
         this.id = this.partido.id;
@@ -144,6 +145,12 @@
         this.pelotari_3 = (this.partido.pelotari_3 ? this.partido.pelotari_3.id : null);
         this.pelotari_4 = (this.partido.pelotari_4 ? this.partido.pelotari_4.id : null);
         this.is_partido_parejas = this.partido.is_partido_parejas;
+      }
+    },
+    updated: function () {
+      if(!this.fecha_festival) {
+        this.fecha_festival = this.festivalHeader.fecha;
+        this.getPelotaris(this.fecha_festival);
       }
     },
     methods: {
@@ -198,7 +205,7 @@
         }
 
         var data = {
-          festival_id: (this.festivalId ? this.festivalId : this.festival_id),
+          festival_id: (this.festivalHeader.id ? this.festivalHeader.id : this.festival_id),
           orden: this.orden,
           estelar: this.estelar,
           campeonato_id: this.campeonato_id,

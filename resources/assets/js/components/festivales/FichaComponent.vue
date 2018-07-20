@@ -1,7 +1,7 @@
 <template>
   <div id="preloader">
-    <festival-header :form-title="formTitle" :festival-id="id" :edit="edit" v-on:toggle-edit="edit = !edit; id = $event.id"></festival-header>
-    <festival-body v-if="edit" :festival-id="id" :edit="edit"></festival-body>
+    <festival-header :form-title="formTitle" :festival-id="header.id" :edit="edit" v-on:toggle-edit="edit = !edit" v-on:update-header="updateHeader($event)"></festival-header>
+    <festival-body v-if="edit" :festival-header="header" :edit="edit"></festival-body>
   </div>
 </template>
 
@@ -23,16 +23,27 @@
     props: ['formTitle', 'isNewFestival'],
     data () {
       return {
-        id: null,
+        header: {
+          id: null,
+          fecha: '',
+          hora: '',
+          fronton_id: null,
+          television: 0,
+          television_txt: '',
+          estado_id: 1,
+        },
         edit: null,
       }
     },
     created: function() {
       console.log("FichaComponent created");
       this.edit = !this.isNewFestival;
-      this.id = this.$route.params.id;
+      this.header.id = this.$route.params.id;
     },
     methods: {
+      updateHeader(h) {
+        this.header = h;
+      }
     }
   }
 </script>
