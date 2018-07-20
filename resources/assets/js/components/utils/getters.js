@@ -33,10 +33,10 @@ var APIGetters = {
         this.municipios_filtered = this.municipios;
         this.frontones_filterd = this.frontones;
       } else {
-        this.municipios_filtered = _.filter(this.municipios, { 'provincia_value': evt });
+        this.municipios_filtered = _.filter(this.municipios, { 'provincia_id': evt });
         this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
 
-        this.frontones_filtered = _.filter(this.frontones, { 'provincia_value': evt});
+        this.frontones_filtered = _.filter(this.frontones, { 'provincia_id': evt});
         this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
       }
     },
@@ -55,17 +55,17 @@ var APIGetters = {
     onChangeMunicipio (evt) {
       if (null !== evt) {
         if (null === this.provincia_id) {
-          this.provincia_id = _.filter(this.municipios, { 'value': evt })[0].provincia_value;
+          this.provincia_id = _.filter(this.municipios, { 'value': evt })[0].provincia_id;
           this.onChangeProvincia(this.provincia_id);
         }
 
-        this.frontones_filtered = _.filter(this.frontones, { 'municipio_value': evt});
+        this.frontones_filtered = _.filter(this.frontones, { 'municipio_id': evt});
         this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
       } else {
         if (null === this.provincia_id) {
           this.frontones_filtered = this.frontones;
         } else {
-          this.frontones_filtered = _.filter(this.frontones, { 'provincia_value': this.provincia_id});
+          this.frontones_filtered = _.filter(this.frontones, { 'provincia_id': this.provincia_id});
           this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
         }
       }
@@ -84,7 +84,7 @@ var APIGetters = {
 
     onChangeFronton (evt) {
       if (null === this.municipio_id) {
-        this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_value;
+        this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_id;
         this.onChangeMunicipio(this.municipio_id);
       }
     },
