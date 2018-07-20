@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Campeonato;
+use App\TipoPartido;
 
-class CampeonatoController extends Controller
+class TipoPartidoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class CampeonatoController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
 
-        $campeonatos = \App\Campeonato::orderBy('name', 'asc')->get();
+        $items = \App\TipoPartido::orderBy('name', 'asc')->get();
 
-        return response()->json($campeonatos, 200);
+        return response()->json($items, 200);
     }
 
     /**
@@ -48,13 +48,9 @@ class CampeonatoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
-
-        $campeonato = \App\Campeonato::find($id);
-
-        return response()->json($campeonato, 200);
+        //
     }
 
     /**

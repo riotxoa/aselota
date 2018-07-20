@@ -2,7 +2,7 @@
   <div class="header">
 
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-        <div class="toolbar mb-4 py-3">
+        <div class="toolbar mb-2 py-1">
           <div class="container">
             <b-row>
               <h4 class="col-sm-6 text-white font-weight-bold m-0">{{ this.formTitle }}</h4>
@@ -238,7 +238,7 @@
     background-color:white;
     border-bottom:10px solid slategray;
     margin-top:-1.45rem;
-    padding-bottom:1.25rem;
+    padding-bottom:.25rem;
     padding-top:0;
   }
   .header .toolbar {

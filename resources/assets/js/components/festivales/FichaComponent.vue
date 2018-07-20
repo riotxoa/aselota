@@ -30,6 +30,7 @@
     created: function() {
       console.log("FichaComponent created");
       this.edit = !this.isNewFestival;
+      this.id = this.$route.params.id;
     },
     methods: {
     }

@@ -29,6 +29,8 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('frontones', 'FrontonController');
     Route::resource('festival-estados', 'EstadoFestivalController');
     Route::resource('festivales', 'FestivaleController');
+    Route::resource('tipos-partido', 'TipoPartidoController');
+    Route::resource('partidos', 'FestivalPartidoController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
@@ -36,6 +38,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('tarifas/{id}/update', 'ContratoCampeonatoController@update');
     Route::post('derechos/{id}/update', 'DerechoController@update');
     Route::post('festivales/{id}/update', 'FestivaleController@update');
+    Route::post('partidos/{id}/update', 'FestivalPartidoController@update');
 });
 
 Auth::routes();
