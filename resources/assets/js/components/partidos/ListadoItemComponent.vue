@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="col-2 coste rojo text-center">
-        <span v-if="data.pelotari_1">100.00{{ this.data.pelotari_1.coste }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_1">{{ this.data.pelotari_1.coste.toFixed(2) }}&nbsp;&euro;</span>
       </div>
 
       <div class="equipo azul col-4 p-0 ml-md-1 ml-lg-3">
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="col-2 coste azul text-center">
-        <span v-if="data.pelotari_3">100.00{{ this.data.pelotari_3.coste }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_3">{{ this.data.pelotari_3.coste.toFixed(2) }}&nbsp;&euro;</span>
       </div>
 
     </b-row>
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="col-2 coste rojo text-center">
-        <span v-if="data.pelotari_2">100.00{{ this.data.pelotari_2.coste }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_2">{{ this.data.pelotari_2.coste.toFixed(2) }}&nbsp;&euro;</span>
       </div>
 
       <div class="equipo azul col-4 p-0 ml-md-1 ml-lg-3">
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="col-2 coste azul text-center">
-        <span v-if="data.pelotari_4">100.00{{ this.data.pelotari_4.coste }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_4">{{ this.data.pelotari_4.coste.toFixed(2) }}&nbsp;&euro;</span>
       </div>
 
     </b-row>

@@ -12,6 +12,7 @@
     props: ['festivalHeader'],
     data () {
       return {
+        festival_fecha: null,
         partidos: null,
       }
     },
@@ -19,15 +20,24 @@
       console.log("FestivalListadoPartidosComponent created");
       this.fetchPartidos();
     },
+    updated: function () {
+      if(!this.festival_fecha && this.festivalHeader.fecha) {
+        this.festival_fecha = this.festivalHeader.fecha;
+        this.fetchPartidos();
+      }
+    },
     methods: {
       fetchPartidos() {
+        if(!this.festivalHeader.fecha)
+          return;
+
         let uri = '/www/partidos';
-        let data = {
-          festival_id: this.festivalHeader.id
-        };
+
         this.axios.get(uri, {
             params: {
-              festival_id: this.festivalHeader.id
+              festival_id: this.festivalHeader.id,
+              festival_fecha: this.festivalHeader.fecha,
+              festival_kaka: 'kakakulo'
             }
         })
         .then((response) => {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Pelotari;
 use App\FestivalPartido;
 use App\FestivalPartidoPelotari;
 
@@ -19,6 +20,7 @@ class FestivalPartidoController extends Controller
         $request->user()->authorizeRoles(['admin', 'gerente']);
 
         $festival_id = $request->get('festival_id');
+        $festival_fecha = $request->get('festival_fecha');
 
         // $items = FestivalPartido::where('festival_id', $festival_id)->get();
 
@@ -32,23 +34,33 @@ class FestivalPartidoController extends Controller
           ->leftJoin('campeonatos', 'campeonatos.id', '=', 'partido.campeonato_id')
           ->leftJoin('tipo_partidos', 'tipo_partidos.id', '=', 'partido.tipo_partido_id')
           ->where('partido.festival_id', '=', $festival_id)
-          ->where('partido.deleted_at', '=', null)
           ->orderBy('partido.orden', 'asc')
           ->get();
 
         foreach( $partidos as $partido ) {
-          $pelotaris = FestivalPartidoPelotari::where('festival_partido_id', $partido->id)->orderBy('color', 'desc')->orderBy('posicion', 'asc')->get();
+          $pelotaris = DB::table('festival_partido_pelotaris')
+                       ->select('festival_partido_pelotaris.*', 'contratos.coste')
+                       ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
+                       ->whereDate('contratos.fecha_ini', '<=', $festival_fecha)
+                       ->whereDate('contratos.fecha_fin', '>=', $festival_fecha)
+                       ->where('festival_partido_pelotaris.festival_partido_id', '=', $partido->id)
+                       ->where('contratos.deleted_at', '=', null)
+                       ->orderBy('festival_partido_pelotaris.color', 'desc')
+                       ->orderBy('festival_partido_pelotaris.posicion', 'asc')
+                       ->get();
           foreach( $pelotaris as $key => $p ) {
+            $pelotari = Pelotari::find($p->pelotari_id);
+            $pelotari->coste = $p->coste;
             if( "R" === $p->color ) {
               if( "D" === $p->posicion)
-                $partido->pelotari_1 = $p->pelotari;
+                $partido->pelotari_1 = $pelotari; // Pelotari::find($p->pelotari_id);
               else
-                $partido->pelotari_2 = $p->pelotari;
+                $partido->pelotari_2 = $pelotari; // Pelotari::find($p->pelotari_id);
             } else {
               if( "D" === $p->posicion)
-                $partido->pelotari_3 = $p->pelotari;
+                $partido->pelotari_3 = $pelotari; // Pelotari::find($p->pelotari_id);
               else
-                $partido->pelotari_4 = $p->pelotari;
+                $partido->pelotari_4 = $pelotari; // Pelotari::find($p->pelotari_id);
             }
           }
         }
