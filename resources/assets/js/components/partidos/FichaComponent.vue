@@ -99,12 +99,13 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
 
   export default {
     mixins: [APIGetters, Utils],
-    props: ['festivalHeader', 'edit', 'partido', 'modalId'],
+    props: ['edit', 'partido', 'modalId'],
     data () {
       return {
         id: null,
@@ -130,7 +131,6 @@
       this.getCampeonatos();
       this.getTiposPartido();
       this.getFasesCampeonato();
-      // this.getPelotaris(this.festivalHeader.fecha);
 
       if( this.edit ) {
         this.id = this.partido.id;
@@ -147,9 +147,12 @@
         this.is_partido_parejas = this.partido.is_partido_parejas;
       }
     },
+    computed: mapState({
+      _header: 'header',
+    }),
     updated: function () {
       if(!this.fecha_festival) {
-        this.fecha_festival = this.festivalHeader.fecha;
+        this.fecha_festival = this._header.fecha;
         this.getPelotaris(this.fecha_festival);
       }
     },
@@ -205,11 +208,12 @@
         }
 
         var data = {
-          festival_id: (this.festivalHeader.id ? this.festivalHeader.id : this.festival_id),
+          festival_id: (this._header.id ? this._header.id : this.festival_id),
+          fecha: this._header.fecha,
           orden: this.orden,
           estelar: this.estelar,
           campeonato_id: this.campeonato_id,
-          campeonato_name: _.filter(this.campeonatos, { value: this.campeonato_id }).text,
+          campeonato_name: _.filter(this.campeonatos, { value: this.campeonato_id })[0].text,
           tipo_partido_id: this.tipo_partido_id,
           tipo_partido_name: (this.campeonato_id ? null : _.filter(this.tipos_partido, {value: this.tipo_partido_id})[0].text),
           fase: (this.campeonato_id ? this.fase : null),
@@ -217,15 +221,15 @@
           pelotari_2: p2,
           pelotari_3: p3,
           pelotari_4: p4,
+          is_partido_parejas: this.is_partido_parejas,
         }
 
-        let uri = '/www/partidos';
-
         if(this.edit) {
-          this.axios.post(uri + '/' + this.partido.id + '/update', data)
+          data.id = this.partido.id;
+          this.$store.dispatch('updatePartido', data)
             .then((response) => {
               this.showSnackbar("Partido actualizado");
-              this.$emit('update-partido', data);
+              this.$emit('update-partido', response);
               this.closeModal();
             })
             .catch((error) => {
@@ -234,10 +238,10 @@
               this.closeModal();
             });
         } else {
-          this.axios.post(uri, data)
+          this.$store.dispatch('addPartido', data)
             .then((response) => {
               this.showSnackbar("Partido creado");
-              this.$emit('new-partido', data);
+              this.$emit('new-partido', response);
               this.resetForm();
             })
             .catch((error) => {

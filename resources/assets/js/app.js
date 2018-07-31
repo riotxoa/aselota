@@ -90,7 +90,10 @@ const routes = [
 
 const router = new VueRouter({ mode: 'history', routes: routes});
 
+import { store } from './components/store/store';
+
 const app = new Vue({
     el: '#app',
+    store,
     router,
 });

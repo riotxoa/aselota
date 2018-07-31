@@ -1,11 +1,13 @@
 <template>
   <div id="preloader">
-    <festival-header :form-title="formTitle" :festival-id="header.id" :edit="edit" v-on:toggle-edit="edit = !edit" v-on:update-header="updateHeader($event)"></festival-header>
-    <festival-body v-if="edit" :festival-header="header" :edit="edit"></festival-body>
+    <festival-header :form-title="formTitle"></festival-header>
+    <festival-body v-if="_edit"></festival-body>
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   Vue.component('festival-header', require('./FestivalHeaderComponent.vue'));
   Vue.component('festival-body', require('./FestivalBodyComponent.vue'));
   const showSnackbar = (msg) => {
@@ -23,23 +25,17 @@
     props: ['formTitle', 'isNewFestival'],
     data () {
       return {
-        header: {
-          id: null,
-          fecha: '',
-          hora: '',
-          fronton_id: null,
-          television: 0,
-          television_txt: '',
-          estado_id: 1,
-        },
-        edit: null,
       }
     },
     created: function() {
       console.log("FichaComponent created");
-      this.edit = !this.isNewFestival;
-      this.header.id = this.$route.params.id;
+
+      this.$store.commit('SET_EDIT', !this.isNewFestival);
+      this.$store.commit('SET_HEADER_ID', this.$route.params.id);
     },
+    computed: mapState({
+      _edit: 'edit',
+    }),
     methods: {
       updateHeader(h) {
         this.header = h;
@@ -47,7 +43,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>

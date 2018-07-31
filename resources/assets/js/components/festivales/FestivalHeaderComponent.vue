@@ -21,13 +21,13 @@
               <b-form-input id="fechaInput"
                             class="d-inline-block px-1"
                             style="min-width:127px;width:calc(100% - 25px);"
-                            :readonly="!editdate && edit"
+                            :readonly="!editdate && _edit"
                             type="date"
-                            v-model="header.fecha"
+                            v-model="_header.fecha"
                             :change="onChangeDate()"
                             required>
               </b-form-input>
-              <b-link v-if="edit" class="pl-1 d-inline-block" @click="editDate(true)">
+              <b-link v-if="_edit" class="pl-1 d-inline-block" @click="editDate(true)">
                 <i class="voyager-pen"></i>
               </b-link>
             </b-form-group>
@@ -47,7 +47,7 @@
                             :readonly="editdate"
                             type="time"
                             required
-                            v-model="header.hora">
+                            v-model="_header.hora">
               </b-form-input>
             </b-form-group>
             <b-form-group label="Provincia:"
@@ -57,7 +57,7 @@
                              :readonly="editdate"
                              :options="provincias"
                              @change="onChangeProvincia"
-                             v-model="provincia_id">
+                             v-model="_header.provincia_id">
               </b-form-select>
             </b-form-group>
             <b-form-group label="Municipio:"
@@ -67,7 +67,7 @@
                              :readonly="editdate"
                              :options="municipios_filtered"
                              @change="onChangeMunicipio"
-                             v-model="municipio_id">
+                             v-model="_header.municipio_id">
               </b-form-select>
             </b-form-group>
           </b-row>
@@ -80,7 +80,7 @@
                              :options="frontones_filtered"
                              @change="onChangeFronton"
                              required
-                             v-model="header.fronton_id">
+                             v-model="_header.fronton_id">
               </b-form-select>
             </b-form-group>
             <b-form-group label="Televisión:"
@@ -90,7 +90,7 @@
                             :readonly="editdate"
                             :options="television"
                             required
-                            v-model="header.television">
+                            v-model="_header.television">
               </b-form-select>
             </b-form-group>
             <b-form-group label=" "
@@ -98,7 +98,7 @@
                           class="col-sm-4 mt-1">
               <b-form-input id="televisionTxtInput"
                             :readonly="editdate"
-                            v-model="header.television_txt">
+                            v-model="_header.television_txt">
               </b-form-input>
             </b-form-group>
             <b-form-group label="Estado festival:"
@@ -108,7 +108,7 @@
                              :readonly="editdate"
                              :options="festivalEstados"
                              required
-                             v-model="header.estado_id">
+                             v-model="_header.estado_id">
               </b-form-select>
             </b-form-group>
           </b-row>
@@ -119,27 +119,18 @@
 </template>
 
 <script>
+  import { store } from '../store/store';
+
   import APIGetters from '../utils/getters.js';
   import Nav from '../utils/nav.js';
   import Utils from '../utils/utils.js';
 
   export default {
     mixins: [APIGetters, Nav, Utils],
-    props: ['formTitle', 'festivalId', 'edit'],
+    props: ['formTitle'],
     data () {
       return {
-        header: {
-          id: null,
-          fecha: '',
-          hora: '',
-          fronton_id: null,
-          television: 0,
-          television_txt: '',
-          estado_id: 1,
-        },
         dia: '',
-        provincia_id: null,
-        municipio_id: null,
         television: [
           { value: 0, text: "No" },
           { value: 1, text: "Sí" },
@@ -155,38 +146,23 @@
       this.getFrontones();
       this.getFestivalEstados();
 
-      this.header.fecha = this.formatDateEN();
+      this._header.fecha = this.formatDateEN();
 
-      if (this.edit) {
-        this.header.id = (this.festivalId ? this.festivalId : this.$route.params.id);
-        this.fetchFestivalHeader();
+      if (this._edit) {
+        store.dispatch('loadHeader', (this._header.id ? this._header.id : this.$route.params.id));
       }
     },
-    methods: {
-      fetchFestivalHeader () {
-        this.showPreloader();
-        let uri = '/www/festivales/' + this.header.id;
-        this.axios.get(uri).then((response) => {
-            var stringified = JSON.stringify(response.data);
-            var header = JSON.parse(stringified);
-
-            this.header.fecha = header.fecha;
-            this.header.hora = header.hora;
-            this.header.fronton_id = header.fronton_id;
-            this.header.television = header.television;
-            this.header.television_txt = header.television_txt;
-            this.header.estado_id = header.estado_id;
-
-            this.provincia_id = header.provincia_id;
-            this.municipio_id = header.municipio_id;
-
-            this.$emit('update-header', this.header);
-
-            this.hidePreloader();
-        });
+    computed: {
+      _header () {
+        return store.getters.header;
       },
+      _edit () {
+        return store.getters.edit;
+      },
+    },
+    methods: {
       onChangeDate () {
-        switch (new Date(this.header.fecha).getDay()) {
+        switch (new Date(this._header.fecha).getDay()) {
           case 0:
             this.dia = "Domingo";
             break;
@@ -212,19 +188,18 @@
       },
       editDate (edit) {
         this.editdate = edit;
-        this.$emit('toggle-edit');
-        this.$emit('update-header', this.header);
+        store.commit('SET_EDIT', !this._edit);
       },
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.header.municipio_id = this.municipio_id;
-        this.header.provincia_id = this.provincia_id;
+        this._header.municipio_id = this.municipio_id;
+        this._header.provincia_id = this.provincia_id;
 
         let uri = '/www/festivales';
 
-        if(this.edit || this.header.id) {
-          this.axios.post(uri + '/' + this.header.id + '/update', this.header)
+        if(this.edit || this._header.id) {
+          this.axios.post(uri + '/' + this._header.id + '/update', this._header)
             .then((response) => {
               this.showSnackbar("Festival actualizado");
               if(this.editdate) {
@@ -238,14 +213,12 @@
               this.showSnackbar("Se ha producido un ERROR");
             });
         } else {
-          this.axios.post(uri, this.header)
+          this.axios.post(uri, this._header)
             .then((response) => {
-              this.header.id = response.data.id;
+              this._header.id = response.data.id;
 
               this.editdate = false;
               this.showSnackbar("Festival creado");
-              this.$emit('toggle-edit');
-              this.$emit('update-header', this.header);
             })
             .catch((error) => {
               console.log(error);
@@ -254,6 +227,8 @@
         }
       },
       onReset (evt) {
+        evt.preventDefault();
+
         if(this.editdate)
           this.editDate(false)
         else

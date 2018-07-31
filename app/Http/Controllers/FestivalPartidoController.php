@@ -38,34 +38,38 @@ class FestivalPartidoController extends Controller
           ->get();
 
         foreach( $partidos as $partido ) {
-          $pelotaris = DB::table('festival_partido_pelotaris')
-                       ->select('festival_partido_pelotaris.*', 'contratos.coste')
-                       ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
-                       ->whereDate('contratos.fecha_ini', '<=', $festival_fecha)
-                       ->whereDate('contratos.fecha_fin', '>=', $festival_fecha)
-                       ->where('festival_partido_pelotaris.festival_partido_id', '=', $partido->id)
-                       ->where('contratos.deleted_at', '=', null)
-                       ->orderBy('festival_partido_pelotaris.color', 'desc')
-                       ->orderBy('festival_partido_pelotaris.posicion', 'asc')
-                       ->get();
-          foreach( $pelotaris as $key => $p ) {
-            $pelotari = Pelotari::find($p->pelotari_id);
-            $pelotari->coste = $p->coste;
-            if( "R" === $p->color ) {
-              if( "D" === $p->posicion)
-                $partido->pelotari_1 = $pelotari; // Pelotari::find($p->pelotari_id);
-              else
-                $partido->pelotari_2 = $pelotari; // Pelotari::find($p->pelotari_id);
-            } else {
-              if( "D" === $p->posicion)
-                $partido->pelotari_3 = $pelotari; // Pelotari::find($p->pelotari_id);
-              else
-                $partido->pelotari_4 = $pelotari; // Pelotari::find($p->pelotari_id);
-            }
-          }
+          $this->getPelotaris($partido, $festival_fecha);
         }
 
         return response()->json($partidos, 200);
+    }
+
+    private function getPelotaris(&$partido, $fecha) {
+      $pelotaris = DB::table('festival_partido_pelotaris')
+                   ->select('festival_partido_pelotaris.*', 'contratos.coste')
+                   ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
+                   ->whereDate('contratos.fecha_ini', '<=', $fecha)
+                   ->whereDate('contratos.fecha_fin', '>=', $fecha)
+                   ->where('festival_partido_pelotaris.festival_partido_id', '=', $partido->id)
+                   ->where('contratos.deleted_at', '=', null)
+                   ->orderBy('festival_partido_pelotaris.color', 'desc')
+                   ->orderBy('festival_partido_pelotaris.posicion', 'asc')
+                   ->get();
+      foreach( $pelotaris as $key => $p ) {
+        $pelotari = Pelotari::find($p->pelotari_id);
+        $pelotari->coste = $p->coste;
+        if( "R" === $p->color ) {
+          if( "D" === $p->posicion)
+            $partido->pelotari_1 = $pelotari; // Pelotari::find($p->pelotari_id);
+          else
+            $partido->pelotari_2 = $pelotari; // Pelotari::find($p->pelotari_id);
+        } else {
+          if( "D" === $p->posicion)
+            $partido->pelotari_3 = $pelotari; // Pelotari::find($p->pelotari_id);
+          else
+            $partido->pelotari_4 = $pelotari; // Pelotari::find($p->pelotari_id);
+        }
+      }
     }
 
     /**
@@ -98,6 +102,9 @@ class FestivalPartidoController extends Controller
         ]);
 
         $item->save();
+
+        $item->campeonato_name = ($request->get('campeonato_id') ? $request->get('campeonato_name') : null);
+        $item->tipo_partido_name = $request->get('tipo_partido_name');
 
         $pelotari_1 = new FestivalPartidoPelotari([
           'festival_partido_id' => $item->id,
@@ -135,7 +142,9 @@ class FestivalPartidoController extends Controller
           $pelotari_4->save();
         }
 
-        return response()->json($request, 200);
+        $this->getPelotaris($item, $request->get('fecha'));
+
+        return response()->json($item, 200);
     }
 
     /**
@@ -186,6 +195,9 @@ class FestivalPartidoController extends Controller
 
         $item->save();
 
+        $item->campeonato_name = ($request->get('campeonato_id') ? $request->get('campeonato_name') : null);
+        $item->tipo_partido_name = $request->get('tipo_partido_name');
+
         DB::table('festival_partido_pelotaris')->where('festival_partido_id', '=', $id)->delete();
 
         if($request->get('pelotari_1')) {
@@ -224,6 +236,8 @@ class FestivalPartidoController extends Controller
           ]);
           $pelotari_4->save();
         }
+
+        $this->getPelotaris($item, $request->get('fecha'));
 
         return response()->json($item, 200);
     }

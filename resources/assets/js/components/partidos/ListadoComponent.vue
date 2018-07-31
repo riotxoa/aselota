@@ -1,11 +1,11 @@
 <template>
-  <div v-if="partidos" class="list-partidos-festival">
+  <div v-if="_partidos" class="list-partidos-festival">
     <ul class="mt-3 px-3">
-      <li v-for="partido in partidos">
-        <partido :festival-header="festivalHeader" :partido="partido" v-on:delete-partido="removePartido($event)"></partido>
+      <li v-for="partido in _partidos">
+        <partido :partido="partido" v-on:delete-partido="showDeleteModal($event)"></partido>
       </li>
     </ul>
-    <delete-modal object-name="Partido" :remove-item="deletePartidoFromDB"></delete-modal>
+    <delete-modal object-name="Partido" :remove-item="deletePartido"></delete-modal>
   </div>
 </template>
 
@@ -14,10 +14,10 @@
   Vue.component('delete-modal', require('../modals/ModalDeleteComponent.vue'));
 
   import Utils from '../utils/utils.js';
+  import { mapState } from 'vuex';
 
   export default {
     mixins: [Utils],
-    props: ['festivalHeader', 'partidos'],
     data() {
       return {
         deleteID: null,
@@ -26,24 +26,24 @@
     created: function () {
       console.log("ListadoComponent created");
     },
+    computed: {...mapState({
+      _partidos: 'partidos',
+    })},
     methods: {
-      removePartido(id) {
+      showDeleteModal(id) {
         this.deleteID = id;
         var msg = "Se va a borrar un Partido.";
         jQuery('#deleteMsg').html(msg);
         this.$root.$emit('bv::show::modal','modalDelete');
       },
-      deletePartidoFromDB() {
-        let id = this.deleteID;
-        let uri = '/www/partidos/' + id;
+      deletePartido() {
 
-        this.axios.delete(uri)
-          .then((response) => {
-            this.$emit('delete-partido', id);
+        this.$store.dispatch('deletePartido', this.deleteID)
+          .then( (response) => {
             this.$root.$emit('bv::hide::modal','modalDelete')
             this.showSnackbar("Partido BORRADO");
           })
-          .catch((error) => {
+          .catch( (error) => {
             console.log("[remove] error: " + error);
             this.$root.$emit('bv::hide::modal','modalDelete')
             this.showSnackbar("ERROR al borrar");

@@ -95,7 +95,7 @@
 </template>
 
 <script>
-  Vue.component('form-partido', require('../partidos/FichaComponent.vue'));
+  Vue.component('form-partido', require('./FichaComponent.vue'));
 
   export default {
     props: ['festivalHeader', 'partido'],
@@ -109,6 +109,9 @@
       console.log("ListadoItemComponent created");
       this.data = this.partido;
       this.modalID = "modalEditPartido-" + this.data.id;
+    },
+    updated: function () {
+      this.data = this.partido;
     },
     methods: {
       onClickEdit(p) {
@@ -133,6 +136,7 @@
         this.data.pelotari_2 = p.pelotari_2;
         this.data.pelotari_3 = p.pelotari_3;
         this.data.pelotari_4 = p.pelotari_4;
+        this.data.is_partido_parejas = p.is_partido_parejas;
       }
     }
   }
