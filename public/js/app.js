@@ -93335,6 +93335,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 Vue.component('festival-partidos', __webpack_require__(443));
+Vue.component('festival-costes', __webpack_require__(453));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -94813,9 +94814,12 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("b-tab", { attrs: { title: "Costes" } }, [
-                _c("h6", [_vm._v("Costes " + _vm._s(this._header.id))])
-              ]),
+              _c(
+                "b-tab",
+                { attrs: { title: "Costes" } },
+                [_c("festival-costes")],
+                1
+              ),
               _vm._v(" "),
               _c("b-tab", { attrs: { title: "Facturación" } }, [
                 _c("h6", [_vm._v("Facturación " + _vm._s(this._header.id))])
@@ -95194,6 +95198,618 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-7e169975", module.exports)
   }
 }
+
+/***/ }),
+/* 453 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(456)
+}
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(454)
+/* template */
+var __vue_template__ = __webpack_require__(455)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/costes/FestivalFichaCostesComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1cd8d00e", Component.options)
+  } else {
+    hotAPI.reload("data-v-1cd8d00e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 454 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+
+  created: function created() {
+    console.log("FestivalFichaCostesComponent created");
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      console.log("[onSubmit]");
+    }
+  }
+});
+
+/***/ }),
+/* 455 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "festival-costes" },
+    [
+      _c(
+        "b-form",
+        { on: { submit: _vm.onSubmit } },
+        [
+          _c("b-row", [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Coste empresa festival (IVA inc.):",
+                          "label-for": "coste_empresa"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_empresa",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Importe venta (precio cerrado):",
+                          "label-for": "coste_importe_venta"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_importe_venta",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Festival vendido a:",
+                          "label-for": "coste_vendido_a"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "coste_vendido_a",
+                            options: { "0": "No", "1": "Sí" }
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Observaciones:",
+                          "label-for": "coste_texto_libre"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: { id: "coste_texto_libre", type: "text" }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Aportación:",
+                          "label-for": "coste_aportacion"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_aportacion",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Nº entradas:",
+                          "label-for": "coste_num_entradas"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_num_entradas",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Precio entradas:",
+                          "label-for": "coste_precio_entradas"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_precio_entradas",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Precio total:",
+                          "label-for": "coste_precio_total"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_precio_total",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "card mb-3 background-gray" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Nº espectadores:",
+                          "label-for": "coste_num_espectadores"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_num_espectadores",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Ingreso en taquilla:",
+                          "label-for": "coste_ingreso_taquilla"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_ingreso_taquilla",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          label: "Ingreso por ayuntamiento:",
+                          "label-for": "coste_ingreso_ayuntamiento"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_ingreso_ayuntamiento",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: { label: "Otros:", "label-for": "coste_otros" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "coste_otros",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card mb-3 background-red" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: { label: "Total:", "label-for": "coste_total" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-center",
+                          attrs: {
+                            id: "coste_total",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1cd8d00e", module.exports)
+  }
+}
+
+/***/ }),
+/* 456 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(457);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(9)("6788a625", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1cd8d00e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaCostesComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1cd8d00e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaCostesComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 457 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.festival-costes .card {\n  border-color:#707f8f;\n}\n.festival-costes label {\n  font-weight:bold;\n  line-height:1;\n}\n.festival-costes .background-gray {\n  background-color:darkgray;\n  border-color:darkgray;\n}\n.festival-costes .background-red {\n  background-color:#dd3545;\n  border-color:#dd3545;\n  color:white;\n  font-size:1.15rem;\n}\n.festival-costes .background-red input {\n  font-size:1.15rem;\n  font-weight:bold;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

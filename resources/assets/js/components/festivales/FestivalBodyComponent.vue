@@ -6,7 +6,7 @@
           <festival-partidos></festival-partidos>
         </b-tab>
         <b-tab title="Costes">
-          <h6>Costes {{ this._header.id }}</h6>
+          <festival-costes></festival-costes>
         </b-tab>
         <b-tab title="Facturación">
           <h6>Facturación {{ this._header.id }}</h6>
@@ -20,6 +20,7 @@
   import { mapState } from 'vuex';
 
   Vue.component('festival-partidos', require('../partidos/FestivalListadoPartidosComponent.vue'));
+  Vue.component('festival-costes', require('../costes/FestivalFichaCostesComponent.vue'));
 
   export default {
     data () {
