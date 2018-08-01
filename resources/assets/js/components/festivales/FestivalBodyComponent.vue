@@ -19,7 +19,7 @@
 <script>
   import { mapState } from 'vuex';
 
-  Vue.component('festival-partidos', require('./FestivalListadoPartidosComponent.vue'));
+  Vue.component('festival-partidos', require('../partidos/FestivalListadoPartidosComponent.vue'));
 
   export default {
     data () {

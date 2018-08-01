@@ -7,12 +7,12 @@
 
 <script>
   Vue.component('add-new-partido-form', require('./FestivalNuevoPartidoComponent.vue'));
-  Vue.component('list-partidos', require('../partidos/ListadoComponent.vue'));
+  Vue.component('list-partidos', require('./ListadoComponent.vue'));
 
   export default {
     data () {
       return {
-        
+
       }
     },
     created: function () {
@@ -22,7 +22,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>
