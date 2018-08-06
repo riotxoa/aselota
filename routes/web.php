@@ -31,6 +31,8 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('festivales', 'FestivaleController');
     Route::resource('tipos-partido', 'TipoPartidoController');
     Route::resource('partidos', 'FestivalPartidoController');
+    Route::resource('clientes', 'ClienteController');
+    Route::resource('festival-costes', 'FestivalCosteController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');

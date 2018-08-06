@@ -13,6 +13,7 @@ var APIGetters = {
       tipos_partido_filtered: [],
       is_partido_parejas: true,
       pelotaris: [],
+      clientes: [],
     }
   },
   methods: {
@@ -171,6 +172,16 @@ var APIGetters = {
         this.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
       });
     },
+
+    /* CLIENTES */
+    getClientes () {
+      let uri = '/www/clientes';
+      axios.get(uri).then((response) => {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        this.clientes = JSON.parse(stringified);
+        this.clientes.unshift({ value: null, text: "Seleccionar cliente" });
+      })
+    }
 
   }
 
