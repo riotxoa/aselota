@@ -8,7 +8,29 @@ export const store = new Vuex.Store({
   state: {
     header: {},
     partidos: [],
-    costes: {},
+    costes: {
+      importe_venta: 0,
+      cliente_id: null,
+      cliente_txt: '',
+      aportacion: 0,
+      num_entradas: 0,
+      precio_entradas: 0,
+      num_espectadores: 0,
+      ingreso_taquilla: 0,
+      ingreso_ayto: 0,
+      ingreso_otros: 0,
+      precio_total: 0,
+      total: 0,
+    },
+    facturacion: {
+      fpago_id: null,
+      fecha: null,
+      importe: 0,
+      enviar_id: null,
+      observaciones: '',
+      pagado: 0,
+      seguimiento: '',
+    },
     coste: 0.00,
     edit: false,
   },
@@ -16,6 +38,7 @@ export const store = new Vuex.Store({
     header: state => state.header,
     partidos: state => state.partidos,
     coste: state => state.coste,
+    facturacion: state => state.facturacion,
     edit: state => state.edit,
   },
   mutations: {
@@ -41,9 +64,11 @@ export const store = new Vuex.Store({
       this.commit('INC_COSTE', partido);
     },
     SET_COSTES (state, costes) {
-      state.costes = costes[0];
-      state.costes.precio_total = parseFloat(state.costes.aportacion) + (state.costes.num_entradas * state.costes.precio_entradas);
-      state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
+      if(costes.length) {
+        state.costes = costes[0];
+        state.costes.precio_total = parseFloat(state.costes.aportacion) + (state.costes.num_entradas * state.costes.precio_entradas);
+        state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
+      }
     },
     SET_COSTE (state, coste) {
       state.coste = coste;
@@ -53,6 +78,12 @@ export const store = new Vuex.Store({
       state.coste += (partido.pelotari_2 ? partido.pelotari_2.coste : 0);
       state.coste += (partido.pelotari_3 ? partido.pelotari_3.coste : 0);
       state.coste += (partido.pelotari_4 ? partido.pelotari_4.coste : 0);
+    },
+    SET_FACTURACION (state, facturacion) {
+      console.log("[SET_FACTURACION] facturarion: " + JSON.stringify(facturacion));
+      if(facturacion.length) {
+        state.facturacion = facturacion[0];
+      }
     },
     SET_EDIT (state, edit) {
       state.edit = edit;
@@ -67,6 +98,7 @@ export const store = new Vuex.Store({
           commit('SET_HEADER', header);
           dispatch('loadPartidos');
           dispatch('loadCostes');
+          dispatch('loadFacturacion');
         });
     },
     loadPartidos({ commit }) {
@@ -158,5 +190,33 @@ export const store = new Vuex.Store({
           });
       });
     },
+    loadFacturacion({ commit }) {
+      let data = {
+        params: {
+          festival_id: this.getters.header.id,
+        }
+      };
+      axios
+        .get('/www/festival-facturacion', data)
+        .then( r => r.data)
+        .then( facturacion =>  {
+          commit('SET_FACTURACION', facturacion);
+        });
+    },
+    addFacturacion({ commit }, facturacion) {
+      let uri = '/www/festival-facturacion';
+      facturacion.festival_id = this.getters.header.id;
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, facturacion)
+          .then( r => r.data )
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    }
   }
 });

@@ -9,7 +9,7 @@
           <festival-costes></festival-costes>
         </b-tab>
         <b-tab title="Facturación">
-          <h6>Facturación {{ this._header.id }}</h6>
+          <festival-facturacion></festival-facturacion>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -21,6 +21,7 @@
 
   Vue.component('festival-partidos', require('../partidos/FestivalListadoPartidosComponent.vue'));
   Vue.component('festival-costes', require('../costes/FestivalFichaCostesComponent.vue'));
+  Vue.component('festival-facturacion', require('../facturacion/FestivalFichaFacturacionComponent.vue'));
 
   export default {
     data () {

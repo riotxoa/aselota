@@ -33,6 +33,9 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('partidos', 'FestivalPartidoController');
     Route::resource('clientes', 'ClienteController');
     Route::resource('festival-costes', 'FestivalCosteController');
+    Route::resource('festival-facturacion', 'FestivalFacturacionController');
+    Route::resource('formas-pago', 'FormasPagoController');
+    Route::resource('envio-facturas', 'FacturaEnvioController');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');

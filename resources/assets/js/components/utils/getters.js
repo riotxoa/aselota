@@ -14,6 +14,8 @@ var APIGetters = {
       is_partido_parejas: true,
       pelotaris: [],
       clientes: [],
+      formas_pago: [],
+      envio_facturas: [],
     }
   },
   methods: {
@@ -181,6 +183,24 @@ var APIGetters = {
         this.clientes = JSON.parse(stringified);
         this.clientes.unshift({ value: null, text: "Seleccionar cliente" });
       })
+    },
+
+    /* FACTURACIÓN */
+    getFormasPago () {
+      let uri = '/www/formas-pago';
+      axios.get(uri).then((response) => {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        this.formas_pago = JSON.parse(stringified);
+        this.formas_pago.unshift({ value: null, text: "Seleccionar" });
+      });
+    },
+    getEnvioFacturas () {
+      let uri = '/www/envio-facturas';
+      axios.get(uri).then((response) => {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        this.envio_facturas = JSON.parse(stringified);
+        this.envio_facturas.unshift({ value: null, text: "Seleccionar" });
+      });
     }
 
   }
