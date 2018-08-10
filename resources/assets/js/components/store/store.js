@@ -80,7 +80,6 @@ export const store = new Vuex.Store({
       state.coste += (partido.pelotari_4 ? partido.pelotari_4.coste : 0);
     },
     SET_FACTURACION (state, facturacion) {
-      console.log("[SET_FACTURACION] facturarion: " + JSON.stringify(facturacion));
       if(facturacion.length) {
         state.facturacion = facturacion[0];
       }

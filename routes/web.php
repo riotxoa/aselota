@@ -23,6 +23,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('municipios', 'MunicipioController');
     Route::resource('campeonatos', 'CampeonatoController');
     Route::resource('pelotaris', 'PelotariController');
+    Route::resource('pelotaris-aspe', 'PelotarisAspeController');
     Route::resource('contratos', 'ContratoController');
     Route::resource('tarifas', 'ContratoCampeonatoController');
     Route::resource('derechos', 'DerechoController');

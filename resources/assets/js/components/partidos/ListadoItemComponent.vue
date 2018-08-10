@@ -35,26 +35,30 @@
 
       <div class="equipo rojo col-4 p-0 ml-md-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
-          <img v-if="data.pelotari_1" :src="data.pelotari_1.foto" />
+          <img v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :src="data.pelotari_1.foto" />
+          <img v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" :src=" '/storage/' + data.pelotari_1.foto" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_1">{{ this.data.pelotari_1.alias }}</span>
         </div>
       </div>
       <div class="col-2 coste rojo text-center">
-        <span v-if="data.pelotari_1">{{ this.data.pelotari_1.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce">{{ this.data.pelotari_1.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" class="icon voyager-x"></span>
       </div>
 
       <div class="equipo azul col-4 p-0 ml-md-1 ml-lg-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
-          <img v-if="data.pelotari_3" :src="data.pelotari_3.foto" />
+          <img v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :src="data.pelotari_3.foto" />
+          <img v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" :src=" '/storage/' + data.pelotari_3.foto" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_3">{{ this.data.pelotari_3.alias }}</span>
         </div>
       </div>
       <div class="col-2 coste azul text-center">
-        <span v-if="data.pelotari_3">{{ this.data.pelotari_3.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce">{{ this.data.pelotari_3.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" class="icon voyager-x"></span>
       </div>
 
     </b-row>
@@ -63,26 +67,30 @@
 
       <div class="equipo rojo col-4 p-0 ml-md-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
-          <img v-if="data.pelotari_2" :src="data.pelotari_2.foto" />
+          <img v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" :src="data.pelotari_2.foto" />
+          <img v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" :src=" '/storage/' + data.pelotari_2.foto" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_2">{{ this.data.pelotari_2.alias }}</span>
         </div>
       </div>
       <div class="col-2 coste rojo text-center">
-        <span v-if="data.pelotari_2">{{ this.data.pelotari_2.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce">{{ this.data.pelotari_2.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" class="icon voyager-x"></span>
       </div>
 
       <div class="equipo azul col-4 p-0 ml-md-1 ml-lg-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
-          <img v-if="data.pelotari_4" :src="data.pelotari_4.foto" />
+          <img v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" :src="data.pelotari_4.foto" />
+          <img v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" :src=" '/storage/' + data.pelotari_4.foto" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_4">{{ this.data.pelotari_4.alias }}</span>
         </div>
       </div>
       <div class="col-2 coste azul text-center">
-        <span v-if="data.pelotari_4">{{ this.data.pelotari_4.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce">{{ this.data.pelotari_4.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" class="icon voyager-x"></span>
       </div>
 
     </b-row>
@@ -228,5 +236,20 @@
     margin-top:10%;
     max-width:1080px;
     width:85%;
+  }
+  .listado-item .icon.voyager-x {
+    background: #ff000091;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    line-height: 0;
+    position: relative;
+    top: 4px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .listado-item .icon.voyager-x::before {
+    line-height:0;
   }
 </style>

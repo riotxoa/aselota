@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Pelotari;
+use App\PelotarisAspe;
 use App\FestivalPartido;
 use App\FestivalPartidoPelotari;
 
@@ -48,16 +49,33 @@ class FestivalPartidoController extends Controller
       $pelotaris = DB::table('festival_partido_pelotaris')
                    ->select('festival_partido_pelotaris.*', 'contratos.coste')
                    ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
-                   ->whereDate('contratos.fecha_ini', '<=', $fecha)
-                   ->whereDate('contratos.fecha_fin', '>=', $fecha)
+                   ->where( function ($query) use ($fecha) {
+                     $query->where('festival_partido_pelotaris.asegarce', '=', 0)
+                           ->orWhere( function ($q) use ($fecha) {
+                              $q->where('festival_partido_pelotaris.asegarce', '=', 1)
+                                ->whereDate('contratos.fecha_ini', '<=', $fecha)
+                                ->whereDate('contratos.fecha_fin', '>=', $fecha)
+                                ->whereNull('contratos.deleted_at');
+                             }
+                           );
+                   })
                    ->where('festival_partido_pelotaris.festival_partido_id', '=', $partido->id)
-                   ->where('contratos.deleted_at', '=', null)
                    ->orderBy('festival_partido_pelotaris.color', 'desc')
                    ->orderBy('festival_partido_pelotaris.posicion', 'asc')
                    ->get();
+
       foreach( $pelotaris as $key => $p ) {
-        $pelotari = Pelotari::find($p->pelotari_id);
-        $pelotari->coste = $p->coste;
+
+        if( $p->asegarce ) {
+          $pelotari = Pelotari::find($p->pelotari_id);
+          $pelotari->coste = $p->coste;
+          $pelotari->asegarce = 1;
+        } else {
+          $pelotari = PelotarisAspe::find($p->pelotari_id);
+          $pelotari->coste = 0;
+          $pelotari->asegarce = 0;
+        }
+
         if( "R" === $p->color ) {
           if( "D" === $p->posicion)
             $partido->pelotari_1 = $pelotari; // Pelotari::find($p->pelotari_id);
@@ -105,12 +123,14 @@ class FestivalPartidoController extends Controller
 
         $item->campeonato_name = ($request->get('campeonato_id') ? $request->get('campeonato_name') : null);
         $item->tipo_partido_name = $request->get('tipo_partido_name');
+        $item->is_partido_parejas = $request->get('is_partido_parejas');
 
         $pelotari_1 = new FestivalPartidoPelotari([
           'festival_partido_id' => $item->id,
           'color' => 'R',
           'posicion' => 'D',
           'pelotari_id' => $request->get('pelotari_1')['id'],
+          'asegarce' => $request->get('pelotari_1_asegarce'),
         ]);
         $pelotari_1->save();
 
@@ -120,6 +140,7 @@ class FestivalPartidoController extends Controller
             'color' => 'R',
             'posicion' => 'Z',
             'pelotari_id' => $request->get('pelotari_2')['id'],
+            'asegarce' => $request->get('pelotari_2_asegarce'),
           ]);
           $pelotari_2->save();
         }
@@ -129,6 +150,7 @@ class FestivalPartidoController extends Controller
           'color' => 'A',
           'posicion' => 'D',
           'pelotari_id' => $request->get('pelotari_3')['id'],
+          'asegarce' => $request->get('pelotari_3_asegarce'),
         ]);
         $pelotari_3->save();
 
@@ -138,6 +160,7 @@ class FestivalPartidoController extends Controller
             'color' => 'A',
             'posicion' => 'Z',
             'pelotari_id' => $request->get('pelotari_4')['id'],
+            'asegarce' => $request->get('pelotari_4_asegarce'),
           ]);
           $pelotari_4->save();
         }
@@ -197,6 +220,7 @@ class FestivalPartidoController extends Controller
 
         $item->campeonato_name = ($request->get('campeonato_id') ? $request->get('campeonato_name') : null);
         $item->tipo_partido_name = $request->get('tipo_partido_name');
+        $item->is_partido_parejas = $request->get('is_partido_parejas');
 
         DB::table('festival_partido_pelotaris')->where('festival_partido_id', '=', $id)->delete();
 
@@ -206,6 +230,7 @@ class FestivalPartidoController extends Controller
             'color' => 'R',
             'posicion' => 'D',
             'pelotari_id' => $request->get('pelotari_1')['id'],
+            'asegarce' => $request->get('pelotari_1_asegarce'),
           ]);
           $pelotari_1->save();
         }
@@ -215,6 +240,7 @@ class FestivalPartidoController extends Controller
             'color' => 'R',
             'posicion' => 'Z',
             'pelotari_id' => $request->get('pelotari_2')['id'],
+            'asegarce' => $request->get('pelotari_2_asegarce'),
           ]);
           $pelotari_2->save();
         }
@@ -224,6 +250,7 @@ class FestivalPartidoController extends Controller
             'color' => 'A',
             'posicion' => 'D',
             'pelotari_id' => $request->get('pelotari_3')['id'],
+            'asegarce' => $request->get('pelotari_3_asegarce'),
           ]);
           $pelotari_3->save();
         }
@@ -233,6 +260,7 @@ class FestivalPartidoController extends Controller
             'color' => 'A',
             'posicion' => 'Z',
             'pelotari_id' => $request->get('pelotari_4')['id'],
+            'asegarce' => $request->get('pelotari_4_asegarce'),
           ]);
           $pelotari_4->save();
         }

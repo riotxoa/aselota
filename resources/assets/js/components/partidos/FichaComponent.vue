@@ -1,6 +1,8 @@
 <template>
   <b-form @submit="onSubmit">
+
     <b-row>
+
       <b-form-group label="Partido:"
                     label-for="partidoInput"
                     class="col-sm-2 font-weight-bold px-1">
@@ -46,55 +48,128 @@
                        v-model="fase">
         </b-form-select>
       </b-form-group>
+
     </b-row>
+
     <b-row>
-      <b-form-group label="Pelotari 1:"
-                    label-for="pelotari1gorriaInput"
-                    class="font-weight-bold col-sm-3 pelotari gorri px-1">
+
+      <div class="col-sm-3 pelotari gorri px-1 form-group">
+        <label for="pelotari1gorriaInput" class="font-weight-bold pt-0 col-form-label">
+          Pelotari 1:
+        </label>
+        <b-form-checkbox
+                   class="float-right m-0"
+                   v-model="pelotari_1_asegarce"
+                   value="1"
+                   unchecked-value="0"
+                   @change="changeEmpresaPelotari1">
+        </b-form-checkbox>
+        <img v-if="1 == pelotari_1_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_1_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari1gorriaInput"
                        :options="pelotaris"
-                       v-model="pelotari_1">
+                       v-model="pelotari_1"
+                       v-if="1 == pelotari_1_asegarce">
         </b-form-select>
-      </b-form-group>
-      <b-form-group label="Pelotari 2:"
-                    label-for="pelotari2gorriaInput"
-                    class="font-weight-bold col-sm-3 pelotari gorri px-1"
-                    v-if="is_partido_parejas">
+        <b-form-select id="pelotari1gorriaInput"
+                       :options="pelotaris_aspe"
+                       v-model="pelotari_1"
+                       v-if="0 == pelotari_1_asegarce">
+        </b-form-select>
+      </div>
+
+      <div v-if="is_partido_parejas" class="col-sm-3 pelotari gorri px-1 form-group">
+        <label for="pelotari2gorriaInput" class="font-weight-bold pt-0 col-form-label">
+          Pelotari 2:
+        </label>
+        <b-form-checkbox
+                   class="float-right m-0"
+                   v-model="pelotari_2_asegarce"
+                   value="1"
+                   unchecked-value="0"
+                   @change="changeEmpresaPelotari2">
+        </b-form-checkbox>
+        <img v-if="1 == pelotari_2_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_2_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari2gorriaInput"
                        :options="pelotaris"
-                       v-model="pelotari_2">
+                       v-model="pelotari_2"
+                       v-if="1 == pelotari_2_asegarce">
         </b-form-select>
-      </b-form-group>
+        <b-form-select id="pelotari2gorriaInput"
+                       :options="pelotaris_aspe"
+                       v-model="pelotari_2"
+                       v-if="0 == pelotari_2_asegarce">
+        </b-form-select>
+      </div>
+
       <b-form-group label="&nbsp;"
                     label-for="exchangeBtn"
                     class="col-sm-3 text-center exchange px-1">
         <b-btn class="p-0" @click="exchangePelotaris" variant="link"><i class="voyager-code"></i></b-btn>
       </b-form-group>
-      <b-form-group label="Pelotari 1:"
-                    label-for="pelotari1urdinaInput"
-                    class="font-weight-bold col-sm-3 pelotari urdina px-1">
+
+      <div class="col-sm-3 pelotari urdina px-1 form-group">
+        <label for="pelotari1urdinaInput" class="font-weight-bold pt-0 col-form-label">
+          Pelotari 1:
+        </label>
+        <b-form-checkbox
+                   class="float-right m-0"
+                   v-model="pelotari_3_asegarce"
+                   value="1"
+                   unchecked-value="0"
+                   @change="changeEmpresaPelotari3">
+        </b-form-checkbox>
+        <img v-if="1 == pelotari_3_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_3_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari1urdinaInput"
                        :options="pelotaris"
-                       v-model="pelotari_3">
+                       v-model="pelotari_3"
+                       v-if="1 == pelotari_3_asegarce">
         </b-form-select>
-      </b-form-group>
-      <b-form-group label="Pelotari 2:"
-                    label-for="pelotari2urdinaInput"
-                    class="font-weight-bold col-sm-3 pelotari urdina px-1"
-                    v-if="is_partido_parejas">
+        <b-form-select id="pelotari1urdinaInput"
+                       :options="pelotaris_aspe"
+                       v-model="pelotari_3"
+                       v-if="0 == pelotari_3_asegarce">
+        </b-form-select>
+      </div>
+
+      <div v-if="is_partido_parejas" class="col-sm-3 pelotari urdina px-1 form-group">
+        <label for="pelotari2urdinaInput" class="font-weight-bold pt-0 col-form-label">
+          Pelotari 2:
+        </label>
+        <b-form-checkbox
+                   class="float-right m-0"
+                   v-model="pelotari_4_asegarce"
+                   value="1"
+                   unchecked-value="0"
+                   @change="changeEmpresaPelotari4">
+        </b-form-checkbox>
+        <img v-if="1 == pelotari_4_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_4_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari2urdinaInput"
                        :options="pelotaris"
-                       v-model="pelotari_4">
+                       v-model="pelotari_4"
+                       v-if="1 == pelotari_4_asegarce">
         </b-form-select>
-      </b-form-group>
+        <b-form-select id="pelotari2urdinaInput"
+                       :options="pelotaris_aspe"
+                       v-model="pelotari_4"
+                       v-if="0 == pelotari_4_asegarce">
+        </b-form-select>
+      </div>
+
     </b-row>
+
     <div v-if="this.edit">
       <b-button variant="danger" type="submit" style="margin-left:-10px;">Guardar</b-button>
       <b-button variant="default" @click="onClickCancelar()" class="ml-2">Cancelar</b-button>
     </div>
+
     <div v-else>
       <b-button variant="danger" type="submit" style="margin-left:-10px;">Añadir</b-button>
     </div>
+
   </b-form>
 </template>
 
@@ -119,9 +194,13 @@
         tipo_partido_name: '',
         fase: null,
         pelotari_1: null,
+        pelotari_1_asegarce: 1,
         pelotari_2: null,
+        pelotari_2_asegarce: 1,
         pelotari_3: null,
+        pelotari_3_asegarce: 1,
         pelotari_4: null,
+        pelotari_4_asegarce: 1,
         is_partido_parejas: true,
       }
     },
@@ -141,9 +220,13 @@
         this.tipo_partido_id = this.partido.tipo_partido_id;
         this.fase = this.partido.fase;
         this.pelotari_1 = (this.partido.pelotari_1 ? this.partido.pelotari_1.id : null);
+        this.pelotari_1_asegarce = (this.partido.pelotari_1 ? this.partido.pelotari_1.asegarce : 1);
         this.pelotari_2 = (this.partido.pelotari_2 ? this.partido.pelotari_2.id : null);
+        this.pelotari_2_asegarce = (this.partido.pelotari_2 ? this.partido.pelotari_2.asegarce : 1);
         this.pelotari_3 = (this.partido.pelotari_3 ? this.partido.pelotari_3.id : null);
+        this.pelotari_3_asegarce = (this.partido.pelotari_3 ? this.partido.pelotari_3.asegarce : 1);
         this.pelotari_4 = (this.partido.pelotari_4 ? this.partido.pelotari_4.id : null);
+        this.pelotari_4_asegarce = (this.partido.pelotari_4 ? this.partido.pelotari_4.asegarce : 1);
         this.is_partido_parejas = this.partido.is_partido_parejas;
       }
     },
@@ -157,6 +240,18 @@
       }
     },
     methods: {
+      changeEmpresaPelotari1() {
+        this.pelotari_1 = null;
+      },
+      changeEmpresaPelotari2() {
+        this.pelotari_2 = null;
+      },
+      changeEmpresaPelotari3() {
+        this.pelotari_3 = null;
+      },
+      changeEmpresaPelotari4() {
+        this.pelotari_4 = null;
+      },
       exchangePelotaris() {
         this.bak_1 = this.pelotari_1;
         this.bak_2 = this.pelotari_2;
@@ -172,9 +267,13 @@
         this.tipo_partido_id = null;
         this.fase = null;
         this.pelotari_1 = null;
+        this.pelotari_1_asegarce = 1;
         this.pelotari_2 = null;
+        this.pelotari_2_asegarce = 1;
         this.pelotari_3 = null;
+        this.pelotari_3_asegarce = 1;
         this.pelotari_4 = null;
+        this.pelotari_4_asegarce = 1;
         this.is_partido_parejas = true;
 
         this.getTiposPartido();
@@ -187,22 +286,34 @@
         var p1, p2, p3, p4;
 
         if( this.pelotari_1 ) {
-          p1 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          if( 1 == this.pelotari_1_asegarce )
+            p1 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          else
+            p1 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
         } else {
           p1 = null;
         }
         if( this.pelotari_2 && this.is_partido_parejas) {
-          p2 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          if( 1 == this.pelotari_2_asegarce )
+            p2 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          else
+            p2 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
         } else {
           p2 = null;
         }
         if( this.pelotari_3 ) {
-          p3 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          if( 1 == this.pelotari_3_asegarce )
+            p3 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          else
+            p3 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
         } else {
           p3 = null;
         }
         if( this.pelotari_4 && this.is_partido_parejas) {
-          p4 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          if( 1 == this.pelotari_4_asegarce )
+            p4 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+          else
+            p4 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
         } else {
           p4 = null;
         }
@@ -218,9 +329,13 @@
           tipo_partido_name: (this.campeonato_id ? null : _.filter(this.tipos_partido, {value: this.tipo_partido_id})[0].text),
           fase: (this.campeonato_id ? this.fase : null),
           pelotari_1: p1,
+          pelotari_1_asegarce: parseInt(this.pelotari_1_asegarce),
           pelotari_2: p2,
+          pelotari_2_asegarce: parseInt(this.pelotari_2_asegarce),
           pelotari_3: p3,
+          pelotari_3_asegarce: parseInt(this.pelotari_3_asegarce),
           pelotari_4: p4,
+          pelotari_4_asegarce: parseInt(this.pelotari_4_asegarce),
           is_partido_parejas: this.is_partido_parejas,
         }
 
@@ -274,6 +389,14 @@
   }
   .pelotari.urdina::before {
     background-color:#0a4ea1;
+  }
+  .pelotari .asegarce-icon {
+    margin-right:5px;
+    margin-top:5px;
+  }
+  .pelotari .asegarce-icon.grayscale {
+    -webkit-filter:grayscale(1) opacity(.5);
+    filter:grayscale(1) opacity(.5);
   }
   .exchange {
     max-width:5%;

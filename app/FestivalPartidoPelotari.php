@@ -11,6 +11,7 @@ class FestivalPartidoPelotari extends Model
     'color',
     'posicion',
     'pelotari_id',
+    'asegarce',
   ];
 
   public function pelotari() {

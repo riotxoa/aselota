@@ -13,6 +13,7 @@ var APIGetters = {
       tipos_partido_filtered: [],
       is_partido_parejas: true,
       pelotaris: [],
+      pelotaris_aspe: [],
       clientes: [],
       formas_pago: [],
       envio_facturas: [],
@@ -163,15 +164,22 @@ var APIGetters = {
 
     /* PELOTARIS */
     getPelotaris (date) {
-      let uri = '/www/pelotaris';
-      axios.get(uri, {
-          params: {
-            fecha: date
-          }
-      }).then((response) => {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
-        this.pelotaris = JSON.parse(stringified);
-        this.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+      return new Promise( (resolve, reject) => {
+        axios.get('/www/pelotaris', {
+            params: {
+              fecha: date
+            }
+        }).then((response) => {
+          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          this.pelotaris = JSON.parse(stringified);
+          this.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+
+          axios.get('/www/pelotaris-aspe').then((response) => {
+            var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+            this.pelotaris_aspe = JSON.parse(stringified);
+            this.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });
+          });
+        });
       });
     },
 
