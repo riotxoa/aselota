@@ -36,7 +36,7 @@
       <div class="equipo rojo col-4 p-0 ml-md-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
           <img v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :src="data.pelotari_1.foto" />
-          <img v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" :src=" '/storage/' + data.pelotari_1.foto" />
+          <img v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" :src=" '/storage/' + data.pelotari_1.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_1">{{ this.data.pelotari_1.alias }}</span>
@@ -50,7 +50,7 @@
       <div class="equipo azul col-4 p-0 ml-md-1 ml-lg-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
           <img v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :src="data.pelotari_3.foto" />
-          <img v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" :src=" '/storage/' + data.pelotari_3.foto" />
+          <img v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" :src=" '/storage/' + data.pelotari_3.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_3">{{ this.data.pelotari_3.alias }}</span>
@@ -68,7 +68,7 @@
       <div class="equipo rojo col-4 p-0 ml-md-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
           <img v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" :src="data.pelotari_2.foto" />
-          <img v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" :src=" '/storage/' + data.pelotari_2.foto" />
+          <img v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" :src=" '/storage/' + data.pelotari_2.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_2">{{ this.data.pelotari_2.alias }}</span>
@@ -82,7 +82,7 @@
       <div class="equipo azul col-4 p-0 ml-md-1 ml-lg-3">
         <div class="pelotari-foto d-none d-sm-inline-block">
           <img v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" :src="data.pelotari_4.foto" />
-          <img v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" :src=" '/storage/' + data.pelotari_4.foto" />
+          <img v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" :src=" '/storage/' + data.pelotari_4.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-center text-uppercase px-3">
           <span v-if="data.pelotari_4">{{ this.data.pelotari_4.alias }}</span>
@@ -237,8 +237,12 @@
     max-width:1080px;
     width:85%;
   }
+  .listado-item img.grayscale {
+    -webkit-filter:grayscale(1) opacity(.85);
+    filter:grayscale(1) opacity(.85);
+  }
   .listado-item .icon.voyager-x {
-    background: #ff000091;
+    background: lightgray;
     border-radius: 50%;
     color: white;
     font-size: 20px;

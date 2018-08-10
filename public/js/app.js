@@ -94981,7 +94981,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:15px;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item .icon.voyager-x {\n  background: #ff000091;\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  line-height: 0;\n  position: relative;\n  top: 4px;\n  padding-top: 5px;\n  padding-left: 5px;\n  padding-right: 5px;\n}\n.listado-item .icon.voyager-x::before {\n  line-height:0;\n}\n", ""]);
+exports.push([module.i, "\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:15px;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item img.grayscale {\n  -webkit-filter:grayscale(1) opacity(.85);\n  filter:grayscale(1) opacity(.85);\n}\n.listado-item .icon.voyager-x {\n  background: lightgray;\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  line-height: 0;\n  position: relative;\n  top: 4px;\n  padding-top: 5px;\n  padding-left: 5px;\n  padding-right: 5px;\n}\n.listado-item .icon.voyager-x::before {\n  line-height:0;\n}\n", ""]);
 
 // exports
 
@@ -95317,6 +95317,7 @@ var render = function() {
             _vm._v(" "),
             _vm.data.pelotari_1 && 0 == _vm.data.pelotari_1.asegarce
               ? _c("img", {
+                  staticClass: "grayscale",
                   attrs: { src: "/storage/" + _vm.data.pelotari_1.foto }
                 })
               : _vm._e()
@@ -95356,6 +95357,7 @@ var render = function() {
             _vm._v(" "),
             _vm.data.pelotari_3 && 0 == _vm.data.pelotari_3.asegarce
               ? _c("img", {
+                  staticClass: "grayscale",
                   attrs: { src: "/storage/" + _vm.data.pelotari_3.foto }
                 })
               : _vm._e()
@@ -95401,6 +95403,7 @@ var render = function() {
                   _vm._v(" "),
                   _vm.data.pelotari_2 && 0 == _vm.data.pelotari_2.asegarce
                     ? _c("img", {
+                        staticClass: "grayscale",
                         attrs: { src: "/storage/" + _vm.data.pelotari_2.foto }
                       })
                     : _vm._e()
@@ -95447,6 +95450,7 @@ var render = function() {
                     _vm._v(" "),
                     _vm.data.pelotari_4 && 0 == _vm.data.pelotari_4.asegarce
                       ? _c("img", {
+                          staticClass: "grayscale",
                           attrs: { src: "/storage/" + _vm.data.pelotari_4.foto }
                         })
                       : _vm._e()
