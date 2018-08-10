@@ -48,10 +48,10 @@
   }
   .card-header .nav-pills .nav-link.active,
   .card-header .nav-pills .show > .nav-link {
-    background-color:#4fb749;
+    background-color:slategray;
   }
   .card-header .nav-item {
-    background-color:#daf0da;
+    background-color:lightgray;
     font-weight:bold;
     text-align:center;
 
@@ -63,7 +63,7 @@
     max-width: 100%;
   }
   .card-header .nav-item a {
-    color:#4fb749;
+    color:slategray;
   }
   .card-header .nav-item:first-child {
     border-right:2.5px solid #f5f8fa;
