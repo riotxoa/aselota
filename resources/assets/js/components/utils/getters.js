@@ -174,7 +174,11 @@ var APIGetters = {
           this.pelotaris = JSON.parse(stringified);
           this.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
 
-          axios.get('/www/pelotaris-aspe').then((response) => {
+          axios.get('/www/pelotaris-aspe', {
+            params: {
+              fecha: date
+            }
+          }).then((response) => {
             var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
             this.pelotaris_aspe = JSON.parse(stringified);
             this.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });

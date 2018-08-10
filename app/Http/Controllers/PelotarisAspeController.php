@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\PelotarisAspe;
 
 class PelotarisAspeController extends Controller
@@ -16,9 +17,26 @@ class PelotarisAspeController extends Controller
     {
       $request->user()->authorizeRoles(['admin', 'gerente']);
 
-      $clientes = \App\PelotarisAspe::orderBy('alias', 'asc')->get();
+      $items = \App\PelotarisAspe::orderBy('alias', 'asc')->get();
 
-      return response()->json($clientes, 200);
+      $items = DB::table('pelotaris_aspe')
+        ->select('pelotaris_aspe.*')
+        ->where('pelotaris_aspe.deleted_at', null);
+
+      if($request->get('fecha')) {
+        $fecha = $request->get('fecha');
+        $items = $items->whereDate('pelotaris_aspe.fecha_ini', '<=', $fecha)
+                       ->where( function ($query) use ($fecha) {
+                         $query->where('pelotaris_aspe.fecha_fin', '>=', $fecha)
+                               ->orWhere('pelotaris_aspe.fecha_fin', null);
+                       });
+                       //whereDate('pelotaris_aspe.fecha_fin', '>=', $fecha);
+      }
+
+      $items = $items->orderBy('alias')
+                     ->get();
+
+      return response()->json($items, 200);
     }
 
     /**

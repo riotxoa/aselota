@@ -10671,7 +10671,11 @@ var APIGetters = {
           _this7.pelotaris = JSON.parse(stringified);
           _this7.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
 
-          axios.get('/www/pelotaris-aspe').then(function (response) {
+          axios.get('/www/pelotaris-aspe', {
+            params: {
+              fecha: date
+            }
+          }).then(function (response) {
             var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
             _this7.pelotaris_aspe = JSON.parse(stringified);
             _this7.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });
