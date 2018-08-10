@@ -94018,10 +94018,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     exchangePelotaris: function exchangePelotaris() {
       this.bak_1 = this.pelotari_1;
       this.bak_2 = this.pelotari_2;
+      this.bak_asegarce_1 = this.pelotari_1_asegarce;
+      this.bak_asegarce_2 = this.pelotari_2_asegarce;
+
       this.pelotari_1 = this.pelotari_3;
+      this.pelotari_1_asegarce = this.pelotari_3_asegarce;
       this.pelotari_2 = this.pelotari_4;
+      this.pelotari_2_asegarce = this.pelotari_4_asegarce;
       this.pelotari_3 = this.bak_1;
+      this.pelotari_3_asegarce = this.bak_asegarce_1;
       this.pelotari_4 = this.bak_2;
+      this.pelotari_4_asegarce = this.bak_asegarce_2;
     },
     resetForm: function resetForm() {
       this.orden = 0;
