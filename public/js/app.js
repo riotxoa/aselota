@@ -92052,7 +92052,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -92140,9 +92140,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 Vue.component('delete-modal', __webpack_require__(205));
+Vue.component('filtro-festivales', __webpack_require__(451));
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_utils_js__["a" /* default */]],
   data: function data() {
@@ -92315,11 +92317,16 @@ var render = function() {
       _c(
         "b-row",
         [
-          _c("b-col", { staticClass: "col-sm-6 float-left my-1 mb-3" }),
+          _c(
+            "b-col",
+            { staticClass: "col-sm-8 float-left my-1 mb-3" },
+            [_c("filtro-festivales")],
+            1
+          ),
           _vm._v(" "),
           _c(
             "b-col",
-            { staticClass: "col-sm-6 text-right my-1 mb-3" },
+            { staticClass: "col-sm-4 text-right my-1 mb-3" },
             [
               _c(
                 "router-link",
@@ -97093,6 +97100,394 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(454)
+}
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(452)
+/* template */
+var __vue_template__ = __webpack_require__(453)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/festivales/FiltroFestivalComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6c965cea", Component.options)
+  } else {
+    hotAPI.reload("data-v-6c965cea", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 452 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(29);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */]],
+  data: function data() {
+    return {
+      selectedFilterType: null,
+      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }],
+      selectedFilterValue: null,
+      filterValueOptions: [{ value: null, text: "Seleccionar filtro" }],
+      filterValueDate: null,
+      filterHasValue: false,
+      filterValues: []
+    };
+  },
+  created: function created() {
+    console.log("FiltroFestivalComponent created");
+    this.getProvincias();
+    this.getMunicipios();
+    this.getFrontones();
+    this.getFestivalEstados();
+    this.getCampeonatos();
+    this.getFasesCampeonato();
+    this.getTiposPartido();
+    this.getPelotaris();
+  },
+
+  methods: {
+    onChangeFilterType: function onChangeFilterType(ft) {
+      this.selectedFilterValue = null;
+      this.filterHasValue = false;
+      switch (ft) {
+        case 'festival_partidos.campeonato_id':
+          this.filterValueOptions = this.campeonatos;
+          break;
+        case 'festivales.estado_id':
+          this.filterValueOptions = this.festivalEstados;
+          break;
+        case 'festivales.fecha_ini':
+          break;
+        case 'festivales.fecha_fin':
+          break;
+        case 'festivales.fronton_id':
+          this.filterValueOptions = this.frontones;
+          break;
+        case 'frontones.municipio_id':
+          this.filterValueOptions = this.municipios;
+          break;
+        case 'festival_facturacion.pagado':
+          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
+          break;
+        case 'festival_partido_pelotaris.pelotari_id':
+          this.filterValueOptions = this.pelotaris;
+          break;
+        case 'frontones.provincia_id':
+          this.filterValueOptions = this.provincias;
+          break;
+        case 'festivales.television':
+          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
+          break;
+        case 'festival_partidos.tipo_partido_id':
+          this.filterValueOptions = this.tipos_partido;
+          break;
+      }
+    },
+    onChangeFilterValue: function onChangeFilterValue(fv) {
+      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
+    },
+    onChangeFilterDate: function onChangeFilterDate(fv) {
+      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
+    },
+    addFilterValue: function addFilterValue() {
+      if (this.filterHasValue) {
+        var operator = '=';
+
+        if ('festivales.fecha_ini' == this.selectedFilterType) operator = '>=';else if ('festivales.fecha_fin' == this.selectedFilterType) operator = '<=';
+
+        var value = {
+          column: 'festivales.fecha_ini' == this.selectedFilterType || 'festivales.fecha_fin' == this.selectedFilterType ? 'festivales.fecha' : this.selectedFilterType,
+          columnTxt: _.find(this.filterTypeOptions, { value: this.selectedFilterType }).text,
+          operator: operator,
+          value: 'festivales.fecha_ini' == this.selectedFilterType || 'festivales.fecha_fin' == this.selectedFilterType ? this.selectedFilterDate : this.selectedFilterValue,
+          valueTxt: _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text
+        };
+
+        this.filterValues.push(value);
+      }
+
+      this.filterHasValue = false;
+      this.selectedFilterType = null;
+      this.selectedFilterValue = null;
+      this.selectedFilterDate = null;
+    },
+    removeFilterValue: function removeFilterValue(index) {
+      console.log("[removeFilterValue] index: " + index);
+      this.filterValues.splice(index, 1);
+    }
+  }
+});
+
+/***/ }),
+/* 453 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "b-row",
+        { staticClass: "p-0 m-0" },
+        [
+          _c("b-form-select", {
+            staticClass: "col-sm-5 mb-0",
+            attrs: { options: _vm.filterTypeOptions },
+            on: { change: _vm.onChangeFilterType },
+            model: {
+              value: _vm.selectedFilterType,
+              callback: function($$v) {
+                _vm.selectedFilterType = $$v
+              },
+              expression: "selectedFilterType"
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-1" }),
+          _vm._v(" "),
+          "festivales.fecha_ini" != _vm.selectedFilterType &&
+          "festivales.fecha_fin" != _vm.selectedFilterType
+            ? _c("b-form-select", {
+                staticClass: "col-sm-5 mb-0",
+                attrs: { options: _vm.filterValueOptions },
+                on: { change: _vm.onChangeFilterValue },
+                model: {
+                  value: _vm.selectedFilterValue,
+                  callback: function($$v) {
+                    _vm.selectedFilterValue = $$v
+                  },
+                  expression: "selectedFilterValue"
+                }
+              })
+            : _c("b-form-input", {
+                staticClass: "col-sm-5 mb-0",
+                staticStyle: {
+                  "min-width": "127px",
+                  width: "calc(100% - 25px)"
+                },
+                attrs: { type: "date" },
+                on: { change: _vm.onChangeFilterDate },
+                model: {
+                  value: _vm.filterValueDate,
+                  callback: function($$v) {
+                    _vm.filterValueDate = $$v
+                  },
+                  expression: "filterValueDate"
+                }
+              }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-1" },
+            [
+              _vm.filterHasValue
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-1",
+                      attrs: {
+                        size: "sm",
+                        variant: "danger",
+                        title: "Añadir filtro"
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.addFilterValue($event)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-plus" })]
+                  )
+                : _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-1",
+                      attrs: {
+                        size: "sm",
+                        variant: "default",
+                        title: "Añadir filtro",
+                        disabled: ""
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-plus" })]
+                  )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.filterValues.length
+        ? _c("b-row", { staticClass: "p-0 mx-0 mb-0 mt-3" }, [
+            _c(
+              "ul",
+              { staticClass: "filter-value-list p-0 m-0" },
+              _vm._l(_vm.filterValues, function(value, index) {
+                return _c("li", { staticClass: "d-inline-block mr-4" }, [
+                  _c("i", {
+                    staticClass: "fas fa-times-circle mr-1",
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        _vm.removeFilterValue(index)
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    _vm._s(value.columnTxt) +
+                      ": " +
+                      _vm._s(value.valueTxt) +
+                      "\n      "
+                  )
+                ])
+              })
+            )
+          ])
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6c965cea", module.exports)
+  }
+}
+
+/***/ }),
+/* 454 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(455);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(9)("58d33805", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c965cea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroFestivalComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c965cea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroFestivalComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 455 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.filter-value-list li {\n  color:#007bff;\n}\n.filter-value-list li .fas {\n  color:#dd3545;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

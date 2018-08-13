@@ -2,7 +2,7 @@
   <div class="container">
     <b-row>
 
-      <b-col class="col-sm-6 float-left my-1 mb-3">
+      <b-col class="col-sm-8 float-left my-1 mb-3">
         <!-- <b-form-group v-if="filter" horizontal label="Filtro" class="mb-0">
           <b-input-group>
             <b-form-input v-model="filterTxt" placeholder="Texto de búsqueda" />
@@ -11,9 +11,10 @@
             </b-input-group-append>
           </b-input-group>
         </b-form-group> -->
+        <filtro-festivales></filtro-festivales>
       </b-col>
 
-      <b-col class="col-sm-6 text-right my-1 mb-3">
+      <b-col class="col-sm-4 text-right my-1 mb-3">
         <router-link to="/gerente/festival/new" class="text-white"><b-btn variant="danger" class="mb-0" title="Crear Festival">Nuevo Festival</b-btn></router-link>
       </b-col>
 
@@ -77,6 +78,7 @@
 <script>
   import Utils from '../utils/utils.js';
   Vue.component('delete-modal', require('../modals/ModalDeleteComponent.vue'));
+  Vue.component('filtro-festivales', require('./FiltroFestivalComponent.vue'));
   export default {
       mixins: [ Utils ],
       data () {
