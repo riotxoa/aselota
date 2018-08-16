@@ -10044,6 +10044,245 @@ var BVRL = '__BV_root_listeners__';
 
 /***/ }),
 /* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var APIGetters = {
+  data: function data() {
+    return {
+      provincias: [],
+      municipios: [],
+      municipios_filtered: [],
+      frontones: [],
+      frontones_filtered: [],
+      festivalEstados: [],
+      campeonatos: [],
+      tipos_partido: [],
+      tipos_partido_filtered: [],
+      is_partido_parejas: true,
+      pelotaris: [],
+      pelotaris_aspe: [],
+      clientes: [],
+      formas_pago: [],
+      envio_facturas: []
+    };
+  },
+
+  methods: {
+
+    /* PROVINCIAS */
+    getProvincias: function getProvincias() {
+      var _this = this;
+
+      var uri = '/www/provincias';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this.provincias = JSON.parse(stringified);
+        _this.provincias.unshift({ value: null, text: "Seleccionar provincia" });
+      });
+    },
+    onChangeProvincia: function onChangeProvincia(evt) {
+      this.provincia_id = evt;
+      if (null === evt) {
+        this.municipios_filtered = this.municipios;
+        this.frontones_filterd = this.frontones;
+      } else {
+        this.municipios_filtered = _.filter(this.municipios, { 'provincia_id': evt });
+        this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
+
+        this.frontones_filtered = _.filter(this.frontones, { 'provincia_id': evt });
+        this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+      }
+    },
+
+
+    /* MUNICIPIOS */
+    getMunicipios: function getMunicipios() {
+      var _this2 = this;
+
+      var uri = '/www/municipios';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this2.municipios = JSON.parse(stringified);
+        _this2.municipios.unshift({ value: null, text: "Seleccionar municipio" });
+        _this2.municipios_filtered = _this2.municipios;
+      });
+    },
+    onChangeMunicipio: function onChangeMunicipio(evt) {
+      if (null !== evt) {
+        if (null === this.provincia_id) {
+          this.provincia_id = _.filter(this.municipios, { 'value': evt })[0].provincia_id;
+          this.onChangeProvincia(this.provincia_id);
+        }
+
+        this.frontones_filtered = _.filter(this.frontones, { 'municipio_id': evt });
+        this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+      } else {
+        if (null === this.provincia_id) {
+          this.frontones_filtered = this.frontones;
+        } else {
+          this.frontones_filtered = _.filter(this.frontones, { 'provincia_id': this.provincia_id });
+          this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+        }
+      }
+    },
+
+
+    /* FRONTONES */
+    getFrontones: function getFrontones() {
+      var _this3 = this;
+
+      var uri = '/www/frontones';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this3.frontones = JSON.parse(stringified);
+        _this3.frontones.unshift({ value: null, text: "Seleccionar frontón" });
+        _this3.frontones_filtered = _this3.frontones;
+      });
+    },
+    onChangeFronton: function onChangeFronton(evt) {
+      if (null === this.municipio_id) {
+        this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_id;
+        this.onChangeMunicipio(this.municipio_id);
+      }
+    },
+
+
+    /* ESTADOS DE FESTIVAL */
+    getFestivalEstados: function getFestivalEstados() {
+      var _this4 = this;
+
+      var uri = '/www/festival-estados';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this4.festivalEstados = JSON.parse(stringified);
+        _this4.festivalEstados.unshift({ value: null, text: "Seleccionar estado" });
+      });
+    },
+
+
+    /* CAMPEONATOS */
+    getCampeonatos: function getCampeonatos() {
+      var _this5 = this;
+
+      var uri = '/www/campeonatos';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this5.campeonatos = JSON.parse(stringified);
+        _this5.campeonatos.unshift({ value: null, text: "Seleccionar campeonato" });
+      });
+    },
+    onChangeCampeonato: function onChangeCampeonato(evt) {
+      if (null === evt) {
+        this.tipos_partido_filtered = this.tipos_partido;
+      } else {
+        var campeonato = _.find(this.campeonatos, { 'value': evt });
+
+        this.tipos_partido_filtered = _.filter(this.tipos_partido, { 'value': campeonato.tipo_partido_id });
+        this.tipo_partido_id = campeonato.tipo_partido_id;
+
+        this.onChangeTiposPartido(this.tipo_partido_id);
+      }
+    },
+
+
+    /* FASES DE CAMPEONATO */
+    getFasesCampeonato: function getFasesCampeonato() {
+      this.fases_campeonato = [{ value: null, text: 'Seleccionar fase' }, { value: 'campeon', text: 'Campeón' }, { value: 'sucampeon', text: 'Subcampeón' }, { value: 'liga_semifinal', text: 'Liga Semifinales' }, { value: 'liga_cuartos', text: 'Liga Cuartos' }, { value: 'semifinal', text: 'Semifinal' }, { value: 'cuartos', text: 'Cuartos' }, { value: 'octavos', text: 'Octavos' }, { value: 'dieciseisavos', text: 'Dieciseisavos' }, { value: 'treintaidosavos', text: 'Treintaidosavos' }];
+    },
+
+
+    /* TIPOS DE PARTIDO */
+    getTiposPartido: function getTiposPartido() {
+      var _this6 = this;
+
+      var uri = '/www/tipos-partido';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this6.tipos_partido = JSON.parse(stringified);
+        _this6.tipos_partido.unshift({ value: null, text: "Seleccionar tipo" });
+        _this6.tipos_partido_filtered = _this6.tipos_partido;
+      });
+    },
+    onChangeTiposPartido: function onChangeTiposPartido(evt) {
+      if (null === evt) {
+        this.is_partido_parejas = true;
+      } else {
+        var tipo_partido = _.find(this.tipos_partido, { 'value': evt });
+        this.is_partido_parejas = tipo_partido.parejas;
+      }
+    },
+
+
+    /* PELOTARIS */
+    getPelotaris: function getPelotaris(date) {
+      var _this7 = this;
+
+      return new Promise(function (resolve, reject) {
+        axios.get('/www/pelotaris', {
+          params: {
+            fecha: date
+          }
+        }).then(function (response) {
+          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          _this7.pelotaris = JSON.parse(stringified);
+          _this7.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+
+          axios.get('/www/pelotaris-aspe', {
+            params: {
+              fecha: date
+            }
+          }).then(function (response) {
+            var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+            _this7.pelotaris_aspe = JSON.parse(stringified);
+            _this7.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });
+          });
+        });
+      });
+    },
+
+
+    /* CLIENTES */
+    getClientes: function getClientes() {
+      var _this8 = this;
+
+      var uri = '/www/clientes';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this8.clientes = JSON.parse(stringified);
+        _this8.clientes.unshift({ value: null, text: "Seleccionar cliente" });
+      });
+    },
+
+
+    /* FACTURACIÓN */
+    getFormasPago: function getFormasPago() {
+      var _this9 = this;
+
+      var uri = '/www/formas-pago';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this9.formas_pago = JSON.parse(stringified);
+        _this9.formas_pago.unshift({ value: null, text: "Seleccionar" });
+      });
+    },
+    getEnvioFacturas: function getEnvioFacturas() {
+      var _this10 = this;
+
+      var uri = '/www/envio-facturas';
+      axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        _this10.envio_facturas = JSON.parse(stringified);
+        _this10.envio_facturas.unshift({ value: null, text: "Seleccionar" });
+      });
+    }
+  }
+
+};
+/* harmony default export */ __webpack_exports__["a"] = (APIGetters);
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10402,7 +10641,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10419,7 +10658,7 @@ function prefixPropName(prefix, value) {
 }
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10460,7 +10699,7 @@ function copyProps(props) {
 }
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10484,245 +10723,6 @@ function copyProps(props) {
     }
   }
 });
-
-/***/ }),
-/* 29 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var APIGetters = {
-  data: function data() {
-    return {
-      provincias: [],
-      municipios: [],
-      municipios_filtered: [],
-      frontones: [],
-      frontones_filtered: [],
-      festivalEstados: [],
-      campeonatos: [],
-      tipos_partido: [],
-      tipos_partido_filtered: [],
-      is_partido_parejas: true,
-      pelotaris: [],
-      pelotaris_aspe: [],
-      clientes: [],
-      formas_pago: [],
-      envio_facturas: []
-    };
-  },
-
-  methods: {
-
-    /* PROVINCIAS */
-    getProvincias: function getProvincias() {
-      var _this = this;
-
-      var uri = '/www/provincias';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this.provincias = JSON.parse(stringified);
-        _this.provincias.unshift({ value: null, text: "Seleccionar provincia" });
-      });
-    },
-    onChangeProvincia: function onChangeProvincia(evt) {
-      this.provincia_id = evt;
-      if (null === evt) {
-        this.municipios_filtered = this.municipios;
-        this.frontones_filterd = this.frontones;
-      } else {
-        this.municipios_filtered = _.filter(this.municipios, { 'provincia_id': evt });
-        this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
-
-        this.frontones_filtered = _.filter(this.frontones, { 'provincia_id': evt });
-        this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
-      }
-    },
-
-
-    /* MUNICIPIOS */
-    getMunicipios: function getMunicipios() {
-      var _this2 = this;
-
-      var uri = '/www/municipios';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this2.municipios = JSON.parse(stringified);
-        _this2.municipios.unshift({ value: null, text: "Seleccionar municipio" });
-        _this2.municipios_filtered = _this2.municipios;
-      });
-    },
-    onChangeMunicipio: function onChangeMunicipio(evt) {
-      if (null !== evt) {
-        if (null === this.provincia_id) {
-          this.provincia_id = _.filter(this.municipios, { 'value': evt })[0].provincia_id;
-          this.onChangeProvincia(this.provincia_id);
-        }
-
-        this.frontones_filtered = _.filter(this.frontones, { 'municipio_id': evt });
-        this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
-      } else {
-        if (null === this.provincia_id) {
-          this.frontones_filtered = this.frontones;
-        } else {
-          this.frontones_filtered = _.filter(this.frontones, { 'provincia_id': this.provincia_id });
-          this.frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
-        }
-      }
-    },
-
-
-    /* FRONTONES */
-    getFrontones: function getFrontones() {
-      var _this3 = this;
-
-      var uri = '/www/frontones';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this3.frontones = JSON.parse(stringified);
-        _this3.frontones.unshift({ value: null, text: "Seleccionar frontón" });
-        _this3.frontones_filtered = _this3.frontones;
-      });
-    },
-    onChangeFronton: function onChangeFronton(evt) {
-      if (null === this.municipio_id) {
-        this.municipio_id = _.filter(this.frontones, { 'value': evt })[0].municipio_id;
-        this.onChangeMunicipio(this.municipio_id);
-      }
-    },
-
-
-    /* ESTADOS DE FESTIVAL */
-    getFestivalEstados: function getFestivalEstados() {
-      var _this4 = this;
-
-      var uri = '/www/festival-estados';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this4.festivalEstados = JSON.parse(stringified);
-        _this4.festivalEstados.unshift({ value: null, text: "Seleccionar estado" });
-      });
-    },
-
-
-    /* CAMPEONATOS */
-    getCampeonatos: function getCampeonatos() {
-      var _this5 = this;
-
-      var uri = '/www/campeonatos';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this5.campeonatos = JSON.parse(stringified);
-        _this5.campeonatos.unshift({ value: null, text: "Seleccionar campeonato" });
-      });
-    },
-    onChangeCampeonato: function onChangeCampeonato(evt) {
-      if (null === evt) {
-        this.tipos_partido_filtered = this.tipos_partido;
-      } else {
-        var campeonato = _.find(this.campeonatos, { 'value': evt });
-
-        this.tipos_partido_filtered = _.filter(this.tipos_partido, { 'value': campeonato.tipo_partido_id });
-        this.tipo_partido_id = campeonato.tipo_partido_id;
-
-        this.onChangeTiposPartido(this.tipo_partido_id);
-      }
-    },
-
-
-    /* FASES DE CAMPEONATO */
-    getFasesCampeonato: function getFasesCampeonato() {
-      this.fases_campeonato = [{ value: null, text: 'Seleccionar fase' }, { value: 'campeon', text: 'Campeón' }, { value: 'sucampeon', text: 'Subcampeón' }, { value: 'liga_semifinal', text: 'Liga Semifinales' }, { value: 'liga_cuartos', text: 'Liga Cuartos' }, { value: 'semifinal', text: 'Semifinal' }, { value: 'cuartos', text: 'Cuartos' }, { value: 'octavos', text: 'Octavos' }, { value: 'dieciseisavos', text: 'Dieciseisavos' }, { value: 'treintaidosavos', text: 'Treintaidosavos' }];
-    },
-
-
-    /* TIPOS DE PARTIDO */
-    getTiposPartido: function getTiposPartido() {
-      var _this6 = this;
-
-      var uri = '/www/tipos-partido';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this6.tipos_partido = JSON.parse(stringified);
-        _this6.tipos_partido.unshift({ value: null, text: "Seleccionar tipo" });
-        _this6.tipos_partido_filtered = _this6.tipos_partido;
-      });
-    },
-    onChangeTiposPartido: function onChangeTiposPartido(evt) {
-      if (null === evt) {
-        this.is_partido_parejas = true;
-      } else {
-        var tipo_partido = _.find(this.tipos_partido, { 'value': evt });
-        this.is_partido_parejas = tipo_partido.parejas;
-      }
-    },
-
-
-    /* PELOTARIS */
-    getPelotaris: function getPelotaris(date) {
-      var _this7 = this;
-
-      return new Promise(function (resolve, reject) {
-        axios.get('/www/pelotaris', {
-          params: {
-            fecha: date
-          }
-        }).then(function (response) {
-          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
-          _this7.pelotaris = JSON.parse(stringified);
-          _this7.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
-
-          axios.get('/www/pelotaris-aspe', {
-            params: {
-              fecha: date
-            }
-          }).then(function (response) {
-            var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
-            _this7.pelotaris_aspe = JSON.parse(stringified);
-            _this7.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });
-          });
-        });
-      });
-    },
-
-
-    /* CLIENTES */
-    getClientes: function getClientes() {
-      var _this8 = this;
-
-      var uri = '/www/clientes';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this8.clientes = JSON.parse(stringified);
-        _this8.clientes.unshift({ value: null, text: "Seleccionar cliente" });
-      });
-    },
-
-
-    /* FACTURACIÓN */
-    getFormasPago: function getFormasPago() {
-      var _this9 = this;
-
-      var uri = '/www/formas-pago';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this9.formas_pago = JSON.parse(stringified);
-        _this9.formas_pago.unshift({ value: null, text: "Seleccionar" });
-      });
-    },
-    getEnvioFacturas: function getEnvioFacturas() {
-      var _this10 = this;
-
-      var uri = '/www/envio-facturas';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this10.envio_facturas = JSON.parse(stringified);
-        _this10.envio_facturas.unshift({ value: null, text: "Seleccionar" });
-      });
-    }
-  }
-
-};
-/* harmony default export */ __webpack_exports__["a"] = (APIGetters);
 
 /***/ }),
 /* 30 */
@@ -34622,10 +34622,10 @@ function upperFirst(str) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return props; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_copyProps__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_copyProps__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_card_mixin__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_card_mixin__ = __webpack_require__(29);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -34702,10 +34702,10 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_3__utils_object__["a" /* assign */]
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return props; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_copyProps__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_copyProps__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_card_mixin__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_card_mixin__ = __webpack_require__(29);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -34751,10 +34751,10 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_3__utils_object__["a" /* assign */]
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return props; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_copyProps__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_copyProps__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_card_mixin__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_card_mixin__ = __webpack_require__(29);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -49086,6 +49086,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 
 var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   state: {
+    festivales: [],
+    total_festivales: 0,
+    filter_festivales: [],
     header: {},
     partidos: [],
     costes: {
@@ -49115,6 +49118,15 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     edit: false
   },
   getters: {
+    festivales: function festivales(state) {
+      return state.festivales;
+    },
+    total_festivales: function total_festivales(state) {
+      return state.total_festivales;
+    },
+    filter_festivales: function filter_festivales(state) {
+      return state.filter_festivales;
+    },
     header: function header(state) {
       return state.header;
     },
@@ -49132,6 +49144,22 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     }
   },
   mutations: {
+    SET_FESTIVALES: function SET_FESTIVALES(state, festivales) {
+      state.festivales = festivales;
+      this.commit('SET_TOTAL_FESTIVALES', festivales.length);
+    },
+    SET_TOTAL_FESTIVALES: function SET_TOTAL_FESTIVALES(state, total) {
+      state.total_festivales = total;
+    },
+    SET_FILTER_FESTIVALES: function SET_FILTER_FESTIVALES(state, filter) {
+      state.filter_festivales = filter;
+    },
+    ADD_FILTER_FESTIVAL: function ADD_FILTER_FESTIVAL(state, value) {
+      state.filter_festivales.push(value);
+    },
+    REMOVE_FILTER_FESTIVAL: function REMOVE_FILTER_FESTIVAL(state, index) {
+      state.filter_festivales.splice(index, 1);
+    },
     SET_HEADER: function SET_HEADER(state, header) {
       state.header = header;
     },
@@ -49181,9 +49209,46 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     }
   },
   actions: {
-    loadHeader: function loadHeader(_ref, id) {
-      var commit = _ref.commit,
-          dispatch = _ref.dispatch;
+    loadFestivales: function loadFestivales(_ref) {
+      var commit = _ref.commit;
+
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales').then(function (r) {
+        return r.data;
+      }).then(function (festivales) {
+        commit('SET_FESTIVALES', festivales);
+      });
+    },
+    addFilterFestival: function addFilterFestival(_ref2, value) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+
+      commit('ADD_FILTER_FESTIVAL', value);
+      dispatch('filterFestivales');
+    },
+    removeFilterFestival: function removeFilterFestival(_ref3, index) {
+      var commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+
+      commit('REMOVE_FILTER_FESTIVAL', index);
+      dispatch('filterFestivales');
+    },
+    filterFestivales: function filterFestivales(_ref4) {
+      var commit = _ref4.commit;
+
+      var data = {
+        params: {
+          filter: this.getters.filter_festivales // filter
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales', data).then(function (r) {
+        return r.data;
+      }).then(function (festivales) {
+        commit('SET_FESTIVALES', festivales);
+      });
+    },
+    loadHeader: function loadHeader(_ref5, id) {
+      var commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales/' + id).then(function (r) {
         return r.data;
@@ -49194,8 +49259,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         dispatch('loadFacturacion');
       });
     },
-    loadPartidos: function loadPartidos(_ref2) {
-      var commit = _ref2.commit;
+    loadPartidos: function loadPartidos(_ref6) {
+      var commit = _ref6.commit;
 
       var data = {
         params: {
@@ -49209,8 +49274,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PARTIDOS', partidos);
       });
     },
-    addPartido: function addPartido(_ref3, partido) {
-      var commit = _ref3.commit;
+    addPartido: function addPartido(_ref7, partido) {
+      var commit = _ref7.commit;
 
       var uri = '/www/partidos';
       return new Promise(function (resolve, reject) {
@@ -49224,8 +49289,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePartido: function updatePartido(_ref4, partido) {
-      var commit = _ref4.commit;
+    updatePartido: function updatePartido(_ref8, partido) {
+      var commit = _ref8.commit;
 
       var uri = '/www/partidos/' + partido.id + '/update';
 
@@ -49239,9 +49304,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    deletePartido: function deletePartido(_ref5, id) {
-      var commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
+    deletePartido: function deletePartido(_ref9, id) {
+      var commit = _ref9.commit,
+          dispatch = _ref9.dispatch;
 
       var uri = '/www/partidos/' + id;
 
@@ -49256,8 +49321,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCostes: function loadCostes(_ref6) {
-      var commit = _ref6.commit;
+    loadCostes: function loadCostes(_ref10) {
+      var commit = _ref10.commit;
 
       var data = {
         params: {
@@ -49270,8 +49335,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_COSTES', costes);
       });
     },
-    addCostes: function addCostes(_ref7, costes) {
-      var commit = _ref7.commit;
+    addCostes: function addCostes(_ref11, costes) {
+      var commit = _ref11.commit;
 
       var uri = '/www/festival-costes';
       costes.festival_id = this.getters.header.id;
@@ -49286,8 +49351,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadFacturacion: function loadFacturacion(_ref8) {
-      var commit = _ref8.commit;
+    loadFacturacion: function loadFacturacion(_ref12) {
+      var commit = _ref12.commit;
 
       var data = {
         params: {
@@ -49300,8 +49365,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FACTURACION', facturacion);
       });
     },
-    addFacturacion: function addFacturacion(_ref9, facturacion) {
-      var commit = _ref9.commit;
+    addFacturacion: function addFacturacion(_ref13, facturacion) {
+      var commit = _ref13.commit;
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
@@ -49325,13 +49390,13 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(419)
+  __webpack_require__(424)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(421)
+var __vue_script__ = __webpack_require__(426)
 /* template */
-var __vue_template__ = __webpack_require__(422)
+var __vue_template__ = __webpack_require__(427)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49374,7 +49439,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(209);
-module.exports = __webpack_require__(447);
+module.exports = __webpack_require__(452);
 
 
 /***/ }),
@@ -49442,7 +49507,7 @@ Vue.component('contrato-pelotari', __webpack_require__(388));
 
 Vue.component('home-gerente', __webpack_require__(391));
 Vue.component('listado-festivales', __webpack_require__(394));
-Vue.component('ficha-festival', __webpack_require__(401));
+Vue.component('ficha-festival', __webpack_require__(406));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales = { template: '<listado-festivales></listado-festivales>' };
@@ -72054,7 +72119,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(25)(content, options);
+var update = __webpack_require__(26)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -72777,12 +72842,12 @@ Object(__WEBPACK_IMPORTED_MODULE_6__utils_plugins__["c" /* vueUse */])(VuePlugin
 "use strict";
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_unprefix_prop_name__ = __webpack_require__(253);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_copyProps__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_copyProps__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_pluck_props__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_object__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_card_mixin__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_card_mixin__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__card_body__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__card_header__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__card_footer__ = __webpack_require__(60);
@@ -74283,7 +74348,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(25)(content, options);
+var update = __webpack_require__(26)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -75394,7 +75459,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(25)(content, options);
+var update = __webpack_require__(26)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -80882,7 +80947,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(25)(content, options);
+var update = __webpack_require__(26)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -91979,7 +92044,7 @@ var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(397)
 /* template */
-var __vue_template__ = __webpack_require__(400)
+var __vue_template__ = __webpack_require__(405)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -92052,7 +92117,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-1.45rem;\n}\n.main-header .toolbar {\n  background-color:slategray;\n  padding:10px 0;\n  text-align:center;\n}\n.main-header h4 {\n  line-height:1.75;\n  margin:0 auto;\n}\n", ""]);
 
 // exports
 
@@ -92063,7 +92128,8 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_utils_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(21);
 //
 //
 //
@@ -92141,12 +92207,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+
 
 
 Vue.component('delete-modal', __webpack_require__(205));
-Vue.component('filtro-festivales', __webpack_require__(451));
+Vue.component('filtro-festivales', __webpack_require__(400));
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_utils_js__["a" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_utils_js__["a" /* default */]],
   data: function data() {
     return {
       filter: true,
@@ -92165,9 +92235,23 @@ Vue.component('filtro-festivales', __webpack_require__(451));
     };
   },
   created: function created() {
-    this.fetchFestivales();
+    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadFestivales');
   },
 
+  computed: {
+    _items: function _items() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.festivales;
+    },
+
+    _totalRows: {
+      get: function get() {
+        return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.total_festivales;
+      },
+      set: function set(value) {
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_TOTAL_FESTIVALES', value);
+      }
+    }
+  },
   methods: {
     fetchFestivales: function fetchFestivales() {
       var _this = this;
@@ -92306,256 +92390,376 @@ if (false) {
 /* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(401)
+}
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(403)
+/* template */
+var __vue_template__ = __webpack_require__(404)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/festivales/FiltroFestivalComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6c965cea", Component.options)
+  } else {
+    hotAPI.reload("data-v-6c965cea", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 401 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(402);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(9)("58d33805", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c965cea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroFestivalComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c965cea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroFestivalComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 402 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.filter-value-list li {\n  color:#007bff;\n}\n.filter-value-list li .fas {\n  color:#dd3545;\n  cursor:pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 403 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(17);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */]],
+  data: function data() {
+    return {
+      selectedFilterType: null,
+      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }],
+      selectedFilterValue: null,
+      filterValueOptions: [{ value: null, text: "Seleccionar filtro" }],
+      filterValueDate: null,
+      filterHasValue: false
+    };
+  },
+  created: function created() {
+    console.log("FiltroFestivalComponent created");
+    this.getProvincias();
+    this.getMunicipios();
+    this.getFrontones();
+    this.getFestivalEstados();
+    this.getCampeonatos();
+    this.getFasesCampeonato();
+    this.getTiposPartido();
+    this.getPelotaris();
+  },
+
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
+    _filterValues: 'filter_festivales'
+  })),
+  methods: {
+    onChangeFilterType: function onChangeFilterType(ft) {
+      this.selectedFilterValue = null;
+      this.filterHasValue = false;
+      switch (ft) {
+        case 'festival_partidos.campeonato_id':
+          this.filterValueOptions = this.campeonatos;
+          break;
+        case 'festivales.estado_id':
+          this.filterValueOptions = this.festivalEstados;
+          break;
+        case 'festivales.fecha_ini':
+          break;
+        case 'festivales.fecha_fin':
+          break;
+        case 'festivales.fronton_id':
+          this.filterValueOptions = this.frontones;
+          break;
+        case 'frontones.municipio_id':
+          this.filterValueOptions = this.municipios;
+          break;
+        case 'festival_facturacion.pagado':
+          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
+          break;
+        case 'festival_partido_pelotaris.pelotari_id':
+          this.filterValueOptions = this.pelotaris;
+          break;
+        case 'frontones.provincia_id':
+          this.filterValueOptions = this.provincias;
+          break;
+        case 'festivales.television':
+          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
+          break;
+        case 'festival_partidos.tipo_partido_id':
+          this.filterValueOptions = this.tipos_partido;
+          break;
+      }
+    },
+    onChangeFilterValue: function onChangeFilterValue(fv) {
+      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
+    },
+    onChangeFilterDate: function onChangeFilterDate(fv) {
+      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
+    },
+    addFilterValue: function addFilterValue() {
+      if (this.filterHasValue) {
+
+        var operator = '=';
+        var column = void 0;
+        var value = void 0;
+        var val = void 0;
+        var valTxt = void 0;
+
+        if ('festivales.fecha_ini' == this.selectedFilterType) {
+          operator = '>=';
+          column = 'festivales.fecha';
+          val = this.filterValueDate;
+          valTxt = this.filterValueDate;
+        } else if ('festivales.fecha_fin' == this.selectedFilterType) {
+          operator = '<=';
+          column = 'festivales.fecha';
+          val = this.filterValueDate;
+          valTxt = this.filterValueDate;
+        } else if ('festival_partidos.campeonato_id' == this.selectedFilterType || 'festival_partido_pelotaris.pelotari_id' == this.selectedFilterType || 'festival_partidos.tipo_partido_id' == this.selectedFilterType) {
+          operator = 'in';
+          column = this.selectedFilterType;
+          val = this.selectedFilterValue;
+          valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text;
+        } else {
+          operator = '=';
+          column = this.selectedFilterType;
+          val = this.selectedFilterValue;
+          valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text;
+        }
+
+        value = {
+          column: column,
+          columnTxt: _.find(this.filterTypeOptions, { value: this.selectedFilterType }).text,
+          operator: operator,
+          value: val,
+          valueTxt: valTxt
+        };
+
+        __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('addFilterFestival', value);
+      }
+
+      this.resetForm();
+    },
+    removeFilterValue: function removeFilterValue(index) {
+      __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('removeFilterFestival', index);
+    },
+    resetForm: function resetForm() {
+      this.filterHasValue = false;
+      this.selectedFilterType = null;
+      this.selectedFilterValue = null;
+      this.filterValueOptions = [{ value: null, text: "Seleccionar filtro" }];
+      this.filterValueDate = null;
+    }
+  }
+});
+
+/***/ }),
+/* 404 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container" },
     [
       _c(
         "b-row",
+        { staticClass: "p-0 m-0" },
         [
-          _c(
-            "b-col",
-            { staticClass: "col-sm-8 float-left my-1 mb-3" },
-            [_c("filtro-festivales")],
-            1
-          ),
+          _c("b-form-select", {
+            staticClass: "col-sm-5 mb-0",
+            attrs: { options: _vm.filterTypeOptions },
+            on: { change: _vm.onChangeFilterType },
+            model: {
+              value: _vm.selectedFilterType,
+              callback: function($$v) {
+                _vm.selectedFilterType = $$v
+              },
+              expression: "selectedFilterType"
+            }
+          }),
           _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "col-sm-4 text-right my-1 mb-3" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "text-white",
-                  attrs: { to: "/gerente/festival/new" }
-                },
-                [
-                  _c(
-                    "b-btn",
-                    {
-                      staticClass: "mb-0",
-                      attrs: { variant: "danger", title: "Crear Festival" }
-                    },
-                    [_vm._v("Nuevo Festival")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          striped: "",
-          hover: "",
-          small: "",
-          responsive: "",
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "per-page": _vm.perPage,
-          "current-page": _vm.currentPage,
-          items: _vm.items,
-          fields: _vm.fields
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          }
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "actions",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button-group",
-                  [
-                    _vm.remove
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "danger",
-                              title: "Eliminar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickDelete(row.item)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-trash" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.update
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "primary",
-                              title: "Editar"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                _vm.onClickEdit(row.item.id)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "icon voyager-edit" })]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.display
-                      ? _c(
-                          "b-button",
-                          {
-                            attrs: {
-                              size: "sm",
-                              variant: "secondary",
-                              title: "Mostrar/Ocultar Detalle"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.stopPropagation()
-                                return row.toggleDetails($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("span", {
-                              staticClass: "icon",
-                              class: {
-                                "voyager-x": row.detailsShowing,
-                                "voyager-eye": !row.detailsShowing
-                              }
-                            })
-                          ]
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                )
-              ]
-            }
-          },
-          {
-            key: "row-details",
-            fn: function(row) {
-              return _vm.display
-                ? [
-                    _c(
-                      "b-card",
-                      [
-                        _c(
-                          "b-row",
-                          [
-                            _c("b-col", { attrs: { sm: "6" } }),
-                            _vm._v(" "),
-                            _c("b-col", { attrs: { sm: "6" } })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                : undefined
-            }
-          }
-        ])
-      }),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "5" } },
-            [
-              _c("b-pagination", {
-                staticClass: "my-0",
-                attrs: { "total-rows": _vm.totalRows, "per-page": _vm.perPage },
+          _c("div", { staticClass: "col-sm-1" }),
+          _vm._v(" "),
+          "festivales.fecha_ini" != _vm.selectedFilterType &&
+          "festivales.fecha_fin" != _vm.selectedFilterType
+            ? _c("b-form-select", {
+                staticClass: "col-sm-5 mb-0",
+                attrs: { options: _vm.filterValueOptions },
+                on: { change: _vm.onChangeFilterValue },
                 model: {
-                  value: _vm.currentPage,
+                  value: _vm.selectedFilterValue,
                   callback: function($$v) {
-                    _vm.currentPage = $$v
+                    _vm.selectedFilterValue = $$v
                   },
-                  expression: "currentPage"
+                  expression: "selectedFilterValue"
                 }
               })
-            ],
-            1
-          ),
+            : _c("b-form-input", {
+                staticClass: "col-sm-5 mb-0",
+                staticStyle: {
+                  "min-width": "127px",
+                  width: "calc(100% - 25px)"
+                },
+                attrs: { type: "date" },
+                on: { change: _vm.onChangeFilterDate },
+                model: {
+                  value: _vm.filterValueDate,
+                  callback: function($$v) {
+                    _vm.filterValueDate = $$v
+                  },
+                  expression: "filterValueDate"
+                }
+              }),
           _vm._v(" "),
           _c(
-            "b-col",
-            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            "div",
+            { staticClass: "col-sm-1" },
             [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Total: " }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: { readonly: "", plaintext: "" },
-                    model: {
-                      value: _vm.totalRows,
-                      callback: function($$v) {
-                        _vm.totalRows = $$v
+              _vm.filterHasValue
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-1",
+                      attrs: {
+                        size: "sm",
+                        variant: "danger",
+                        title: "Añadir filtro"
                       },
-                      expression: "totalRows"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "4" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Mostrar" }
-                },
-                [
-                  _c("b-form-select", {
-                    attrs: { options: _vm.pageOptions },
-                    model: {
-                      value: _vm.perPage,
-                      callback: function($$v) {
-                        _vm.perPage = $$v
-                      },
-                      expression: "perPage"
-                    }
-                  })
-                ],
-                1
-              )
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.addFilterValue($event)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-plus" })]
+                  )
+                : _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-1",
+                      attrs: {
+                        size: "sm",
+                        variant: "default",
+                        title: "Añadir filtro",
+                        disabled: ""
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-plus" })]
+                  )
             ],
             1
           )
@@ -92563,12 +92767,338 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("delete-modal", {
-        attrs: { "object-name": "Festival", "remove-item": _vm.removeItem }
-      })
+      _vm._filterValues.length
+        ? _c("b-row", { staticClass: "p-0 mx-0 mb-0 mt-3" }, [
+            _c(
+              "ul",
+              { staticClass: "filter-value-list p-0 m-0" },
+              _vm._l(_vm._filterValues, function(value, index) {
+                return _c("li", { staticClass: "d-inline-block mr-4" }, [
+                  _c("i", {
+                    staticClass: "fas fa-times-circle mr-1",
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        _vm.removeFilterValue(index)
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    _vm._s(value.columnTxt) +
+                      ": " +
+                      _vm._s(value.valueTxt) +
+                      "\n      "
+                  )
+                ])
+              })
+            )
+          ])
+        : _vm._e()
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6c965cea", module.exports)
+  }
+}
+
+/***/ }),
+/* 405 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "main-header" }, [
+      _c("div", { staticClass: "toolbar mb-0 py-1" }, [
+        _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("b-row", [
+              _c(
+                "h4",
+                { staticClass: "col-sm-6 text-white font-weight-bold" },
+                [_vm._v("GESTIÓN DE FESTIVALES")]
+              )
+            ])
+          ],
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _c(
+          "b-row",
+          [
+            _c(
+              "b-col",
+              { staticClass: "col-sm-8 float-left my-1 mb-3" },
+              [_c("filtro-festivales")],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { staticClass: "col-sm-4 text-right my-1 mb-3" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "text-white",
+                    attrs: { to: "/gerente/festival/new" }
+                  },
+                  [
+                    _c(
+                      "b-btn",
+                      {
+                        staticClass: "mb-0",
+                        attrs: { variant: "danger", title: "Crear Festival" }
+                      },
+                      [_vm._v("Nuevo Festival")]
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("b-table", {
+          attrs: {
+            striped: "",
+            hover: "",
+            small: "",
+            responsive: "",
+            "sort-by": _vm.sortBy,
+            "sort-desc": _vm.sortDesc,
+            "per-page": _vm.perPage,
+            "current-page": _vm.currentPage,
+            items: _vm._items,
+            fields: _vm.fields
+          },
+          on: {
+            "update:sortBy": function($event) {
+              _vm.sortBy = $event
+            },
+            "update:sortDesc": function($event) {
+              _vm.sortDesc = $event
+            }
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "actions",
+              fn: function(row) {
+                return [
+                  _c(
+                    "b-button-group",
+                    [
+                      _vm.remove
+                        ? _c(
+                            "b-button",
+                            {
+                              attrs: {
+                                size: "sm",
+                                variant: "danger",
+                                title: "Eliminar"
+                              },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.onClickDelete(row.item)
+                                }
+                              }
+                            },
+                            [_c("span", { staticClass: "icon voyager-trash" })]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.update
+                        ? _c(
+                            "b-button",
+                            {
+                              attrs: {
+                                size: "sm",
+                                variant: "primary",
+                                title: "Editar"
+                              },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  _vm.onClickEdit(row.item.id)
+                                }
+                              }
+                            },
+                            [_c("span", { staticClass: "icon voyager-edit" })]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.display
+                        ? _c(
+                            "b-button",
+                            {
+                              attrs: {
+                                size: "sm",
+                                variant: "secondary",
+                                title: "Mostrar/Ocultar Detalle"
+                              },
+                              on: {
+                                click: function($event) {
+                                  $event.stopPropagation()
+                                  return row.toggleDetails($event)
+                                }
+                              }
+                            },
+                            [
+                              _c("span", {
+                                staticClass: "icon",
+                                class: {
+                                  "voyager-x": row.detailsShowing,
+                                  "voyager-eye": !row.detailsShowing
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                ]
+              }
+            },
+            {
+              key: "row-details",
+              fn: function(row) {
+                return _vm.display
+                  ? [
+                      _c(
+                        "b-card",
+                        [
+                          _c(
+                            "b-row",
+                            [
+                              _c("b-col", { attrs: { sm: "6" } }),
+                              _vm._v(" "),
+                              _c("b-col", { attrs: { sm: "6" } })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  : undefined
+              }
+            }
+          ])
+        }),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          [
+            _c(
+              "b-col",
+              { staticClass: "my-1", attrs: { md: "5" } },
+              [
+                _c("b-pagination", {
+                  staticClass: "my-0",
+                  attrs: {
+                    "total-rows": _vm._totalRows,
+                    "per-page": _vm.perPage
+                  },
+                  model: {
+                    value: _vm.currentPage,
+                    callback: function($$v) {
+                      _vm.currentPage = $$v
+                    },
+                    expression: "currentPage"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { staticClass: "my-1 text-right", attrs: { md: "3" } },
+              [
+                _c(
+                  "b-form-group",
+                  {
+                    staticClass: "mb-0",
+                    attrs: { horizontal: "", label: "Total: " }
+                  },
+                  [
+                    _c("b-form-input", {
+                      attrs: { readonly: "", plaintext: "" },
+                      model: {
+                        value: _vm._totalRows,
+                        callback: function($$v) {
+                          _vm._totalRows = $$v
+                        },
+                        expression: "_totalRows"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { staticClass: "my-1", attrs: { md: "4" } },
+              [
+                _c(
+                  "b-form-group",
+                  {
+                    staticClass: "mb-0",
+                    attrs: { horizontal: "", label: "Mostrar" }
+                  },
+                  [
+                    _c("b-form-select", {
+                      attrs: { options: _vm.pageOptions },
+                      model: {
+                        value: _vm.perPage,
+                        callback: function($$v) {
+                          _vm.perPage = $$v
+                        },
+                        expression: "perPage"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("delete-modal", {
+          attrs: { "object-name": "Festival", "remove-item": _vm.removeItem }
+        })
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -92581,15 +93111,15 @@ if (false) {
 }
 
 /***/ }),
-/* 401 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(402)
+var __vue_script__ = __webpack_require__(407)
 /* template */
-var __vue_template__ = __webpack_require__(446)
+var __vue_template__ = __webpack_require__(451)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -92628,7 +93158,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 402 */
+/* 407 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -92644,8 +93174,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-Vue.component('festival-header', __webpack_require__(403));
-Vue.component('festival-body', __webpack_require__(409));
+Vue.component('festival-header', __webpack_require__(408));
+Vue.component('festival-body', __webpack_require__(414));
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
   var x = document.getElementById("snackbar");
@@ -92682,19 +93212,19 @@ var showSnackbar = function showSnackbar(msg) {
 });
 
 /***/ }),
-/* 403 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(404)
+  __webpack_require__(409)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(406)
+var __vue_script__ = __webpack_require__(411)
 /* template */
-var __vue_template__ = __webpack_require__(408)
+var __vue_template__ = __webpack_require__(413)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -92733,13 +93263,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 404 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(405);
+var content = __webpack_require__(410);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -92759,7 +93289,7 @@ if(false) {
 }
 
 /***/ }),
-/* 405 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -92767,20 +93297,20 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom:10px solid slategray;\n  margin-top:-1.45rem;\n  padding-bottom:.25rem;\n  padding-top:0;\n}\n.header .toolbar {\n  background-color:slategray;\n}\n.header h4 {\n  line-height:1.75;\n}\n.header label {\n  font-weight:bold;\n}\n.form-group {\n  margin-bottom:.5rem;\n}\n.form-control {\n  padding: 0.075rem 0.75rem;\n}\nselect.form-control:not([size]):not([multiple]) {\n  height: calc(1.71rem + 2px);\n}\n", ""]);
+exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom:10px solid slategray;\n  margin-top:-1.45rem;\n  padding-bottom:.25rem;\n  padding-top:0;\n}\n.header .toolbar {\n  background-color:slategray;\n}\n.header h4 {\n  line-height:1.75;\n}\n.header label {\n  font-weight:bold;\n}\n.header .form-group {\n  margin-bottom:.5rem;\n}\n.header .form-control {\n  padding: 0.075rem 0.75rem;\n}\n.header select.form-control:not([size]):not([multiple]) {\n  height: calc(1.71rem + 2px);\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 406 */
+/* 411 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_nav_js__ = __webpack_require__(407);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_nav_js__ = __webpack_require__(412);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(21);
 //
 //
@@ -93015,7 +93545,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 407 */
+/* 412 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93034,7 +93564,7 @@ var Nav = {
 /* harmony default export */ __webpack_exports__["a"] = (Nav);
 
 /***/ }),
-/* 408 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -93384,19 +93914,19 @@ if (false) {
 }
 
 /***/ }),
-/* 409 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(410)
+  __webpack_require__(415)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(412)
+var __vue_script__ = __webpack_require__(417)
 /* template */
-var __vue_template__ = __webpack_require__(445)
+var __vue_template__ = __webpack_require__(450)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -93435,13 +93965,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 410 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(411);
+var content = __webpack_require__(416);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -93461,7 +93991,7 @@ if(false) {
 }
 
 /***/ }),
-/* 411 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -93475,7 +94005,7 @@ exports.push([module.i, "\n.card-header {\n  background:transparent;\n  border:n
 
 
 /***/ }),
-/* 412 */
+/* 417 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93502,9 +94032,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-Vue.component('festival-partidos', __webpack_require__(413));
-Vue.component('festival-costes', __webpack_require__(435));
-Vue.component('festival-facturacion', __webpack_require__(440));
+Vue.component('festival-partidos', __webpack_require__(418));
+Vue.component('festival-costes', __webpack_require__(440));
+Vue.component('festival-facturacion', __webpack_require__(445));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -93521,15 +94051,15 @@ Vue.component('festival-facturacion', __webpack_require__(440));
 });
 
 /***/ }),
-/* 413 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(414)
+var __vue_script__ = __webpack_require__(419)
 /* template */
-var __vue_template__ = __webpack_require__(434)
+var __vue_template__ = __webpack_require__(439)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -93568,7 +94098,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 414 */
+/* 419 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93581,8 +94111,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-Vue.component('add-new-partido-form', __webpack_require__(415));
-Vue.component('list-partidos', __webpack_require__(424));
+Vue.component('add-new-partido-form', __webpack_require__(420));
+Vue.component('list-partidos', __webpack_require__(429));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -93596,19 +94126,19 @@ Vue.component('list-partidos', __webpack_require__(424));
 });
 
 /***/ }),
-/* 415 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(416)
+  __webpack_require__(421)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(418)
+var __vue_script__ = __webpack_require__(423)
 /* template */
-var __vue_template__ = __webpack_require__(423)
+var __vue_template__ = __webpack_require__(428)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -93647,13 +94177,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 416 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(417);
+var content = __webpack_require__(422);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -93673,7 +94203,7 @@ if(false) {
 }
 
 /***/ }),
-/* 417 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -93687,7 +94217,7 @@ exports.push([module.i, "\n#nuevoPartido .card {\n  border:none;\n  margin-left:
 
 
 /***/ }),
-/* 418 */
+/* 423 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93723,13 +94253,13 @@ Vue.component('form-partido', __webpack_require__(207));
 });
 
 /***/ }),
-/* 419 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(420);
+var content = __webpack_require__(425);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -93749,7 +94279,7 @@ if(false) {
 }
 
 /***/ }),
-/* 420 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -93763,13 +94293,13 @@ exports.push([module.i, "\n.pelotari {\n  max-width:23.75%;\n}\n.pelotari::befor
 
 
 /***/ }),
-/* 421 */
+/* 426 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(21);
 //
 //
@@ -94139,7 +94669,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 422 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -94670,7 +95200,7 @@ if (false) {
 }
 
 /***/ }),
-/* 423 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -94759,19 +95289,19 @@ if (false) {
 }
 
 /***/ }),
-/* 424 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(425)
+  __webpack_require__(430)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(427)
+var __vue_script__ = __webpack_require__(432)
 /* template */
-var __vue_template__ = __webpack_require__(433)
+var __vue_template__ = __webpack_require__(438)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -94810,13 +95340,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 425 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(426);
+var content = __webpack_require__(431);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -94836,7 +95366,7 @@ if(false) {
 }
 
 /***/ }),
-/* 426 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -94850,7 +95380,7 @@ exports.push([module.i, "\nul {\n  list-style-type:none;\n}\n", ""]);
 
 
 /***/ }),
-/* 427 */
+/* 432 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -94871,7 +95401,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 
-Vue.component('partido', __webpack_require__(428));
+Vue.component('partido', __webpack_require__(433));
 Vue.component('delete-modal', __webpack_require__(205));
 
 
@@ -94914,19 +95444,19 @@ Vue.component('delete-modal', __webpack_require__(205));
 });
 
 /***/ }),
-/* 428 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(429)
+  __webpack_require__(434)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(431)
+var __vue_script__ = __webpack_require__(436)
 /* template */
-var __vue_template__ = __webpack_require__(432)
+var __vue_template__ = __webpack_require__(437)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -94965,13 +95495,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 429 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(430);
+var content = __webpack_require__(435);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -94991,7 +95521,7 @@ if(false) {
 }
 
 /***/ }),
-/* 430 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -95005,7 +95535,7 @@ exports.push([module.i, "\n.voyager-star-two {\n  bottom: -2px;\n  color:darkora
 
 
 /***/ }),
-/* 431 */
+/* 436 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -95163,7 +95693,7 @@ Vue.component('form-partido', __webpack_require__(207));
 });
 
 /***/ }),
-/* 432 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -95543,7 +96073,7 @@ if (false) {
 }
 
 /***/ }),
-/* 433 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -95598,7 +96128,7 @@ if (false) {
 }
 
 /***/ }),
-/* 434 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -95622,19 +96152,19 @@ if (false) {
 }
 
 /***/ }),
-/* 435 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(436)
+  __webpack_require__(441)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(438)
+var __vue_script__ = __webpack_require__(443)
 /* template */
-var __vue_template__ = __webpack_require__(439)
+var __vue_template__ = __webpack_require__(444)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -95673,13 +96203,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 436 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(437);
+var content = __webpack_require__(442);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -95699,7 +96229,7 @@ if(false) {
 }
 
 /***/ }),
-/* 437 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -95713,12 +96243,12 @@ exports.push([module.i, "\n.festival-costes .card {\n  border-color:#707f8f;\n}\
 
 
 /***/ }),
-/* 438 */
+/* 443 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(17);
 //
@@ -95963,7 +96493,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 439 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -96492,19 +97022,19 @@ if (false) {
 }
 
 /***/ }),
-/* 440 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(441)
+  __webpack_require__(446)
 }
 var normalizeComponent = __webpack_require__(4)
 /* script */
-var __vue_script__ = __webpack_require__(443)
+var __vue_script__ = __webpack_require__(448)
 /* template */
-var __vue_template__ = __webpack_require__(444)
+var __vue_template__ = __webpack_require__(449)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -96543,13 +97073,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 441 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(442);
+var content = __webpack_require__(447);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -96569,7 +97099,7 @@ if(false) {
 }
 
 /***/ }),
-/* 442 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)(false);
@@ -96583,12 +97113,12 @@ exports.push([module.i, "\n.festival-facturacion .card {\n  border-color:#707f8f
 
 
 /***/ }),
-/* 443 */
+/* 448 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(17);
 //
@@ -96727,7 +97257,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 444 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -97007,7 +97537,7 @@ if (false) {
 }
 
 /***/ }),
-/* 445 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -97067,7 +97597,7 @@ if (false) {
 }
 
 /***/ }),
-/* 446 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -97096,398 +97626,10 @@ if (false) {
 }
 
 /***/ }),
-/* 447 */
+/* 452 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 448 */,
-/* 449 */,
-/* 450 */,
-/* 451 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(454)
-}
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(452)
-/* template */
-var __vue_template__ = __webpack_require__(453)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/festivales/FiltroFestivalComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6c965cea", Component.options)
-  } else {
-    hotAPI.reload("data-v-6c965cea", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 452 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(29);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */]],
-  data: function data() {
-    return {
-      selectedFilterType: null,
-      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }],
-      selectedFilterValue: null,
-      filterValueOptions: [{ value: null, text: "Seleccionar filtro" }],
-      filterValueDate: null,
-      filterHasValue: false,
-      filterValues: []
-    };
-  },
-  created: function created() {
-    console.log("FiltroFestivalComponent created");
-    this.getProvincias();
-    this.getMunicipios();
-    this.getFrontones();
-    this.getFestivalEstados();
-    this.getCampeonatos();
-    this.getFasesCampeonato();
-    this.getTiposPartido();
-    this.getPelotaris();
-  },
-
-  methods: {
-    onChangeFilterType: function onChangeFilterType(ft) {
-      this.selectedFilterValue = null;
-      this.filterHasValue = false;
-      switch (ft) {
-        case 'festival_partidos.campeonato_id':
-          this.filterValueOptions = this.campeonatos;
-          break;
-        case 'festivales.estado_id':
-          this.filterValueOptions = this.festivalEstados;
-          break;
-        case 'festivales.fecha_ini':
-          break;
-        case 'festivales.fecha_fin':
-          break;
-        case 'festivales.fronton_id':
-          this.filterValueOptions = this.frontones;
-          break;
-        case 'frontones.municipio_id':
-          this.filterValueOptions = this.municipios;
-          break;
-        case 'festival_facturacion.pagado':
-          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
-          break;
-        case 'festival_partido_pelotaris.pelotari_id':
-          this.filterValueOptions = this.pelotaris;
-          break;
-        case 'frontones.provincia_id':
-          this.filterValueOptions = this.provincias;
-          break;
-        case 'festivales.television':
-          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
-          break;
-        case 'festival_partidos.tipo_partido_id':
-          this.filterValueOptions = this.tipos_partido;
-          break;
-      }
-    },
-    onChangeFilterValue: function onChangeFilterValue(fv) {
-      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
-    },
-    onChangeFilterDate: function onChangeFilterDate(fv) {
-      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
-    },
-    addFilterValue: function addFilterValue() {
-      if (this.filterHasValue) {
-        var operator = '=';
-
-        if ('festivales.fecha_ini' == this.selectedFilterType) operator = '>=';else if ('festivales.fecha_fin' == this.selectedFilterType) operator = '<=';
-
-        var value = {
-          column: 'festivales.fecha_ini' == this.selectedFilterType || 'festivales.fecha_fin' == this.selectedFilterType ? 'festivales.fecha' : this.selectedFilterType,
-          columnTxt: _.find(this.filterTypeOptions, { value: this.selectedFilterType }).text,
-          operator: operator,
-          value: 'festivales.fecha_ini' == this.selectedFilterType || 'festivales.fecha_fin' == this.selectedFilterType ? this.selectedFilterDate : this.selectedFilterValue,
-          valueTxt: _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text
-        };
-
-        this.filterValues.push(value);
-      }
-
-      this.filterHasValue = false;
-      this.selectedFilterType = null;
-      this.selectedFilterValue = null;
-      this.selectedFilterDate = null;
-    },
-    removeFilterValue: function removeFilterValue(index) {
-      console.log("[removeFilterValue] index: " + index);
-      this.filterValues.splice(index, 1);
-    }
-  }
-});
-
-/***/ }),
-/* 453 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "b-row",
-        { staticClass: "p-0 m-0" },
-        [
-          _c("b-form-select", {
-            staticClass: "col-sm-5 mb-0",
-            attrs: { options: _vm.filterTypeOptions },
-            on: { change: _vm.onChangeFilterType },
-            model: {
-              value: _vm.selectedFilterType,
-              callback: function($$v) {
-                _vm.selectedFilterType = $$v
-              },
-              expression: "selectedFilterType"
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-1" }),
-          _vm._v(" "),
-          "festivales.fecha_ini" != _vm.selectedFilterType &&
-          "festivales.fecha_fin" != _vm.selectedFilterType
-            ? _c("b-form-select", {
-                staticClass: "col-sm-5 mb-0",
-                attrs: { options: _vm.filterValueOptions },
-                on: { change: _vm.onChangeFilterValue },
-                model: {
-                  value: _vm.selectedFilterValue,
-                  callback: function($$v) {
-                    _vm.selectedFilterValue = $$v
-                  },
-                  expression: "selectedFilterValue"
-                }
-              })
-            : _c("b-form-input", {
-                staticClass: "col-sm-5 mb-0",
-                staticStyle: {
-                  "min-width": "127px",
-                  width: "calc(100% - 25px)"
-                },
-                attrs: { type: "date" },
-                on: { change: _vm.onChangeFilterDate },
-                model: {
-                  value: _vm.filterValueDate,
-                  callback: function($$v) {
-                    _vm.filterValueDate = $$v
-                  },
-                  expression: "filterValueDate"
-                }
-              }),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-sm-1" },
-            [
-              _vm.filterHasValue
-                ? _c(
-                    "b-button",
-                    {
-                      staticClass: "mt-1",
-                      attrs: {
-                        size: "sm",
-                        variant: "danger",
-                        title: "Añadir filtro"
-                      },
-                      on: {
-                        click: function($event) {
-                          $event.stopPropagation()
-                          return _vm.addFilterValue($event)
-                        }
-                      }
-                    },
-                    [_c("i", { staticClass: "fas fa-plus" })]
-                  )
-                : _c(
-                    "b-button",
-                    {
-                      staticClass: "mt-1",
-                      attrs: {
-                        size: "sm",
-                        variant: "default",
-                        title: "Añadir filtro",
-                        disabled: ""
-                      }
-                    },
-                    [_c("i", { staticClass: "fas fa-plus" })]
-                  )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.filterValues.length
-        ? _c("b-row", { staticClass: "p-0 mx-0 mb-0 mt-3" }, [
-            _c(
-              "ul",
-              { staticClass: "filter-value-list p-0 m-0" },
-              _vm._l(_vm.filterValues, function(value, index) {
-                return _c("li", { staticClass: "d-inline-block mr-4" }, [
-                  _c("i", {
-                    staticClass: "fas fa-times-circle mr-1",
-                    on: {
-                      click: function($event) {
-                        $event.stopPropagation()
-                        _vm.removeFilterValue(index)
-                      }
-                    }
-                  }),
-                  _vm._v(
-                    _vm._s(value.columnTxt) +
-                      ": " +
-                      _vm._s(value.valueTxt) +
-                      "\n      "
-                  )
-                ])
-              })
-            )
-          ])
-        : _vm._e()
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6c965cea", module.exports)
-  }
-}
-
-/***/ }),
-/* 454 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(455);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(9)("58d33805", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c965cea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroFestivalComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6c965cea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroFestivalComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 455 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(6)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.filter-value-list li {\n  color:#007bff;\n}\n.filter-value-list li .fas {\n  color:#dd3545;\n}\n", ""]);
-
-// exports
-
 
 /***/ })
 /******/ ]);

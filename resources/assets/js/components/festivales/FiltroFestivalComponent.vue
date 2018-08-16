@@ -30,9 +30,9 @@
       </div>
     </b-row>
 
-    <b-row v-if="filterValues.length" class="p-0 mx-0 mb-0 mt-3">
+    <b-row v-if="_filterValues.length" class="p-0 mx-0 mb-0 mt-3">
       <ul class="filter-value-list p-0 m-0">
-        <li v-for="(value, index) in filterValues" class="d-inline-block mr-4">
+        <li v-for="(value, index) in _filterValues" class="d-inline-block mr-4">
           <i class="fas fa-times-circle mr-1" @click.stop="removeFilterValue(index)"></i>{{ value.columnTxt }}: {{ value.valueTxt }}
         </li>
       </ul>
@@ -42,6 +42,9 @@
 
 <script>
   import APIGetters from '../utils/getters.js';
+  import { store } from '../store/store';
+  import { mapState } from 'vuex';
+
   export default {
     mixins: [ APIGetters ],
     data () {
@@ -67,7 +70,6 @@
         ],
         filterValueDate: null,
         filterHasValue: false,
-        filterValues: [],
       }
     },
     created() {
@@ -81,6 +83,9 @@
       this.getTiposPartido();
       this.getPelotaris();
     },
+    computed: {...mapState({
+      _filterValues: 'filter_festivales',
+    })},
     methods: {
       onChangeFilterType(ft) {
         this.selectedFilterValue = null;
@@ -141,32 +146,59 @@
       },
       addFilterValue () {
         if( this.filterHasValue ) {
+
           let operator = '=';
+          let column;
+          let value;
+          let val;
+          let valTxt;
 
-          if( 'festivales.fecha_ini' == this.selectedFilterType )
+          if( 'festivales.fecha_ini' == this.selectedFilterType ) {
             operator = '>=';
-          else if( 'festivales.fecha_fin' == this.selectedFilterType )
+            column = 'festivales.fecha';
+            val = this.filterValueDate;
+            valTxt = this.filterValueDate;
+          } else if( 'festivales.fecha_fin' == this.selectedFilterType ) {
             operator = '<=';
-
-          let value = {
-            column: ( ('festivales.fecha_ini' == this.selectedFilterType || 'festivales.fecha_fin' == this.selectedFilterType) ? 'festivales.fecha' : this.selectedFilterType ),
-            columnTxt: _.find(this.filterTypeOptions, { value: this.selectedFilterType }).text,
-            operator: operator,
-            value: ( ('festivales.fecha_ini' == this.selectedFilterType || 'festivales.fecha_fin' == this.selectedFilterType) ? this.selectedFilterDate : this.selectedFilterValue ),
-            valueTxt: _.find(this.filterValueOptions, { value: this.selectedFilterValue}).text,
+            column = 'festivales.fecha';
+            val = this.filterValueDate;
+            valTxt = this.filterValueDate;
+          } else if( 'festival_partidos.campeonato_id' == this.selectedFilterType ||
+                     'festival_partido_pelotaris.pelotari_id' == this.selectedFilterType ||
+                     'festival_partidos.tipo_partido_id' == this.selectedFilterType ) {
+            operator = 'in';
+            column = this.selectedFilterType;
+            val = this.selectedFilterValue;
+            valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue}).text;
+          } else {
+            operator = '=';
+            column = this.selectedFilterType;
+            val = this.selectedFilterValue;
+            valTxt =  _.find(this.filterValueOptions, { value: this.selectedFilterValue}).text;
           }
 
-          this.filterValues.push(value);
+          value = {
+            column: column,
+            columnTxt: _.find(this.filterTypeOptions, { value: this.selectedFilterType }).text,
+            operator: operator,
+            value: val,
+            valueTxt: valTxt,
+          }
+
+          store.dispatch('addFilterFestival', value);
         }
 
+        this.resetForm();
+      },
+      removeFilterValue (index) {
+        store.dispatch('removeFilterFestival', index);
+      },
+      resetForm () {
         this.filterHasValue = false;
         this.selectedFilterType = null;
         this.selectedFilterValue = null;
-        this.selectedFilterDate = null;
-      },
-      removeFilterValue (index) {
-        console.log("[removeFilterValue] index: " + index);
-        this.filterValues.splice(index, 1);
+        this.filterValueOptions = [ { value: null, text: "Seleccionar filtro"} ];
+        this.filterValueDate = null;
       }
     }
   }
@@ -178,5 +210,6 @@
   }
   .filter-value-list li .fas {
     color:#dd3545;
+    cursor:pointer;
   }
 </style>

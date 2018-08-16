@@ -6,6 +6,9 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
+    festivales: [],
+    total_festivales: 0,
+    filter_festivales: [],
     header: {},
     partidos: [],
     costes: {
@@ -35,6 +38,9 @@ export const store = new Vuex.Store({
     edit: false,
   },
   getters: {
+    festivales: state => state.festivales,
+    total_festivales: state => state.total_festivales,
+    filter_festivales: state => state.filter_festivales,
     header: state => state.header,
     partidos: state => state.partidos,
     coste: state => state.coste,
@@ -42,6 +48,22 @@ export const store = new Vuex.Store({
     edit: state => state.edit,
   },
   mutations: {
+    SET_FESTIVALES (state, festivales) {
+      state.festivales = festivales;
+      this.commit('SET_TOTAL_FESTIVALES', festivales.length);
+    },
+    SET_TOTAL_FESTIVALES (state, total) {
+      state.total_festivales = total;
+    },
+    SET_FILTER_FESTIVALES (state, filter) {
+      state.filter_festivales = filter;
+    },
+    ADD_FILTER_FESTIVAL (state, value) {
+      state.filter_festivales.push(value);
+    },
+    REMOVE_FILTER_FESTIVAL (state, index) {
+      state.filter_festivales.splice(index, 1);
+    },
     SET_HEADER (state, header) {
       state.header = header;
     },
@@ -89,6 +111,35 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    loadFestivales({ commit }) {
+      axios
+        .get('/www/festivales')
+        .then( r => r.data )
+        .then( festivales => {
+          commit('SET_FESTIVALES', festivales);
+        });
+    },
+    addFilterFestival({ commit, dispatch }, value) {
+      commit('ADD_FILTER_FESTIVAL', value);
+      dispatch('filterFestivales');
+    },
+    removeFilterFestival({ commit, dispatch }, index) {
+      commit('REMOVE_FILTER_FESTIVAL', index);
+      dispatch('filterFestivales');
+    },
+    filterFestivales({ commit }) {
+      let data = {
+        params: {
+          filter: this.getters.filter_festivales, // filter
+        }
+      };
+      axios
+        .get('/www/festivales', data)
+        .then( r => r.data )
+        .then( festivales => {
+          commit('SET_FESTIVALES', festivales);
+        });
+    },
     loadHeader({ commit, dispatch }, id) {
       axios
         .get('/www/festivales/' + id)
