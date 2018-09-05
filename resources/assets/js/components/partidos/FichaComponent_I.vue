@@ -8,7 +8,7 @@
         <div class="col-sm-3 marcador rojo float-left text-left position-relative">
           <b-form-input
             type="number"
-            v-model="resultado_rojo"
+            v-model="tanteo.puntos_rojo"
             step="1"
             min="0"
             max="22" />
@@ -25,7 +25,7 @@
         <div class="col-sm-3 marcador azul float-right text-right position-relative">
           <b-form-input
             type="number"
-            v-model="resultado_azul"
+            v-model="tanteo.puntos_azul"
             step="1"
             min="0"
             max="22" />
@@ -75,10 +75,14 @@
     props: ['partido', 'modalId'],
     data () {
       return {
-        resultado_rojo: 0,
-        resultado_azul: 0,
         tanteo: {
-          total_pelotazos: 0,
+          pelotari_1_id: this.partido.pelotari_1.id,
+          pelotari_2_id: this.partido.pelotari_2.id,
+          pelotari_3_id: this.partido.pelotari_3.id,
+          pelotari_4_id: this.partido.pelotari_4.id,
+          puntos_rojo: 0,
+          puntos_azul: 0,
+          pelotazos: 0,
           duracion:0,
           tantos: []
         },
@@ -143,8 +147,27 @@
       onSubmit (evt) {
         evt.preventDefault();
 
-        console.log("[onSubmit] this.tanteo.tantos: " + JSON.stringify(this.tanteo.tantos));
-        console.log("[onSubmit] this.marcadores: " + JSON.stringify(this.marcadores));
+        var data = {
+          id: this.partido.id,
+          tanteo: this.tanteo,
+          marcadores: this.marcadores,
+          anotaciones: this.anotaciones,
+        }
+
+        console.log("[onSubmit] data: " + JSON.stringify(data));
+
+        this.$store.dispatch('updatePartidoCelebrado', data)
+          .then((response) => {
+            console.log("[updatePartidoCelebrado] response: " + response);
+            this.showSnackbar("Partido actualizado");
+            // this.$emit('update-partido', response);
+            // this.closeModal();
+          })
+          .catch((error) => {
+            console.log(error);
+            this.showSnackbar("Se ha producido un ERROR");
+            // this.closeModal();
+          });
       },
       onClickCancelar() {
         this.closeModal();
@@ -211,8 +234,8 @@
     template: `
       <div>
         <b-row>
-          <b-col sm="4"><label for="total_pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>
-          <b-col sm="2"><b-form-input id="total_pelotazos" class="text-right" type="number" v-model="tanteo.total_pelotazos" step="1" min="0" max="2000"/></b-col>
+          <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>
+          <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>
           <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duración partido:</label></b-col>
           <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>
         </b-row>
@@ -271,8 +294,8 @@
           <tbody>
             <tr v-for="i in 11">
               <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>
-              <td><b-form-input class="rojo" v-model="marcadores.rojo[i]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" v-model="marcadores.azul[i]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="rojo" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="azul" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>
             </tr>
           </tbody>
         </table>
@@ -287,8 +310,8 @@
           <tbody>
             <tr v-for="i in 11">
               <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>
-              <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 11]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" v-model="marcadores.azul[i + 11]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="azul" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>
             </tr>
           </tbody>
         </table>
@@ -303,8 +326,8 @@
           <tbody>
             <tr v-for="i in 11">
               <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>
-              <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 22]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" v-model="marcadores.azul[i + 22]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="azul" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>
             </tr>
           </tbody>
         </table>
@@ -319,8 +342,8 @@
           <tbody>
             <tr v-for="i in 10">
               <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>
-              <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 33]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" v-model="marcadores.azul[i + 33]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>
+              <td><b-form-input class="azul" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>
             </tr>
           </tbody>
         </table>

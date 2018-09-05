@@ -10995,8 +10995,23 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCostes: function loadCostes(_ref11) {
+    updatePartidoCelebrado: function updatePartidoCelebrado(_ref11, partido) {
       var commit = _ref11.commit;
+
+      var uri = '/www/partido-celebrado/' + partido.id + '/update';
+
+      return new Promise(function (resolve, rejecto) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadCostes: function loadCostes(_ref12) {
+      var commit = _ref12.commit;
 
       var data = {
         params: {
@@ -11009,8 +11024,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_COSTES', costes);
       });
     },
-    addCostes: function addCostes(_ref12, costes) {
-      var commit = _ref12.commit;
+    addCostes: function addCostes(_ref13, costes) {
+      var commit = _ref13.commit;
 
       var uri = '/www/festival-costes';
       costes.festival_id = this.getters.header.id;
@@ -11025,8 +11040,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadFacturacion: function loadFacturacion(_ref13) {
-      var commit = _ref13.commit;
+    loadFacturacion: function loadFacturacion(_ref14) {
+      var commit = _ref14.commit;
 
       var data = {
         params: {
@@ -11039,8 +11054,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FACTURACION', facturacion);
       });
     },
-    addFacturacion: function addFacturacion(_ref14, facturacion) {
-      var commit = _ref14.commit;
+    addFacturacion: function addFacturacion(_ref15, facturacion) {
+      var commit = _ref15.commit;
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
@@ -98275,10 +98290,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: ['partido', 'modalId'],
   data: function data() {
     return {
-      resultado_rojo: 0,
-      resultado_azul: 0,
       tanteo: {
-        total_pelotazos: 0,
+        pelotari_1_id: this.partido.pelotari_1.id,
+        pelotari_2_id: this.partido.pelotari_2.id,
+        pelotari_3_id: this.partido.pelotari_3.id,
+        pelotari_4_id: this.partido.pelotari_4.id,
+        puntos_rojo: 0,
+        puntos_azul: 0,
+        pelotazos: 0,
         duracion: 0,
         tantos: []
       },
@@ -98318,10 +98337,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$root.$emit('bv::hide::modal', this.modalId);
     },
     onSubmit: function onSubmit(evt) {
+      var _this2 = this;
+
       evt.preventDefault();
 
-      console.log("[onSubmit] this.tanteo.tantos: " + JSON.stringify(this.tanteo.tantos));
-      console.log("[onSubmit] this.marcadores: " + JSON.stringify(this.marcadores));
+      var data = {
+        id: this.partido.id,
+        tanteo: this.tanteo,
+        marcadores: this.marcadores,
+        anotaciones: this.anotaciones
+      };
+
+      console.log("[onSubmit] data: " + JSON.stringify(data));
+
+      this.$store.dispatch('updatePartidoCelebrado', data).then(function (response) {
+        console.log("[updatePartidoCelebrado] response: " + response);
+        _this2.showSnackbar("Partido actualizado");
+        // this.$emit('update-partido', response);
+        // this.closeModal();
+      }).catch(function (error) {
+        console.log(error);
+        _this2.showSnackbar("Se ha producido un ERROR");
+        // this.closeModal();
+      });
     },
     onClickCancelar: function onClickCancelar() {
       this.closeModal();
@@ -98385,7 +98423,7 @@ Vue.component('tab-tanteo', {
       };
     }
   },
-  template: '\n    <div>\n      <b-row>\n        <b-col sm="4"><label for="total_pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>\n        <b-col sm="2"><b-form-input id="total_pelotazos" class="text-right" type="number" v-model="tanteo.total_pelotazos" step="1" min="0" max="2000"/></b-col>\n        <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duraci\xF3n partido:</label></b-col>\n        <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>\n      </b-row>\n\n      <b-row class="mt-3">\n        <table class="w-100">\n          <thead>\n            <tr class="font-weight-bold text-center">\n              <td :class="fields.name.class">&nbsp;</td>\n              <td :class="fields.pelotari_1.class">{{ this.fields.pelotari_1.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_2" :class="fields.pelotari_2.class">{{ this.fields.pelotari_2.label.replace("_", " ").toUpperCase() }}</td>\n              <td :class="fields.pelotari_3.class">{{ this.fields.pelotari_3.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_4" :class="fields.pelotari_4.class">{{ this.fields.pelotari_4.label.replace("_", " ").toUpperCase() }}</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="item in this.tanteo.tantos" class="text-center">\n                <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>\n                <td>\n                  <b-form-input class="rojo" v-model="item.pelotari_1" step="1" min="0" max="22" type="number" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="rojo" v-model="item.pelotari_2" step="1" min="0" max="22" type="number" />\n                </td>\n                <td>\n                  <b-form-input class="azul" v-model="item.pelotari_3" step="1" min="0" max="22" type="number" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="azul" v-model="item.pelotari_4" step="1" min="0" max="22" type="number" />\n                </td>\n            </tr>\n          </tbody>\n        </table>\n      </b-row>\n    </div>\n  '
+  template: '\n    <div>\n      <b-row>\n        <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>\n        <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>\n        <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duraci\xF3n partido:</label></b-col>\n        <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>\n      </b-row>\n\n      <b-row class="mt-3">\n        <table class="w-100">\n          <thead>\n            <tr class="font-weight-bold text-center">\n              <td :class="fields.name.class">&nbsp;</td>\n              <td :class="fields.pelotari_1.class">{{ this.fields.pelotari_1.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_2" :class="fields.pelotari_2.class">{{ this.fields.pelotari_2.label.replace("_", " ").toUpperCase() }}</td>\n              <td :class="fields.pelotari_3.class">{{ this.fields.pelotari_3.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_4" :class="fields.pelotari_4.class">{{ this.fields.pelotari_4.label.replace("_", " ").toUpperCase() }}</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="item in this.tanteo.tantos" class="text-center">\n                <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>\n                <td>\n                  <b-form-input class="rojo" v-model="item.pelotari_1" step="1" min="0" max="22" type="number" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="rojo" v-model="item.pelotari_2" step="1" min="0" max="22" type="number" />\n                </td>\n                <td>\n                  <b-form-input class="azul" v-model="item.pelotari_3" step="1" min="0" max="22" type="number" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="azul" v-model="item.pelotari_4" step="1" min="0" max="22" type="number" />\n                </td>\n            </tr>\n          </tbody>\n        </table>\n      </b-row>\n    </div>\n  '
 });
 
 Vue.component('tab-marcadores', {
@@ -98393,7 +98431,7 @@ Vue.component('tab-marcadores', {
   data: function data() {
     return {};
   },
-  template: '\n    <b-row>\n      <table class="w-20 mr-4 ml-2">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 11]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 11]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 22]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 22]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 10">\n            <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 33]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 33]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n    </b-row>\n  '
+  template: '\n    <b-row>\n      <table class="w-20 mr-4 ml-2">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 10">\n            <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n    </b-row>\n  '
 });
 
 Vue.component('tab-anotaciones', {
@@ -98434,11 +98472,11 @@ var render = function() {
                   _c("b-form-input", {
                     attrs: { type: "number", step: "1", min: "0", max: "22" },
                     model: {
-                      value: _vm.resultado_rojo,
+                      value: _vm.tanteo.puntos_rojo,
                       callback: function($$v) {
-                        _vm.resultado_rojo = $$v
+                        _vm.$set(_vm.tanteo, "puntos_rojo", $$v)
                       },
-                      expression: "resultado_rojo"
+                      expression: "tanteo.puntos_rojo"
                     }
                   }),
                   _vm._v(" "),
@@ -98507,11 +98545,11 @@ var render = function() {
                   _c("b-form-input", {
                     attrs: { type: "number", step: "1", min: "0", max: "22" },
                     model: {
-                      value: _vm.resultado_azul,
+                      value: _vm.tanteo.puntos_azul,
                       callback: function($$v) {
-                        _vm.resultado_azul = $$v
+                        _vm.$set(_vm.tanteo, "puntos_azul", $$v)
                       },
-                      expression: "resultado_azul"
+                      expression: "tanteo.puntos_azul"
                     }
                   }),
                   _vm._v(" "),

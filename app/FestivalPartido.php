@@ -13,5 +13,13 @@ class FestivalPartido extends Model
     'campeonato_id',
     'tipo_partido_id',
     'fase',
+    'duracion',
+    'pelotazos',
+    'obs_publico',
+    'obs_fronton',
+    'obs_incidencias',
+    'obs_observaciones',
+    'puntos_rojo',
+    'puntos_azul',
   ];
 }

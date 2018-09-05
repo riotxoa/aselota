@@ -228,6 +228,21 @@ export const store = new Vuex.Store({
           });
       })
     },
+    updatePartidoCelebrado({ commit }, partido) {
+      let uri = '/www/partido-celebrado/' + partido.id + '/update';
+
+      return new Promise( (resolve, rejecto) =>  {
+        axios
+          .post(uri, partido)
+          .then( r => r.data )
+          .then( (response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
+    },
     loadCostes({ commit }) {
       let data = {
         params: {
