@@ -45,6 +45,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('derechos/{id}/update', 'DerechoController@update');
     Route::post('festivales/{id}/update', 'FestivaleController@update');
     Route::post('partidos/{id}/update', 'FestivalPartidoController@update');
+    Route::post('partido-pelotaris/{id}/update', 'FestivalPartidoController@update_pelotari');
 });
 
 Auth::routes();

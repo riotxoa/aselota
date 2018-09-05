@@ -6,21 +6,6 @@
         @switch($role)
             @case ('gerente')
               <home-component user-role="gerente"></home-component>
-            <!-- <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard GERENTE</div>
-                    <div class="card-body">
-                      @if (session('status'))
-                          <div class="alert alert-success" role="alert">
-                              {{ session('status') }}
-                          </div>
-                      @endif
-
-                      You are logged in! Your role is {{ $role }} !!
-                    </div>
-                  </div>
-                </div>
-              </div> -->
               @break
             @case ('rrhh')
               <home-component user-role="rrhh"></home-component>
@@ -43,21 +28,7 @@
               </div>
               @break
             @case ('intendente')
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard INTENDENTE</div>
-                    <div class="card-body">
-                      @if (session('status'))
-                          <div class="alert alert-success" role="alert">
-                              {{ session('status') }}
-                          </div>
-                      @endif
-
-                      You are logged in! Your role is {{ $role }} !!
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <home-component user-role="intendente"></home-component>
               @break
             @case ('prensa')
             <div class="col-md-8">

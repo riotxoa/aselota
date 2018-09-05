@@ -151,7 +151,7 @@ class FestivaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['admin', 'gerente']);
+        $request->user()->authorizeRoles(['admin', 'gerente', 'intendente']);
 
         $item = Festivale::find($id);
 

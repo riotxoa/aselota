@@ -17,7 +17,7 @@
         </b-col>
 
         <b-col class="col-sm-4 text-right my-1 mb-3">
-          <router-link to="/gerente/festival/new" class="text-white"><b-btn variant="danger" class="mb-0" title="Crear Festival">Nuevo Festival</b-btn></router-link>
+          <router-link v-if="1 == isGerente" to="/gerente/festival/new" class="text-white"><b-btn variant="danger" class="mb-0" title="Crear Festival">Nuevo Festival</b-btn></router-link>
         </b-col>
 
       </b-row>
@@ -33,10 +33,13 @@
         <template slot="actions" slot-scope="row">
           <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
           <b-button-group>
-            <b-button v-if="remove" size="sm" variant="danger" @click.stop="onClickDelete(row.item)" title="Eliminar">
+            <b-button v-if="remove && 1 == isGerente" size="sm" variant="danger" @click.stop="onClickDelete(row.item)" title="Eliminar">
               <span class="icon voyager-trash"></span>
             </b-button>
-            <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item.id)" title="Editar">
+            <b-button v-if="update && 1 == isGerente" size="sm" variant="primary" @click.stop="onClickEdit_G(row.item.id)" title="Editar">
+              <span class="icon voyager-edit"></span>
+            </b-button>
+            <b-button v-if="update && 0 == isGerente" size="sm" variant="primary" @click.stop="onClickEdit_I(row.item.id)" title="Editar">
               <span class="icon voyager-edit"></span>
             </b-button>
             <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
@@ -85,6 +88,7 @@
   Vue.component('filtro-festivales', require('./FiltroFestivalComponent.vue'));
   export default {
       mixins: [ Utils ],
+      props: ['isGerente'],
       data () {
         return {
           filter: true,
@@ -141,8 +145,11 @@
           this.deleteId = item.id;
           jQuery('#deleteMsg').html(msg);
         },
-        onClickEdit (id) {
+        onClickEdit_G (id) {
           this.$router.push('/gerente/festival/' + id + '/edit/');
+        },
+        onClickEdit_I (id) {
+          this.$router.push('/intendente/festival/' + id + '/edit/');
         },
         removeItem () {
           let uri = '/www/festivales/' + this.deleteId;

@@ -12,6 +12,11 @@ class FestivalPartidoPelotari extends Model
     'posicion',
     'pelotari_id',
     'asegarce',
+    'asiste',
+    'is_sustituto',
+    'sustituto_id',
+    'sustituto_txt',
+    'observaciones'
   ];
 
   public function pelotari() {

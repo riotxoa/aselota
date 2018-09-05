@@ -140,15 +140,17 @@ export const store = new Vuex.Store({
           commit('SET_FESTIVALES', festivales);
         });
     },
-    loadHeader({ commit, dispatch }, id) {
+    loadHeader({ commit, dispatch }, id, is_gerente) {
       axios
         .get('/www/festivales/' + id)
         .then( r => r.data )
         .then( header => {
           commit('SET_HEADER', header);
           dispatch('loadPartidos');
-          dispatch('loadCostes');
-          dispatch('loadFacturacion');
+          if( is_gerente ) {
+            dispatch('loadCostes');
+            dispatch('loadFacturacion');
+          }
         });
     },
     loadPartidos({ commit }) {
@@ -210,6 +212,21 @@ export const store = new Vuex.Store({
             reject(error);
           });
       });
+    },
+    updatePartidoPelotari({ commit }, pelotari) {
+      let uri = '/www/partido-pelotaris/' + pelotari.id + '/update';
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, pelotari)
+          .then( r => r.data )
+          .then( (response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
     },
     loadCostes({ commit }) {
       let data = {

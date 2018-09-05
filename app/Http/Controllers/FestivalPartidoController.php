@@ -18,7 +18,7 @@ class FestivalPartidoController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'gerente']);
+        $request->user()->authorizeRoles(['admin', 'gerente', 'intendente']);
 
         $festival_id = $request->get('festival_id');
         $festival_fecha = $request->get('festival_fecha');
@@ -59,6 +59,7 @@ class FestivalPartidoController extends Controller
                              }
                            );
                    })
+                   ->where('festival_partido_pelotaris.is_sustituto', '=', 0)
                    ->where('festival_partido_pelotaris.festival_partido_id', '=', $partido->id)
                    ->orderBy('festival_partido_pelotaris.color', 'desc')
                    ->orderBy('festival_partido_pelotaris.posicion', 'asc')
@@ -74,6 +75,19 @@ class FestivalPartidoController extends Controller
           $pelotari = PelotarisAspe::find($p->pelotari_id);
           $pelotari->coste = 0;
           $pelotari->asegarce = 0;
+        }
+
+        $pelotari->partido_pelotari_id = $p->id;
+        $pelotari->asiste = $p->asiste;
+        $pelotari->is_sustituto = $p->is_sustituto;
+        $pelotari->sustituto_id = $p->sustituto_id;
+        $pelotari->sustituto_alias = "";
+        $pelotari->sustituto_txt = $p->sustituto_txt;
+        $pelotari->observaciones = $p->observaciones;
+
+        if( $p->sustituto_id ) {
+          $sustituto = Pelotari::find($p->sustituto_id);
+          $pelotari->sustituto_alias = $sustituto->alias;
         }
 
         if( "R" === $p->color ) {
@@ -268,6 +282,45 @@ class FestivalPartidoController extends Controller
         $this->getPelotaris($item, $request->get('fecha'));
 
         return response()->json($item, 200);
+    }
+
+    public function update_pelotari(Request $request, $id)
+    {
+      $request->user()->authorizeRoles(['admin', 'intendente']);
+
+      $item = FestivalPartidoPelotari::find($id);
+
+      $item->asiste = $request->get('asiste');
+      $item->sustituto_id = $request->get('sustituto_id');
+      $item->sustituto_txt = $request->get('sustituto_txt');
+      $item->observaciones = $request->get('observaciones');
+
+      $item->save();
+
+      $sustituto = FestivalPartidoPelotari::where('festival_partido_id', $item->festival_partido_id)
+                      ->where('color', $item->color)
+                      ->where('posicion', $item->posicion)
+                      ->where('is_sustituto', 1)
+                      ->first();
+
+      if($item->asiste) {
+        if($sustituto)
+          FestivalPartidoPelotari::destroy($sustituto->id);
+      } else {
+        if(!$sustituto)
+          $sustituto = new FestivalPartidoPelotari();
+
+        $sustituto->festival_partido_id = $item->festival_partido_id;
+        $sustituto->color = $item->color;
+        $sustituto->posicion = $item->posicion;
+        $sustituto->pelotari_id = $item->sustituto_id;
+        $sustituto->asegarce = $item->asegarce;
+        $sustituto->asiste = 1;
+        $sustituto->is_sustituto = 1;
+        $sustituto->save();
+      }
+
+      return response()->json($item, 200);
     }
 
     /**

@@ -1,7 +1,8 @@
 <template>
   <div id="preloader">
-    <festival-header :form-title="formTitle"></festival-header>
-    <festival-body v-if="_edit"></festival-body>
+    <festival-header :form-title="formTitle" :is-gerente="isGerente"></festival-header>
+    <festival-body v-if="_edit && isGerente"></festival-body>
+    <list-partidos-i v-else></list-partidos-i>
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 
   Vue.component('festival-header', require('./FestivalHeaderComponent.vue'));
   Vue.component('festival-body', require('./FestivalBodyComponent.vue'));
+  Vue.component('list-partidos-i', require('../partidos/ListadoComponent_I.vue'));
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
@@ -22,7 +24,7 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
-    props: ['formTitle', 'isNewFestival'],
+    props: ['formTitle', 'isNewFestival', 'isGerente'],
     data () {
       return {
       }

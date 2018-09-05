@@ -22,12 +22,13 @@
                             class="d-inline-block px-1"
                             style="min-width:127px;width:calc(100% - 25px);"
                             :readonly="!editdate && _edit"
+                            :disabled="!isGerente"
                             type="date"
                             v-model="_header.fecha"
                             :change="onChangeDate()"
                             required>
               </b-form-input>
-              <b-link v-if="_edit" class="pl-1 d-inline-block" @click="editDate(true)">
+              <b-link v-if="_edit && isGerente" class="pl-1 d-inline-block" @click="editDate(true)">
                 <i class="voyager-pen"></i>
               </b-link>
             </b-form-group>
@@ -37,7 +38,8 @@
               <b-form-input id="diaInput"
                             type="text"
                             v-model="dia"
-                            readonly>
+                            readonly
+                            :disabled="!isGerente">
               </b-form-input>
             </b-form-group>
             <b-form-group label="Hora:"
@@ -45,6 +47,7 @@
                           class="col-sm-2">
               <b-form-input id="hourInput"
                             :readonly="editdate"
+                            :disabled="!isGerente"
                             type="time"
                             required
                             v-model="_header.hora">
@@ -55,6 +58,7 @@
                           class="col-sm-2">
               <b-form-select id="provinciaInput"
                              :readonly="editdate"
+                             :disabled="!isGerente"
                              :options="provincias"
                              @change="onChangeProvincia"
                              v-model="_header.provincia_id">
@@ -65,6 +69,7 @@
                           class="col-sm-3">
               <b-form-select id="municipioInput"
                              :readonly="editdate"
+                             :disabled="!isGerente"
                              :options="municipios_filtered"
                              @change="onChangeMunicipio"
                              v-model="_header.municipio_id">
@@ -77,6 +82,7 @@
                           class="col-sm-3">
               <b-form-select id="frontonInput"
                              :readonly="editdate"
+                             :disabled="!isGerente"
                              :options="frontones_filtered"
                              @change="onChangeFronton"
                              required
@@ -88,6 +94,7 @@
                           class="col-sm-2">
               <b-form-select id="televisionInput"
                             :readonly="editdate"
+                            :disabled="!isGerente"
                             :options="television"
                             required
                             v-model="_header.television">
@@ -98,6 +105,7 @@
                           class="col-sm-4 mt-1">
               <b-form-input id="televisionTxtInput"
                             :readonly="editdate"
+                            :disabled="!isGerente"
                             v-model="_header.television_txt">
               </b-form-input>
             </b-form-group>
@@ -127,7 +135,7 @@
 
   export default {
     mixins: [APIGetters, Nav, Utils],
-    props: ['formTitle'],
+    props: ['formTitle', 'isGerente'],
     data () {
       return {
         dia: '',
@@ -149,7 +157,7 @@
       this._header.fecha = this.formatDateEN();
 
       if (this._edit) {
-        store.dispatch('loadHeader', (this._header.id ? this._header.id : this.$route.params.id));
+        store.dispatch('loadHeader', (this._header.id ? this._header.id : this.$route.params.id), this.isGerente);
       }
     },
     computed: {
@@ -205,7 +213,8 @@
               if(this.editdate) {
                 this.editDate(false);
               } else {
-                this.goBack();
+                if(this.isGerente)
+                  this.goBack();
               }
             })
             .catch((error) => {

@@ -52,9 +52,15 @@ Vue.component('listado-festivales', require('./components/festivales/ListadoComp
 Vue.component('ficha-festival', require('./components/festivales/FichaComponent.vue'));
 
 const HomeGerente = { template: '<home-gerente></home-gerente>' };
-const ListFestivales = { template: '<listado-festivales></listado-festivales>' };
-const CreateFestival = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival="true"></ficha-festival>'};
-const EditFestival = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false"></ficha-festival>'};
+const ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
+const CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival="true" :is-gerente=1></ficha-festival>'};
+const EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false" :is-gerente=1></ficha-festival>'};
+
+Vue.component('home-intendente', require('./components/HomeIntendenteComponent.vue'));
+
+const HomeIntendente = { template: '<home-intendente></home-intendente>'}
+const ListFestivales_I = { template: '<listado-festivales is-gerente=0></listado-festivales>' };
+const EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false" :is-gerente=0></ficha-festival>'};
 
 const routes = [
   {
@@ -75,13 +81,24 @@ const routes = [
     path: '/gerente', component: HomeGerente,
     children: [
       {
-        path: '', component: ListFestivales
+        path: '', component: ListFestivales_G
       },
       {
-        path: 'festival/new', component: CreateFestival
+        path: 'festival/new', component: CreateFestival_G
       },
       {
-        path: 'festival/:id/edit', component: EditFestival
+        path: 'festival/:id/edit', component: EditFestival_G
+      },
+    ]
+  },
+  {
+    path: '/intendente', component: HomeIntendente,
+    children: [
+      {
+        path: '', component: ListFestivales_I
+      },
+      {
+        path: 'festival/:id/edit', component: EditFestival_I
       },
     ]
   },

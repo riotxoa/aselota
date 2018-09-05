@@ -22,6 +22,12 @@
           this.home = '/gerente';
           this.title = "Gestión de Festivales";
           this.$router.push('/gerente');
+          break;
+        case 'intendente':
+          this.home = '/intendente';
+          this.title= "Gestión de Festivales";
+          this.$router.push('/intendente');
+          break;
         default:
           this.title = "SIN PERMISOS";
           break;
@@ -40,7 +46,7 @@
   .nav-pills a,
   .modal-content,
   .modal-header,
-  input, select {
+  input, select, textarea {
     border-radius:0!important;
   }
 
