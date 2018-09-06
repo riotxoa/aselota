@@ -11004,6 +11004,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
           return r.data;
         }).then(function (response) {
+          console.log();
           resolve(response);
         }).catch(function (error) {
           reject(error);
@@ -98094,7 +98095,16 @@ Vue.component('form-pelotari-i', __webpack_require__(464));
       this.$root.$emit('bv::show::modal', this.modalPartidoID);
     },
     updatePartido: function updatePartido(p) {
-      alert("UPDATE PARTIDO");
+      this.partido.duracion = p.duracion;
+      this.partido.pelotazos = p.pelotazos;
+      this.partido.obs_publico = p.obs_publico;
+      this.partido.obs_fronton = p.obs_fronton;
+      this.partido.obs_incidencias = p.obs_incidencias;
+      this.partido.obs_comentarios = p.obs_comentarios;
+      this.partido.puntos_rojo = p.puntos_rojo;
+      this.partido.puntos_azul = p.puntos_azul;
+      this.partido.tanteos = p.tanteos;
+      this.partido.marcadores = p.marcadores;
     },
     onClickEditPelotari: function onClickEditPelotari(p) {
       if (p.asegarce) {
@@ -98280,6 +98290,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -98292,13 +98304,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       tanteo: {
         pelotari_1_id: this.partido.pelotari_1.id,
-        pelotari_2_id: this.partido.pelotari_2.id,
+        pelotari_2_id: this.partido.pelotari_2 ? this.partido.pelotari_2.id : 0,
         pelotari_3_id: this.partido.pelotari_3.id,
-        pelotari_4_id: this.partido.pelotari_4.id,
-        puntos_rojo: 0,
-        puntos_azul: 0,
-        pelotazos: 0,
-        duracion: 0,
+        pelotari_4_id: this.partido.pelotari_4 ? this.partido.pelotari_4.id : 0,
+        puntos_rojo: this.partido.puntos_rojo,
+        puntos_azul: this.partido.puntos_azul,
+        pelotazos: this.partido.pelotazos,
+        duracion: this.partido.duracion,
         tantos: []
       },
       marcadores: {
@@ -98315,29 +98327,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   created: function created() {
-    var _this = this;
-
     console.log("FestivalNuevoPartidoComponent created");
 
-    if (this.partido.is_partido_parejas) {
-      this.tanteo.tantos = [{ name: 'saque', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'dos_paredes', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'dejada', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'aire', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'bote', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'cortadas', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'escapadas', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'atras', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'falta_saque', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'errores', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'total_tantos', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }, { name: 'total_fallos', pelotari_1: 0, pelotari_2: 0, pelotari_3: 0, pelotari_4: 0 }];
-    } else {
-      this.tanteo.tantos = [{ name: 'saque', pelotari_1: 0, pelotari_3: 0 }, { name: 'dos_paredes', pelotari_1: 0, pelotari_3: 0 }, { name: 'dejada', pelotari_1: 0, pelotari_3: 0 }, { name: 'aire', pelotari_1: 0, pelotari_3: 0 }, { name: 'bote', pelotari_1: 0, pelotari_3: 0 }, { name: 'cortadas', pelotari_1: 0, pelotari_3: 0 }, { name: 'escapadas', pelotari_1: 0, pelotari_3: 0 }, { name: 'atras', pelotari_1: 0, pelotari_3: 0 }, { name: 'falta_saque', pelotari_1: 0, pelotari_3: 0 }, { name: 'errores', pelotari_1: 0, pelotari_3: 0 }, { name: 'total_tantos', pelotari_1: 0, pelotari_3: 0 }, { name: 'total_fallos', pelotari_1: 0, pelotari_3: 0 }];
-    }
+    var tipo_tantos = ['saque', 'dos_paredes', 'dejada', 'aire', 'bote', 'cortadas', 'escapadas', 'atras', 'falta_saque', 'errores', 'total_tantos', 'total_fallos'];
 
-    this.tanteo.tantos.forEach(function (val, index) {
-      _this.tanteo.tantos[index] = val;
+    var self = this;
+
+    // Tanteo
+    tipo_tantos.forEach(function (tipo) {
+      var tantos = _.filter(self.partido.tanteos, { tanteo_desc: tipo });
+      if (self.partido.is_partido_parejas) {
+        self.tanteo.tantos.push({
+          name: tipo,
+          pelotari_1: tantos[0] ? tantos[0].tanteo : 0,
+          pelotari_2: tantos[1] ? tantos[1].tanteo : 0,
+          pelotari_3: tantos[2] ? tantos[2].tanteo : 0,
+          pelotari_4: tantos[3] ? tantos[3].tanteo : 0
+        });
+      } else {
+        self.tanteo.tantos.push({
+          name: tipo,
+          pelotari_1: tantos[0] ? tantos[0].tanteo : 0,
+          pelotari_3: tantos[1] ? tantos[1].tanteo : 0
+        });
+      }
     });
+
+    // Marcadores
+    this.partido.marcadores.forEach(function (marcador) {
+      self.marcadores.rojo.push(marcador.marcador_rojo);
+      self.marcadores.azul.push(marcador.marcador_azul);
+    });
+
+    // Anotaciones
+    this.anotaciones.afluencia = this.partido.obs_publico;
+    this.anotaciones.fronton = this.partido.obs_fronton;
+    this.anotaciones.incidencias = this.partido.obs_incidencias;
+    this.anotaciones.comentarios = this.partido.obs_comentarios;
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])({
     _header: 'header'
   }),
   methods: {
+    onFocusInput: function onFocusInput(field) {
+      field.select();
+    },
     closeModal: function closeModal() {
       this.$root.$emit('bv::hide::modal', this.modalId);
     },
     onSubmit: function onSubmit(evt) {
-      var _this2 = this;
+      var _this = this;
 
       evt.preventDefault();
 
@@ -98348,17 +98387,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         anotaciones: this.anotaciones
       };
 
-      console.log("[onSubmit] data: " + JSON.stringify(data));
-
       this.$store.dispatch('updatePartidoCelebrado', data).then(function (response) {
-        console.log("[updatePartidoCelebrado] response: " + response);
-        _this2.showSnackbar("Partido actualizado");
-        // this.$emit('update-partido', response);
-        // this.closeModal();
+        _this.showSnackbar("Partido actualizado");
+        _this.$emit('update-partido', response);
+        _this.closeModal();
       }).catch(function (error) {
         console.log(error);
-        _this2.showSnackbar("Se ha producido un ERROR");
-        // this.closeModal();
+        _this.showSnackbar("Se ha producido un ERROR");
+        _this.closeModal();
       });
     },
     onClickCancelar: function onClickCancelar() {
@@ -98423,7 +98459,12 @@ Vue.component('tab-tanteo', {
       };
     }
   },
-  template: '\n    <div>\n      <b-row>\n        <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>\n        <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>\n        <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duraci\xF3n partido:</label></b-col>\n        <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>\n      </b-row>\n\n      <b-row class="mt-3">\n        <table class="w-100">\n          <thead>\n            <tr class="font-weight-bold text-center">\n              <td :class="fields.name.class">&nbsp;</td>\n              <td :class="fields.pelotari_1.class">{{ this.fields.pelotari_1.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_2" :class="fields.pelotari_2.class">{{ this.fields.pelotari_2.label.replace("_", " ").toUpperCase() }}</td>\n              <td :class="fields.pelotari_3.class">{{ this.fields.pelotari_3.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_4" :class="fields.pelotari_4.class">{{ this.fields.pelotari_4.label.replace("_", " ").toUpperCase() }}</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="item in this.tanteo.tantos" class="text-center">\n                <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>\n                <td>\n                  <b-form-input class="rojo" v-model="item.pelotari_1" step="1" min="0" max="22" type="number" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="rojo" v-model="item.pelotari_2" step="1" min="0" max="22" type="number" />\n                </td>\n                <td>\n                  <b-form-input class="azul" v-model="item.pelotari_3" step="1" min="0" max="22" type="number" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="azul" v-model="item.pelotari_4" step="1" min="0" max="22" type="number" />\n                </td>\n            </tr>\n          </tbody>\n        </table>\n      </b-row>\n    </div>\n  '
+  methods: {
+    onFocusInput: function onFocusInput(field) {
+      field.select();
+    }
+  },
+  template: '\n    <div>\n      <b-row>\n        <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>\n        <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>\n        <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duraci\xF3n partido:</label></b-col>\n        <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>\n      </b-row>\n\n      <b-row class="mt-3">\n        <table class="w-100">\n          <thead>\n            <tr class="font-weight-bold text-center">\n              <td :class="fields.name.class">&nbsp;</td>\n              <td :class="fields.pelotari_1.class">{{ this.fields.pelotari_1.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_2" :class="fields.pelotari_2.class">{{ this.fields.pelotari_2.label.replace("_", " ").toUpperCase() }}</td>\n              <td :class="fields.pelotari_3.class">{{ this.fields.pelotari_3.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_4" :class="fields.pelotari_4.class">{{ this.fields.pelotari_4.label.replace("_", " ").toUpperCase() }}</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="item in this.tanteo.tantos" class="text-center">\n                <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>\n                <td>\n                  <b-form-input class="rojo" v-model="item.pelotari_1" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="rojo" v-model="item.pelotari_2" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n                <td>\n                  <b-form-input class="azul" v-model="item.pelotari_3" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="azul" v-model="item.pelotari_4" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n            </tr>\n          </tbody>\n        </table>\n      </b-row>\n    </div>\n  '
 });
 
 Vue.component('tab-marcadores', {
@@ -98431,7 +98472,12 @@ Vue.component('tab-marcadores', {
   data: function data() {
     return {};
   },
-  template: '\n    <b-row>\n      <table class="w-20 mr-4 ml-2">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 10">\n            <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n    </b-row>\n  '
+  methods: {
+    onFocusInput: function onFocusInput(field) {
+      field.select();
+    }
+  },
+  template: '\n    <b-row>\n      <table class="w-20 mr-4 ml-2">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 10">\n            <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n    </b-row>\n  '
 });
 
 Vue.component('tab-anotaciones', {
@@ -98471,6 +98517,11 @@ var render = function() {
                 [
                   _c("b-form-input", {
                     attrs: { type: "number", step: "1", min: "0", max: "22" },
+                    nativeOn: {
+                      focus: function($event) {
+                        _vm.onFocusInput($event.target)
+                      }
+                    },
                     model: {
                       value: _vm.tanteo.puntos_rojo,
                       callback: function($$v) {
@@ -98544,6 +98595,11 @@ var render = function() {
                 [
                   _c("b-form-input", {
                     attrs: { type: "number", step: "1", min: "0", max: "22" },
+                    nativeOn: {
+                      focus: function($event) {
+                        _vm.onFocusInput($event.target)
+                      }
+                    },
                     model: {
                       value: _vm.tanteo.puntos_azul,
                       callback: function($$v) {

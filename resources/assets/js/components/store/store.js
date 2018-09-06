@@ -236,6 +236,7 @@ export const store = new Vuex.Store({
           .post(uri, partido)
           .then( r => r.data )
           .then( (response) => {
+            console.log()
             resolve(response);
           })
           .catch((error) => {

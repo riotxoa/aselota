@@ -160,7 +160,16 @@
         this.$root.$emit('bv::show::modal', this.modalPartidoID);
       },
       updatePartido(p) {
-        alert("UPDATE PARTIDO");
+        this.partido.duracion = p.duracion;
+        this.partido.pelotazos = p.pelotazos;
+        this.partido.obs_publico = p.obs_publico;
+        this.partido.obs_fronton = p.obs_fronton;
+        this.partido.obs_incidencias = p.obs_incidencias;
+        this.partido.obs_comentarios = p.obs_comentarios;
+        this.partido.puntos_rojo = p.puntos_rojo;
+        this.partido.puntos_azul = p.puntos_azul;
+        this.partido.tanteos = p.tanteos;
+        this.partido.marcadores = p.marcadores;
       },
       onClickEditPelotari(p) {
         if(p.asegarce) {

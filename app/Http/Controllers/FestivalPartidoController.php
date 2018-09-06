@@ -42,6 +42,8 @@ class FestivalPartidoController extends Controller
 
         foreach( $partidos as $partido ) {
           $this->getPelotaris($partido, $festival_fecha);
+          $this->getTanteos($partido);
+          $this->getMarcadores($partido);
         }
 
         return response()->json($partidos, 200);
@@ -104,6 +106,16 @@ class FestivalPartidoController extends Controller
             $partido->pelotari_4 = $pelotari; // Pelotari::find($p->pelotari_id);
         }
       }
+    }
+
+    private function getTanteos(&$partido) {
+      $tanteos = FestivalPartidoTanteo::where('festival_partido_id', $partido->id)->get();
+      $partido->tanteos = $tanteos;
+    }
+
+    private function getMarcadores(&$partido) {
+      $marcadores = FestivalPartidoMarcadore::where('festival_partido_id', $partido->id)->get();
+      $partido->marcadores = $marcadores;
     }
 
     /**
@@ -336,14 +348,16 @@ class FestivalPartidoController extends Controller
         ]);
         $part_tanteo->save();
 
-        $part_tanteo = new FestivalPartidoTanteo([
-          'festival_partido_id' => $id,
-          'pelotari_id' => $tanteo['pelotari_2_id'],
-          'tanteo_order' => ($key + 1) * 10,
-          'tanteo_desc' => $tanto['name'],
-          'tanteo' => $tanto['pelotari_2'],
-        ]);
-        $part_tanteo->save();
+        if( $partido->is_partido_parejas ) :
+          $part_tanteo = new FestivalPartidoTanteo([
+            'festival_partido_id' => $id,
+            'pelotari_id' => $tanteo['pelotari_2_id'],
+            'tanteo_order' => ($key + 1) * 10,
+            'tanteo_desc' => $tanto['name'],
+            'tanteo' => $tanto['pelotari_2'],
+          ]);
+          $part_tanteo->save();
+        endif;
 
         $part_tanteo = new FestivalPartidoTanteo([
           'festival_partido_id' => $id,
@@ -354,15 +368,16 @@ class FestivalPartidoController extends Controller
         ]);
         $part_tanteo->save();
 
-        $part_tanteo = new FestivalPartidoTanteo([
-          'festival_partido_id' => $id,
-          'pelotari_id' => $tanteo['pelotari_4_id'],
-          'tanteo_order' => ($key + 1) * 10,
-          'tanteo_desc' => $tanto['name'],
-          'tanteo' => $tanto['pelotari_4'],
-        ]);
-        $part_tanteo->save();
-
+        if( $partido->is_partido_parejas ) :
+          $part_tanteo = new FestivalPartidoTanteo([
+            'festival_partido_id' => $id,
+            'pelotari_id' => $tanteo['pelotari_4_id'],
+            'tanteo_order' => ($key + 1) * 10,
+            'tanteo_desc' => $tanto['name'],
+            'tanteo' => $tanto['pelotari_4'],
+          ]);
+          $part_tanteo->save();
+        endif;
       }
 
       FestivalPartidoMarcadore::where('festival_partido_id', $id)->delete();
@@ -377,11 +392,10 @@ class FestivalPartidoController extends Controller
         $part_marcador->save();
       }
 
-      $tanteo = print_r($request->get('tanteo'), true);
-      $marcadores = print_r($request->get('marcadores'), true);
-      $anotaciones = print_r($request->get('anotaciones'), true);
+      $this->getTanteos($partido);
+      $this->getMarcadores($partido);
 
-      return response()->json("id: $id; tanteo: $tanteo; marcadores: $marcadores; anotaciones: $anotaciones");
+      return response()->json($partido, 200);
     }
 
     public function update_pelotari(Request $request, $id)
