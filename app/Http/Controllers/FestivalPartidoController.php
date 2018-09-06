@@ -348,17 +348,6 @@ class FestivalPartidoController extends Controller
         ]);
         $part_tanteo->save();
 
-        if( $partido->is_partido_parejas ) :
-          $part_tanteo = new FestivalPartidoTanteo([
-            'festival_partido_id' => $id,
-            'pelotari_id' => $tanteo['pelotari_2_id'],
-            'tanteo_order' => ($key + 1) * 10,
-            'tanteo_desc' => $tanto['name'],
-            'tanteo' => $tanto['pelotari_2'],
-          ]);
-          $part_tanteo->save();
-        endif;
-
         $part_tanteo = new FestivalPartidoTanteo([
           'festival_partido_id' => $id,
           'pelotari_id' => $tanteo['pelotari_3_id'],
@@ -369,6 +358,15 @@ class FestivalPartidoController extends Controller
         $part_tanteo->save();
 
         if( $partido->is_partido_parejas ) :
+          $part_tanteo = new FestivalPartidoTanteo([
+            'festival_partido_id' => $id,
+            'pelotari_id' => $tanteo['pelotari_2_id'],
+            'tanteo_order' => ($key + 1) * 10,
+            'tanteo_desc' => $tanto['name'],
+            'tanteo' => $tanto['pelotari_2'],
+          ]);
+          $part_tanteo->save();
+
           $part_tanteo = new FestivalPartidoTanteo([
             'festival_partido_id' => $id,
             'pelotari_id' => $tanteo['pelotari_4_id'],

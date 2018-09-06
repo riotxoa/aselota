@@ -164,7 +164,7 @@
       },
       onSubmit (evt) {
         evt.preventDefault();
-
+        jQuery('.modal-intendente-partido').addClass('preloader');
         var data = {
           id: this.partido.id,
           tanteo: this.tanteo,
@@ -175,12 +175,14 @@
         this.$store.dispatch('updatePartidoCelebrado', data)
           .then((response) => {
             this.showSnackbar("Partido actualizado");
+            jQuery('.modal-intendente-partido').removeClass('preloader');
             this.$emit('update-partido', response);
             this.closeModal();
           })
           .catch((error) => {
             console.log(error);
             this.showSnackbar("Se ha producido un ERROR");
+            jQuery('.modal-intendente-partido').removeClass('preloader');
             this.closeModal();
           });
       },

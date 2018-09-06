@@ -98379,7 +98379,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       evt.preventDefault();
-
+      jQuery('.modal-intendente-partido').addClass('preloader');
       var data = {
         id: this.partido.id,
         tanteo: this.tanteo,
@@ -98389,11 +98389,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.$store.dispatch('updatePartidoCelebrado', data).then(function (response) {
         _this.showSnackbar("Partido actualizado");
+        jQuery('.modal-intendente-partido').removeClass('preloader');
         _this.$emit('update-partido', response);
         _this.closeModal();
       }).catch(function (error) {
         console.log(error);
         _this.showSnackbar("Se ha producido un ERROR");
+        jQuery('.modal-intendente-partido').removeClass('preloader');
         _this.closeModal();
       });
     },
