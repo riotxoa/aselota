@@ -85770,7 +85770,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("p", [_vm._v("probatxoa")]), _vm._v(" "), _c("router-view")],
+    [_c("p", [_vm._v("probatxoa 22")]), _vm._v(" "), _c("router-view")],
     1
   )
 }

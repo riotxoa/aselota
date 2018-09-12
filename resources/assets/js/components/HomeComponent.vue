@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>probatxoa</p>
+    <p>probatxoa 22</p>
     <router-view></router-view>
   </div>
 </template>
