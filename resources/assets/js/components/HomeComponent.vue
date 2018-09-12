@@ -1,6 +1,8 @@
 <template>
-  <p>probatxoa</p>
-  <router-view></router-view>
+  <div>
+    <p>probatxoa</p>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
