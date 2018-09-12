@@ -1,4 +1,5 @@
 <template>
+  <p>probatxoa</p>
   <router-view></router-view>
 </template>
 
