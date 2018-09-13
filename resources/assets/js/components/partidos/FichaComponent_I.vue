@@ -310,70 +310,72 @@
     },
     template: `
       <b-row>
-        <table class="w-20 mr-3 ml-2">
-          <thead>
-            <tr>
-              <td>&nbsp;</td>
-              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
-              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="i in 11">
-              <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>
-              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="w-20 mr-3">
-          <thead>
-            <tr>
-              <td>&nbsp;</td>
-              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
-              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="i in 11">
-              <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>
-              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="w-20 mr-3">
-          <thead>
-            <tr>
-              <td>&nbsp;</td>
-              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
-              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="i in 11">
-              <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>
-              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="w-20">
-          <thead>
-            <tr>
-              <td>&nbsp;</td>
-              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
-              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="i in 10">
-              <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>
-              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>
-              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="d-inline-flex" style="margin:0 auto;">
+          <table class="w-20 mr-3 ml-2">
+            <thead>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
+                <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="i in 11">
+                <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>
+                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>
+                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="w-20 mr-3">
+            <thead>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
+                <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="i in 11">
+                <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>
+                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>
+                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="w-20 mr-3">
+            <thead>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
+                <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="i in 11">
+                <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>
+                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>
+                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="w-20">
+            <thead>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>
+                <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="i in 10">
+                <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>
+                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>
+                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </b-row>
     `
   });
@@ -430,6 +432,10 @@
 </script>
 
 <style>
+  .tabs {
+    border:none;
+    margin-bottom:0;
+  }
   .modal-title {
     font-weight: bold;
     text-align:center;
@@ -517,7 +523,10 @@
     max-width:50px;
     padding-bottom:3px;
     padding-top:3px;
-    text-align:center;
+    text-align:center!important;
+
+    padding-left:0;
+    padding-right:0;
   }
   .modal-intendente-partido input[type="number"].rojo {
     border-color:rgba(255,0,0,.25);
