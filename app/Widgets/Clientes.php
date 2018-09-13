@@ -21,7 +21,7 @@ class Clientes extends AbstractWidget
      */
     public function run()
     {
-        $count = \App\PelotarisAspe::count();
+        $count = \App\Cliente::count();
         $string = 'Clientes';
 
         return view('voyager::dimmer', array_merge($this->config, [
