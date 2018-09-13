@@ -99343,7 +99343,9 @@ var render = function() {
       _c("b-row", { staticClass: "title-wrap my-1" }, [
         _c("div", { staticClass: "title col-4 p-0 font-weight-bold ml-md-3" }, [
           _c("div", { staticClass: "tanteo rojo d-inline-block" }, [
-            _vm._v("22")
+            _vm._v(
+              _vm._s(_vm.partido.puntos_rojo ? _vm.partido.puntos_rojo : "-")
+            )
           ]),
           _c("div", { staticClass: "d-inline-block px-3" }, [
             _vm._v("Pelotaris")
@@ -99364,7 +99366,9 @@ var render = function() {
           { staticClass: "title col-4 p-0 font-weight-bold ml-md-1 ml-lg-3" },
           [
             _c("div", { staticClass: "tanteo azul d-inline-block" }, [
-              _vm._v("20")
+              _vm._v(
+                _vm._s(_vm.partido.puntos_azul ? _vm.partido.puntos_azul : "-")
+              )
             ]),
             _c("div", { staticClass: "d-inline-block px-3 font-weight-bold" }, [
               _vm._v("Pelotaris")

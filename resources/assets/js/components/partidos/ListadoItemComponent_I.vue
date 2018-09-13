@@ -17,9 +17,9 @@
     </b-row>
 
     <b-row class="title-wrap my-1">
-      <div class="title col-4 p-0 font-weight-bold ml-md-3"><div class="tanteo rojo d-inline-block">22</div><div class="d-inline-block px-3">Pelotaris</div></div>
+      <div class="title col-4 p-0 font-weight-bold ml-md-3"><div class="tanteo rojo d-inline-block">{{ ( partido.puntos_rojo ? partido.puntos_rojo : "-" ) }}</div><div class="d-inline-block px-3">Pelotaris</div></div>
       <div class="title coste rojo col-2 p-0 text-center font-weight-bold">Asistencia</div>
-      <div class="title col-4 p-0 font-weight-bold ml-md-1 ml-lg-3"><div class="tanteo azul d-inline-block">20</div><div class="d-inline-block px-3 font-weight-bold">Pelotaris</div></div>
+      <div class="title col-4 p-0 font-weight-bold ml-md-1 ml-lg-3"><div class="tanteo azul d-inline-block">{{ ( partido.puntos_azul ? partido.puntos_azul : "-" ) }}</div><div class="d-inline-block px-3 font-weight-bold">Pelotaris</div></div>
       <div class="title coste azul col-2 p-0 text-center font-weight-bold">Asistencia</div>
     </b-row>
 
