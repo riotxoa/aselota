@@ -92265,6 +92265,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -92330,6 +92331,14 @@ Vue.component('filtro-festivales', __webpack_require__(400));
     },
     onClickEdit_I: function onClickEdit_I(id) {
       this.$router.push('/intendente/festival/' + id + '/edit/');
+    },
+    onClickRow: function onClickRow(item, index, ev) {
+      if (this.update && 1 == this.isGerente) {
+        this.onClickEdit_G(item.id);
+      }
+      if (this.update && 0 == this.isGerente) {
+        this.onClickEdit_I(item.id);
+      }
     },
     removeItem: function removeItem() {
       var _this2 = this;
@@ -92957,6 +92966,7 @@ var render = function() {
             fields: _vm.fields
           },
           on: {
+            "row-clicked": _vm.onClickRow,
             "update:sortBy": function($event) {
               _vm.sortBy = $event
             },

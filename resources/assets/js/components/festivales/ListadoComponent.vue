@@ -23,6 +23,7 @@
       </b-row>
 
       <b-table striped hover small responsive
+@row-clicked="onClickRow"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
         :per-page="perPage"
@@ -150,6 +151,14 @@
         },
         onClickEdit_I (id) {
           this.$router.push('/intendente/festival/' + id + '/edit/');
+        },
+        onClickRow(item, index, ev) {
+          if( this.update && 1 == this.isGerente ) {
+            this.onClickEdit_G(item.id);
+          }
+          if( this.update && 0 == this.isGerente ) {
+            this.onClickEdit_I(item.id);
+          }
         },
         removeItem () {
           let uri = '/www/festivales/' + this.deleteId;
