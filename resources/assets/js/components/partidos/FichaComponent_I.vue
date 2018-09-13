@@ -310,7 +310,7 @@
     },
     template: `
       <b-row>
-        <table class="w-20 mr-4 ml-2">
+        <table class="w-20 mr-3 ml-2">
           <thead>
             <tr>
               <td>&nbsp;</td>
@@ -326,7 +326,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="w-20 mr-4">
+        <table class="w-20 mr-3">
           <thead>
             <tr>
               <td>&nbsp;</td>
@@ -342,7 +342,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="w-20 mr-4">
+        <table class="w-20 mr-3">
           <thead>
             <tr>
               <td>&nbsp;</td>

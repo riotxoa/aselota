@@ -86,12 +86,14 @@ class FestivalPartidoController extends Controller
         $pelotari->is_sustituto = $p->is_sustituto;
         $pelotari->sustituto_id = $p->sustituto_id;
         $pelotari->sustituto_alias = "";
+        $pelotari->sustituto_coste = 0;
         $pelotari->sustituto_txt = $p->sustituto_txt;
         $pelotari->observaciones = $p->observaciones;
 
         if( $p->sustituto_id ) {
           $sustituto = Pelotari::find($p->sustituto_id);
           $pelotari->sustituto_alias = $sustituto->alias;
+          $pelotari->sustituto_coste = ($sustituto->contrato ? $sustituto->contrato->coste : 666);
         }
 
         if( "R" === $p->color ) {

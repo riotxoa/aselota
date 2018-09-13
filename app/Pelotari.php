@@ -28,4 +28,8 @@ class Pelotari extends Model
     'iban',
     'num_hijos',
   ];
+
+  public function contrato() {
+    return $this->hasOne('App\Contrato');
+  }
 }

@@ -14,13 +14,23 @@
       <div v-if="data.fase" class="block fase col-sm-3 col-lg-2 text-center font-weight-bold text-capitalize">
         {{ this.data.fase }}
       </div>
+      <div v-if="isGerente && _header.estado_id !== 3" class="toolbar col-sm-3 col-lg-2 text-right position-absolute pr-0">
+        <b-button size="sm" variant="outline-danger" @click.stop="onClickDelete(partido)" title="Eliminar Partido">
+          <span class="icon voyager-trash"></span>
+        </b-button>
+        <b-button size="sm" variant="outline-primary" @click.stop="onClickEditPartido(partido)" title="Editar Partido">
+          <span class="icon voyager-edit"></span>
+        </b-button>
+      </div>
     </b-row>
 
     <b-row class="title-wrap my-1">
       <div class="title col-4 p-0 font-weight-bold ml-md-3"><div class="tanteo rojo d-inline-block">{{ ( partido.puntos_rojo ? partido.puntos_rojo : "-" ) }}</div><div class="d-inline-block px-3">Pelotaris</div></div>
-      <div class="title coste rojo col-2 p-0 text-center font-weight-bold">Asistencia</div>
+      <div v-if="isGerente" class="title coste rojo col-2 pt-1 pb-0 text-center font-weight-bold">Coste</div>
+      <div v-else class="title coste rojo col-2 pt-1 pb-0 text-center font-weight-bold">Asistencia</div>
       <div class="title col-4 p-0 font-weight-bold ml-md-1 ml-lg-3"><div class="tanteo azul d-inline-block">{{ ( partido.puntos_azul ? partido.puntos_azul : "-" ) }}</div><div class="d-inline-block px-3 font-weight-bold">Pelotaris</div></div>
-      <div class="title coste azul col-2 p-0 text-center font-weight-bold">Asistencia</div>
+      <div v-if="isGerente" class="title coste azul col-2 pt-1 pb-0 text-center font-weight-bold">Coste</div>
+      <div v-else class="title coste azul col-2 pt-1 pb-0 text-center font-weight-bold">Asistencia</div>
     </b-row>
 
     <b-row class="mb-1">
@@ -38,10 +48,16 @@
         </div>
       </div>
       <div class="col-2 coste rojo text-center p-0">
-        <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" @click.stop="onClickEditPelotari(data.pelotari_1)">
-          <span v-if="data.pelotari_1.asiste" class="icon voyager-check d-inline-block"></span>
-          <span v-if="!data.pelotari_1.asiste" class="icon voyager-x d-inline-block"></span>
-        </span>
+        <div v-if="isGerente"> <!-- Gerente -->
+          <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_1.asiste }, { 'pt-2': data.pelotari_1.asiste }]">{{ this.data.pelotari_1.coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_1.asiste">{{ this.data.pelotari_1.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+        </div>
+        <div v-else> <!-- Intendente -->
+          <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" @click.stop="onClickEditPelotari(data.pelotari_1)">
+            <span v-if="data.pelotari_1.asiste" class="icon voyager-check d-inline-block"></span>
+            <span v-if="!data.pelotari_1.asiste" class="icon voyager-x d-inline-block"></span>
+          </span>
+        </div>
         <span v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
@@ -58,10 +74,16 @@
         </div>
       </div>
       <div class="col-2 coste azul text-center p-0">
-        <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" @click.stop="onClickEditPelotari(data.pelotari_3)">
-          <span v-if="data.pelotari_3.asiste" class="icon voyager-check d-inline-block"></span>
-          <span v-if="!data.pelotari_3.asiste" class="icon voyager-x d-inline-block"></span>
-        </span>
+        <div v-if="isGerente"> <!-- Gerente -->
+          <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_3.asiste }, { 'pt-2': data.pelotari_3.asiste }]">{{ this.data.pelotari_3.coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_3.asiste">{{ this.data.pelotari_3.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+        </div>
+        <div v-else> <!-- Intendente -->
+          <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" @click.stop="onClickEditPelotari(data.pelotari_3)">
+            <span v-if="data.pelotari_3.asiste" class="icon voyager-check d-inline-block"></span>
+            <span v-if="!data.pelotari_3.asiste" class="icon voyager-x d-inline-block"></span>
+          </span>
+        </div>
         <span v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
@@ -82,10 +104,16 @@
         </div>
       </div>
       <div class="col-2 coste rojo text-center p-0">
-        <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" @click.stop="onClickEditPelotari(data.pelotari_2)">
-          <span v-if="data.pelotari_2.asiste" class="icon voyager-check d-inline-block"></span>
-          <span v-if="!data.pelotari_2.asiste" class="icon voyager-x d-inline-block"></span>
-        </span>
+        <div v-if="isGerente"> <!-- Gerente -->
+          <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_2.asiste }, { 'pt-2': data.pelotari_2.asiste }]">{{ this.data.pelotari_2.coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_2.asiste">{{ this.data.pelotari_2.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+        </div>
+        <div v-else> <!-- Intendente -->
+          <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" @click.stop="onClickEditPelotari(data.pelotari_2)">
+            <span v-if="data.pelotari_2.asiste" class="icon voyager-check d-inline-block"></span>
+            <span v-if="!data.pelotari_2.asiste" class="icon voyager-x d-inline-block"></span>
+          </span>
+        </div>
         <span v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
@@ -102,21 +130,31 @@
         </div>
       </div>
       <div class="col-2 coste azul text-center p-0">
-        <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" @click.stop="onClickEditPelotari(data.pelotari_4)">
-          <span v-if="data.pelotari_4.asiste" class="icon voyager-check d-inline-block"></span>
-          <span v-if="!data.pelotari_4.asiste" class="icon voyager-x d-inline-block"></span>
-        </span>
+        <div v-if="isGerente"> <!-- Gerente -->
+          <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_4.asiste }, { 'pt-2': data.pelotari_4.asiste }]">{{ this.data.pelotari_4.coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_4.asiste">{{ this.data.pelotari_4.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+        </div>
+        <div v-else> <!-- Intendente -->
+          <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" @click.stop="onClickEditPelotari(data.pelotari_4)">
+            <span v-if="data.pelotari_4.asiste" class="icon voyager-check d-inline-block"></span>
+            <span v-if="!data.pelotari_4.asiste" class="icon voyager-x d-inline-block"></span>
+          </span>
+        </div>
         <span v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
     </b-row>
 
-    <b-modal class="modalEditPartido" :id="modalPartidoID" :title="modalPartidoTitle" size="lg" hideFooter lazy>
-      <form-partido-i :partido="partido" :modal-id="modalPartidoID" v-on:update-partido="updatePartido($event)"></form-partido-i>
+    <b-modal class="modalEditPartido modalEditPartidoCelebrado" :id="modalPartidoC_ID" :title="modalPartidoTitle" size="lg" hideFooter lazy>
+      <form-partido-i :partido="partido" :modal-id="modalPartidoC_ID" v-on:update-partido="updatePartidoCelebrado($event)"></form-partido-i>
     </b-modal>
 
     <b-modal class="modalEditPelotari" :id="modalPelotariID" title="Asistencia Pelotari" size="lg" hideFooter lazy>
       <form-pelotari-i :partido="partido" :pelotari="pelotari" :modal-id="modalPelotariID" v-on:update-pelotari="updatePelotari($event)"></form-pelotari-i>
+    </b-modal>
+
+    <b-modal class="modalEditPartido modalEditPartidoPendiente" :id="modalPartidoP_ID" size="lg" hideFooter lazy>
+      <form-partido :edit="true" :festival-header="_header" :partido="partido" :modal-id="modalPartidoP_ID" v-on:update-partido="updatePartidoPendiente($event)"></form-partido>
     </b-modal>
 
   </div>
@@ -126,27 +164,31 @@
   import { mapState } from 'vuex';
 
   Vue.component('form-partido-i', require('./FichaComponent_I.vue'));
+  Vue.component('form-partido', require('./FichaComponent.vue'));
   Vue.component('form-pelotari-i', require('./FichaPelotari_I.vue'));
 
   export default {
-    props: ['partido'],
+    props: ['partido', 'isGerente'],
     data () {
       return {
         data: null,
         modalPartidoTitle: '',
-        modalPartidoID: '',
+        modalPartidoC_ID: '',
+        modalPartidoP_ID: '',
         modalPelotariID: '',
         pelotari: null,
       }
     },
     created: function () {
       console.log("ListadoItemComponent created");
+
       this.data = this.partido;
 
       var fecha_fest = new Date(this._header.fecha).toLocaleDateString('en-GB');
 
       this.modalPartidoTitle = "Festival " + this._header.fronton + " - " + fecha_fest;
-      this.modalPartidoID = "modalEditPartido-" + this.data.id;
+      this.modalPartidoC_ID = "modalEditPartidoC-" + this.data.id;
+      this.modalPartidoP_ID = "modalEditPartidoP-" + this.data.id;
       this.modalPelotariID = "modalEditPelotarisPartido-" + this.data.id;
     },
     computed: mapState({
@@ -157,9 +199,19 @@
     },
     methods: {
       onClickEditPartido(p) {
-        this.$root.$emit('bv::show::modal', this.modalPartidoID);
+        if( this._header.estado_id === 3 ) {
+          this.onClickEditPartidoCelebrado(p);
+        } else {
+          this.onClickEditPartidoPendiente(p);
+        }
       },
-      updatePartido(p) {
+      onClickEditPartidoCelebrado(p) {
+        this.$root.$emit('bv::show::modal', this.modalPartidoC_ID);
+      },
+      onClickEditPartidoPendiente(p) {
+        this.$root.$emit('bv::show::modal', this.modalPartidoP_ID);
+      },
+      updatePartidoCelebrado(p) {
         this.partido.duracion = p.duracion;
         this.partido.pelotazos = p.pelotazos;
         this.partido.obs_publico = p.obs_publico;
@@ -170,6 +222,24 @@
         this.partido.puntos_azul = p.puntos_azul;
         this.partido.tanteos = p.tanteos;
         this.partido.marcadores = p.marcadores;
+      },
+      updatePartidoPendiente(p) {
+        this.partido.orden = p.orden;
+        this.partido.estelar = p.estelar;
+        if( p.campeonato_id !== this.partido.campeonato_id ) {
+          this.partido.campeonato_id = p.campeonato_id;
+          this.partido.campeonato_name = p.campeonato_name;
+        }
+        if( p.tipo_partido_id !== this.partido.tipo_partido_id ) {
+          this.partido.tipo_partido_id = p.tipo_partido_id;
+          this.partido.tipo_partido_name = p.tipo_partido_name;
+        }
+        this.partido.fase = p.fase;
+        this.partido.pelotari_1 = p.pelotari_1;
+        this.partido.pelotari_2 = p.pelotari_2;
+        this.partido.pelotari_3 = p.pelotari_3;
+        this.partido.pelotari_4 = p.pelotari_4;
+        this.partido.is_partido_parejas = p.is_partido_parejas;
       },
       onClickEditPelotari(p) {
         if(p.asegarce) {
@@ -296,6 +366,9 @@
     -ms-transform:translateY(-50%);
     -o-transform:translateY(-50%);
     transform:translateY(-50%);
+  }
+  .coste {
+    line-height:1;
   }
   .modalEditPartido .modal-dialog {
     margin-top:10%;

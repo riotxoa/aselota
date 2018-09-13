@@ -94219,6 +94219,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(11);
 //
 //
 //
@@ -94227,8 +94228,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 Vue.component('add-new-partido-form', __webpack_require__(420));
-Vue.component('list-partidos', __webpack_require__(429));
+Vue.component('list-partidos', __webpack_require__(451));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -94238,6 +94241,9 @@ Vue.component('list-partidos', __webpack_require__(429));
   created: function created() {
     console.log("FestivalListadoPartidosComponent created");
   },
+  computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])({
+    _header: 'header'
+  }),
   methods: {}
 });
 
@@ -95405,849 +95411,16 @@ if (false) {
 }
 
 /***/ }),
-/* 429 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(430)
-}
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(432)
-/* template */
-var __vue_template__ = __webpack_require__(438)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/partidos/ListadoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-392ebf25", Component.options)
-  } else {
-    hotAPI.reload("data-v-392ebf25", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 430 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(431);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(7)("4dce4472", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-392ebf25\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-392ebf25\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 431 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\nul {\n  list-style-type:none;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 432 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_utils_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(11);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-Vue.component('partido', __webpack_require__(433));
-Vue.component('delete-modal', __webpack_require__(206));
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_utils_js__["a" /* default */]],
-  data: function data() {
-    return {
-      deleteID: null
-    };
-  },
-
-  created: function created() {
-    console.log("ListadoComponent created");
-  },
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
-    _partidos: 'partidos'
-  })),
-  methods: {
-    showDeleteModal: function showDeleteModal(id) {
-      this.deleteID = id;
-      var msg = "Se va a borrar un Partido.";
-      jQuery('#deleteMsg').html(msg);
-      this.$root.$emit('bv::show::modal', 'modalDelete');
-    },
-    deletePartido: function deletePartido() {
-      var _this = this;
-
-      this.$store.dispatch('deletePartido', this.deleteID).then(function (response) {
-        _this.$root.$emit('bv::hide::modal', 'modalDelete');
-        _this.showSnackbar("Partido BORRADO");
-      }).catch(function (error) {
-        console.log("[remove] error: " + error);
-        _this.$root.$emit('bv::hide::modal', 'modalDelete');
-        _this.showSnackbar("ERROR al borrar");
-      });
-    }
-  }
-});
-
-/***/ }),
-/* 433 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(434)
-}
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(436)
-/* template */
-var __vue_template__ = __webpack_require__(437)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/partidos/ListadoItemComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6ca8c2d2", Component.options)
-  } else {
-    hotAPI.reload("data-v-6ca8c2d2", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 434 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(435);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(7)("3b50b530", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6ca8c2d2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoItemComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6ca8c2d2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ListadoItemComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 435 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:15px;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item img.grayscale {\n  -webkit-filter:grayscale(1) opacity(.85);\n  filter:grayscale(1) opacity(.85);\n}\n.listado-item .icon.voyager-x {\n  background: lightgray;\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  line-height: 0;\n  position: relative;\n  top: 4px;\n  padding-top: 5px;\n  padding-left: 5px;\n  padding-right: 5px;\n}\n.listado-item .icon.voyager-x::before {\n  line-height:0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 436 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-Vue.component('form-partido', __webpack_require__(207));
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['festivalHeader', 'partido'],
-  data: function data() {
-    return {
-      data: null,
-      modalID: ''
-    };
-  },
-
-  created: function created() {
-    console.log("ListadoItemComponent created");
-    this.data = this.partido;
-    this.modalID = "modalEditPartido-" + this.data.id;
-  },
-  updated: function updated() {
-    this.data = this.partido;
-  },
-  methods: {
-    onClickEdit: function onClickEdit(p) {
-      this.$root.$emit('bv::show::modal', this.modalID);
-    },
-    onClickDelete: function onClickDelete(p) {
-      this.$emit('delete-partido', p.id);
-    },
-    updatePartido: function updatePartido(p) {
-      this.data.orden = p.orden;
-      this.data.estelar = p.estelar;
-      if (p.campeonato_id !== this.data.campeonato_id) {
-        this.data.campeonato_id = p.campeonato_id;
-        this.data.campeonato_name = p.campeonato_name;
-      }
-      if (p.tipo_partido_id !== this.data.tipo_partido_id) {
-        this.data.tipo_partido_id = p.tipo_partido_id;
-        this.data.tipo_partido_name = p.tipo_partido_name;
-      }
-      this.data.fase = p.fase;
-      this.data.pelotari_1 = p.pelotari_1;
-      this.data.pelotari_2 = p.pelotari_2;
-      this.data.pelotari_3 = p.pelotari_3;
-      this.data.pelotari_4 = p.pelotari_4;
-      this.data.is_partido_parejas = p.is_partido_parejas;
-    }
-  }
-});
-
-/***/ }),
-/* 437 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "listado-item mb-4" },
-    [
-      _c("b-row", { staticClass: "m-0 mb-2 position-relative" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "block partido col-sm-3 col-lg-2 text-center font-weight-bold"
-          },
-          [
-            _vm.data.estelar
-              ? _c("span", [
-                  _c("i", {
-                    staticClass:
-                      "voyager-star-two d-inline-block position-absolute"
-                  })
-                ])
-              : _vm._e(),
-            _vm._v(_vm._s(this.data.orden) + "º Partido\n    ")
-          ]
-        ),
-        _vm._v(" "),
-        _vm.data.campeonato_name
-          ? _c(
-              "div",
-              {
-                staticClass:
-                  "block campeonato col-sm-3 col-lg-2 text-center font-weight-bold"
-              },
-              [
-                _vm._v(
-                  "\n      Cpto. " +
-                    _vm._s(this.data.campeonato_name) +
-                    "\n    "
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        !_vm.data.campeonato_name
-          ? _c(
-              "div",
-              {
-                staticClass:
-                  "block light tipo col-sm-3 col-lg-2 text-center font-weight-bold"
-              },
-              [
-                _vm._v(
-                  "\n      " + _vm._s(this.data.tipo_partido_name) + "\n    "
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.data.fase
-          ? _c(
-              "div",
-              {
-                staticClass:
-                  "block fase col-sm-3 col-lg-2 text-center font-weight-bold text-capitalize"
-              },
-              [_vm._v("\n      " + _vm._s(this.data.fase) + "\n    ")]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "toolbar col-sm-3 col-lg-2 text-right position-absolute"
-          },
-          [
-            _c(
-              "b-button",
-              {
-                attrs: {
-                  size: "sm",
-                  variant: "outline-danger",
-                  title: "Eliminar Partido"
-                },
-                on: {
-                  click: function($event) {
-                    $event.stopPropagation()
-                    _vm.onClickDelete(_vm.partido)
-                  }
-                }
-              },
-              [_c("span", { staticClass: "icon voyager-trash" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "b-button",
-              {
-                attrs: {
-                  size: "sm",
-                  variant: "outline-primary",
-                  title: "Editar Partido"
-                },
-                on: {
-                  click: function($event) {
-                    $event.stopPropagation()
-                    _vm.onClickEdit(_vm.partido)
-                  }
-                }
-              },
-              [_c("span", { staticClass: "icon voyager-edit" })]
-            )
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("b-row", { staticClass: "title-wrap my-1" }, [
-        _c("div", { staticClass: "title col-4 p-0 font-weight-bold ml-md-3" }, [
-          _c("div", { staticClass: "tanteo rojo d-inline-block" }, [
-            _vm._v(
-              _vm._s(_vm.partido.puntos_rojo ? _vm.partido.puntos_rojo : "-")
-            )
-          ]),
-          _c("div", { staticClass: "d-inline-block px-3" }, [
-            _vm._v("Pelotaris")
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "title coste rojo col-2 p-0 text-center font-weight-bold"
-          },
-          [_vm._v("Coste")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "title col-4 p-0 font-weight-bold ml-md-1 ml-lg-3" },
-          [
-            _c("div", { staticClass: "tanteo azul d-inline-block" }, [
-              _vm._v(
-                _vm._s(_vm.partido.puntos_azul ? _vm.partido.puntos_azul : "-")
-              )
-            ]),
-            _c("div", { staticClass: "d-inline-block px-3 font-weight-bold" }, [
-              _vm._v("Pelotaris")
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "title coste azul col-2 p-0 text-center font-weight-bold"
-          },
-          [_vm._v("Coste")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("b-row", { staticClass: "mb-1" }, [
-        _c("div", { staticClass: "equipo rojo col-4 p-0 ml-md-3" }, [
-          _c("div", { staticClass: "pelotari-foto d-none d-sm-inline-block" }, [
-            _vm.data.pelotari_1 && 1 == _vm.data.pelotari_1.asegarce
-              ? _c("img", { attrs: { src: _vm.data.pelotari_1.foto } })
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.data.pelotari_1 && 0 == _vm.data.pelotari_1.asegarce
-              ? _c("img", {
-                  staticClass: "grayscale",
-                  attrs: { src: "/storage/" + _vm.data.pelotari_1.foto }
-                })
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "pelotari-name d-inline-block text-center text-uppercase px-3"
-            },
-            [
-              _vm.data.pelotari_1
-                ? _c("span", [_vm._v(_vm._s(this.data.pelotari_1.alias))])
-                : _vm._e()
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-2 coste rojo text-center" }, [
-          _vm.data.pelotari_1 && 1 == _vm.data.pelotari_1.asegarce
-            ? _c("span", [
-                _vm._v(_vm._s(this.data.pelotari_1.coste.toFixed(2)) + " €")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.data.pelotari_1 && 0 == _vm.data.pelotari_1.asegarce
-            ? _c("span", { staticClass: "icon voyager-x" })
-            : _vm._e()
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "equipo azul col-4 p-0 ml-md-1 ml-lg-3" }, [
-          _c("div", { staticClass: "pelotari-foto d-none d-sm-inline-block" }, [
-            _vm.data.pelotari_3 && 1 == _vm.data.pelotari_3.asegarce
-              ? _c("img", { attrs: { src: _vm.data.pelotari_3.foto } })
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.data.pelotari_3 && 0 == _vm.data.pelotari_3.asegarce
-              ? _c("img", {
-                  staticClass: "grayscale",
-                  attrs: { src: "/storage/" + _vm.data.pelotari_3.foto }
-                })
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "pelotari-name d-inline-block text-center text-uppercase px-3"
-            },
-            [
-              _vm.data.pelotari_3
-                ? _c("span", [_vm._v(_vm._s(this.data.pelotari_3.alias))])
-                : _vm._e()
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-2 coste azul text-center" }, [
-          _vm.data.pelotari_3 && 1 == _vm.data.pelotari_3.asegarce
-            ? _c("span", [
-                _vm._v(_vm._s(this.data.pelotari_3.coste.toFixed(2)) + " €")
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.data.pelotari_3 && 0 == _vm.data.pelotari_3.asegarce
-            ? _c("span", { staticClass: "icon voyager-x" })
-            : _vm._e()
-        ])
-      ]),
-      _vm._v(" "),
-      _vm.data.is_partido_parejas
-        ? _c("b-row", [
-            _c("div", { staticClass: "equipo rojo col-4 p-0 ml-md-3" }, [
-              _c(
-                "div",
-                { staticClass: "pelotari-foto d-none d-sm-inline-block" },
-                [
-                  _vm.data.pelotari_2 && 1 == _vm.data.pelotari_2.asegarce
-                    ? _c("img", { attrs: { src: _vm.data.pelotari_2.foto } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.data.pelotari_2 && 0 == _vm.data.pelotari_2.asegarce
-                    ? _c("img", {
-                        staticClass: "grayscale",
-                        attrs: { src: "/storage/" + _vm.data.pelotari_2.foto }
-                      })
-                    : _vm._e()
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "pelotari-name d-inline-block text-center text-uppercase px-3"
-                },
-                [
-                  _vm.data.pelotari_2
-                    ? _c("span", [_vm._v(_vm._s(this.data.pelotari_2.alias))])
-                    : _vm._e()
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-2 coste rojo text-center" }, [
-              _vm.data.pelotari_2 && 1 == _vm.data.pelotari_2.asegarce
-                ? _c("span", [
-                    _vm._v(_vm._s(this.data.pelotari_2.coste.toFixed(2)) + " €")
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.data.pelotari_2 && 0 == _vm.data.pelotari_2.asegarce
-                ? _c("span", { staticClass: "icon voyager-x" })
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "equipo azul col-4 p-0 ml-md-1 ml-lg-3" },
-              [
-                _c(
-                  "div",
-                  { staticClass: "pelotari-foto d-none d-sm-inline-block" },
-                  [
-                    _vm.data.pelotari_4 && 1 == _vm.data.pelotari_4.asegarce
-                      ? _c("img", { attrs: { src: _vm.data.pelotari_4.foto } })
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.data.pelotari_4 && 0 == _vm.data.pelotari_4.asegarce
-                      ? _c("img", {
-                          staticClass: "grayscale",
-                          attrs: { src: "/storage/" + _vm.data.pelotari_4.foto }
-                        })
-                      : _vm._e()
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "pelotari-name d-inline-block text-center text-uppercase px-3"
-                  },
-                  [
-                    _vm.data.pelotari_4
-                      ? _c("span", [_vm._v(_vm._s(this.data.pelotari_4.alias))])
-                      : _vm._e()
-                  ]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-2 coste azul text-center" }, [
-              _vm.data.pelotari_4 && 1 == _vm.data.pelotari_4.asegarce
-                ? _c("span", [
-                    _vm._v(_vm._s(this.data.pelotari_4.coste.toFixed(2)) + " €")
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.data.pelotari_4 && 0 == _vm.data.pelotari_4.asegarce
-                ? _c("span", { staticClass: "icon voyager-x" })
-                : _vm._e()
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: _vm.modalID,
-          staticClass: "modalEditPartido",
-          attrs: { id: _vm.modalID, size: "lg", hideFooter: "", lazy: "" }
-        },
-        [
-          _c("form-partido", {
-            attrs: {
-              edit: true,
-              "festival-header": _vm.festivalHeader,
-              partido: _vm.partido,
-              "modal-id": _vm.modalID
-            },
-            on: {
-              "update-partido": function($event) {
-                _vm.updatePartido($event)
-              }
-            }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6ca8c2d2", module.exports)
-  }
-}
-
-/***/ }),
-/* 438 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._partidos
-    ? _c(
-        "div",
-        { staticClass: "list-partidos-festival" },
-        [
-          _c(
-            "ul",
-            { staticClass: "mt-3 px-3" },
-            _vm._l(_vm._partidos, function(partido) {
-              return _c(
-                "li",
-                [
-                  _c("partido", {
-                    attrs: { partido: partido },
-                    on: {
-                      "delete-partido": function($event) {
-                        _vm.showDeleteModal($event)
-                      }
-                    }
-                  })
-                ],
-                1
-              )
-            })
-          ),
-          _vm._v(" "),
-          _c("delete-modal", {
-            attrs: {
-              "object-name": "Partido",
-              "remove-item": _vm.deletePartido
-            }
-          })
-        ],
-        1
-      )
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-392ebf25", module.exports)
-  }
-}
-
-/***/ }),
+/* 429 */,
+/* 430 */,
+/* 431 */,
+/* 432 */,
+/* 433 */,
+/* 434 */,
+/* 435 */,
+/* 436 */,
+/* 437 */,
+/* 438 */,
 /* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -96257,7 +95430,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("add-new-partido-form"), _vm._v(" "), _c("list-partidos")],
+    [
+      _vm._header.estado_id !== 3 ? _c("add-new-partido-form") : _vm._e(),
+      _vm._v(" "),
+      _c("list-partidos", { attrs: { "is-gerente": true } })
+    ],
     1
   )
 }
@@ -97835,6 +97012,7 @@ Vue.component('partido-i', __webpack_require__(455));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_utils_js__["a" /* default */]],
+  props: ['isGerente'],
   data: function data() {
     return {};
   },
@@ -97934,7 +97112,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.fa-hand-point-up {\n  bottom:5px;\n  color:lightgray;\n  left:15px;\n}\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:0;\n  margin-left:.5rem;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.equipo {\n  max-height:42px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.equipo.gray {\n  background-color:lightgray;\n  border:1px solid lightgray;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.pelotari-name {\n  line-height: 1;\n  left:40px;\n  position:absolute;\n  top:50%;\n  width:calc(100% - 40px);\n\n  -webkit-transform:translateY(-50%);\n  transform:translateY(-50%);\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item .toolbar {\n  right:0;\n}\n.listado-item .coste .icon.voyager-edit {\n  font-size:20px;\n  top:5px;\n}\n.listado-item img.grayscale {\n  -webkit-filter:grayscale(1) opacity(.85);\n  filter:grayscale(1) opacity(.85);\n}\n.listado-item .voyager-check,\n.listado-item .voyager-x,\n.listado-item .fa-ban {\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  height:30px;\n  line-height: 0;\n  position: relative;\n  top: 5px!important;\n  padding-top: 15px;\n  padding-left: 5px;\n  padding-right: 5px;\n  width:30px;\n}\n.listado-item .voyager-check::before,\n.listado-item .voyager-x::before,\n.listado-item .fa-ban::before {\n  line-height:0;\n}\n.listado-item .fa-ban {\n  background:lightgray;\n}\n.listado-item .voyager-check {\n  background:#4fb749;\n}\n.listado-item .voyager-x {\n  background:#dd3545;\n}\n.brmn-pointer {\n  cursor:pointer;\n  -webkit-transition:all .25s ease-in-out;\n  transition:all .25s ease-in-out;\n}\n.brmn-pointer:active,\n.brmn-pointer:focus,\n.brmn-pointer:hover {\n  filter:alpha(opacity=75%);\n  opacity:.75;\n}\n.brmn-clickable::before {\n  content:\"\\F0A6\";\n  font-family:\"Font Awesome 5 Free\";\n  font-weight:400;\n  position:absolute;\n  right:10px;\n}\n.brmn-clickable.brmn-gray::before {\n  color:gray;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-red::before {\n  color:#dd3545;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-blue::before {\n  color:#0a4ea1;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-tachado {\n  text-decoration:line-through!important;\n}\n.brmn-img-tachado::after {\n  background-color:rgba(250,250,250,.35);\n  color:#dd3545;\n  content:\"\\F05E\";\n  font-family:\"Font Awesome 5 Free\";\n  font-size:25px;\n  font-weight:900;\n  height:40px;\n  left:0;\n  position:absolute;\n  top:0;\n  width:40px;\n}\n", ""]);
+exports.push([module.i, "\n.fa-hand-point-up {\n  bottom:5px;\n  color:lightgray;\n  left:15px;\n}\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:0;\n  margin-left:.5rem;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.equipo {\n  max-height:42px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.equipo.gray {\n  background-color:lightgray;\n  border:1px solid lightgray;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.pelotari-name {\n  line-height: 1;\n  left:40px;\n  position:absolute;\n  top:50%;\n  width:calc(100% - 40px);\n\n  -webkit-transform:translateY(-50%);\n  transform:translateY(-50%);\n}\n.coste {\n  line-height:1;\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item .toolbar {\n  right:0;\n}\n.listado-item .coste .icon.voyager-edit {\n  font-size:20px;\n  top:5px;\n}\n.listado-item img.grayscale {\n  -webkit-filter:grayscale(1) opacity(.85);\n  filter:grayscale(1) opacity(.85);\n}\n.listado-item .voyager-check,\n.listado-item .voyager-x,\n.listado-item .fa-ban {\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  height:30px;\n  line-height: 0;\n  position: relative;\n  top: 5px!important;\n  padding-top: 15px;\n  padding-left: 5px;\n  padding-right: 5px;\n  width:30px;\n}\n.listado-item .voyager-check::before,\n.listado-item .voyager-x::before,\n.listado-item .fa-ban::before {\n  line-height:0;\n}\n.listado-item .fa-ban {\n  background:lightgray;\n}\n.listado-item .voyager-check {\n  background:#4fb749;\n}\n.listado-item .voyager-x {\n  background:#dd3545;\n}\n.brmn-pointer {\n  cursor:pointer;\n  -webkit-transition:all .25s ease-in-out;\n  transition:all .25s ease-in-out;\n}\n.brmn-pointer:active,\n.brmn-pointer:focus,\n.brmn-pointer:hover {\n  filter:alpha(opacity=75%);\n  opacity:.75;\n}\n.brmn-clickable::before {\n  content:\"\\F0A6\";\n  font-family:\"Font Awesome 5 Free\";\n  font-weight:400;\n  position:absolute;\n  right:10px;\n}\n.brmn-clickable.brmn-gray::before {\n  color:gray;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-red::before {\n  color:#dd3545;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-blue::before {\n  color:#0a4ea1;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-tachado {\n  text-decoration:line-through!important;\n}\n.brmn-img-tachado::after {\n  background-color:rgba(250,250,250,.35);\n  color:#dd3545;\n  content:\"\\F05E\";\n  font-family:\"Font Awesome 5 Free\";\n  font-size:25px;\n  font-weight:900;\n  height:40px;\n  left:0;\n  position:absolute;\n  top:0;\n  width:40px;\n}\n", ""]);
 
 // exports
 
@@ -98070,19 +97248,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 Vue.component('form-partido-i', __webpack_require__(459));
+Vue.component('form-partido', __webpack_require__(207));
 Vue.component('form-pelotari-i', __webpack_require__(464));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['partido'],
+  props: ['partido', 'isGerente'],
   data: function data() {
     return {
       data: null,
       modalPartidoTitle: '',
-      modalPartidoID: '',
+      modalPartidoC_ID: '',
+      modalPartidoP_ID: '',
       modalPelotariID: '',
       pelotari: null
     };
@@ -98090,12 +97308,14 @@ Vue.component('form-pelotari-i', __webpack_require__(464));
 
   created: function created() {
     console.log("ListadoItemComponent created");
+
     this.data = this.partido;
 
     var fecha_fest = new Date(this._header.fecha).toLocaleDateString('en-GB');
 
     this.modalPartidoTitle = "Festival " + this._header.fronton + " - " + fecha_fest;
-    this.modalPartidoID = "modalEditPartido-" + this.data.id;
+    this.modalPartidoC_ID = "modalEditPartidoC-" + this.data.id;
+    this.modalPartidoP_ID = "modalEditPartidoP-" + this.data.id;
     this.modalPelotariID = "modalEditPelotarisPartido-" + this.data.id;
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])({
@@ -98106,9 +97326,19 @@ Vue.component('form-pelotari-i', __webpack_require__(464));
   },
   methods: {
     onClickEditPartido: function onClickEditPartido(p) {
-      this.$root.$emit('bv::show::modal', this.modalPartidoID);
+      if (this._header.estado_id === 3) {
+        this.onClickEditPartidoCelebrado(p);
+      } else {
+        this.onClickEditPartidoPendiente(p);
+      }
     },
-    updatePartido: function updatePartido(p) {
+    onClickEditPartidoCelebrado: function onClickEditPartidoCelebrado(p) {
+      this.$root.$emit('bv::show::modal', this.modalPartidoC_ID);
+    },
+    onClickEditPartidoPendiente: function onClickEditPartidoPendiente(p) {
+      this.$root.$emit('bv::show::modal', this.modalPartidoP_ID);
+    },
+    updatePartidoCelebrado: function updatePartidoCelebrado(p) {
       this.partido.duracion = p.duracion;
       this.partido.pelotazos = p.pelotazos;
       this.partido.obs_publico = p.obs_publico;
@@ -98119,6 +97349,24 @@ Vue.component('form-pelotari-i', __webpack_require__(464));
       this.partido.puntos_azul = p.puntos_azul;
       this.partido.tanteos = p.tanteos;
       this.partido.marcadores = p.marcadores;
+    },
+    updatePartidoPendiente: function updatePartidoPendiente(p) {
+      this.partido.orden = p.orden;
+      this.partido.estelar = p.estelar;
+      if (p.campeonato_id !== this.partido.campeonato_id) {
+        this.partido.campeonato_id = p.campeonato_id;
+        this.partido.campeonato_name = p.campeonato_name;
+      }
+      if (p.tipo_partido_id !== this.partido.tipo_partido_id) {
+        this.partido.tipo_partido_id = p.tipo_partido_id;
+        this.partido.tipo_partido_name = p.tipo_partido_name;
+      }
+      this.partido.fase = p.fase;
+      this.partido.pelotari_1 = p.pelotari_1;
+      this.partido.pelotari_2 = p.pelotari_2;
+      this.partido.pelotari_3 = p.pelotari_3;
+      this.partido.pelotari_4 = p.pelotari_4;
+      this.partido.is_partido_parejas = p.is_partido_parejas;
     },
     onClickEditPelotari: function onClickEditPelotari(p) {
       if (p.asegarce) {
@@ -98493,7 +97741,7 @@ Vue.component('tab-marcadores', {
       field.select();
     }
   },
-  template: '\n    <b-row>\n      <table class="w-20 mr-4 ml-2">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-4">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 10">\n            <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n    </b-row>\n  '
+  template: '\n    <b-row>\n      <table class="w-20 mr-3 ml-2">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-3">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20 mr-3">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 11">\n            <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n      <table class="w-20">\n        <thead>\n          <tr>\n            <td>&nbsp;</td>\n            <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n            <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n          </tr>\n        </thead>\n        <tbody>\n          <tr v-for="i in 10">\n            <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n            <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n            <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n          </tr>\n        </tbody>\n      </table>\n    </b-row>\n  '
 });
 
 Vue.component('tab-anotaciones', {
@@ -99341,6 +98589,54 @@ var render = function() {
               },
               [_vm._v("\n      " + _vm._s(this.data.fase) + "\n    ")]
             )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isGerente && _vm._header.estado_id !== 3
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "toolbar col-sm-3 col-lg-2 text-right position-absolute pr-0"
+              },
+              [
+                _c(
+                  "b-button",
+                  {
+                    attrs: {
+                      size: "sm",
+                      variant: "outline-danger",
+                      title: "Eliminar Partido"
+                    },
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        _vm.onClickDelete(_vm.partido)
+                      }
+                    }
+                  },
+                  [_c("span", { staticClass: "icon voyager-trash" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  {
+                    attrs: {
+                      size: "sm",
+                      variant: "outline-primary",
+                      title: "Editar Partido"
+                    },
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        _vm.onClickEditPartido(_vm.partido)
+                      }
+                    }
+                  },
+                  [_c("span", { staticClass: "icon voyager-edit" })]
+                )
+              ],
+              1
+            )
           : _vm._e()
       ]),
       _vm._v(" "),
@@ -99356,14 +98652,23 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "title coste rojo col-2 p-0 text-center font-weight-bold"
-          },
-          [_vm._v("Asistencia")]
-        ),
+        _vm.isGerente
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "title coste rojo col-2 pt-1 pb-0 text-center font-weight-bold"
+              },
+              [_vm._v("Coste")]
+            )
+          : _c(
+              "div",
+              {
+                staticClass:
+                  "title coste rojo col-2 pt-1 pb-0 text-center font-weight-bold"
+              },
+              [_vm._v("Asistencia")]
+            ),
         _vm._v(" "),
         _c(
           "div",
@@ -99380,14 +98685,23 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "title coste azul col-2 p-0 text-center font-weight-bold"
-          },
-          [_vm._v("Asistencia")]
-        )
+        _vm.isGerente
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "title coste azul col-2 pt-1 pb-0 text-center font-weight-bold"
+              },
+              [_vm._v("Coste")]
+            )
+          : _c(
+              "div",
+              {
+                staticClass:
+                  "title coste azul col-2 pt-1 pb-0 text-center font-weight-bold"
+              },
+              [_vm._v("Asistencia")]
+            )
       ]),
       _vm._v(" "),
       _c("b-row", { staticClass: "mb-1" }, [
@@ -99472,32 +98786,64 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "col-2 coste rojo text-center p-0" }, [
-          _vm.data.pelotari_1 && 1 == _vm.data.pelotari_1.asegarce
-            ? _c(
-                "span",
-                {
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      _vm.onClickEditPelotari(_vm.data.pelotari_1)
-                    }
-                  }
-                },
-                [
-                  _vm.data.pelotari_1.asiste
-                    ? _c("span", {
-                        staticClass: "icon voyager-check d-inline-block"
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  !_vm.data.pelotari_1.asiste
-                    ? _c("span", {
-                        staticClass: "icon voyager-x d-inline-block"
-                      })
-                    : _vm._e()
-                ]
-              )
-            : _vm._e(),
+          _vm.isGerente
+            ? _c("div", [
+                _vm.data.pelotari_1 && 1 == _vm.data.pelotari_1.asegarce
+                  ? _c(
+                      "span",
+                      {
+                        class: [
+                          "d-block",
+                          { "pt-1 brmn-tachado": !_vm.data.pelotari_1.asiste },
+                          { "pt-2": _vm.data.pelotari_1.asiste }
+                        ]
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(this.data.pelotari_1.coste.toFixed(2)) + " €"
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.data.pelotari_1.asiste
+                  ? _c("span", [
+                      _vm._v(
+                        _vm._s(
+                          this.data.pelotari_1.sustituto_coste.toFixed(2)
+                        ) + " €"
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            : _c("div", [
+                _vm.data.pelotari_1 && 1 == _vm.data.pelotari_1.asegarce
+                  ? _c(
+                      "span",
+                      {
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.onClickEditPelotari(_vm.data.pelotari_1)
+                          }
+                        }
+                      },
+                      [
+                        _vm.data.pelotari_1.asiste
+                          ? _c("span", {
+                              staticClass: "icon voyager-check d-inline-block"
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        !_vm.data.pelotari_1.asiste
+                          ? _c("span", {
+                              staticClass: "icon voyager-x d-inline-block"
+                            })
+                          : _vm._e()
+                      ]
+                    )
+                  : _vm._e()
+              ]),
           _vm._v(" "),
           _vm.data.pelotari_1 && 0 == _vm.data.pelotari_1.asegarce
             ? _c("span", {
@@ -99588,32 +98934,64 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "col-2 coste azul text-center p-0" }, [
-          _vm.data.pelotari_3 && 1 == _vm.data.pelotari_3.asegarce
-            ? _c(
-                "span",
-                {
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      _vm.onClickEditPelotari(_vm.data.pelotari_3)
-                    }
-                  }
-                },
-                [
-                  _vm.data.pelotari_3.asiste
-                    ? _c("span", {
-                        staticClass: "icon voyager-check d-inline-block"
-                      })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  !_vm.data.pelotari_3.asiste
-                    ? _c("span", {
-                        staticClass: "icon voyager-x d-inline-block"
-                      })
-                    : _vm._e()
-                ]
-              )
-            : _vm._e(),
+          _vm.isGerente
+            ? _c("div", [
+                _vm.data.pelotari_3 && 1 == _vm.data.pelotari_3.asegarce
+                  ? _c(
+                      "span",
+                      {
+                        class: [
+                          "d-block",
+                          { "pt-1 brmn-tachado": !_vm.data.pelotari_3.asiste },
+                          { "pt-2": _vm.data.pelotari_3.asiste }
+                        ]
+                      },
+                      [
+                        _vm._v(
+                          _vm._s(this.data.pelotari_3.coste.toFixed(2)) + " €"
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.data.pelotari_3.asiste
+                  ? _c("span", [
+                      _vm._v(
+                        _vm._s(
+                          this.data.pelotari_3.sustituto_coste.toFixed(2)
+                        ) + " €"
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            : _c("div", [
+                _vm.data.pelotari_3 && 1 == _vm.data.pelotari_3.asegarce
+                  ? _c(
+                      "span",
+                      {
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.onClickEditPelotari(_vm.data.pelotari_3)
+                          }
+                        }
+                      },
+                      [
+                        _vm.data.pelotari_3.asiste
+                          ? _c("span", {
+                              staticClass: "icon voyager-check d-inline-block"
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        !_vm.data.pelotari_3.asiste
+                          ? _c("span", {
+                              staticClass: "icon voyager-x d-inline-block"
+                            })
+                          : _vm._e()
+                      ]
+                    )
+                  : _vm._e()
+              ]),
           _vm._v(" "),
           _vm.data.pelotari_3 && 0 == _vm.data.pelotari_3.asegarce
             ? _c("span", {
@@ -99707,32 +99085,68 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-2 coste rojo text-center p-0" }, [
-              _vm.data.pelotari_2 && 1 == _vm.data.pelotari_2.asegarce
-                ? _c(
-                    "span",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.stopPropagation()
-                          _vm.onClickEditPelotari(_vm.data.pelotari_2)
-                        }
-                      }
-                    },
-                    [
-                      _vm.data.pelotari_2.asiste
-                        ? _c("span", {
-                            staticClass: "icon voyager-check d-inline-block"
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      !_vm.data.pelotari_2.asiste
-                        ? _c("span", {
-                            staticClass: "icon voyager-x d-inline-block"
-                          })
-                        : _vm._e()
-                    ]
-                  )
-                : _vm._e(),
+              _vm.isGerente
+                ? _c("div", [
+                    _vm.data.pelotari_2 && 1 == _vm.data.pelotari_2.asegarce
+                      ? _c(
+                          "span",
+                          {
+                            class: [
+                              "d-block",
+                              {
+                                "pt-1 brmn-tachado": !_vm.data.pelotari_2.asiste
+                              },
+                              { "pt-2": _vm.data.pelotari_2.asiste }
+                            ]
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(this.data.pelotari_2.coste.toFixed(2)) +
+                                " €"
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.data.pelotari_2.asiste
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(
+                              this.data.pelotari_2.sustituto_coste.toFixed(2)
+                            ) + " €"
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                : _c("div", [
+                    _vm.data.pelotari_2 && 1 == _vm.data.pelotari_2.asegarce
+                      ? _c(
+                          "span",
+                          {
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickEditPelotari(_vm.data.pelotari_2)
+                              }
+                            }
+                          },
+                          [
+                            _vm.data.pelotari_2.asiste
+                              ? _c("span", {
+                                  staticClass:
+                                    "icon voyager-check d-inline-block"
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !_vm.data.pelotari_2.asiste
+                              ? _c("span", {
+                                  staticClass: "icon voyager-x d-inline-block"
+                                })
+                              : _vm._e()
+                          ]
+                        )
+                      : _vm._e()
+                  ]),
               _vm._v(" "),
               _vm.data.pelotari_2 && 0 == _vm.data.pelotari_2.asegarce
                 ? _c("span", {
@@ -99823,32 +99237,68 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-2 coste azul text-center p-0" }, [
-              _vm.data.pelotari_4 && 1 == _vm.data.pelotari_4.asegarce
-                ? _c(
-                    "span",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.stopPropagation()
-                          _vm.onClickEditPelotari(_vm.data.pelotari_4)
-                        }
-                      }
-                    },
-                    [
-                      _vm.data.pelotari_4.asiste
-                        ? _c("span", {
-                            staticClass: "icon voyager-check d-inline-block"
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      !_vm.data.pelotari_4.asiste
-                        ? _c("span", {
-                            staticClass: "icon voyager-x d-inline-block"
-                          })
-                        : _vm._e()
-                    ]
-                  )
-                : _vm._e(),
+              _vm.isGerente
+                ? _c("div", [
+                    _vm.data.pelotari_4 && 1 == _vm.data.pelotari_4.asegarce
+                      ? _c(
+                          "span",
+                          {
+                            class: [
+                              "d-block",
+                              {
+                                "pt-1 brmn-tachado": !_vm.data.pelotari_4.asiste
+                              },
+                              { "pt-2": _vm.data.pelotari_4.asiste }
+                            ]
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(this.data.pelotari_4.coste.toFixed(2)) +
+                                " €"
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.data.pelotari_4.asiste
+                      ? _c("span", [
+                          _vm._v(
+                            _vm._s(
+                              this.data.pelotari_4.sustituto_coste.toFixed(2)
+                            ) + " €"
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                : _c("div", [
+                    _vm.data.pelotari_4 && 1 == _vm.data.pelotari_4.asegarce
+                      ? _c(
+                          "span",
+                          {
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickEditPelotari(_vm.data.pelotari_4)
+                              }
+                            }
+                          },
+                          [
+                            _vm.data.pelotari_4.asiste
+                              ? _c("span", {
+                                  staticClass:
+                                    "icon voyager-check d-inline-block"
+                                })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !_vm.data.pelotari_4.asiste
+                              ? _c("span", {
+                                  staticClass: "icon voyager-x d-inline-block"
+                                })
+                              : _vm._e()
+                          ]
+                        )
+                      : _vm._e()
+                  ]),
               _vm._v(" "),
               _vm.data.pelotari_4 && 0 == _vm.data.pelotari_4.asegarce
                 ? _c("span", {
@@ -99863,9 +99313,9 @@ var render = function() {
       _c(
         "b-modal",
         {
-          staticClass: "modalEditPartido",
+          staticClass: "modalEditPartido modalEditPartidoCelebrado",
           attrs: {
-            id: _vm.modalPartidoID,
+            id: _vm.modalPartidoC_ID,
             title: _vm.modalPartidoTitle,
             size: "lg",
             hideFooter: "",
@@ -99874,10 +99324,10 @@ var render = function() {
         },
         [
           _c("form-partido-i", {
-            attrs: { partido: _vm.partido, "modal-id": _vm.modalPartidoID },
+            attrs: { partido: _vm.partido, "modal-id": _vm.modalPartidoC_ID },
             on: {
               "update-partido": function($event) {
-                _vm.updatePartido($event)
+                _vm.updatePartidoCelebrado($event)
               }
             }
           })
@@ -99907,6 +99357,35 @@ var render = function() {
             on: {
               "update-pelotari": function($event) {
                 _vm.updatePelotari($event)
+              }
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          staticClass: "modalEditPartido modalEditPartidoPendiente",
+          attrs: {
+            id: _vm.modalPartidoP_ID,
+            size: "lg",
+            hideFooter: "",
+            lazy: ""
+          }
+        },
+        [
+          _c("form-partido", {
+            attrs: {
+              edit: true,
+              "festival-header": _vm._header,
+              partido: _vm.partido,
+              "modal-id": _vm.modalPartidoP_ID
+            },
+            on: {
+              "update-partido": function($event) {
+                _vm.updatePartidoPendiente($event)
               }
             }
           })
@@ -99944,7 +99423,11 @@ var render = function() {
           _vm._l(_vm._partidos, function(partido) {
             return _c(
               "li",
-              [_c("partido-i", { attrs: { partido: partido } })],
+              [
+                _c("partido-i", {
+                  attrs: { partido: partido, "is-gerente": _vm.isGerente }
+                })
+              ],
               1
             )
           })

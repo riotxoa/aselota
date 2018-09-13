@@ -2,7 +2,7 @@
   <div v-if="_partidos" class="list-partidos-festival container px-0">
     <ul class="mt-3 px-3">
       <li v-for="partido in _partidos">
-        <partido-i :partido="partido"></partido-i>
+        <partido-i :partido="partido" :is-gerente="isGerente"></partido-i>
       </li>
     </ul>
   </div>
@@ -16,6 +16,7 @@
 
   export default {
     mixins: [Utils],
+    props: ['isGerente'],
     data() {
       return {
       }
