@@ -151,7 +151,7 @@ return [
             'Home' => [
                 'route'        => '/',
                 'icon_class'   => 'voyager-home',
-                'target_blank' => true,
+                'target_blank' => false,
             ],
             'Logout' => [
                 'route'      => 'voyager.logout',
@@ -160,9 +160,12 @@ return [
         ],
 
         'widgets' => [
-            'TCG\\Voyager\\Widgets\\UserDimmer',
-            'TCG\\Voyager\\Widgets\\PostDimmer',
-            'TCG\\Voyager\\Widgets\\PageDimmer',
+            // 'TCG\\Voyager\\Widgets\\UserDimmer',
+            // 'TCG\\Voyager\\Widgets\\PostDimmer',
+            // 'TCG\\Voyager\\Widgets\\PageDimmer',
+            'App\\Widgets\\Frontones',
+            'App\\Widgets\\PelotarisASPE',
+            'App\\Widgets\\Clientes',
         ],
 
     ],
