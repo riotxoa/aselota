@@ -225,7 +225,7 @@
           this.axios.post(uri, this._header)
             .then((response) => {
               this._header.id = response.data.id;
-
+              store.commit('SET_EDIT', 1);
               this.editdate = false;
               this.showSnackbar("Festival creado");
             })

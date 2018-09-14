@@ -93639,7 +93639,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         this.axios.post(uri, this._header).then(function (response) {
           _this._header.id = response.data.id;
-
+          __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_EDIT', 1);
           _this.editdate = false;
           _this.showSnackbar("Festival creado");
         }).catch(function (error) {
