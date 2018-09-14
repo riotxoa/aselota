@@ -10817,6 +10817,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     REMOVE_FILTER_FESTIVAL: function REMOVE_FILTER_FESTIVAL(state, index) {
       state.filter_festivales.splice(index, 1);
     },
+    RESET_HEADER: function RESET_HEADER(state) {
+      state.header = {};
+    },
     SET_HEADER: function SET_HEADER(state, header) {
       state.header = header;
     },
@@ -49544,14 +49547,14 @@ Vue.component('ficha-festival', __webpack_require__(406));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
-var CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival="true" :is-gerente=1></ficha-festival>' };
-var EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false" :is-gerente=1></ficha-festival>' };
+var CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival=1 :is-gerente=1></ficha-festival>' };
+var EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=1></ficha-festival>' };
 
 Vue.component('home-intendente', __webpack_require__(472));
 
 var HomeIntendente = { template: '<home-intendente></home-intendente>' };
 var ListFestivales_I = { template: '<listado-festivales is-gerente=0></listado-festivales>' };
-var EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false" :is-gerente=0></ficha-festival>' };
+var EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=0></ficha-festival>' };
 
 var routes = [{
   path: '/rrhh', component: HomeRRHH,
@@ -93266,6 +93269,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -93295,7 +93299,11 @@ var showSnackbar = function showSnackbar(msg) {
     console.log("FichaComponent created");
 
     this.$store.commit('SET_EDIT', !this.isNewFestival);
-    this.$store.commit('SET_HEADER_ID', this.$route.params.id);
+    if (!this.isNewFestival) {
+      this.$store.commit('SET_HEADER_ID', this.$route.params.id);
+    } else {
+      this.$store.commit('RESET_HEADER');
+    }
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])({
     _edit: 'edit'
@@ -99461,7 +99469,9 @@ var render = function() {
         attrs: { "form-title": _vm.formTitle, "is-gerente": _vm.isGerente }
       }),
       _vm._v(" "),
-      _vm._edit && _vm.isGerente ? _c("festival-body") : _c("list-partidos-i")
+      _vm._edit && _vm.isGerente ? _c("festival-body") : _vm._e(),
+      _vm._v(" "),
+      _vm._edit && !_vm.isGerente ? _c("list-partidos-i") : _vm._e()
     ],
     1
   )

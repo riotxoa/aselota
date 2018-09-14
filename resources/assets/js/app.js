@@ -53,14 +53,14 @@ Vue.component('ficha-festival', require('./components/festivales/FichaComponent.
 
 const HomeGerente = { template: '<home-gerente></home-gerente>' };
 const ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
-const CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival="true" :is-gerente=1></ficha-festival>'};
-const EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false" :is-gerente=1></ficha-festival>'};
+const CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival=1 :is-gerente=1></ficha-festival>'};
+const EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=1></ficha-festival>'};
 
 Vue.component('home-intendente', require('./components/HomeIntendenteComponent.vue'));
 
 const HomeIntendente = { template: '<home-intendente></home-intendente>'}
 const ListFestivales_I = { template: '<listado-festivales is-gerente=0></listado-festivales>' };
-const EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival="false" :is-gerente=0></ficha-festival>'};
+const EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=0></ficha-festival>'};
 
 const routes = [
   {

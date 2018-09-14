@@ -64,6 +64,9 @@ export const store = new Vuex.Store({
     REMOVE_FILTER_FESTIVAL (state, index) {
       state.filter_festivales.splice(index, 1);
     },
+    RESET_HEADER (state) {
+      state.header = {}
+    },
     SET_HEADER (state, header) {
       state.header = header;
     },

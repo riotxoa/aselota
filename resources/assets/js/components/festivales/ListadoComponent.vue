@@ -23,7 +23,7 @@
       </b-row>
 
       <b-table striped hover small responsive
-@row-clicked="onClickRow"
+        @row-clicked="onClickRow"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
         :per-page="perPage"

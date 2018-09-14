@@ -2,7 +2,8 @@
   <div id="preloader">
     <festival-header :form-title="formTitle" :is-gerente="isGerente"></festival-header>
     <festival-body v-if="_edit && isGerente"></festival-body>
-    <list-partidos-i v-else></list-partidos-i>
+    <!-- <list-partidos-i v-else></list-partidos-i> -->
+    <list-partidos-i v-if="_edit && !isGerente"></list-partidos-i>
   </div>
 </template>
 
@@ -33,7 +34,11 @@
       console.log("FichaComponent created");
 
       this.$store.commit('SET_EDIT', !this.isNewFestival);
-      this.$store.commit('SET_HEADER_ID', this.$route.params.id);
+      if(!this.isNewFestival) {
+        this.$store.commit('SET_HEADER_ID', this.$route.params.id);
+      } else {
+        this.$store.commit('RESET_HEADER');
+      }
     },
     computed: mapState({
       _edit: 'edit',
