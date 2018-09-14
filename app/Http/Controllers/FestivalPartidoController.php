@@ -152,7 +152,7 @@ class FestivalPartidoController extends Controller
           'obs_publico' => '',
           'obs_fronton' => '',
           'obs_incidencias' => '',
-          'obs_observaciones' => '',
+          'obs_comentarios' => '',
           'puntos_rojo' => 0,
           'puntos_azul' => 0,
         ]);
@@ -258,7 +258,7 @@ class FestivalPartidoController extends Controller
         $item->obs_publico = $request->get('obs_publico');
         $item->obs_fronton = $request->get('obs_fronton');
         $item->obs_incidencias = $request->get('obs_incidencias');
-        $item->obs_observaciones = $request->get('obs_observaciones');
+        $item->obs_comentarios = $request->get('obs_comentarios');
         $item->puntos_rojo = $request->get('puntos_rojo');
         $item->puntos_azul = $request->get('puntos_azul');
 
