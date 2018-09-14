@@ -106,6 +106,7 @@
       console.log("FestivalFichaFacturacionComponent created");
       this.getFormasPago();
       this.getEnvioFacturas();
+      this.$store.dispatch('loadFacturacion');
     },
     computed: mapState({
       _facturacion: 'facturacion',

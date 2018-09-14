@@ -98355,6 +98355,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     console.log("FestivalFichaCostesComponent created");
     this.getClientes();
+    this.$store.dispatch('loadCostes');
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
     _costes: 'costes',
@@ -99125,6 +99126,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     console.log("FestivalFichaFacturacionComponent created");
     this.getFormasPago();
     this.getEnvioFacturas();
+    this.$store.dispatch('loadFacturacion');
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
     _facturacion: 'facturacion',

@@ -206,6 +206,7 @@
     created: function () {
       console.log("FestivalFichaCostesComponent created");
       this.getClientes();
+      this.$store.dispatch('loadCostes');
     },
     computed: mapState({
       _costes: 'costes',
