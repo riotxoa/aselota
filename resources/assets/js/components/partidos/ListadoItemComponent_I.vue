@@ -198,6 +198,9 @@
       this.data = this.partido;
     },
     methods: {
+      onClickDelete(p) {
+        this.$emit('delete-partido', p.id);
+      },
       onClickEditPartido(p) {
         if( this._header.estado_id === 3 ) {
           this.onClickEditPartidoCelebrado(p);
