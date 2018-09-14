@@ -2,7 +2,7 @@
   <div class="listado-item mb-4">
 
     <b-row class="m-0 mb-2 position-relative">
-      <div class="block partido brmn-pointer col-sm-3 col-lg-2 text-center font-weight-bold brmn-clickable brmn-gray" @click.stop="onClickEditPartido(partido)">
+      <div :class="['block partido brmn-pointer col-sm-3 col-lg-2 text-center font-weight-bold brmn-gray', { 'brmn-clickable': !isGerente || isCelebrado() }]" @click.stop="onClickEditPartido(partido)">
         <span v-if="data.estelar"><i class="voyager-star-two d-inline-block position-absolute"></i></span>{{ this.data.orden }}º Partido
       </div>
       <div v-if="data.campeonato_name" class="block campeonato col-sm-3 col-lg-2 text-center font-weight-bold">
@@ -14,7 +14,7 @@
       <div v-if="data.fase" class="block fase col-sm-3 col-lg-2 text-center font-weight-bold text-capitalize">
         {{ this.data.fase }}
       </div>
-      <div v-if="isGerente && _header.estado_id !== 3" class="toolbar col-sm-3 col-lg-2 text-right position-absolute pr-0">
+      <div v-if="isGerente && !isCelebrado()" class="toolbar col-sm-3 col-lg-2 text-right position-absolute">
         <b-button size="sm" variant="outline-danger" @click.stop="onClickDelete(partido)" title="Eliminar Partido">
           <span class="icon voyager-trash"></span>
         </b-button>
@@ -35,14 +35,14 @@
 
     <b-row class="mb-1">
 
-      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_1.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_1)">
+      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_1.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_1)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_1.asiste }]">
           <img v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :src="data.pelotari_1.foto" />
           <img v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" :src=" '/storage/' + data.pelotari_1.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_1" :class="{ ['brmn-clickable brmn-red']: data.pelotari_1.asegarce }">
-            <span :class="{ 'brmn-tachado': !data.pelotari_1.asiste }">{{ this.data.pelotari_1.alias }}</span>
+          <div v-if="data.pelotari_1" :class="{ 'brmn-clickable brmn-red': data.pelotari_1.asegarce && (!isGerente || isCelebrado()) }">
+            <span :class="{ 'brmn-tachado': !data.pelotari_1.asiste }">{{ this.data.pelotari_1.alias }}</span><span v-if="data.pelotari_1.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_1.asiste"><br/>{{ this.data.pelotari_1.sustituto_alias }}</span>
           </div>
         </div>
@@ -61,14 +61,14 @@
         <span v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
-      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_3.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_3)">
+      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_3.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_3)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_3.asiste }]">
           <img v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :src="data.pelotari_3.foto" />
           <img v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" :src=" '/storage/' + data.pelotari_3.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_3" :class="{ 'brmn-clickable brmn-blue': data.pelotari_3.asegarce }">
-            <span :class="{ 'brmn-tachado': !data.pelotari_3.asiste }">{{ this.data.pelotari_3.alias }}</span>
+          <div v-if="data.pelotari_3" :class="{ 'brmn-clickable brmn-blue': data.pelotari_3.asegarce && (!isGerente || isCelebrado()) }">
+            <span :class="{ 'brmn-tachado': !data.pelotari_3.asiste }">{{ this.data.pelotari_3.alias }}</span><span v-if="data.pelotari_3.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_3.asiste"><br/>{{ this.data.pelotari_3.sustituto_alias }}</span>
           </div>
         </div>
@@ -91,14 +91,14 @@
 
     <b-row v-if="data.is_partido_parejas">
 
-      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_2.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_2)">
+      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_2.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_2)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_2.asiste }]">
           <img v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" :src="data.pelotari_2.foto" />
           <img v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" :src=" '/storage/' + data.pelotari_2.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_2" :class="{ 'brmn-clickable brmn-red': data.pelotari_2.asegarce}">
-            <span :class="{ 'brmn-tachado': !data.pelotari_2.asiste }">{{ this.data.pelotari_2.alias }}</span>
+          <div v-if="data.pelotari_2" :class="{ 'brmn-clickable brmn-red': data.pelotari_2.asegarce && (!isGerente || isCelebrado()) }">
+            <span :class="{ 'brmn-tachado': !data.pelotari_2.asiste }">{{ this.data.pelotari_2.alias }}</span><span v-if="data.pelotari_2.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_2.asiste"><br/>{{ this.data.pelotari_2.sustituto_alias }}</span>
           </div>
         </div>
@@ -117,14 +117,14 @@
         <span v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
-      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_4.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_4)">
+      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_4.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_4)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_4.asiste }]">
           <img v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" :src="data.pelotari_4.foto" />
           <img v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" :src=" '/storage/' + data.pelotari_4.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_4" :class="{ 'brmn-clickable brmn-blue': data.pelotari_4.asegarce}">
-            <span :class="{ 'brmn-tachado': !data.pelotari_4.asiste }">{{ this.data.pelotari_4.alias }}</span>
+          <div v-if="data.pelotari_4" :class="{ 'brmn-clickable brmn-blue': data.pelotari_4.asegarce && (!isGerente || isCelebrado()) }">
+            <span :class="{ 'brmn-tachado': !data.pelotari_4.asiste }">{{ this.data.pelotari_4.alias }}</span><span v-if="data.pelotari_4.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_4.asiste"><br/>{{ this.data.pelotari_4.sustituto_alias }}</span>
           </div>
         </div>
@@ -198,11 +198,14 @@
       this.data = this.partido;
     },
     methods: {
+      isCelebrado() {
+        return (3 === this._header.estado_id);
+      },
       onClickDelete(p) {
         this.$emit('delete-partido', p.id);
       },
       onClickEditPartido(p) {
-        if( this._header.estado_id === 3 ) {
+        if( !this.isGerente || this.isCelebrado() ) {
           this.onClickEditPartidoCelebrado(p);
         } else {
           this.onClickEditPartidoPendiente(p);
@@ -245,7 +248,7 @@
         this.partido.is_partido_parejas = p.is_partido_parejas;
       },
       onClickEditPelotari(p) {
-        if(p.asegarce) {
+        if( p.asegarce && (!this.isGerente || this.isCelebrado()) ) {
           this.pelotari = p;
           this.$root.$emit('bv::show::modal', this.modalPelotariID);
         }
@@ -471,5 +474,15 @@
     position:absolute;
     top:0;
     width:40px;
+  }
+
+  .fa-comment {
+    font-weight:bold;
+  }
+  .azul .fa-comment {
+    color: #0a4ea1;
+  }
+  .rojo .fa-comment {
+    color: #da2a1f;
   }
 </style>

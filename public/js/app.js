@@ -95663,7 +95663,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.fa-hand-point-up {\n  bottom:5px;\n  color:lightgray;\n  left:15px;\n}\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:0;\n  margin-left:.5rem;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.equipo {\n  max-height:42px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.equipo.gray {\n  background-color:lightgray;\n  border:1px solid lightgray;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.pelotari-name {\n  line-height: 1;\n  left:40px;\n  position:absolute;\n  top:50%;\n  width:calc(100% - 40px);\n\n  -webkit-transform:translateY(-50%);\n  transform:translateY(-50%);\n}\n.coste {\n  line-height:1;\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item .toolbar {\n  right:0;\n}\n.listado-item .coste .icon.voyager-edit {\n  font-size:20px;\n  top:5px;\n}\n.listado-item img.grayscale {\n  -webkit-filter:grayscale(1) opacity(.85);\n  filter:grayscale(1) opacity(.85);\n}\n.listado-item .voyager-check,\n.listado-item .voyager-x,\n.listado-item .fa-ban {\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  height:30px;\n  line-height: 0;\n  position: relative;\n  top: 5px!important;\n  padding-top: 15px;\n  padding-left: 5px;\n  padding-right: 5px;\n  width:30px;\n}\n.listado-item .voyager-check::before,\n.listado-item .voyager-x::before,\n.listado-item .fa-ban::before {\n  line-height:0;\n}\n.listado-item .fa-ban {\n  background:lightgray;\n}\n.listado-item .voyager-check {\n  background:#4fb749;\n}\n.listado-item .voyager-x {\n  background:#dd3545;\n}\n.brmn-pointer {\n  cursor:pointer;\n  -webkit-transition:all .25s ease-in-out;\n  transition:all .25s ease-in-out;\n}\n.brmn-pointer:active,\n.brmn-pointer:focus,\n.brmn-pointer:hover {\n  filter:alpha(opacity=75%);\n  opacity:.75;\n}\n.brmn-clickable::before {\n  content:\"\\F0A6\";\n  font-family:\"Font Awesome 5 Free\";\n  font-weight:400;\n  position:absolute;\n  right:10px;\n}\n.brmn-clickable.brmn-gray::before {\n  color:gray;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-red::before {\n  color:#dd3545;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-blue::before {\n  color:#0a4ea1;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-tachado {\n  text-decoration:line-through!important;\n}\n.brmn-img-tachado::after {\n  background-color:rgba(250,250,250,.35);\n  color:#dd3545;\n  content:\"\\F05E\";\n  font-family:\"Font Awesome 5 Free\";\n  font-size:25px;\n  font-weight:900;\n  height:40px;\n  left:0;\n  position:absolute;\n  top:0;\n  width:40px;\n}\n", ""]);
+exports.push([module.i, "\n.fa-hand-point-up {\n  bottom:5px;\n  color:lightgray;\n  left:15px;\n}\n.voyager-star-two {\n  bottom: -2px;\n  color:darkorange;\n  left:0;\n  margin-left:.5rem;\n}\n.toolbar {\n  bottom:0;\n  right:-5px;\n}\n.block {\n  background-color:gray;\n  border:1px solid gray;\n  color:white;\n  margin-right:.25rem;\n}\n.block.light {\n  background-color:#c0c0c0;\n  border-color:#c0c0c0;\n}\n.block.partido {\n  background-color:white;\n  border-color:gray;\n  color:#666;\n}\n.title-wrap .title:last-child {\n  margin-right:-30px;\n}\n.equipo {\n  max-height:42px;\n}\n.title-wrap .title:first-child,\n.title-wrap .title:nth-child(2),\n.equipo.rojo {\n  background-color:#fbe7eb;\n  border:1px solid #fbe7eb;\n}\n.title-wrap .title:nth-child(3),\n.title-wrap .title:last-child,\n.equipo.azul {\n  background-color:#d4deee;\n  border:1px solid #d4deee;\n}\n.equipo.gray {\n  background-color:lightgray;\n  border:1px solid lightgray;\n}\n.title-wrap .title.coste,\n.equipo .coste,\n.coste.col-2 {\n  background-color:transparent;\n  border:1px solid gray;\n  margin:0 3px;\n}\n.coste.col-2.rojo {\n  border-color:#fbe7eb;\n}\n.coste.col-2.azul {\n  border-color:#d4deee;\n}\n.coste.col-2 {\n  -webkit-box-flex:0;\n      -ms-flex:0 0 13.75%;\n          flex:0 0 13.75%;\n  max-width:13.75%;\n  padding:.5rem 0;\n}\n.tanteo{\n  color:white;\n  text-align:center;\n  width:40px;\n}\n.tanteo.rojo {\n  background-color:#d92a1f;\n  border:1px solid #d92a1f;\n}\n.tanteo.azul {\n  background-color:#0a4ea1;\n  border:1px solid #0a4ea1;\n}\n.pelotari-foto {\n  background-color:white;\n  display:inline-block;\n  height:40px;\n  text-align:center;\n  width:40px;\n}\n.pelotari-foto img {\n  height:100%;\n  width:auto;\n}\n.pelotari-name {\n  line-height: 1;\n  left:40px;\n  position:absolute;\n  top:50%;\n  width:calc(100% - 40px);\n\n  -webkit-transform:translateY(-50%);\n  transform:translateY(-50%);\n}\n.coste {\n  line-height:1;\n}\n.modalEditPartido .modal-dialog {\n  margin-top:10%;\n  max-width:1080px;\n  width:85%;\n}\n.listado-item .toolbar {\n  right:0;\n}\n.listado-item .coste .icon.voyager-edit {\n  font-size:20px;\n  top:5px;\n}\n.listado-item img.grayscale {\n  -webkit-filter:grayscale(1) opacity(.85);\n  filter:grayscale(1) opacity(.85);\n}\n.listado-item .voyager-check,\n.listado-item .voyager-x,\n.listado-item .fa-ban {\n  border-radius: 50%;\n  color: white;\n  font-size: 20px;\n  height:30px;\n  line-height: 0;\n  position: relative;\n  top: 5px!important;\n  padding-top: 15px;\n  padding-left: 5px;\n  padding-right: 5px;\n  width:30px;\n}\n.listado-item .voyager-check::before,\n.listado-item .voyager-x::before,\n.listado-item .fa-ban::before {\n  line-height:0;\n}\n.listado-item .fa-ban {\n  background:lightgray;\n}\n.listado-item .voyager-check {\n  background:#4fb749;\n}\n.listado-item .voyager-x {\n  background:#dd3545;\n}\n.brmn-pointer {\n  cursor:pointer;\n  -webkit-transition:all .25s ease-in-out;\n  transition:all .25s ease-in-out;\n}\n.brmn-pointer:active,\n.brmn-pointer:focus,\n.brmn-pointer:hover {\n  filter:alpha(opacity=75%);\n  opacity:.75;\n}\n.brmn-clickable::before {\n  content:\"\\F0A6\";\n  font-family:\"Font Awesome 5 Free\";\n  font-weight:400;\n  position:absolute;\n  right:10px;\n}\n.brmn-clickable.brmn-gray::before {\n  color:gray;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-red::before {\n  color:#dd3545;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-clickable.brmn-blue::before {\n  color:#0a4ea1;\n  filter:alpha(opacity=50%);\n  opacity:.5;\n}\n.brmn-tachado {\n  text-decoration:line-through!important;\n}\n.brmn-img-tachado::after {\n  background-color:rgba(250,250,250,.35);\n  color:#dd3545;\n  content:\"\\F05E\";\n  font-family:\"Font Awesome 5 Free\";\n  font-size:25px;\n  font-weight:900;\n  height:40px;\n  left:0;\n  position:absolute;\n  top:0;\n  width:40px;\n}\n.fa-comment {\n  font-weight:bold;\n}\n.azul .fa-comment {\n  color: #0a4ea1;\n}\n.rojo .fa-comment {\n  color: #da2a1f;\n}\n", ""]);
 
 // exports
 
@@ -95876,11 +95876,14 @@ Vue.component('form-pelotari-i', __webpack_require__(443));
     this.data = this.partido;
   },
   methods: {
+    isCelebrado: function isCelebrado() {
+      return 3 === this._header.estado_id;
+    },
     onClickDelete: function onClickDelete(p) {
       this.$emit('delete-partido', p.id);
     },
     onClickEditPartido: function onClickEditPartido(p) {
-      if (this._header.estado_id === 3) {
+      if (!this.isGerente || this.isCelebrado()) {
         this.onClickEditPartidoCelebrado(p);
       } else {
         this.onClickEditPartidoPendiente(p);
@@ -95923,7 +95926,7 @@ Vue.component('form-pelotari-i', __webpack_require__(443));
       this.partido.is_partido_parejas = p.is_partido_parejas;
     },
     onClickEditPelotari: function onClickEditPelotari(p) {
-      if (p.asegarce) {
+      if (p.asegarce && (!this.isGerente || this.isCelebrado())) {
         this.pelotari = p;
         this.$root.$emit('bv::show::modal', this.modalPelotariID);
       }
@@ -97080,8 +97083,10 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass:
-              "block partido brmn-pointer col-sm-3 col-lg-2 text-center font-weight-bold brmn-clickable brmn-gray",
+            class: [
+              "block partido brmn-pointer col-sm-3 col-lg-2 text-center font-weight-bold brmn-gray",
+              { "brmn-clickable": !_vm.isGerente || _vm.isCelebrado() }
+            ],
             on: {
               click: function($event) {
                 $event.stopPropagation()
@@ -97145,12 +97150,12 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
-        _vm.isGerente && _vm._header.estado_id !== 3
+        _vm.isGerente && !_vm.isCelebrado()
           ? _c(
               "div",
               {
                 staticClass:
-                  "toolbar col-sm-3 col-lg-2 text-right position-absolute pr-0"
+                  "toolbar col-sm-3 col-lg-2 text-right position-absolute"
               },
               [
                 _c(
@@ -97264,7 +97269,11 @@ var render = function() {
           {
             class: [
               "equipo rojo col-4 p-0 ml-md-3",
-              { "brmn-pointer": _vm.data.pelotari_1.asegarce }
+              {
+                "brmn-pointer":
+                  _vm.data.pelotari_1.asegarce &&
+                  (!_vm.isGerente || _vm.isCelebrado())
+              }
             ],
             on: {
               click: function($event) {
@@ -97307,10 +97316,11 @@ var render = function() {
                   ? _c(
                       "div",
                       {
-                        class: ((_obj = {}),
-                        (_obj["brmn-clickable brmn-red"] =
-                          _vm.data.pelotari_1.asegarce),
-                        _obj)
+                        class: {
+                          "brmn-clickable brmn-red":
+                            _vm.data.pelotari_1.asegarce &&
+                            (!_vm.isGerente || _vm.isCelebrado())
+                        }
                       },
                       [
                         _c(
@@ -97322,6 +97332,14 @@ var render = function() {
                           },
                           [_vm._v(_vm._s(this.data.pelotari_1.alias))]
                         ),
+                        _vm.data.pelotari_1.observaciones
+                          ? _c("span", [
+                              _c("i", {
+                                staticClass: "far fa-comment px-2",
+                                attrs: { title: "Hay observaciones" }
+                              })
+                            ])
+                          : _vm._e(),
                         _vm._v(" "),
                         !_vm.data.pelotari_1.asiste
                           ? _c("span", [
@@ -97412,7 +97430,11 @@ var render = function() {
           {
             class: [
               "equipo azul col-4 p-0 ml-md-1 ml-lg-3",
-              { "brmn-pointer": _vm.data.pelotari_3.asegarce }
+              {
+                "brmn-pointer":
+                  _vm.data.pelotari_3.asegarce &&
+                  (!_vm.isGerente || _vm.isCelebrado())
+              }
             ],
             on: {
               click: function($event) {
@@ -97457,7 +97479,8 @@ var render = function() {
                       {
                         class: {
                           "brmn-clickable brmn-blue":
-                            _vm.data.pelotari_3.asegarce
+                            _vm.data.pelotari_3.asegarce &&
+                            (!_vm.isGerente || _vm.isCelebrado())
                         }
                       },
                       [
@@ -97470,6 +97493,14 @@ var render = function() {
                           },
                           [_vm._v(_vm._s(this.data.pelotari_3.alias))]
                         ),
+                        _vm.data.pelotari_3.observaciones
+                          ? _c("span", [
+                              _c("i", {
+                                staticClass: "far fa-comment px-2",
+                                attrs: { title: "Hay observaciones" }
+                              })
+                            ])
+                          : _vm._e(),
                         _vm._v(" "),
                         !_vm.data.pelotari_3.asiste
                           ? _c("span", [
@@ -97563,7 +97594,11 @@ var render = function() {
               {
                 class: [
                   "equipo rojo col-4 p-0 ml-md-3",
-                  { "brmn-pointer": _vm.data.pelotari_2.asegarce }
+                  {
+                    "brmn-pointer":
+                      _vm.data.pelotari_2.asegarce &&
+                      (!_vm.isGerente || _vm.isCelebrado())
+                  }
                 ],
                 on: {
                   click: function($event) {
@@ -97608,7 +97643,8 @@ var render = function() {
                           {
                             class: {
                               "brmn-clickable brmn-red":
-                                _vm.data.pelotari_2.asegarce
+                                _vm.data.pelotari_2.asegarce &&
+                                (!_vm.isGerente || _vm.isCelebrado())
                             }
                           },
                           [
@@ -97621,6 +97657,14 @@ var render = function() {
                               },
                               [_vm._v(_vm._s(this.data.pelotari_2.alias))]
                             ),
+                            _vm.data.pelotari_2.observaciones
+                              ? _c("span", [
+                                  _c("i", {
+                                    staticClass: "far fa-comment px-2",
+                                    attrs: { title: "Hay observaciones" }
+                                  })
+                                ])
+                              : _vm._e(),
                             _vm._v(" "),
                             !_vm.data.pelotari_2.asiste
                               ? _c("span", [
@@ -97715,7 +97759,11 @@ var render = function() {
               {
                 class: [
                   "equipo azul col-4 p-0 ml-md-1 ml-lg-3",
-                  { "brmn-pointer": _vm.data.pelotari_4.asegarce }
+                  {
+                    "brmn-pointer":
+                      _vm.data.pelotari_4.asegarce &&
+                      (!_vm.isGerente || _vm.isCelebrado())
+                  }
                 ],
                 on: {
                   click: function($event) {
@@ -97760,7 +97808,8 @@ var render = function() {
                           {
                             class: {
                               "brmn-clickable brmn-blue":
-                                _vm.data.pelotari_4.asegarce
+                                _vm.data.pelotari_4.asegarce &&
+                                (!_vm.isGerente || _vm.isCelebrado())
                             }
                           },
                           [
@@ -97773,6 +97822,14 @@ var render = function() {
                               },
                               [_vm._v(_vm._s(this.data.pelotari_4.alias))]
                             ),
+                            _vm.data.pelotari_4.observaciones
+                              ? _c("span", [
+                                  _c("i", {
+                                    staticClass: "far fa-comment px-2",
+                                    attrs: { title: "Hay observaciones" }
+                                  })
+                                ])
+                              : _vm._e(),
                             _vm._v(" "),
                             !_vm.data.pelotari_4.asiste
                               ? _c("span", [
@@ -97949,7 +98006,6 @@ var render = function() {
     ],
     1
   )
-  var _obj
 }
 var staticRenderFns = []
 render._withStripped = true
