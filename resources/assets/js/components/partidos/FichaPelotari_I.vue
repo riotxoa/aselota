@@ -143,14 +143,14 @@
 </script>
 
 <style>
-  .modal-header {
+  .ficha-pelotari-i .modal-header {
     padding:.5rem 1rem;
   }
-  .modal-title {
+  .ficha-pelotari-i .modal-title {
     font-weight:bold;
     text-align:center;
   }
-  .modal-body {
+  .ficha-pelotari-i .modal-body {
     padding:0;
   }
   .ficha-pelotari-i .header {

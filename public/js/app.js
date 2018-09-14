@@ -96643,7 +96643,7 @@ exports = module.exports = __webpack_require__(6)(false);
 
 
 // module
-exports.push([module.i, "\n.modal-header {\n  padding:.5rem 1rem;\n}\n.modal-title {\n  font-weight:bold;\n  text-align:center;\n}\n.modal-body {\n  padding:0;\n}\n.ficha-pelotari-i .header {\n  background-color:slategray;\n  border:none;\n  color:white;\n  font-weight:bold;\n  margin:0;\n  margin-top:-1px;\n  padding:.5rem 1rem;\n  text-align:center;\n  text-transform:uppercase;\n}\n.ficha-pelotari-i .body {\n  padding:1.5rem;\n}\n.ficha-pelotari-i .block.partido,\n.ficha-pelotari-i .block.tipo,\n.ficha-pelotari-i .block.campeonato,\n.ficha-pelotari-i .block.fase {\n  padding:.5rem 0;\n}\n.ficha-pelotari-i .voyager-star-two {\n  bottom:7.5px;\n  left:7.5px;\n}\n", ""]);
+exports.push([module.i, "\n.ficha-pelotari-i .modal-header {\n  padding:.5rem 1rem;\n}\n.ficha-pelotari-i .modal-title {\n  font-weight:bold;\n  text-align:center;\n}\n.ficha-pelotari-i .modal-body {\n  padding:0;\n}\n.ficha-pelotari-i .header {\n  background-color:slategray;\n  border:none;\n  color:white;\n  font-weight:bold;\n  margin:0;\n  margin-top:-1px;\n  padding:.5rem 1rem;\n  text-align:center;\n  text-transform:uppercase;\n}\n.ficha-pelotari-i .body {\n  padding:1.5rem;\n}\n.ficha-pelotari-i .block.partido,\n.ficha-pelotari-i .block.tipo,\n.ficha-pelotari-i .block.campeonato,\n.ficha-pelotari-i .block.fase {\n  padding:.5rem 0;\n}\n.ficha-pelotari-i .voyager-star-two {\n  bottom:7.5px;\n  left:7.5px;\n}\n", ""]);
 
 // exports
 
