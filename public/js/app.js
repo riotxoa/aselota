@@ -92314,14 +92314,7 @@ Vue.component('filtro-festivales', __webpack_require__(400));
   },
   methods: {
     fetchFestivales: function fetchFestivales() {
-      var _this = this;
-
-      var uri = '/www/festivales';
-      this.axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this.items = JSON.parse(stringified);
-        _this.totalRows = _this.items.length;
-      });
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadFestivales');
     },
     onClickDelete: function onClickDelete(item) {
       this.$root.$emit('bv::show::modal', 'modalDelete');
@@ -92344,19 +92337,19 @@ Vue.component('filtro-festivales', __webpack_require__(400));
       }
     },
     removeItem: function removeItem() {
-      var _this2 = this;
+      var _this = this;
 
       var uri = '/www/festivales/' + this.deleteId;
       this.axios.delete(uri).then(function (response) {
-        _this2.deleteId = null;
-        _this2.$root.$emit('bv::hide::modal', 'modalDelete');
-        _this2.fetchFestivales();
-        _this2.showSnackbar("Festival BORRADO");
+        _this.deleteId = null;
+        _this.$root.$emit('bv::hide::modal', 'modalDelete');
+        _this.fetchFestivales();
+        _this.showSnackbar("Festival BORRADO");
       }).catch(function (error) {
         console.log("[remove] error: " + error);
-        _this2.deleteId = null;
-        _this2.$root.$emit('bv::hide::modal', 'modalDelete');
-        _this2.showSnackbar("ERROR al borrar");
+        _this.deleteId = null;
+        _this.$root.$emit('bv::hide::modal', 'modalDelete');
+        _this.showSnackbar("ERROR al borrar");
       });
     }
   }

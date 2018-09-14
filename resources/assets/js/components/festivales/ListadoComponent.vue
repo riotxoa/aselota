@@ -133,12 +133,7 @@
       },
       methods: {
         fetchFestivales () {
-          let uri = '/www/festivales';
-          this.axios.get(uri).then((response) => {
-            var stringified = JSON.stringify(response.data);
-            this.items = JSON.parse(stringified);
-            this.totalRows = this.items.length;
-          });
+          store.dispatch('loadFestivales');
         },
         onClickDelete (item) {
           this.$root.$emit('bv::show::modal','modalDelete')
