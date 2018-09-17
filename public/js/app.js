@@ -93634,6 +93634,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -93683,6 +93684,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     onChangeDate: function onChangeDate() {
+      console.log("[onChangeDate] this._header.fecha: " + this._header.fecha);
       switch (new Date(this._header.fecha).getDay()) {
         case 0:
           this.dia = "Domingo";
@@ -93849,8 +93851,15 @@ var render = function() {
                             readonly: !_vm.editdate && _vm._edit,
                             disabled: !_vm.isGerente,
                             type: "date",
-                            change: _vm.onChangeDate(),
                             required: ""
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.onChangeDate()
+                            },
+                            input: function($event) {
+                              _vm.onChangeDate()
+                            }
                           },
                           model: {
                             value: _vm._header.fecha,

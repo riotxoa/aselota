@@ -25,7 +25,8 @@
                             :disabled="!isGerente"
                             type="date"
                             v-model="_header.fecha"
-                            :change="onChangeDate()"
+                            @change="onChangeDate()"
+                            @input="onChangeDate()"
                             required>
               </b-form-input>
               <b-link v-if="_edit && isGerente" class="pl-1 d-inline-block" @click="editDate(true)">
@@ -177,6 +178,7 @@
     },
     methods: {
       onChangeDate () {
+        console.log("[onChangeDate] this._header.fecha: " + this._header.fecha);
         switch (new Date(this._header.fecha).getDay()) {
           case 0:
             this.dia = "Domingo";
