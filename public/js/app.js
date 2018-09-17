@@ -93684,7 +93684,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     onChangeDate: function onChangeDate() {
-      console.log("[onChangeDate] this._header.fecha: " + this._header.fecha);
       switch (new Date(this._header.fecha).getDay()) {
         case 0:
           this.dia = "Domingo";
