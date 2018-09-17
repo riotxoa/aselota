@@ -10897,13 +10897,16 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   },
   actions: {
     loadFestivales: function loadFestivales(_ref) {
-      var commit = _ref.commit;
+      var commit = _ref.commit,
+          dispatch = _ref.dispatch;
 
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales').then(function (r) {
-        return r.data;
-      }).then(function (festivales) {
-        commit('SET_FESTIVALES', festivales);
-      });
+      dispatch('filterFestivales');
+      // axios
+      //   .get('/www/festivales')
+      //   .then( r => r.data )
+      //   .then( festivales => {
+      //     commit('SET_FESTIVALES', festivales);
+      //   });
     },
     addFilterFestival: function addFilterFestival(_ref2, value) {
       var commit = _ref2.commit,

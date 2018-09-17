@@ -141,13 +141,14 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    loadFestivales({ commit }) {
-      axios
-        .get('/www/festivales')
-        .then( r => r.data )
-        .then( festivales => {
-          commit('SET_FESTIVALES', festivales);
-        });
+    loadFestivales({ commit, dispatch }) {
+      dispatch('filterFestivales');
+      // axios
+      //   .get('/www/festivales')
+      //   .then( r => r.data )
+      //   .then( festivales => {
+      //     commit('SET_FESTIVALES', festivales);
+      //   });
     },
     addFilterFestival({ commit, dispatch }, value) {
       commit('ADD_FILTER_FESTIVAL', value);
