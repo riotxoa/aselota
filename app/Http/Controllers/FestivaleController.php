@@ -38,10 +38,10 @@ class FestivaleController extends Controller
           if( null !== $request->get('filter') ) {
             $in_clause = array();
 
-            $items = $items->join('festival_facturacion', 'festivales.id', '=', 'festival_facturacion.festival_id')
-                           ->join('festival_partidos', 'festivales.id', '=', 'festival_partidos.festival_id')
-                           ->join('festival_partido_pelotaris', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
-                           ->join('pelotaris', 'festival_partido_pelotaris.pelotari_id', '=', 'pelotaris.id')
+            $items = $items->leftJoin('festival_facturacion', 'festivales.id', '=', 'festival_facturacion.festival_id')
+                           ->leftJoin('festival_partidos', 'festivales.id', '=', 'festival_partidos.festival_id')
+                           ->leftJoin('festival_partido_pelotaris', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
+                           ->leftJoin('pelotaris', 'festival_partido_pelotaris.pelotari_id', '=', 'pelotaris.id')
                            ->groupBy('festivales.id');
 
             $filters = $request->get('filter');
