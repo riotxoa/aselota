@@ -93657,10 +93657,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.getFrontones();
     this.getFestivalEstados();
 
-    this._header.fecha = this.formatDateEN();
-
     if (this._edit) {
       __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadHeader', this._header.id ? this._header.id : this.$route.params.id, this.isGerente);
+    } else {
+      this._header.fecha = this.formatDateEN();
+      this._header.hora = "";
+      this._header.provincia_id = null;
+      this._header.municipio_id = null;
+      this._header.fronton_id = null;
+      this._header.television = 0;
+      this._header.television_txt = "";
+      this._header.estado_id = 1;
     }
   },
   computed: {
