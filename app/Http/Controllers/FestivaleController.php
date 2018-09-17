@@ -62,6 +62,10 @@ class FestivaleController extends Controller
             }
           }
 
+          if( $request->user()->hasRole("Intendente") ) {
+            $items = $items->where('festivales.estado_id', '>', 1); // Estado !== 'Estimación'
+          }
+
           $items = $items->where('festivales.deleted_at', null)
           ->orderBy('festivales.fecha', 'desc')
           ->get();
