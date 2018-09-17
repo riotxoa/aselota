@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import { store } from '../store/store';
   import { mapState } from 'vuex';
 
   Vue.component('festival-header', require('./FestivalHeaderComponent.vue'));
@@ -37,7 +38,7 @@
       if(!this.isNewFestival) {
         this.$store.commit('SET_HEADER_ID', this.$route.params.id);
       } else {
-        this.$store.commit('RESET_HEADER');
+        store.dispatch('resetFestival');
       }
     },
     computed: mapState({

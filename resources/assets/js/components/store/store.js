@@ -64,8 +64,35 @@ export const store = new Vuex.Store({
     REMOVE_FILTER_FESTIVAL (state, index) {
       state.filter_festivales.splice(index, 1);
     },
-    RESET_HEADER (state) {
+    RESET_FESTIVAL_HEADER (state) {
       state.header = {}
+    },
+    RESET_FESTIVAL_BODY (state) {
+      state.partidos = [];
+      state.costes = {
+        importe_venta: 0,
+        cliente_id: null,
+        cliente_txt: '',
+        aportacion: 0,
+        num_entradas: 0,
+        precio_entradas: 0,
+        num_espectadores: 0,
+        ingreso_taquilla: 0,
+        ingreso_ayto: 0,
+        ingreso_otros: 0,
+        precio_total: 0,
+        total: 0,
+      };
+      state.facturacion = {
+        fpago_id: null,
+        fecha: null,
+        importe: 0,
+        enviar_id: null,
+        observaciones: '',
+        pagado: 0,
+        seguimiento: '',
+      };
+      state.coste = 0.00;
     },
     SET_HEADER (state, header) {
       state.header = header;
@@ -169,6 +196,10 @@ export const store = new Vuex.Store({
         .then( partidos => {
           commit('SET_PARTIDOS', partidos);
         });
+    },
+    resetFestival({ commit }) {
+      commit('RESET_FESTIVAL_HEADER');
+      commit('RESET_FESTIVAL_BODY');
     },
     addPartido({ commit }, partido) {
       let uri = '/www/partidos';
