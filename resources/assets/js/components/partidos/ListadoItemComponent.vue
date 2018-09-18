@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="col-2 coste rojo text-center">
-        <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce">{{ this.data.pelotari_1.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce">{{ ( this.data.pelotari_1.coste ? this.data.pelotari_1.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         <span v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" class="icon voyager-x"></span>
       </div>
 
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="col-2 coste azul text-center">
-        <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce">{{ this.data.pelotari_3.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce">{{ ( this.data.pelotari_3.coste ? this.data.pelotari_3.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         <span v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" class="icon voyager-x"></span>
       </div>
 
@@ -75,7 +75,7 @@
         </div>
       </div>
       <div class="col-2 coste rojo text-center">
-        <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce">{{ this.data.pelotari_2.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce">{{ ( this.data.pelotari_2.coste ? this.data.pelotari_2.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         <span v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" class="icon voyager-x"></span>
       </div>
 
@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="col-2 coste azul text-center">
-        <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce">{{ this.data.pelotari_4.coste.toFixed(2) }}&nbsp;&euro;</span>
+        <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce">{{ ( this.data.pelotari_4.coste ? this.data.pelotari_4.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         <span v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" class="icon voyager-x"></span>
       </div>
 

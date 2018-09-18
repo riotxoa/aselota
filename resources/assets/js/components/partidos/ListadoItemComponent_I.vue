@@ -49,8 +49,8 @@
       </div>
       <div class="col-2 coste rojo text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
-          <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_1.asiste }, { 'pt-2': data.pelotari_1.asiste }]">{{ this.data.pelotari_1.coste.toFixed(2) }}&nbsp;&euro;</span>
-          <span v-if="!data.pelotari_1.asiste">{{ this.data.pelotari_1.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_1.asiste }, { 'pt-2': data.pelotari_1.asiste }]">{{ ( this.data.pelotari_1.coste ? this.data.pelotari_1.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_1.asiste">{{ ( this.data.pelotari_1.sustituto_coste ? this.data.pelotari_1.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" @click.stop="onClickEditPelotari(data.pelotari_1)">
@@ -75,8 +75,8 @@
       </div>
       <div class="col-2 coste azul text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
-          <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_3.asiste }, { 'pt-2': data.pelotari_3.asiste }]">{{ this.data.pelotari_3.coste.toFixed(2) }}&nbsp;&euro;</span>
-          <span v-if="!data.pelotari_3.asiste">{{ this.data.pelotari_3.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_3.asiste }, { 'pt-2': data.pelotari_3.asiste }]">{{ ( this.data.pelotari_3.coste ? this.data.pelotari_3.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_3.asiste">{{ ( this.data.pelotari_3.sustituto_coste ? this.data.pelotari_3.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" @click.stop="onClickEditPelotari(data.pelotari_3)">
@@ -105,8 +105,8 @@
       </div>
       <div class="col-2 coste rojo text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
-          <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_2.asiste }, { 'pt-2': data.pelotari_2.asiste }]">{{ this.data.pelotari_2.coste.toFixed(2) }}&nbsp;&euro;</span>
-          <span v-if="!data.pelotari_2.asiste">{{ this.data.pelotari_2.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_2.asiste }, { 'pt-2': data.pelotari_2.asiste }]">{{ ( this.data.pelotari_2.coste ? this.data.pelotari_2.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_2.asiste">{{ ( this.data.pelotari_2.sustituto_coste ? this.data.pelotari_2.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" @click.stop="onClickEditPelotari(data.pelotari_2)">
@@ -131,8 +131,8 @@
       </div>
       <div class="col-2 coste azul text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
-          <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_4.asiste }, { 'pt-2': data.pelotari_4.asiste }]">{{ this.data.pelotari_4.coste.toFixed(2) }}&nbsp;&euro;</span>
-          <span v-if="!data.pelotari_4.asiste">{{ this.data.pelotari_4.sustituto_coste.toFixed(2) }}&nbsp;&euro;</span>
+          <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_4.asiste }, { 'pt-2': data.pelotari_4.asiste }]">{{ ( this.data.pelotari_4.coste ? this.data.pelotari_4.coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_4.asiste">{{ ( this.data.pelotari_4.sustituto_coste ? this.data.pelotari_4.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" @click.stop="onClickEditPelotari(data.pelotari_4)">
