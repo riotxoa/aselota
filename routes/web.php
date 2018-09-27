@@ -37,6 +37,8 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('festival-facturacion', 'FestivalFacturacionController');
     Route::resource('formas-pago', 'FormasPagoController');
     Route::resource('envio-facturas', 'FacturaEnvioController');
+    
+    Route::get('calendario', 'FestivaleController@getCalendarMonth');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
@@ -54,3 +56,4 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 
 Route::get('/user', 'UserController@edit');
+Route::get('/calendar', 'FestivaleController@showCalendarView');

@@ -186,6 +186,19 @@ var APIGetters = {
         });
       });
     },
+    getPelotarisMonth (year, month) {
+      return new Promise( (resolve, reject) => {
+        axios.get('/www/pelotaris', {
+          params: {
+            fecha_ini: new Date(year, month, 1),
+            fecha_fin: new Date(year, month + 1, 0),
+          }
+        }).then((response) => {
+          var stringified = JSON.stringify(response.data);
+          this.pelotaris = JSON.parse(stringified);
+        })
+      });
+    },
 
     /* CLIENTES */
     getClientes () {

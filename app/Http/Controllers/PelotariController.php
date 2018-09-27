@@ -33,6 +33,15 @@ class PelotariController extends Controller
                          ->where('contratos.deleted_at', null);
         }
 
+        if($request->get('fecha_ini')) {
+          $fecha_ini = $request->get('fecha_ini');
+          $fecha_fin = $request->get('fecha_fin');
+          $items = $items->leftJoin('contratos as c2', 'pelotaris.id', '=', 'c2.pelotari_id')
+                         ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
+                         ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
+                         ->whereNull('c2.deleted_at');
+        }
+
         $items = $items->orderBy('alias')
                        ->get();
 

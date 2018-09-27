@@ -1,0 +1,227 @@
+<template>
+  <div class="calendar-wrap">
+    <h4 class="text-center text-uppercase font-weight-bold">Calendario de Pelotaris</h4>
+    <b-row class="mt-3">
+      <div class="col-sm-2"><b-button class="month-nav prev" size="sm" variant="primary" @click="onClickPrev"><i class="icon voyager-double-left"></i>&nbsp;{{ this.months[this.prev_month] }}&nbsp;{{ this.prev_year }}</b-button></div>
+      <div class="text-center text-uppercase font-weight-bold col-sm-8">{{ this.months[this.curr_month] }}&nbsp;{{ this.curr_year }}</div>
+      <div class="col-sm-2"><b-button class="month-nav next" size="sm" variant="primary" @click="onClickNext">{{ this.months[this.next_month] }}&nbsp;{{ this.next_year }}&nbsp;<i class="icon voyager-double-right"></i></b-button></div>
+    </b-row>
+    <b-row class="mt-4">
+      <div class="col-2 pr-0" style="margin-right:-1px;">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col" style="min-width:10rem;">Pelotari</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="pelotari in pelotaris">
+              <th scope="row">{{ pelotari.alias }}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-10 pl-0" style="overflow:auto;">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col" v-for="day in days[curr_month]" style="border-left:1px solid #666;min-width:2rem;">{{ day }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="pelotari in pelotaris">
+              <td v-for="day in days[curr_month]" v-html="showAgenda(pelotari, day)" @click="tralara(pelotari, day)"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </b-row>
+  </div>
+</template>
+
+<script>
+  import { mapState } from 'vuex';
+  import { store } from '../store/store';
+  import APIGetters from '../utils/getters.js';
+
+  export default {
+    mixins: [APIGetters],
+    data () {
+      return {
+        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        days: [],
+        prev_month: '',
+        curr_month: '',
+        next_month: '',
+        prev_year: '',
+        curr_year: '',
+        next_year: '',
+        today: '',
+        agenda: null,
+        prev_agenda: null,
+        curr_agenda: null,
+        next_agenda: null,
+        pelotaris: null,
+      };
+    },
+    computed: mapState({
+      _calendario: 'calendario',
+    }),
+    created() {
+      console.log("CalendarMainViewComponent created");
+
+      if( 0 === this.curr_month.length ) {
+        this.today = new Date();
+
+        this.curr_month = this.today.getMonth();
+        this.prev_month = this.getPrevMonth(this.curr_month);
+        this.next_month = this.getNextMonth(this.curr_month);
+
+        this.curr_year = this.today.getFullYear();
+        this.prev_year = this.getPrevYear(this.curr_year);
+        this.next_year = this.getNextYear(this.next_year);
+
+        this.days = [31, (this.curr_year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+
+        store.dispatch('loadCalendario');
+        this.getPelotarisMonth(this.curr_year, this.curr_month);
+      }
+    },
+    updated() {
+        jQuery('[data-toggle="tooltip"]').tooltip();
+    },
+    methods: {
+      showAgenda(pelotari, day) {
+        var date = this.curr_year + "-" + (this.curr_month+1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+        var curr_agenda = _.filter(this._calendario, function(o) {
+          return (o.fecha && o.fecha.indexOf(date) !== -1);
+        });
+        var match = _.find(curr_agenda, { alias: pelotari.alias, year: this.curr_year, month: this.curr_month+1, day: day });
+
+        if ( match ) {
+          var tooltip = "<div style=\"text-align:left\"> \
+                            <strong>Fecha: </strong> " + match.fecha + " - " + match.hora + "<br> \
+                            <strong>Nº Partido:</strong> " + match.orden + " - <strong>Estelar:</strong> " + (match.estelar ? "Sí" : "No") + "<br> \
+                            <strong>Modalidad:</strong> " + match.tipo_partido_name + "<br> \
+                         ";
+          if( match.campeonato_id ) {
+            tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)";
+          }
+
+          tooltip += "</div>";
+
+          return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:help;'>" + match.fronton_name + "</div>";
+        } else {
+          return "<span>&nbsp;</span>";
+        }
+      },
+      tralara(pelotari, day) {
+        var date = this.curr_year + "-" + (this.curr_month+1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+        var curr_agenda = _.filter(this._calendario, function(o) {
+          return (o.fecha && o.fecha.indexOf(date) !== -1);
+        });
+        var match = _.find(curr_agenda, { alias: pelotari.alias, year: this.curr_year, month: this.curr_month+1, day: day });
+
+        if ( match ) {
+          // alert("TRALARA: " + match.festival_id)
+          this.$router.push('/gerente/festival/' + match.festival_id + '/edit/');
+        }
+      },
+      getPrevMonth(month) {
+        return ( month > 0 ? month - 1 : 11);
+      },
+      getNextMonth(month) {
+        return ( month < 11 ? month + 1 : 0);
+      },
+      getPrevYear(month) {
+        return (month > 0 ? this.curr_year : this.curr_year - 1);
+      },
+      getNextYear(month) {
+        return (month < 11 ? this.curr_year : this.curr_year + 1);
+      },
+      onClickPrev() {
+        this.curr_month = this.getPrevMonth(this.curr_month);
+        this.prev_month = this.getPrevMonth(this.curr_month);
+        this.next_month = this.getNextMonth(this.curr_month);
+
+        this.curr_year = this.prev_year;
+        this.prev_year = this.getPrevYear(this.curr_month);
+        this.next_year = this.getNextYear(this.curr_month);
+
+        store.dispatch('loadCalendario', this.curr_month + 1);
+        this.getPelotarisMonth(this.curr_year, this.curr_month);
+      },
+      onClickNext() {
+        this.curr_month = this.getNextMonth(this.curr_month);
+        this.prev_month = this.getPrevMonth(this.curr_month);
+        this.next_month = this.getNextMonth(this.curr_month);
+
+        this.curr_year = this.next_year;
+        this.prev_year = this.getPrevYear(this.curr_month);
+        this.next_year = this.getNextYear(this.curr_month);
+
+        store.dispatch('loadCalendario', this.curr_month + 1);
+        this.getPelotarisMonth(this.curr_year, this.curr_month);
+      },
+    }
+  }
+</script>
+
+<style>
+  /* .calendar-wrap .month {
+    min-height:500px;
+  }
+  .calendar-wrap .month.prev {
+    background-color:lightgreen;
+  }
+  .calendar-wrap .month.current {
+    background-color:pink;
+  }
+  .calendar-wrap .month.next {
+    background-color:lightblue;
+  } */
+
+  .calendar-wrap .month-nav {
+    border-radius:0;
+    font-weight:bold;
+    text-transform:uppercase;
+    width:100%;
+  }
+
+  .calendar-wrap table {
+    border:1px solid black;
+    padding:.5rem;
+  }
+  .calendar-wrap thead {
+    font-weight:bold;
+  }
+  .calendar-wrap thead td,
+  .calendar-wrap thead th {
+    font-size:.8rem;
+    padding:.25rem 1rem;
+  }
+  .calendar-wrap thead td:not(:first-child),
+  .calendar-wrap tbody td:not(:first-child) {
+    border-left:1px solid black;
+    text-align:center;
+  }
+  .calendar-wrap tbody td,
+  .calendar-wrap tbody th {
+    border-top:1px solid black;
+    font-size:.8rem;
+    font-weight:bold;
+    height:2rem;
+    line-height:1;
+    padding:.25rem 1rem;
+    position:relative;
+    vertical-align:middle;
+  }
+  .calendar-wrap tbody td {
+    padding:0;
+  }
+  .calendar-wrap tbody td div {
+    background:lightgreen;
+    height:100%;
+    padding:.25rem .5rem 0;
+  }
+</style>

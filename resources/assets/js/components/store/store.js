@@ -36,6 +36,7 @@ export const store = new Vuex.Store({
     },
     coste: 0.00,
     edit: false,
+    calendario: null,
   },
   getters: {
     festivales: state => state.festivales,
@@ -46,6 +47,7 @@ export const store = new Vuex.Store({
     coste: state => state.coste,
     facturacion: state => state.facturacion,
     edit: state => state.edit,
+    calendario: state => state.calendario,
   },
   mutations: {
     SET_FESTIVALES (state, festivales) {
@@ -138,6 +140,9 @@ export const store = new Vuex.Store({
     },
     SET_EDIT (state, edit) {
       state.edit = edit;
+    },
+    SET_CALENDARIO (state, calendario) {
+      state.calendario = calendario;
     },
   },
   actions: {
@@ -335,6 +340,20 @@ export const store = new Vuex.Store({
             reject(error);
           });
       });
-    }
+    },
+    loadCalendario({ commit }, month) {
+      let data = {
+        params: {
+          pelotaris: [],
+          month: month,
+        }
+      };
+      axios
+        .get('/www/calendario', data)
+        .then( r => r.data )
+        .then( calendario => {
+          commit('SET_CALENDARIO', calendario);
+        });
+    },
   }
 });

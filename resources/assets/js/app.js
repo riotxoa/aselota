@@ -35,6 +35,7 @@ Vue.filter('formatDate', function(value) {
 Vue.component('home-component', require('./components/HomeComponent.vue'));
 
 Vue.component('profile-component', require('./components/common_profile/ProfileComponent.vue'));
+Vue.component('calendar-component', require('./components/calendario/CalendarMainViewComponent.vue'));
 
 Vue.component('home-rrhh', require('./components/HomeRRHHComponent.vue'));
 Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));

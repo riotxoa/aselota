@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use App\Festivale;
+use App\User;
+use TCG\Voyager\Models\Role;
 
 class FestivaleController extends Controller
 {
@@ -184,5 +186,88 @@ class FestivaleController extends Controller
         Festivale::destroy($id);
 
         return response()->json("FESTIVAL REMOVED", 200);
+    }
+
+    public function showCalendarView(Request $request)
+    {
+      $request->user()->authorizeRoles(['admin', 'gerente']);
+
+      $id = $request->user()->id;
+
+      $user = User::find($id);
+
+      $rol = Role::find($user->role_id);
+
+      return view('calendar', ['user' => $user, 'role' => $rol->name]);
+    }
+
+    public function getCalendarMonth(Request $request)
+    {
+      $request->user()->authorizeRoles(['admin', 'gerente']);
+
+      $month = $request->get('month');
+      $pelotaris = $request->get('pelotaris');
+
+      /*
+      SELECT pelotaris.id, pelotaris.alias,
+      festival_partido_pelotaris.festival_partido_id, festival_partido_pelotaris.asiste, festival_partido_pelotaris.sustituto_id,
+      festival_partidos.festival_id, festival_partidos.estelar, festival_partidos.campeonato_id,
+      festivales.fecha,
+      DAYOFMONTH(festivales.fecha) as day,
+	    MONTH(festivales.fecha) as month,
+	    YEAR(festivales.fecha) as year,
+      festivales.hora,
+      festivales.fronton_id, frontones.name as fronton_name, festivales.television
+      FROM pelotaris
+      LEFT JOIN festival_partido_pelotaris ON festival_partido_pelotaris.pelotari_id = pelotaris.id
+      LEFT JOIN festival_partidos ON festival_partidos.id = festival_partido_pelotaris.festival_partido_id
+      LEFT JOIN festivales ON festivales.id = festival_partidos.festival_id
+      LEFT JOIN frontones ON frontones.id = festivales.fronton_id
+      WHERE pelotaris.deleted_at is null
+      ORDER BY pelotaris.alias ASC
+      */
+
+      $calendar = DB::table('pelotaris')
+        ->leftJoin('festival_partido_pelotaris', 'festival_partido_pelotaris.pelotari_id', '=', 'pelotaris.id')
+        ->leftJoin('festival_partidos', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
+        ->leftJoin('festivales', 'festivales.id', '=', 'festival_partidos.festival_id')
+        ->leftJoin('frontones', 'frontones.id', '=', 'festivales.fronton_id')
+        ->leftJoin('campeonatos', 'campeonatos.id', '=', 'festival_partidos.campeonato_id')
+        ->leftJoin('tipo_partidos', 'tipo_partidos.id', '=', 'festival_partidos.tipo_partido_id')
+        ->select(
+            'pelotaris.id',
+            'pelotaris.alias',
+            'festival_partido_pelotaris.festival_partido_id',
+            'festival_partido_pelotaris.asiste',
+            'festival_partido_pelotaris.sustituto_id',
+            'festival_partidos.festival_id',
+            'festival_partidos.orden',
+            'festival_partidos.estelar',
+            'festival_partidos.campeonato_id',
+            'campeonatos.name as campeonato_name',
+            'tipo_partidos.name as tipo_partido_name',
+            'festival_partidos.fase',
+            'festivales.fecha',
+            DB::raw('DAYOFMONTH(festivales.fecha) as day'),
+            DB::raw('MONTH(festivales.fecha) as month'),
+            DB::raw('YEAR(festivales.fecha) as year'),
+            'festivales.hora',
+            'festivales.fronton_id',
+            'frontones.name as fronton_name',
+            'festivales.television'
+          );
+
+      if( $month ) {
+        $calendar = $calendar->whereMonth('festivales.fecha', $month);
+      } else {
+        $calendar = $calendar->whereMonth('festivales.fecha', date("m"));
+      }
+
+      $calendar = $calendar->whereNull('pelotaris.deleted_at')
+                           ->orderBy('pelotaris.alias')
+                           ->get();
+
+
+      return response()->json($calendar, 200);
     }
 }
