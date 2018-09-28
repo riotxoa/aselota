@@ -54,6 +54,7 @@ Vue.component('ficha-festival', require('./components/festivales/FichaComponent.
 
 const HomeGerente = { template: '<home-gerente></home-gerente>' };
 const ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
+const Calendario = { template: '<calendar-component></calendar-component>' };
 const CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival=1 :is-gerente=1></ficha-festival>'};
 const EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=1></ficha-festival>'};
 
@@ -83,6 +84,9 @@ const routes = [
     children: [
       {
         path: '', component: ListFestivales_G
+      },
+      {
+        path: 'calendario', component: Calendario
       },
       {
         path: 'festival/new', component: CreateFestival_G

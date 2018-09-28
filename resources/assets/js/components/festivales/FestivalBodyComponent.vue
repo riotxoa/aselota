@@ -17,6 +17,7 @@
 </template>
 
 <script>
+  import { store } from '../store/store';
   import { mapState } from 'vuex';
 
   Vue.component('festival-partidos', require('../partidos/FestivalListadoPartidosComponent.vue'));
@@ -31,6 +32,9 @@
     created: function () {
       console.log("FestivalBodyComponent created");
     },
+    // beforeDestroy: function () {
+    //   store.dispatch('clearPartidos');
+    // },
     computed: mapState({
       _header: 'header',
     }),

@@ -76,12 +76,6 @@
                                             <i class="voyager-settings"></i> {{ __('Admin') }}
                                         </a>
                                       @endif
-                                      @if ( $role == 'gerente' )
-                                        <div class="dropdown-divider mt-3 mb-3"></div>
-                                        <a class="dropdown-item mt-1" href="/calendar">
-                                            <i class="voyager-settings"></i> {{ __('Calendario Pelotaris') }}
-                                        </a>
-                                      @endif
                                       <div class="dropdown-divider mt-3 mb-3"></div>
                                       <a class="dropdown-item" href="{{ route('logout') }}"
                                          onclick="event.preventDefault();

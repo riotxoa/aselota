@@ -5,8 +5,13 @@
         <div class="toolbar mb-2 py-1">
           <div class="container">
             <b-row>
-              <h4 class="col-sm-6 text-white font-weight-bold m-0">{{ this.formTitle }}</h4>
-              <div class="col-sm-6 text-right">
+              <div class="col-sm-3">
+                <router-link v-if="1 == isGerente" to="/gerente/calendario" class="text-white"><b-btn variant="outline-link" class="mb-0" title="Calendario de Pelotaris" @click="dontDestroyComponent"><div class="icon voyager-calendar"></div></b-btn></router-link>
+              </div>
+              <div class="col-sm-6">
+                <h4 class="text-white text-uppercase text-center font-weight-bold m-0">{{ this.formTitle }}</h4>
+              </div>
+              <div class="col-sm-3 text-right">
                 <b-button type="submit" variant="danger">Guardar</b-button>
                 <b-button type="reset" variant="default">Volver</b-button>
               </div>
@@ -145,7 +150,8 @@
           { value: 1, text: "Sí" },
         ],
         editdate: false,
-        show: true
+        show: true,
+        destroy: true,
       }
     },
     created: function () {
@@ -168,6 +174,12 @@
         this._header.estado_id = 1;
       }
     },
+    beforeDestroy: function () {
+      if( true === this.destroy ) {
+        store.dispatch('clearHeader');
+        store.dispatch('clearPartidos');
+      }
+    },
     computed: {
       _header () {
         return store.getters.header;
@@ -177,6 +189,9 @@
       },
     },
     methods: {
+      dontDestroyComponent () {
+        this.destroy = false;
+      },
       onChangeDate () {
         switch (new Date(this._header.fecha).getDay()) {
           case 0:

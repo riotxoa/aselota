@@ -10361,8 +10361,13 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         }
       });
     },
-    loadPartidos: function loadPartidos(_ref6) {
+    clearHeader: function clearHeader(_ref6) {
       var commit = _ref6.commit;
+
+      commit('SET_HEADER', {});
+    },
+    loadPartidos: function loadPartidos(_ref7) {
+      var commit = _ref7.commit;
 
       var data = {
         params: {
@@ -10376,14 +10381,19 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PARTIDOS', partidos);
       });
     },
-    resetFestival: function resetFestival(_ref7) {
-      var commit = _ref7.commit;
+    clearPartidos: function clearPartidos(_ref8) {
+      var commit = _ref8.commit;
+
+      commit('SET_PARTIDOS', []);
+    },
+    resetFestival: function resetFestival(_ref9) {
+      var commit = _ref9.commit;
 
       commit('RESET_FESTIVAL_HEADER');
       commit('RESET_FESTIVAL_BODY');
     },
-    addPartido: function addPartido(_ref8, partido) {
-      var commit = _ref8.commit;
+    addPartido: function addPartido(_ref10, partido) {
+      var commit = _ref10.commit;
 
       var uri = '/www/partidos';
       return new Promise(function (resolve, reject) {
@@ -10397,8 +10407,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePartido: function updatePartido(_ref9, partido) {
-      var commit = _ref9.commit;
+    updatePartido: function updatePartido(_ref11, partido) {
+      var commit = _ref11.commit;
 
       var uri = '/www/partidos/' + partido.id + '/update';
 
@@ -10412,9 +10422,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    deletePartido: function deletePartido(_ref10, id) {
-      var commit = _ref10.commit,
-          dispatch = _ref10.dispatch;
+    deletePartido: function deletePartido(_ref12, id) {
+      var commit = _ref12.commit,
+          dispatch = _ref12.dispatch;
 
       var uri = '/www/partidos/' + id;
 
@@ -10429,8 +10439,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePartidoPelotari: function updatePartidoPelotari(_ref11, pelotari) {
-      var commit = _ref11.commit;
+    updatePartidoPelotari: function updatePartidoPelotari(_ref13, pelotari) {
+      var commit = _ref13.commit;
 
       var uri = '/www/partido-pelotaris/' + pelotari.id + '/update';
 
@@ -10444,8 +10454,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePartidoCelebrado: function updatePartidoCelebrado(_ref12, partido) {
-      var commit = _ref12.commit;
+    updatePartidoCelebrado: function updatePartidoCelebrado(_ref14, partido) {
+      var commit = _ref14.commit;
 
       var uri = '/www/partido-celebrado/' + partido.id + '/update';
 
@@ -10460,8 +10470,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCostes: function loadCostes(_ref13) {
-      var commit = _ref13.commit;
+    loadCostes: function loadCostes(_ref15) {
+      var commit = _ref15.commit;
 
       var data = {
         params: {
@@ -10474,8 +10484,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_COSTES', costes);
       });
     },
-    addCostes: function addCostes(_ref14, costes) {
-      var commit = _ref14.commit;
+    addCostes: function addCostes(_ref16, costes) {
+      var commit = _ref16.commit;
 
       var uri = '/www/festival-costes';
       costes.festival_id = this.getters.header.id;
@@ -10490,8 +10500,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadFacturacion: function loadFacturacion(_ref15) {
-      var commit = _ref15.commit;
+    loadFacturacion: function loadFacturacion(_ref17) {
+      var commit = _ref17.commit;
 
       var data = {
         params: {
@@ -10504,8 +10514,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FACTURACION', facturacion);
       });
     },
-    addFacturacion: function addFacturacion(_ref16, facturacion) {
-      var commit = _ref16.commit;
+    addFacturacion: function addFacturacion(_ref18, facturacion) {
+      var commit = _ref18.commit;
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
@@ -10519,8 +10529,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCalendario: function loadCalendario(_ref17, month) {
-      var commit = _ref17.commit;
+    loadCalendario: function loadCalendario(_ref19, month) {
+      var commit = _ref19.commit;
 
       var data = {
         params: {
@@ -49672,6 +49682,7 @@ Vue.component('ficha-festival', __webpack_require__(413));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
+var Calendario = { template: '<calendar-component></calendar-component>' };
 var CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival=1 :is-gerente=1></ficha-festival>' };
 var EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=1></ficha-festival>' };
 
@@ -49694,6 +49705,8 @@ var routes = [{
   path: '/gerente', component: HomeGerente,
   children: [{
     path: '', component: ListFestivales_G
+  }, {
+    path: 'calendario', component: Calendario
   }, {
     path: 'festival/new', component: CreateFestival_G
   }, {
@@ -86436,7 +86449,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* .calendar-wrap .month {\n  min-height:500px;\n}\n.calendar-wrap .month.prev {\n  background-color:lightgreen;\n}\n.calendar-wrap .month.current {\n  background-color:pink;\n}\n.calendar-wrap .month.next {\n  background-color:lightblue;\n} */\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  background:lightgreen;\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n", ""]);
+exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  background:lightgreen;\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n", ""]);
 
 // exports
 
@@ -86450,6 +86463,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(16);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -86523,20 +86547,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     console.log("CalendarMainViewComponent created");
 
-    if (0 === this.curr_month.length) {
-      this.today = new Date();
+    this.today = new Date();
 
+    if (this._calendario) {
+      this.curr_month = this._calendario[0].month - 1;
+      this.curr_year = this._calendario[0].year;
+    } else {
       this.curr_month = this.today.getMonth();
-      this.prev_month = this.getPrevMonth(this.curr_month);
-      this.next_month = this.getNextMonth(this.curr_month);
-
       this.curr_year = this.today.getFullYear();
-      this.prev_year = this.getPrevYear(this.curr_year);
-      this.next_year = this.getNextYear(this.next_year);
-
-      this.days = [31, this.curr_year % 4 ? 28 : 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('loadCalendario');
-      this.getPelotarisMonth(this.curr_year, this.curr_month);
     }
+
+    this.prev_month = this.getPrevMonth(this.curr_month);
+    this.next_month = this.getNextMonth(this.curr_month);
+
+    this.prev_year = this.getPrevYear(this.curr_year);
+    this.next_year = this.getNextYear(this.next_year);
+
+    this.days = [31, this.curr_year % 4 ? 28 : 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('loadCalendario', this.curr_month + 1);
+    this.getPelotarisMonth(this.curr_year, this.curr_month);
   },
   updated: function updated() {
     jQuery('[data-toggle="tooltip"]').tooltip();
@@ -86562,7 +86592,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         tooltip += "</div>";
 
-        return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:help;'>" + match.fronton_name + "</div>";
+        return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.fronton_name + "</div>";
       } else {
         return "<span>&nbsp;</span>";
       }
@@ -86575,7 +86605,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var match = _.find(curr_agenda, { alias: pelotari.alias, year: this.curr_year, month: this.curr_month + 1, day: day });
 
       if (match) {
-        // alert("TRALARA: " + match.festival_id)
+        jQuery('[data-toggle="tooltip"]').tooltip('hide');
         this.$router.push('/gerente/festival/' + match.festival_id + '/edit/');
       }
     },
@@ -86614,6 +86644,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('loadCalendario', this.curr_month + 1);
       this.getPelotarisMonth(this.curr_year, this.curr_month);
+    },
+    goBack: function goBack() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
     }
   }
 });
@@ -86630,11 +86663,47 @@ var render = function() {
     "div",
     { staticClass: "calendar-wrap" },
     [
-      _c("h4", { staticClass: "text-center text-uppercase font-weight-bold" }, [
-        _vm._v("Calendario de Pelotaris")
+      _c("div", { staticClass: "main-header" }, [
+        _c("div", { staticClass: "toolbar mb-0 py-1" }, [
+          _c(
+            "div",
+            { staticClass: "container" },
+            [
+              _c("b-row", [
+                _c("div", { staticClass: "col-sm-3" }),
+                _vm._v(" "),
+                _c(
+                  "h4",
+                  {
+                    staticClass:
+                      "col-sm-6 text-uppercase text-white font-weight-bold"
+                  },
+                  [_vm._v("Calendario de Pelotaris")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-sm-3 text-right" },
+                  [
+                    _c(
+                      "b-button",
+                      {
+                        attrs: { variant: "default" },
+                        on: { click: _vm.goBack }
+                      },
+                      [_vm._v("Volver")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ],
+            1
+          )
+        ])
       ]),
       _vm._v(" "),
-      _c("b-row", { staticClass: "mt-3" }, [
+      _c("b-row", { staticClass: "mt-3 px-3" }, [
         _c(
           "div",
           { staticClass: "col-sm-2" },
@@ -86700,7 +86769,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("b-row", { staticClass: "mt-4" }, [
+      _c("b-row", { staticClass: "mt-4 px-3" }, [
         _c(
           "div",
           {
@@ -92850,6 +92919,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -93504,6 +93574,30 @@ var render = function() {
                       "router-link",
                       {
                         staticClass: "text-white",
+                        attrs: { to: "/gerente/calendario" }
+                      },
+                      [
+                        _c(
+                          "b-btn",
+                          {
+                            staticClass: "mb-0",
+                            attrs: {
+                              variant: "outline-link",
+                              title: "Calendario de Pelotaris"
+                            }
+                          },
+                          [_c("div", { staticClass: "icon voyager-calendar" })]
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                1 == _vm.isGerente
+                  ? _c(
+                      "router-link",
+                      {
+                        staticClass: "text-white",
                         attrs: { to: "/gerente/festival/new" }
                       },
                       [
@@ -94121,6 +94215,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -94136,7 +94235,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       dia: '',
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
       editdate: false,
-      show: true
+      show: true,
+      destroy: true
     };
   },
 
@@ -94160,6 +94260,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this._header.estado_id = 1;
     }
   },
+  beforeDestroy: function beforeDestroy() {
+    if (true === this.destroy) {
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('clearHeader');
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('clearPartidos');
+    }
+  },
   computed: {
     _header: function _header() {
       return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.header;
@@ -94169,6 +94275,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
+    dontDestroyComponent: function dontDestroyComponent() {
+      this.destroy = false;
+    },
     onChangeDate: function onChangeDate() {
       switch (new Date(this._header.fecha).getDay()) {
         case 0:
@@ -94280,16 +94389,55 @@ var render = function() {
                 [
                   _c("b-row", [
                     _c(
-                      "h4",
-                      {
-                        staticClass: "col-sm-6 text-white font-weight-bold m-0"
-                      },
-                      [_vm._v(_vm._s(this.formTitle))]
+                      "div",
+                      { staticClass: "col-sm-3" },
+                      [
+                        1 == _vm.isGerente
+                          ? _c(
+                              "router-link",
+                              {
+                                staticClass: "text-white",
+                                attrs: { to: "/gerente/calendario" }
+                              },
+                              [
+                                _c(
+                                  "b-btn",
+                                  {
+                                    staticClass: "mb-0",
+                                    attrs: {
+                                      variant: "outline-link",
+                                      title: "Calendario de Pelotaris"
+                                    },
+                                    on: { click: _vm.dontDestroyComponent }
+                                  },
+                                  [
+                                    _c("div", {
+                                      staticClass: "icon voyager-calendar"
+                                    })
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      ],
+                      1
                     ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c(
+                        "h4",
+                        {
+                          staticClass:
+                            "text-white text-uppercase text-center font-weight-bold m-0"
+                        },
+                        [_vm._v(_vm._s(this.formTitle))]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-sm-6 text-right" },
+                      { staticClass: "col-sm-3 text-right" },
                       [
                         _c(
                           "b-button",
@@ -94725,7 +94873,8 @@ exports.push([module.i, "\n.card-header {\n  background:transparent;\n  border:n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
 //
 //
 //
@@ -94744,6 +94893,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -94759,7 +94909,10 @@ Vue.component('festival-facturacion', __webpack_require__(461));
   created: function created() {
     console.log("FestivalBodyComponent created");
   },
-  computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])({
+  // beforeDestroy: function () {
+  //   store.dispatch('clearPartidos');
+  // },
+  computed: Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
     _header: 'header'
   }),
   methods: {}

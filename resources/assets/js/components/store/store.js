@@ -189,6 +189,9 @@ export const store = new Vuex.Store({
           }
         });
     },
+    clearHeader({ commit }) {
+      commit('SET_HEADER', {});
+    },
     loadPartidos({ commit }) {
       let data = {
         params: {
@@ -202,6 +205,9 @@ export const store = new Vuex.Store({
         .then( partidos => {
           commit('SET_PARTIDOS', partidos);
         });
+    },
+    clearPartidos({ commit }) {
+      commit('SET_PARTIDOS', []);
     },
     resetFestival({ commit }) {
       commit('RESET_FESTIVAL_HEADER');

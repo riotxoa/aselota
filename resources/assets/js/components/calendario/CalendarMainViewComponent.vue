@@ -1,12 +1,23 @@
 <template>
   <div class="calendar-wrap">
-    <h4 class="text-center text-uppercase font-weight-bold">Calendario de Pelotaris</h4>
-    <b-row class="mt-3">
+    <div class="main-header">
+      <div class="toolbar mb-0 py-1">
+        <div class="container">
+          <b-row>
+            <div class="col-sm-3"></div>
+            <h4 class="col-sm-6 text-uppercase text-white font-weight-bold">Calendario de Pelotaris</h4>
+            <div class="col-sm-3 text-right"><b-button @click="goBack" variant="default">Volver</b-button></div>
+          </b-row>
+        </div>
+      </div>
+    </div>
+
+    <b-row class="mt-3 px-3">
       <div class="col-sm-2"><b-button class="month-nav prev" size="sm" variant="primary" @click="onClickPrev"><i class="icon voyager-double-left"></i>&nbsp;{{ this.months[this.prev_month] }}&nbsp;{{ this.prev_year }}</b-button></div>
       <div class="text-center text-uppercase font-weight-bold col-sm-8">{{ this.months[this.curr_month] }}&nbsp;{{ this.curr_year }}</div>
       <div class="col-sm-2"><b-button class="month-nav next" size="sm" variant="primary" @click="onClickNext">{{ this.months[this.next_month] }}&nbsp;{{ this.next_year }}&nbsp;<i class="icon voyager-double-right"></i></b-button></div>
     </b-row>
-    <b-row class="mt-4">
+    <b-row class="mt-4 px-3">
       <div class="col-2 pr-0" style="margin-right:-1px;">
         <table class="table table-striped">
           <thead class="thead-dark">
@@ -70,22 +81,27 @@
     created() {
       console.log("CalendarMainViewComponent created");
 
-      if( 0 === this.curr_month.length ) {
-        this.today = new Date();
+      this.today = new Date();
 
+      if( this._calendario ) {
+        this.curr_month = this._calendario[0].month - 1;
+        this.curr_year = this._calendario[0].year;
+
+      } else {
         this.curr_month = this.today.getMonth();
-        this.prev_month = this.getPrevMonth(this.curr_month);
-        this.next_month = this.getNextMonth(this.curr_month);
-
         this.curr_year = this.today.getFullYear();
-        this.prev_year = this.getPrevYear(this.curr_year);
-        this.next_year = this.getNextYear(this.next_year);
-
-        this.days = [31, (this.curr_year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-
-        store.dispatch('loadCalendario');
-        this.getPelotarisMonth(this.curr_year, this.curr_month);
       }
+
+      this.prev_month = this.getPrevMonth(this.curr_month);
+      this.next_month = this.getNextMonth(this.curr_month);
+
+      this.prev_year = this.getPrevYear(this.curr_year);
+      this.next_year = this.getNextYear(this.next_year);
+
+      this.days = [31, (this.curr_year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+      store.dispatch('loadCalendario', this.curr_month + 1);
+      this.getPelotarisMonth(this.curr_year, this.curr_month);
     },
     updated() {
         jQuery('[data-toggle="tooltip"]').tooltip();
@@ -110,7 +126,7 @@
 
           tooltip += "</div>";
 
-          return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:help;'>" + match.fronton_name + "</div>";
+          return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.fronton_name + "</div>";
         } else {
           return "<span>&nbsp;</span>";
         }
@@ -123,7 +139,7 @@
         var match = _.find(curr_agenda, { alias: pelotari.alias, year: this.curr_year, month: this.curr_month+1, day: day });
 
         if ( match ) {
-          // alert("TRALARA: " + match.festival_id)
+          jQuery('[data-toggle="tooltip"]').tooltip('hide');
           this.$router.push('/gerente/festival/' + match.festival_id + '/edit/');
         }
       },
@@ -163,24 +179,14 @@
         store.dispatch('loadCalendario', this.curr_month + 1);
         this.getPelotarisMonth(this.curr_year, this.curr_month);
       },
+      goBack() {
+        window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+      },
     }
   }
 </script>
 
 <style>
-  /* .calendar-wrap .month {
-    min-height:500px;
-  }
-  .calendar-wrap .month.prev {
-    background-color:lightgreen;
-  }
-  .calendar-wrap .month.current {
-    background-color:pink;
-  }
-  .calendar-wrap .month.next {
-    background-color:lightblue;
-  } */
-
   .calendar-wrap .month-nav {
     border-radius:0;
     font-weight:bold;

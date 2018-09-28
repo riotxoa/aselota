@@ -17,6 +17,7 @@
         </b-col>
 
         <b-col class="col-sm-4 text-right my-1 mb-3">
+          <router-link v-if="1 == isGerente" to="/gerente/calendario" class="text-white"><b-btn variant="outline-link" class="mb-0" title="Calendario de Pelotaris"><div class="icon voyager-calendar"></div></b-btn></router-link>
           <router-link v-if="1 == isGerente" to="/gerente/festival/new" class="text-white"><b-btn variant="danger" class="mb-0" title="Crear Festival">Nuevo Festival</b-btn></router-link>
         </b-col>
 

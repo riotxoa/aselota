@@ -188,19 +188,6 @@ class FestivaleController extends Controller
         return response()->json("FESTIVAL REMOVED", 200);
     }
 
-    public function showCalendarView(Request $request)
-    {
-      $request->user()->authorizeRoles(['admin', 'gerente']);
-
-      $id = $request->user()->id;
-
-      $user = User::find($id);
-
-      $rol = Role::find($user->role_id);
-
-      return view('calendar', ['user' => $user, 'role' => $rol->name]);
-    }
-
     public function getCalendarMonth(Request $request)
     {
       $request->user()->authorizeRoles(['admin', 'gerente']);
