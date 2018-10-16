@@ -174,7 +174,7 @@
     }),
     methods: {
       onFocusInput (field) {
-        // field.select();
+        field.select();
       },
       closeModal () {
         this.$root.$emit('bv::hide::modal', this.modalId);
@@ -292,7 +292,7 @@
     },
     methods: {
       onFocusInput (field) {
-        // field.select();
+        field.select();
       },
     },
     template: `
@@ -371,7 +371,7 @@
     },
     methods: {
       onFocusInput (field) {
-        // field.select();
+        field.select();
       },
     },
     template: `
@@ -466,11 +466,8 @@
     props: ['partido', 'anotaciones'],
     data: function() {
       return {
-        _anotaciones: null
+
       }
-    },
-    created: function () {
-      this._anotaciones = this.anotaciones;
     },
     template: `
       <b-row>
@@ -478,7 +475,7 @@
                       label-for="afluencia"
                       class="col-sm-12 font-weight-bold">
           <b-form-textarea id="afluencia"
-                           v-model="_anotaciones.afluencia"
+                           v-model="anotaciones.afluencia"
                            :rows="3"
                            :max-rows="6">
           </b-form-textarea>
@@ -487,7 +484,7 @@
                       label-for="fronton"
                       class="col-sm-12 font-weight-bold">
           <b-form-textarea id="fronton"
-                           v-model="_anotaciones.fronton"
+                           v-model="anotaciones.fronton"
                            :rows="3"
                            :max-rows="6">
           </b-form-textarea>
@@ -496,7 +493,7 @@
                       label-for="incidencias"
                       class="col-sm-12 font-weight-bold">
           <b-form-textarea id="incidencias"
-                           v-model="_anotaciones.incidencias"
+                           v-model="anotaciones.incidencias"
                            :rows="3"
                            :max-rows="6">
           </b-form-textarea>
@@ -505,7 +502,7 @@
                       label-for="comentarios"
                       class="col-sm-12 font-weight-bold">
           <b-form-textarea id="comentarios"
-                           v-model="_anotaciones.comentarios"
+                           v-model="anotaciones.comentarios"
                            :rows="3"
                            :max-rows="6">
           </b-form-textarea>
