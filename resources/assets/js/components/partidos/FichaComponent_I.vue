@@ -6,13 +6,9 @@
 
       <b-row class="form-toolbar text-center text-white py-2">
         <div class="col-sm-3 marcador rojo float-left text-left position-relative">
-          <b-form-input
-            @focus.native="onFocusInput($event.target)"
-            type="number"
+          <b-form-select
             v-model="tanteo.puntos_rojo"
-            step="1"
-            min="0"
-            max="22" />
+            :options="tantos" />
           <div class="pelotaris position-absolute">
             <p v-if="partido.pelotari_1" class="mb-0 text-uppercase font-weight-bold">{{ partido.pelotari_1.alias }}</p>
             <p v-if="partido.pelotari_2" class="mb-0 text-uppercase font-weight-bold">{{ partido.pelotari_2.alias }}</p>
@@ -24,13 +20,9 @@
           <p v-else class="text-uppercase mb-0"><small>{{ this.partido.tipo_partido_name }}</small></p>
         </div>
         <div class="col-sm-3 marcador azul float-right text-right position-relative">
-          <b-form-input
-            @focus.native="onFocusInput($event.target)"
-            type="number"
+          <b-form-select
             v-model="tanteo.puntos_azul"
-            step="1"
-            min="0"
-            max="22" />
+            :options="tantos" />
           <div class="pelotaris position-absolute">
             <p v-if="partido.pelotari_3" class="mb-0 text-uppercase font-weight-bold">{{ partido.pelotari_3.alias }}</p>
             <p v-if="partido.pelotari_4" class="mb-0 text-uppercase font-weight-bold">{{ partido.pelotari_4.alias }}</p>
@@ -98,6 +90,31 @@
           incidencias: '',
           comentarios: '',
         },
+        tantos: [
+          { value: 22, text: '22' },
+          { value: 21, text: '21' },
+          { value: 20, text: '20' },
+          { value: 19, text: '19' },
+          { value: 18, text: '18' },
+          { value: 17, text: '17' },
+          { value: 16, text: '16' },
+          { value: 15, text: '15' },
+          { value: 14, text: '14' },
+          { value: 13, text: '13' },
+          { value: 12, text: '12' },
+          { value: 11, text: '11' },
+          { value: 10, text: '10' },
+          { value: 9, text: '9' },
+          { value: 8, text: '8' },
+          { value: 7, text: '7' },
+          { value: 6, text: '6' },
+          { value: 5, text: '5' },
+          { value: 4, text: '4' },
+          { value: 3, text: '3' },
+          { value: 2, text: '2' },
+          { value: 1, text: '1' },
+          { value: 0, text: '0' },
+        ],
       }
     },
     created: function () {
@@ -197,6 +214,31 @@
     data: function() {
       return {
         fields: [],
+        tantos: [
+          { value: 0, text: '0' },
+          { value: 1, text: '1' },
+          { value: 2, text: '2' },
+          { value: 3, text: '3' },
+          { value: 4, text: '4' },
+          { value: 5, text: '5' },
+          { value: 6, text: '6' },
+          { value: 7, text: '7' },
+          { value: 8, text: '8' },
+          { value: 9, text: '9' },
+          { value: 10, text: '10' },
+          { value: 11, text: '11' },
+          { value: 12, text: '12' },
+          { value: 13, text: '13' },
+          { value: 14, text: '14' },
+          { value: 15, text: '15' },
+          { value: 16, text: '16' },
+          { value: 17, text: '17' },
+          { value: 18, text: '18' },
+          { value: 19, text: '19' },
+          { value: 20, text: '20' },
+          { value: 21, text: '21' },
+          { value: 22, text: '22' },
+        ]
       }
     },
     created: function() {
@@ -277,16 +319,16 @@
               <tr v-for="item in this.tanteo.tantos" class="text-center">
                   <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>
                   <td>
-                    <b-form-input class="rojo" v-model="item.pelotari_1" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />
+                    <b-form-select class="rojo" v-model="item.pelotari_1" :options="tantos" />
                   </td>
                   <td v-if="partido.is_partido_parejas">
-                    <b-form-input class="rojo" v-model="item.pelotari_2" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />
+                    <b-form-select class="rojo" v-model="item.pelotari_2" :options="tantos" />
                   </td>
                   <td>
-                    <b-form-input class="azul" v-model="item.pelotari_3" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />
+                    <b-form-select class="azul" v-model="item.pelotari_3" :options="tantos" />
                   </td>
                   <td v-if="partido.is_partido_parejas">
-                    <b-form-input class="azul" v-model="item.pelotari_4" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />
+                    <b-form-select class="azul" v-model="item.pelotari_4" :options="tantos" />
                   </td>
               </tr>
             </tbody>
@@ -300,7 +342,31 @@
     props: ['partido', 'marcadores'],
     data: function() {
       return {
-
+        tantos: [
+          { value: 0, text: '0' },
+          { value: 1, text: '1' },
+          { value: 2, text: '2' },
+          { value: 3, text: '3' },
+          { value: 4, text: '4' },
+          { value: 5, text: '5' },
+          { value: 6, text: '6' },
+          { value: 7, text: '7' },
+          { value: 8, text: '8' },
+          { value: 9, text: '9' },
+          { value: 10, text: '10' },
+          { value: 11, text: '11' },
+          { value: 12, text: '12' },
+          { value: 13, text: '13' },
+          { value: 14, text: '14' },
+          { value: 15, text: '15' },
+          { value: 16, text: '16' },
+          { value: 17, text: '17' },
+          { value: 18, text: '18' },
+          { value: 19, text: '19' },
+          { value: 20, text: '20' },
+          { value: 21, text: '21' },
+          { value: 22, text: '22' },
+        ]
       }
     },
     methods: {
@@ -322,8 +388,12 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>
+                <!--
                 <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>
                 <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>
+                -->
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i - 1]" :options="tantos" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i - 1]" :options="tantos" /></td>
               </tr>
             </tbody>
           </table>
@@ -338,8 +408,12 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>
+                <!--
                 <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>
                 <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>
+                -->
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 10]" :options="tantos" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i + 10]" :options="tantos" /></td>
               </tr>
             </tbody>
           </table>
@@ -354,8 +428,12 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>
+                <!--
                 <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>
                 <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>
+                -->
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 21]" :options="tantos" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i + 21]" :options="tantos" /></td>
               </tr>
             </tbody>
           </table>
@@ -370,8 +448,12 @@
             <tbody>
               <tr v-for="i in 10">
                 <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>
+                <!--
                 <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>
                 <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>
+                -->
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 32]" :options="tantos" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i + 32]" :options="tantos" /></td>
               </tr>
             </tbody>
           </table>
@@ -449,7 +531,8 @@
     margin:0;
     margin-top:-1px;
   }
-  .modal-intendente-partido .form-toolbar .marcador input {
+  .modal-intendente-partido .form-toolbar .marcador input,
+  .modal-intendente-partido .form-toolbar .marcador select {
     color:white;
     display:inline;
     font-size:20px;
@@ -459,11 +542,23 @@
     padding:0;
     text-align:center;
   }
-  .modal-intendente-partido .form-toolbar .marcador.rojo input {
+  .modal-intendente-partido .form-toolbar .marcador select {
+    background:none;
+    padding-bottom:5px;
+    padding-left:10px;
+  }
+  .modal-intendente-partido .form-toolbar .marcador option {
+    background:white;
+    color:black;
+    font-size:14px;
+  }
+  .modal-intendente-partido .form-toolbar .marcador.rojo input,
+  .modal-intendente-partido .form-toolbar .marcador.rojo select {
     background-color:red;
     float:left;
   }
-  .modal-intendente-partido .form-toolbar .marcador.azul input {
+  .modal-intendente-partido .form-toolbar .marcador.azul input,
+  .modal-intendente-partido .form-toolbar .marcador.azul select {
     background-color:blue;
     float:right;
   }
@@ -518,7 +613,8 @@
   .modal-intendente-partido table th {
     text-align:center;
   }
-  .modal-intendente-partido input[type="number"] {
+  .modal-intendente-partido input[type="number"],
+  .modal-intendente-partido select {
     margin:0 auto;
     max-width:50px;
     padding-bottom:3px;
@@ -528,12 +624,23 @@
     padding-left:0;
     padding-right:0;
   }
-  .modal-intendente-partido input[type="number"].rojo {
+  .modal-intendente-partido select {
+    background:none;
+    padding-left:15px;
+    width:100px;
+  }
+  .modal-intendente-partido select option {
+    background-color:white;
+    color:black;
+  }
+  .modal-intendente-partido input[type="number"].rojo,
+  .modal-intendente-partido select.rojo {
     border-color:rgba(255,0,0,.25);
     color:rgba(255,0,0,.7);
     font-weight:bold;
   }
-  .modal-intendente-partido input[type="number"].azul {
+  .modal-intendente-partido input[type="number"].azul,
+  .modal-intendente-partido select.azul {
     border-color:rgba(0,0,255,.25);
     color:rgba(0,0,255,.7);
     font-weight:bold;

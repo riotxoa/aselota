@@ -7551,6 +7551,426 @@ module.exports = g;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+  state: {
+    festivales: [],
+    total_festivales: 0,
+    filter_festivales: [],
+    header: {},
+    partidos: [],
+    costes: {
+      importe_venta: 0,
+      cliente_id: null,
+      cliente_txt: '',
+      aportacion: 0,
+      num_entradas: 0,
+      precio_entradas: 0,
+      num_espectadores: 0,
+      ingreso_taquilla: 0,
+      ingreso_ayto: 0,
+      ingreso_otros: 0,
+      precio_total: 0,
+      total: 0
+    },
+    facturacion: {
+      fpago_id: null,
+      fecha: null,
+      importe: 0,
+      enviar_id: null,
+      observaciones: '',
+      pagado: 0,
+      seguimiento: ''
+    },
+    coste: 0.00,
+    edit: false,
+    calendario: null
+  },
+  getters: {
+    festivales: function festivales(state) {
+      return state.festivales;
+    },
+    total_festivales: function total_festivales(state) {
+      return state.total_festivales;
+    },
+    filter_festivales: function filter_festivales(state) {
+      return state.filter_festivales;
+    },
+    header: function header(state) {
+      return state.header;
+    },
+    partidos: function partidos(state) {
+      return state.partidos;
+    },
+    coste: function coste(state) {
+      return state.coste;
+    },
+    facturacion: function facturacion(state) {
+      return state.facturacion;
+    },
+    edit: function edit(state) {
+      return state.edit;
+    },
+    calendario: function calendario(state) {
+      return state.calendario;
+    }
+  },
+  mutations: {
+    SET_FESTIVALES: function SET_FESTIVALES(state, festivales) {
+      state.festivales = festivales;
+      this.commit('SET_TOTAL_FESTIVALES', festivales.length);
+    },
+    SET_TOTAL_FESTIVALES: function SET_TOTAL_FESTIVALES(state, total) {
+      state.total_festivales = total;
+    },
+    SET_FILTER_FESTIVALES: function SET_FILTER_FESTIVALES(state, filter) {
+      state.filter_festivales = filter;
+    },
+    ADD_FILTER_FESTIVAL: function ADD_FILTER_FESTIVAL(state, value) {
+      state.filter_festivales.push(value);
+    },
+    REMOVE_FILTER_FESTIVAL: function REMOVE_FILTER_FESTIVAL(state, index) {
+      state.filter_festivales.splice(index, 1);
+    },
+    RESET_FESTIVAL_HEADER: function RESET_FESTIVAL_HEADER(state) {
+      state.header = {};
+    },
+    RESET_FESTIVAL_BODY: function RESET_FESTIVAL_BODY(state) {
+      state.partidos = [];
+      state.costes = {
+        importe_venta: 0,
+        cliente_id: null,
+        cliente_txt: '',
+        aportacion: 0,
+        num_entradas: 0,
+        precio_entradas: 0,
+        num_espectadores: 0,
+        ingreso_taquilla: 0,
+        ingreso_ayto: 0,
+        ingreso_otros: 0,
+        precio_total: 0,
+        total: 0
+      };
+      state.facturacion = {
+        fpago_id: null,
+        fecha: null,
+        importe: 0,
+        enviar_id: null,
+        observaciones: '',
+        pagado: 0,
+        seguimiento: ''
+      };
+      state.coste = 0.00;
+    },
+    SET_HEADER: function SET_HEADER(state, header) {
+      state.header = header;
+    },
+    SET_HEADER_ID: function SET_HEADER_ID(state, id) {
+      state.header.id = id;
+    },
+    SET_PARTIDOS: function SET_PARTIDOS(state, partidos) {
+      var _this = this;
+
+      state.partidos = partidos;
+
+      state.coste = 0;
+
+      partidos.map(function (val, key) {
+        _this.commit('INC_COSTE', val);
+      });
+    },
+    ADD_PARTIDO: function ADD_PARTIDO(state, partido) {
+      state.partidos.push(partido);
+      state.partidos = _.sortBy(state.partidos, ['orden']);
+
+      this.commit('INC_COSTE', partido);
+    },
+    SET_COSTES: function SET_COSTES(state, costes) {
+      if (costes.length) {
+        state.costes = costes[0];
+        state.costes.precio_total = parseFloat(state.costes.aportacion) + state.costes.num_entradas * state.costes.precio_entradas;
+        state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
+      }
+    },
+    SET_COSTE: function SET_COSTE(state, coste) {
+      state.coste = coste;
+    },
+    INC_COSTE: function INC_COSTE(state, partido) {
+      state.coste += partido.pelotari_1 ? partido.pelotari_1.coste : 0;
+      state.coste += partido.pelotari_2 ? partido.pelotari_2.coste : 0;
+      state.coste += partido.pelotari_3 ? partido.pelotari_3.coste : 0;
+      state.coste += partido.pelotari_4 ? partido.pelotari_4.coste : 0;
+    },
+    SET_FACTURACION: function SET_FACTURACION(state, facturacion) {
+      if (facturacion.length) {
+        state.facturacion = facturacion[0];
+      }
+    },
+    SET_EDIT: function SET_EDIT(state, edit) {
+      state.edit = edit;
+    },
+    SET_CALENDARIO: function SET_CALENDARIO(state, calendario) {
+      state.calendario = calendario;
+    }
+  },
+  actions: {
+    loadFestivales: function loadFestivales(_ref) {
+      var commit = _ref.commit,
+          dispatch = _ref.dispatch;
+
+      dispatch('filterFestivales');
+      // axios
+      //   .get('/www/festivales')
+      //   .then( r => r.data )
+      //   .then( festivales => {
+      //     commit('SET_FESTIVALES', festivales);
+      //   });
+    },
+    addFilterFestival: function addFilterFestival(_ref2, value) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+
+      commit('ADD_FILTER_FESTIVAL', value);
+      dispatch('filterFestivales');
+    },
+    removeFilterFestival: function removeFilterFestival(_ref3, index) {
+      var commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+
+      commit('REMOVE_FILTER_FESTIVAL', index);
+      dispatch('filterFestivales');
+    },
+    filterFestivales: function filterFestivales(_ref4) {
+      var commit = _ref4.commit;
+
+      var data = {
+        params: {
+          filter: this.getters.filter_festivales // filter
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales', data).then(function (r) {
+        return r.data;
+      }).then(function (festivales) {
+        commit('SET_FESTIVALES', festivales);
+      });
+    },
+    loadHeader: function loadHeader(_ref5, id, is_gerente) {
+      var commit = _ref5.commit,
+          dispatch = _ref5.dispatch;
+
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales/' + id).then(function (r) {
+        return r.data;
+      }).then(function (header) {
+        commit('SET_HEADER', header);
+        dispatch('loadPartidos');
+        if (is_gerente) {
+          dispatch('loadCostes');
+          dispatch('loadFacturacion');
+        }
+      });
+    },
+    clearHeader: function clearHeader(_ref6) {
+      var commit = _ref6.commit;
+
+      commit('SET_HEADER', {});
+    },
+    loadPartidos: function loadPartidos(_ref7) {
+      var commit = _ref7.commit;
+
+      var data = {
+        params: {
+          festival_id: this.getters.header.id,
+          festival_fecha: this.getters.header.fecha
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partidos/', data).then(function (r) {
+        return r.data;
+      }).then(function (partidos) {
+        commit('SET_PARTIDOS', partidos);
+      });
+    },
+    clearPartidos: function clearPartidos(_ref8) {
+      var commit = _ref8.commit;
+
+      commit('SET_PARTIDOS', []);
+    },
+    resetFestival: function resetFestival(_ref9) {
+      var commit = _ref9.commit;
+
+      commit('RESET_FESTIVAL_HEADER');
+      commit('RESET_FESTIVAL_BODY');
+    },
+    addPartido: function addPartido(_ref10, partido) {
+      var commit = _ref10.commit;
+
+      var uri = '/www/partidos';
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          commit('ADD_PARTIDO', response);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    updatePartido: function updatePartido(_ref11, partido) {
+      var commit = _ref11.commit;
+
+      var uri = '/www/partidos/' + partido.id + '/update';
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    deletePartido: function deletePartido(_ref12, id) {
+      var commit = _ref12.commit,
+          dispatch = _ref12.dispatch;
+
+      var uri = '/www/partidos/' + id;
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete(uri).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          dispatch('loadPartidos');
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    updatePartidoPelotari: function updatePartidoPelotari(_ref13, pelotari) {
+      var commit = _ref13.commit;
+
+      var uri = '/www/partido-pelotaris/' + pelotari.id + '/update';
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, pelotari).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    updatePartidoCelebrado: function updatePartidoCelebrado(_ref14, partido) {
+      var commit = _ref14.commit;
+
+      var uri = '/www/partido-celebrado/' + partido.id + '/update';
+
+      return new Promise(function (resolve, rejecto) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          console.log();
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadCostes: function loadCostes(_ref15) {
+      var commit = _ref15.commit;
+
+      var data = {
+        params: {
+          festival_id: this.getters.header.id
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-costes', data).then(function (r) {
+        return r.data;
+      }).then(function (costes) {
+        commit('SET_COSTES', costes);
+      });
+    },
+    addCostes: function addCostes(_ref16, costes) {
+      var commit = _ref16.commit;
+
+      var uri = '/www/festival-costes';
+      costes.festival_id = this.getters.header.id;
+      costes.coste_empresa = this.getters.coste;
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, costes).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadFacturacion: function loadFacturacion(_ref17) {
+      var commit = _ref17.commit;
+
+      var data = {
+        params: {
+          festival_id: this.getters.header.id
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-facturacion', data).then(function (r) {
+        return r.data;
+      }).then(function (facturacion) {
+        commit('SET_FACTURACION', facturacion);
+      });
+    },
+    addFacturacion: function addFacturacion(_ref18, facturacion) {
+      var commit = _ref18.commit;
+
+      var uri = '/www/festival-facturacion';
+      facturacion.festival_id = this.getters.header.id;
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, facturacion).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadCalendario: function loadCalendario(_ref19, month) {
+      var commit = _ref19.commit;
+
+      var data = {
+        params: {
+          pelotaris: [],
+          month: month
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/calendario', data).then(function (r) {
+        return r.data;
+      }).then(function (calendario) {
+        commit('SET_CALENDARIO', calendario);
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
@@ -10076,7 +10496,7 @@ Popper.Defaults = Defaults;
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(18)))
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10106,7 +10526,7 @@ function pluckProps(keysToPluck, objToPluck) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10123,426 +10543,6 @@ function pluckProps(keysToPluck, objToPluck) {
     },
     sizeBtnClass: function sizeBtnClass() {
       return [this.size ? "btn-" + this.size : null];
-    }
-  }
-});
-
-/***/ }),
-/* 23 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
-
-var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-  state: {
-    festivales: [],
-    total_festivales: 0,
-    filter_festivales: [],
-    header: {},
-    partidos: [],
-    costes: {
-      importe_venta: 0,
-      cliente_id: null,
-      cliente_txt: '',
-      aportacion: 0,
-      num_entradas: 0,
-      precio_entradas: 0,
-      num_espectadores: 0,
-      ingreso_taquilla: 0,
-      ingreso_ayto: 0,
-      ingreso_otros: 0,
-      precio_total: 0,
-      total: 0
-    },
-    facturacion: {
-      fpago_id: null,
-      fecha: null,
-      importe: 0,
-      enviar_id: null,
-      observaciones: '',
-      pagado: 0,
-      seguimiento: ''
-    },
-    coste: 0.00,
-    edit: false,
-    calendario: null
-  },
-  getters: {
-    festivales: function festivales(state) {
-      return state.festivales;
-    },
-    total_festivales: function total_festivales(state) {
-      return state.total_festivales;
-    },
-    filter_festivales: function filter_festivales(state) {
-      return state.filter_festivales;
-    },
-    header: function header(state) {
-      return state.header;
-    },
-    partidos: function partidos(state) {
-      return state.partidos;
-    },
-    coste: function coste(state) {
-      return state.coste;
-    },
-    facturacion: function facturacion(state) {
-      return state.facturacion;
-    },
-    edit: function edit(state) {
-      return state.edit;
-    },
-    calendario: function calendario(state) {
-      return state.calendario;
-    }
-  },
-  mutations: {
-    SET_FESTIVALES: function SET_FESTIVALES(state, festivales) {
-      state.festivales = festivales;
-      this.commit('SET_TOTAL_FESTIVALES', festivales.length);
-    },
-    SET_TOTAL_FESTIVALES: function SET_TOTAL_FESTIVALES(state, total) {
-      state.total_festivales = total;
-    },
-    SET_FILTER_FESTIVALES: function SET_FILTER_FESTIVALES(state, filter) {
-      state.filter_festivales = filter;
-    },
-    ADD_FILTER_FESTIVAL: function ADD_FILTER_FESTIVAL(state, value) {
-      state.filter_festivales.push(value);
-    },
-    REMOVE_FILTER_FESTIVAL: function REMOVE_FILTER_FESTIVAL(state, index) {
-      state.filter_festivales.splice(index, 1);
-    },
-    RESET_FESTIVAL_HEADER: function RESET_FESTIVAL_HEADER(state) {
-      state.header = {};
-    },
-    RESET_FESTIVAL_BODY: function RESET_FESTIVAL_BODY(state) {
-      state.partidos = [];
-      state.costes = {
-        importe_venta: 0,
-        cliente_id: null,
-        cliente_txt: '',
-        aportacion: 0,
-        num_entradas: 0,
-        precio_entradas: 0,
-        num_espectadores: 0,
-        ingreso_taquilla: 0,
-        ingreso_ayto: 0,
-        ingreso_otros: 0,
-        precio_total: 0,
-        total: 0
-      };
-      state.facturacion = {
-        fpago_id: null,
-        fecha: null,
-        importe: 0,
-        enviar_id: null,
-        observaciones: '',
-        pagado: 0,
-        seguimiento: ''
-      };
-      state.coste = 0.00;
-    },
-    SET_HEADER: function SET_HEADER(state, header) {
-      state.header = header;
-    },
-    SET_HEADER_ID: function SET_HEADER_ID(state, id) {
-      state.header.id = id;
-    },
-    SET_PARTIDOS: function SET_PARTIDOS(state, partidos) {
-      var _this = this;
-
-      state.partidos = partidos;
-
-      state.coste = 0;
-
-      partidos.map(function (val, key) {
-        _this.commit('INC_COSTE', val);
-      });
-    },
-    ADD_PARTIDO: function ADD_PARTIDO(state, partido) {
-      state.partidos.push(partido);
-      state.partidos = _.sortBy(state.partidos, ['orden']);
-
-      this.commit('INC_COSTE', partido);
-    },
-    SET_COSTES: function SET_COSTES(state, costes) {
-      if (costes.length) {
-        state.costes = costes[0];
-        state.costes.precio_total = parseFloat(state.costes.aportacion) + state.costes.num_entradas * state.costes.precio_entradas;
-        state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
-      }
-    },
-    SET_COSTE: function SET_COSTE(state, coste) {
-      state.coste = coste;
-    },
-    INC_COSTE: function INC_COSTE(state, partido) {
-      state.coste += partido.pelotari_1 ? partido.pelotari_1.coste : 0;
-      state.coste += partido.pelotari_2 ? partido.pelotari_2.coste : 0;
-      state.coste += partido.pelotari_3 ? partido.pelotari_3.coste : 0;
-      state.coste += partido.pelotari_4 ? partido.pelotari_4.coste : 0;
-    },
-    SET_FACTURACION: function SET_FACTURACION(state, facturacion) {
-      if (facturacion.length) {
-        state.facturacion = facturacion[0];
-      }
-    },
-    SET_EDIT: function SET_EDIT(state, edit) {
-      state.edit = edit;
-    },
-    SET_CALENDARIO: function SET_CALENDARIO(state, calendario) {
-      state.calendario = calendario;
-    }
-  },
-  actions: {
-    loadFestivales: function loadFestivales(_ref) {
-      var commit = _ref.commit,
-          dispatch = _ref.dispatch;
-
-      dispatch('filterFestivales');
-      // axios
-      //   .get('/www/festivales')
-      //   .then( r => r.data )
-      //   .then( festivales => {
-      //     commit('SET_FESTIVALES', festivales);
-      //   });
-    },
-    addFilterFestival: function addFilterFestival(_ref2, value) {
-      var commit = _ref2.commit,
-          dispatch = _ref2.dispatch;
-
-      commit('ADD_FILTER_FESTIVAL', value);
-      dispatch('filterFestivales');
-    },
-    removeFilterFestival: function removeFilterFestival(_ref3, index) {
-      var commit = _ref3.commit,
-          dispatch = _ref3.dispatch;
-
-      commit('REMOVE_FILTER_FESTIVAL', index);
-      dispatch('filterFestivales');
-    },
-    filterFestivales: function filterFestivales(_ref4) {
-      var commit = _ref4.commit;
-
-      var data = {
-        params: {
-          filter: this.getters.filter_festivales // filter
-        }
-      };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales', data).then(function (r) {
-        return r.data;
-      }).then(function (festivales) {
-        commit('SET_FESTIVALES', festivales);
-      });
-    },
-    loadHeader: function loadHeader(_ref5, id, is_gerente) {
-      var commit = _ref5.commit,
-          dispatch = _ref5.dispatch;
-
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales/' + id).then(function (r) {
-        return r.data;
-      }).then(function (header) {
-        commit('SET_HEADER', header);
-        dispatch('loadPartidos');
-        if (is_gerente) {
-          dispatch('loadCostes');
-          dispatch('loadFacturacion');
-        }
-      });
-    },
-    clearHeader: function clearHeader(_ref6) {
-      var commit = _ref6.commit;
-
-      commit('SET_HEADER', {});
-    },
-    loadPartidos: function loadPartidos(_ref7) {
-      var commit = _ref7.commit;
-
-      var data = {
-        params: {
-          festival_id: this.getters.header.id,
-          festival_fecha: this.getters.header.fecha
-        }
-      };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partidos/', data).then(function (r) {
-        return r.data;
-      }).then(function (partidos) {
-        commit('SET_PARTIDOS', partidos);
-      });
-    },
-    clearPartidos: function clearPartidos(_ref8) {
-      var commit = _ref8.commit;
-
-      commit('SET_PARTIDOS', []);
-    },
-    resetFestival: function resetFestival(_ref9) {
-      var commit = _ref9.commit;
-
-      commit('RESET_FESTIVAL_HEADER');
-      commit('RESET_FESTIVAL_BODY');
-    },
-    addPartido: function addPartido(_ref10, partido) {
-      var commit = _ref10.commit;
-
-      var uri = '/www/partidos';
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          commit('ADD_PARTIDO', response);
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    updatePartido: function updatePartido(_ref11, partido) {
-      var commit = _ref11.commit;
-
-      var uri = '/www/partidos/' + partido.id + '/update';
-
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    deletePartido: function deletePartido(_ref12, id) {
-      var commit = _ref12.commit,
-          dispatch = _ref12.dispatch;
-
-      var uri = '/www/partidos/' + id;
-
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete(uri).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          dispatch('loadPartidos');
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    updatePartidoPelotari: function updatePartidoPelotari(_ref13, pelotari) {
-      var commit = _ref13.commit;
-
-      var uri = '/www/partido-pelotaris/' + pelotari.id + '/update';
-
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, pelotari).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    updatePartidoCelebrado: function updatePartidoCelebrado(_ref14, partido) {
-      var commit = _ref14.commit;
-
-      var uri = '/www/partido-celebrado/' + partido.id + '/update';
-
-      return new Promise(function (resolve, rejecto) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          console.log();
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    loadCostes: function loadCostes(_ref15) {
-      var commit = _ref15.commit;
-
-      var data = {
-        params: {
-          festival_id: this.getters.header.id
-        }
-      };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-costes', data).then(function (r) {
-        return r.data;
-      }).then(function (costes) {
-        commit('SET_COSTES', costes);
-      });
-    },
-    addCostes: function addCostes(_ref16, costes) {
-      var commit = _ref16.commit;
-
-      var uri = '/www/festival-costes';
-      costes.festival_id = this.getters.header.id;
-      costes.coste_empresa = this.getters.coste;
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, costes).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    loadFacturacion: function loadFacturacion(_ref17) {
-      var commit = _ref17.commit;
-
-      var data = {
-        params: {
-          festival_id: this.getters.header.id
-        }
-      };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-facturacion', data).then(function (r) {
-        return r.data;
-      }).then(function (facturacion) {
-        commit('SET_FACTURACION', facturacion);
-      });
-    },
-    addFacturacion: function addFacturacion(_ref18, facturacion) {
-      var commit = _ref18.commit;
-
-      var uri = '/www/festival-facturacion';
-      facturacion.festival_id = this.getters.header.id;
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, facturacion).then(function (r) {
-          return r.data;
-        }).then(function (response) {
-          resolve(response);
-        }).catch(function (error) {
-          reject(error);
-        });
-      });
-    },
-    loadCalendario: function loadCalendario(_ref19, month) {
-      var commit = _ref19.commit;
-
-      var data = {
-        params: {
-          pelotaris: [],
-          month: month
-        }
-      };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/calendario', data).then(function (r) {
-        return r.data;
-      }).then(function (calendario) {
-        commit('SET_CALENDARIO', calendario);
-      });
     }
   }
 });
@@ -11335,7 +11335,7 @@ var props = {
 "use strict";
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_array__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_dom__ = __webpack_require__(8);
@@ -11963,7 +11963,7 @@ function isObject(obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bv_event_class__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__array__ = __webpack_require__(6);
@@ -34958,7 +34958,7 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_1__utils_object__["a" /* assign */]
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return props; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__link_link__ = __webpack_require__(13);
 
@@ -35436,7 +35436,7 @@ var unbindTargets = function unbindTargets(vnode, binding, listenTypes) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__clickout__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listen_on_root__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_array__ = __webpack_require__(6);
@@ -36053,7 +36053,7 @@ var props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form_radio_check__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(6);
@@ -49625,7 +49625,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_store_store__ = __webpack_require__(20);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -49737,7 +49737,7 @@ var app = new Vue({
 
 
 window._ = __webpack_require__(212);
-window.Popper = __webpack_require__(20).default;
+window.Popper = __webpack_require__(21).default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -66915,7 +66915,7 @@ if (token) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(45), __webpack_require__(20)) :
+   true ? factory(exports, __webpack_require__(45), __webpack_require__(21)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (factory((global.bootstrap = {}),global.jQuery,global.Popper));
 }(this, (function (exports,$,Popper) { 'use strict';
@@ -72470,7 +72470,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 "use strict";
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__link_link__ = __webpack_require__(13);
 
@@ -73040,7 +73040,7 @@ Object(__WEBPACK_IMPORTED_MODULE_6__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_prefix_prop_name__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_unprefix_prop_name__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_copyProps__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_pluck_props__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_pluck_props__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_card_mixin__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__card_body__ = __webpack_require__(59);
@@ -75191,7 +75191,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_options__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_checkbox__ = __webpack_require__(72);
@@ -75340,7 +75340,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form_options__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_radio__ = __webpack_require__(74);
@@ -75484,7 +75484,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_size__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_array__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__form_input_css__ = __webpack_require__(288);
@@ -75716,7 +75716,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_size__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(14);
 
 
@@ -76181,7 +76181,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form_options__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(6);
@@ -76735,7 +76735,7 @@ var props = {
 "use strict";
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_pluck_props__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_array__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__link_link__ = __webpack_require__(13);
@@ -78085,7 +78085,7 @@ var props = {
 /* unused harmony export props */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__link_link__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_functional_data_merge__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_pluck_props__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_pluck_props__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_object__ = __webpack_require__(3);
 
 
@@ -82463,7 +82463,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_tooltip_class__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warn__ = __webpack_require__(12);
@@ -82662,7 +82662,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_popover_class__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_object__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warn__ = __webpack_require__(12);
@@ -86461,7 +86461,7 @@ exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  fo
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(16);
 //
 //
@@ -92833,7 +92833,7 @@ exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(17);
 //
 //
@@ -93199,7 +93199,7 @@ exports.push([module.i, "\n.filter-value-list li {\n  color:#007bff;\n}\n.filter
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(10);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -93928,7 +93928,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
 //
 //
@@ -94082,7 +94082,7 @@ exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_nav_js__ = __webpack_require__(419);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(17);
@@ -94390,7 +94390,7 @@ var render = function() {
                   _c("b-row", [
                     _c(
                       "div",
-                      { staticClass: "col-sm-3" },
+                      { staticClass: "col-sm-4" },
                       [
                         1 == _vm.isGerente
                           ? _c(
@@ -94424,7 +94424,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "col-sm-4" }, [
                       _c(
                         "h4",
                         {
@@ -94437,7 +94437,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-sm-3 text-right" },
+                      { staticClass: "col-sm-4 text-right" },
                       [
                         _c(
                           "b-button",
@@ -94873,7 +94873,7 @@ exports.push([module.i, "\n.card-header {\n  background:transparent;\n  border:n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
 //
 //
@@ -96720,7 +96720,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.tabs {\n  border:none;\n  margin-bottom:0;\n}\n.modal-title {\n  font-weight: bold;\n  text-align:center;\n  width:100%;\n}\n.modal-body {\n  padding:0;\n}\n.modal-intendente-partido .form-toolbar {\n  background-color:slategray;\n  margin:0;\n  margin-top:-1px;\n}\n.modal-intendente-partido .form-toolbar .marcador input {\n  color:white;\n  display:inline;\n  font-size:20px;\n  font-weight:bold;\n  margin-top:.2rem;\n  max-width:50px;\n  padding:0;\n  text-align:center;\n}\n.modal-intendente-partido .form-toolbar .marcador.rojo input {\n  background-color:red;\n  float:left;\n}\n.modal-intendente-partido .form-toolbar .marcador.azul input {\n  background-color:blue;\n  float:right;\n}\n.modal-intendente-partido .form-toolbar p {\n  line-height:1;\n}\n.modal-intendente-partido .form-toolbar .marcador .pelotaris {\n  font-size:1.15rem;\n  top:50%;\n  width:100%;\n\n  -webkit-transform:translateY(-50%);\n  transform:translateY(-50%);\n}\n.modal-intendente-partido .form-toolbar .marcador.rojo .pelotaris {\n  left:75px;\n}\n.modal-intendente-partido .form-toolbar .marcador.azul .pelotaris {\n  right:75px;\n}\n.modal-intendente-partido .form-body {\n  padding:1rem;\n}\n.modal-intendente-partido .card-header {\n  background-color:transparent;\n  padding:0;\n}\n.modal-intendente-partido .card-header .card-header-pills {\n  margin:0;\n}\n.modal-intendente-partido table .w-20 {\n  width:20%!important;\n}\n.modal-intendente-partido table td.rojo,\n.modal-intendente-partido table td.azul {\n  border-color:white;\n  color:white;\n  border-left: 10px solid;\n  border-right: 10px solid;\n  border-top:2px solid white;\n  border-bottom:2px solid white;\n}\n.modal-intendente-partido table td.rojo {\n  background-color:red;\n}\n.modal-intendente-partido table td.azul {\n  background-color:blue;\n}\n.modal-intendente-partido table th {\n  text-align:center;\n}\n.modal-intendente-partido input[type=\"number\"] {\n  margin:0 auto;\n  max-width:50px;\n  padding-bottom:3px;\n  padding-top:3px;\n  text-align:center!important;\n\n  padding-left:0;\n  padding-right:0;\n}\n.modal-intendente-partido input[type=\"number\"].rojo {\n  border-color:rgba(255,0,0,.25);\n  color:rgba(255,0,0,.7);\n  font-weight:bold;\n}\n.modal-intendente-partido input[type=\"number\"].azul {\n  border-color:rgba(0,0,255,.25);\n  color:rgba(0,0,255,.7);\n  font-weight:bold;\n}\n", ""]);
+exports.push([module.i, "\n.tabs {\n  border:none;\n  margin-bottom:0;\n}\n.modal-title {\n  font-weight: bold;\n  text-align:center;\n  width:100%;\n}\n.modal-body {\n  padding:0;\n}\n.modal-intendente-partido .form-toolbar {\n  background-color:slategray;\n  margin:0;\n  margin-top:-1px;\n}\n.modal-intendente-partido .form-toolbar .marcador input,\n.modal-intendente-partido .form-toolbar .marcador select {\n  color:white;\n  display:inline;\n  font-size:20px;\n  font-weight:bold;\n  margin-top:.2rem;\n  max-width:50px;\n  padding:0;\n  text-align:center;\n}\n.modal-intendente-partido .form-toolbar .marcador select {\n  background:none;\n  padding-bottom:5px;\n  padding-left:10px;\n}\n.modal-intendente-partido .form-toolbar .marcador option {\n  background:white;\n  color:black;\n  font-size:14px;\n}\n.modal-intendente-partido .form-toolbar .marcador.rojo input,\n.modal-intendente-partido .form-toolbar .marcador.rojo select {\n  background-color:red;\n  float:left;\n}\n.modal-intendente-partido .form-toolbar .marcador.azul input,\n.modal-intendente-partido .form-toolbar .marcador.azul select {\n  background-color:blue;\n  float:right;\n}\n.modal-intendente-partido .form-toolbar p {\n  line-height:1;\n}\n.modal-intendente-partido .form-toolbar .marcador .pelotaris {\n  font-size:1.15rem;\n  top:50%;\n  width:100%;\n\n  -webkit-transform:translateY(-50%);\n  transform:translateY(-50%);\n}\n.modal-intendente-partido .form-toolbar .marcador.rojo .pelotaris {\n  left:75px;\n}\n.modal-intendente-partido .form-toolbar .marcador.azul .pelotaris {\n  right:75px;\n}\n.modal-intendente-partido .form-body {\n  padding:1rem;\n}\n.modal-intendente-partido .card-header {\n  background-color:transparent;\n  padding:0;\n}\n.modal-intendente-partido .card-header .card-header-pills {\n  margin:0;\n}\n.modal-intendente-partido table .w-20 {\n  width:20%!important;\n}\n.modal-intendente-partido table td.rojo,\n.modal-intendente-partido table td.azul {\n  border-color:white;\n  color:white;\n  border-left: 10px solid;\n  border-right: 10px solid;\n  border-top:2px solid white;\n  border-bottom:2px solid white;\n}\n.modal-intendente-partido table td.rojo {\n  background-color:red;\n}\n.modal-intendente-partido table td.azul {\n  background-color:blue;\n}\n.modal-intendente-partido table th {\n  text-align:center;\n}\n.modal-intendente-partido input[type=\"number\"],\n.modal-intendente-partido select {\n  margin:0 auto;\n  max-width:50px;\n  padding-bottom:3px;\n  padding-top:3px;\n  text-align:center!important;\n\n  padding-left:0;\n  padding-right:0;\n}\n.modal-intendente-partido select {\n  background:none;\n  padding-left:15px;\n  width:100px;\n}\n.modal-intendente-partido select option {\n  background-color:white;\n  color:black;\n}\n.modal-intendente-partido input[type=\"number\"].rojo,\n.modal-intendente-partido select.rojo {\n  border-color:rgba(255,0,0,.25);\n  color:rgba(255,0,0,.7);\n  font-weight:bold;\n}\n.modal-intendente-partido input[type=\"number\"].azul,\n.modal-intendente-partido select.azul {\n  border-color:rgba(0,0,255,.25);\n  color:rgba(0,0,255,.7);\n  font-weight:bold;\n}\n", ""]);
 
 // exports
 
@@ -96734,14 +96734,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(17);
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -96833,7 +96825,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fronton: '',
         incidencias: '',
         comentarios: ''
-      }
+      },
+      tantos: [{ value: 22, text: '22' }, { value: 21, text: '21' }, { value: 20, text: '20' }, { value: 19, text: '19' }, { value: 18, text: '18' }, { value: 17, text: '17' }, { value: 16, text: '16' }, { value: 15, text: '15' }, { value: 14, text: '14' }, { value: 13, text: '13' }, { value: 12, text: '12' }, { value: 11, text: '11' }, { value: 10, text: '10' }, { value: 9, text: '9' }, { value: 8, text: '8' }, { value: 7, text: '7' }, { value: 6, text: '6' }, { value: 5, text: '5' }, { value: 4, text: '4' }, { value: 3, text: '3' }, { value: 2, text: '2' }, { value: 1, text: '1' }, { value: 0, text: '0' }]
     };
   },
 
@@ -96920,7 +96913,8 @@ Vue.component('tab-tanteo', {
   props: ['partido', 'tanteo'],
   data: function data() {
     return {
-      fields: []
+      fields: [],
+      tantos: [{ value: 0, text: '0' }, { value: 1, text: '1' }, { value: 2, text: '2' }, { value: 3, text: '3' }, { value: 4, text: '4' }, { value: 5, text: '5' }, { value: 6, text: '6' }, { value: 7, text: '7' }, { value: 8, text: '8' }, { value: 9, text: '9' }, { value: 10, text: '10' }, { value: 11, text: '11' }, { value: 12, text: '12' }, { value: 13, text: '13' }, { value: 14, text: '14' }, { value: 15, text: '15' }, { value: 16, text: '16' }, { value: 17, text: '17' }, { value: 18, text: '18' }, { value: 19, text: '19' }, { value: 20, text: '20' }, { value: 21, text: '21' }, { value: 22, text: '22' }]
     };
   },
   created: function created() {
@@ -96977,20 +96971,22 @@ Vue.component('tab-tanteo', {
       field.select();
     }
   },
-  template: '\n    <div>\n      <b-row>\n        <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>\n        <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>\n        <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duraci\xF3n partido:</label></b-col>\n        <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>\n      </b-row>\n\n      <b-row class="mt-3">\n        <table class="w-100">\n          <thead>\n            <tr class="font-weight-bold text-center">\n              <td :class="fields.name.class">&nbsp;</td>\n              <td :class="fields.pelotari_1.class">{{ this.fields.pelotari_1.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_2" :class="fields.pelotari_2.class">{{ this.fields.pelotari_2.label.replace("_", " ").toUpperCase() }}</td>\n              <td :class="fields.pelotari_3.class">{{ this.fields.pelotari_3.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_4" :class="fields.pelotari_4.class">{{ this.fields.pelotari_4.label.replace("_", " ").toUpperCase() }}</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="item in this.tanteo.tantos" class="text-center">\n                <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>\n                <td>\n                  <b-form-input class="rojo" v-model="item.pelotari_1" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="rojo" v-model="item.pelotari_2" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n                <td>\n                  <b-form-input class="azul" v-model="item.pelotari_3" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-input class="azul" v-model="item.pelotari_4" step="1" min="0" max="22" type="number" @focus.native="onFocusInput($event.target)" />\n                </td>\n            </tr>\n          </tbody>\n        </table>\n      </b-row>\n    </div>\n  '
+  template: '\n    <div>\n      <b-row>\n        <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>\n        <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>\n        <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duraci\xF3n partido:</label></b-col>\n        <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>\n      </b-row>\n\n      <b-row class="mt-3">\n        <table class="w-100">\n          <thead>\n            <tr class="font-weight-bold text-center">\n              <td :class="fields.name.class">&nbsp;</td>\n              <td :class="fields.pelotari_1.class">{{ this.fields.pelotari_1.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_2" :class="fields.pelotari_2.class">{{ this.fields.pelotari_2.label.replace("_", " ").toUpperCase() }}</td>\n              <td :class="fields.pelotari_3.class">{{ this.fields.pelotari_3.label.replace("_", " ").toUpperCase() }}</td>\n              <td v-if="fields.pelotari_4" :class="fields.pelotari_4.class">{{ this.fields.pelotari_4.label.replace("_", " ").toUpperCase() }}</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="item in this.tanteo.tantos" class="text-center">\n                <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>\n                <td>\n                  <b-form-select class="rojo" v-model="item.pelotari_1" :options="tantos" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-select class="rojo" v-model="item.pelotari_2" :options="tantos" />\n                </td>\n                <td>\n                  <b-form-select class="azul" v-model="item.pelotari_3" :options="tantos" />\n                </td>\n                <td v-if="partido.is_partido_parejas">\n                  <b-form-select class="azul" v-model="item.pelotari_4" :options="tantos" />\n                </td>\n            </tr>\n          </tbody>\n        </table>\n      </b-row>\n    </div>\n  '
 });
 
 Vue.component('tab-marcadores', {
   props: ['partido', 'marcadores'],
   data: function data() {
-    return {};
+    return {
+      tantos: [{ value: 0, text: '0' }, { value: 1, text: '1' }, { value: 2, text: '2' }, { value: 3, text: '3' }, { value: 4, text: '4' }, { value: 5, text: '5' }, { value: 6, text: '6' }, { value: 7, text: '7' }, { value: 8, text: '8' }, { value: 9, text: '9' }, { value: 10, text: '10' }, { value: 11, text: '11' }, { value: 12, text: '12' }, { value: 13, text: '13' }, { value: 14, text: '14' }, { value: 15, text: '15' }, { value: 16, text: '16' }, { value: 17, text: '17' }, { value: 18, text: '18' }, { value: 19, text: '19' }, { value: 20, text: '20' }, { value: 21, text: '21' }, { value: 22, text: '22' }]
+    };
   },
   methods: {
     onFocusInput: function onFocusInput(field) {
       field.select();
     }
   },
-  template: '\n    <b-row>\n      <div class="d-inline-flex" style="margin:0 auto;">\n        <table class="w-20 mr-3 ml-2">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 11">\n              <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n            </tr>\n          </tbody>\n        </table>\n        <table class="w-20 mr-3">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 11">\n              <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n            </tr>\n          </tbody>\n        </table>\n        <table class="w-20 mr-3">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 11">\n              <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n            </tr>\n          </tbody>\n        </table>\n        <table class="w-20">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 10">\n              <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </b-row>\n  '
+  template: '\n    <b-row>\n      <div class="d-inline-flex" style="margin:0 auto;">\n        <table class="w-20 mr-3 ml-2">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 11">\n              <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>\n              <!--\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>\n              -->\n              <td><b-form-select class="rojo" v-model="marcadores.rojo[i - 1]" :options="tantos" /></td>\n              <td><b-form-select class="azul" v-model="marcadores.azul[i - 1]" :options="tantos" /></td>\n            </tr>\n          </tbody>\n        </table>\n        <table class="w-20 mr-3">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 11">\n              <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>\n              <!--\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>\n              -->\n              <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 10]" :options="tantos" /></td>\n              <td><b-form-select class="azul" v-model="marcadores.azul[i + 10]" :options="tantos" /></td>\n            </tr>\n          </tbody>\n        </table>\n        <table class="w-20 mr-3">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 11">\n              <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>\n              <!--\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>\n              -->\n              <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 21]" :options="tantos" /></td>\n              <td><b-form-select class="azul" v-model="marcadores.azul[i + 21]" :options="tantos" /></td>\n            </tr>\n          </tbody>\n        </table>\n        <table class="w-20">\n          <thead>\n            <tr>\n              <td>&nbsp;</td>\n              <td class="rojo" style="border:none;border-right:2px solid;">&nbsp;</td>\n              <td class="azul" style="border:none;border-left:2px solid;">&nbsp;</td>\n            </tr>\n          </thead>\n          <tbody>\n            <tr v-for="i in 10">\n              <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>\n              <!--\n              <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>\n              <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>\n              -->\n              <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 32]" :options="tantos" /></td>\n              <td><b-form-select class="azul" v-model="marcadores.azul[i + 32]" :options="tantos" /></td>\n            </tr>\n          </tbody>\n        </table>\n      </div>\n    </b-row>\n  '
 });
 
 Vue.component('tab-anotaciones', {
@@ -97028,13 +97024,8 @@ var render = function() {
                     "col-sm-3 marcador rojo float-left text-left position-relative"
                 },
                 [
-                  _c("b-form-input", {
-                    attrs: { type: "number", step: "1", min: "0", max: "22" },
-                    nativeOn: {
-                      focus: function($event) {
-                        _vm.onFocusInput($event.target)
-                      }
-                    },
+                  _c("b-form-select", {
+                    attrs: { options: _vm.tantos },
                     model: {
                       value: _vm.tanteo.puntos_rojo,
                       callback: function($$v) {
@@ -97106,13 +97097,8 @@ var render = function() {
                     "col-sm-3 marcador azul float-right text-right position-relative"
                 },
                 [
-                  _c("b-form-input", {
-                    attrs: { type: "number", step: "1", min: "0", max: "22" },
-                    nativeOn: {
-                      focus: function($event) {
-                        _vm.onFocusInput($event.target)
-                      }
-                    },
+                  _c("b-form-select", {
+                    attrs: { options: _vm.tantos },
                     model: {
                       value: _vm.tanteo.puntos_azul,
                       callback: function($$v) {

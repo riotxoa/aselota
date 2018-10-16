@@ -5,13 +5,13 @@
         <div class="toolbar mb-2 py-1">
           <div class="container">
             <b-row>
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                 <router-link v-if="1 == isGerente" to="/gerente/calendario" class="text-white"><b-btn variant="outline-link" class="mb-0" title="Calendario de Pelotaris" @click="dontDestroyComponent"><div class="icon voyager-calendar"></div></b-btn></router-link>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <h4 class="text-white text-uppercase text-center font-weight-bold m-0">{{ this.formTitle }}</h4>
               </div>
-              <div class="col-sm-3 text-right">
+              <div class="col-sm-4 text-right">
                 <b-button type="submit" variant="danger">Guardar</b-button>
                 <b-button type="reset" variant="default">Volver</b-button>
               </div>
