@@ -96993,8 +96993,11 @@ Vue.component('tab-anotaciones', {
   props: ['partido', 'anotaciones'],
   data: function data() {
     return {
-      _anotaciones: {}
+      _anotaciones: null
     };
+  },
+  created: function created() {
+    this._anotaciones = this.anotaciones;
   },
   template: '\n    <b-row>\n      <b-form-group label="Afluencia p\xFAblico"\n                    label-for="afluencia"\n                    class="col-sm-12 font-weight-bold">\n        <b-form-textarea id="afluencia"\n                         v-model="_anotaciones.afluencia"\n                         :rows="3"\n                         :max-rows="6">\n        </b-form-textarea>\n      </b-form-group>\n      <b-form-group label="Condiciones front\xF3n"\n                    label-for="fronton"\n                    class="col-sm-12 font-weight-bold">\n        <b-form-textarea id="fronton"\n                         v-model="_anotaciones.fronton"\n                         :rows="3"\n                         :max-rows="6">\n        </b-form-textarea>\n      </b-form-group>\n      <b-form-group label="Alguna incidencia"\n                    label-for="incidencias"\n                    class="col-sm-12 font-weight-bold">\n        <b-form-textarea id="incidencias"\n                         v-model="_anotaciones.incidencias"\n                         :rows="3"\n                         :max-rows="6">\n        </b-form-textarea>\n      </b-form-group>\n      <b-form-group label="Otros comentarios"\n                    label-for="comentarios"\n                    class="col-sm-12 font-weight-bold">\n        <b-form-textarea id="comentarios"\n                         v-model="_anotaciones.comentarios"\n                         :rows="3"\n                         :max-rows="6">\n        </b-form-textarea>\n      </b-form-group>\n    </b-row>\n  '
 });

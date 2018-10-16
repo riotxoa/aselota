@@ -466,8 +466,11 @@
     props: ['partido', 'anotaciones'],
     data: function() {
       return {
-        _anotaciones: {},
+        _anotaciones: null
       }
+    },
+    created: function () {
+      this._anotaciones = this.anotaciones;
     },
     template: `
       <b-row>
