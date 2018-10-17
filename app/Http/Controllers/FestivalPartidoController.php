@@ -10,6 +10,7 @@ use App\FestivalPartido;
 use App\FestivalPartidoPelotari;
 use App\FestivalPartidoTanteo;
 use App\FestivalPartidoMarcadore;
+use App\TipoPartido;
 
 class FestivalPartidoController extends Controller
 {
@@ -352,20 +353,22 @@ class FestivalPartidoController extends Controller
 
         $part_tanteo = new FestivalPartidoTanteo([
           'festival_partido_id' => $id,
-          'pelotari_id' => $tanteo['pelotari_3_id'],
+          'pelotari_id' => $tanteo['pelotari_2_id'],
           'tanteo_order' => ($key + 1) * 10,
           'tanteo_desc' => $tanto['name'],
-          'tanteo' => $tanto['pelotari_3'],
+          'tanteo' => $tanto['pelotari_2'],
         ]);
         $part_tanteo->save();
 
-        if( $partido->is_partido_parejas ) :
+        $parejas = TipoPartido::find($partido->tipo_partido_id)->parejas;
+
+        if( 1 === $parejas ) :
           $part_tanteo = new FestivalPartidoTanteo([
             'festival_partido_id' => $id,
-            'pelotari_id' => $tanteo['pelotari_2_id'],
+            'pelotari_id' => $tanteo['pelotari_3_id'],
             'tanteo_order' => ($key + 1) * 10,
             'tanteo_desc' => $tanto['name'],
-            'tanteo' => $tanto['pelotari_2'],
+            'tanteo' => $tanto['pelotari_3'],
           ]);
           $part_tanteo->save();
 
