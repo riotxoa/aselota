@@ -388,10 +388,6 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>
-                <!--
-                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i - 1]" step="1" min="0" max="22" type="number" /></td>
-                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i - 1]" step="1" min="0" max="22" type="number" /></td>
-                -->
                 <td><b-form-select class="rojo" v-model="marcadores.rojo[i - 1]" :options="tantos" /></td>
                 <td><b-form-select class="azul" v-model="marcadores.azul[i - 1]" :options="tantos" /></td>
               </tr>
@@ -408,10 +404,6 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>
-                <!--
-                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 10]" step="1" min="0" max="22" type="number" /></td>
-                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 10]" step="1" min="0" max="22" type="number" /></td>
-                -->
                 <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 10]" :options="tantos" /></td>
                 <td><b-form-select class="azul" v-model="marcadores.azul[i + 10]" :options="tantos" /></td>
               </tr>
@@ -428,10 +420,6 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>
-                <!--
-                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 21]" step="1" min="0" max="22" type="number" /></td>
-                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 21]" step="1" min="0" max="22" type="number" /></td>
-                -->
                 <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 21]" :options="tantos" /></td>
                 <td><b-form-select class="azul" v-model="marcadores.azul[i + 21]" :options="tantos" /></td>
               </tr>
@@ -448,10 +436,6 @@
             <tbody>
               <tr v-for="i in 10">
                 <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>
-                <!--
-                <td><b-form-input class="rojo" @focus.native="onFocusInput($event.target)" v-model="marcadores.rojo[i + 32]" step="1" min="0" max="22" type="number" /></td>
-                <td><b-form-input class="azul" @focus.native="onFocusInput($event.target)" v-model="marcadores.azul[i + 32]" step="1" min="0" max="22" type="number" /></td>
-                -->
                 <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 32]" :options="tantos" /></td>
                 <td><b-form-select class="azul" v-model="marcadores.azul[i + 32]" :options="tantos" /></td>
               </tr>
