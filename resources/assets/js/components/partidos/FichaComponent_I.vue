@@ -188,7 +188,7 @@
           marcadores: this.marcadores,
           anotaciones: this.anotaciones,
         }
-
+        
         this.$store.dispatch('updatePartidoCelebrado', data)
           .then((response) => {
             this.showSnackbar("Partido actualizado");
