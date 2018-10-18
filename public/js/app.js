@@ -87115,10 +87115,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
+  },
+  created: function created() {
+    console.log("SORTUTA");
   }
 });
 
@@ -87131,107 +87146,101 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "admin row" }, [
-    _c(
-      "div",
-      { staticClass: "col-12" },
-      [
-        _c(
-          "b-button",
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "text-white",
-                attrs: { to: { name: "RRHH", params: { userRole: "admin" } } }
-              },
-              [_vm._v("Módulo RRHH")]
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
+    _c("div", { staticClass: "col-12" }, [
+      _c(
+        "div",
+        { staticClass: "btn btn-secondary" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "text-white",
+              attrs: { to: { name: "RRHH", params: { userRole: "admin" } } }
+            },
+            [_vm._v("Módulo RRHH")]
+          )
+        ],
+        1
+      )
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-12" },
-      [
-        _c(
-          "b-button",
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "text-white",
-                attrs: {
-                  to: { name: "GERENTE", params: { userRole: "admin" } }
-                }
-              },
-              [_vm._v("Módulo Gestión Festivales")]
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
+    _c("div", { staticClass: "col-12" }, [
+      _c(
+        "div",
+        { staticClass: "btn btn-secondary" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "text-white",
+              attrs: { to: { name: "GERENTE", params: { userRole: "admin" } } }
+            },
+            [_vm._v("Módulo Gestión Festivales")]
+          )
+        ],
+        1
+      )
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-12" },
-      [
-        _c(
-          "b-button",
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "text-white",
-                attrs: {
-                  to: { name: "INTENDENTE", params: { userRole: "admin" } }
-                }
-              },
-              [_vm._v("Módulo Técnico Deportivo")]
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
+    _c("div", { staticClass: "col-12" }, [
+      _c(
+        "div",
+        { staticClass: "btn btn-secondary" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "text-white",
+              attrs: {
+                to: { name: "INTENDENTE", params: { userRole: "admin" } }
+              }
+            },
+            [_vm._v("Módulo Técnico Deportivo")]
+          )
+        ],
+        1
+      )
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-12" },
-      [
-        _c("b-button", { attrs: { disabled: "" } }, [
-          _vm._v("Módulo Entrenador")
-        ])
-      ],
-      1
-    ),
+    _vm._m(0),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-12" },
-      [
-        _c("b-button", { attrs: { disabled: "" } }, [
-          _vm._v("Módulo Comunicación")
-        ])
-      ],
-      1
-    ),
+    _vm._m(1),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-12" },
-      [_c("b-button", { attrs: { disabled: "" } }, [_vm._v("Módulo Médico")])],
-      1
-    )
+    _vm._m(2)
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12" }, [
+      _c("div", { staticClass: "btn btn-secondary disabled" }, [
+        _vm._v("\n      Módulo Entrenador\n    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12" }, [
+      _c("div", { staticClass: "btn btn-secondary disabled" }, [
+        _vm._v("\n      Módulo Comunicación\n    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12" }, [
+      _c("div", { staticClass: "btn btn-secondary disabled" }, [
+        _vm._v("\n      Módulo Médico\n    ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -100856,7 +100865,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.admin.row {\n  text-align:center;\n}\n.admin .btn {\n  margin-bottom:.5rem;\n  width:250px;\n}\n", ""]);
+exports.push([module.i, "\n.admin.row {\n  text-align:center;\n}\n.admin .btn {\n  margin-bottom:.5rem;\n  width:250px;\n}\n.admin .btn a:active,\n.admin .btn a:focus,\n.admin .btn a:hover {\n  text-decoration:none;\n}\n", ""]);
 
 // exports
 

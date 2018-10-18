@@ -1,22 +1,34 @@
 <template>
   <div class="admin row">
     <div class="col-12">
-      <b-button><router-link class="text-white" :to="{ name: 'RRHH', params: { userRole: 'admin' } }">Módulo RRHH</router-link></b-button>
+      <div class="btn btn-secondary">
+        <router-link class="text-white" :to="{ name: 'RRHH', params: { userRole: 'admin' } }">Módulo RRHH</router-link>
+      </div>
     </div>
     <div class="col-12">
-      <b-button><router-link class="text-white" :to="{ name: 'GERENTE', params: { userRole: 'admin' } }">Módulo Gestión Festivales</router-link></b-button>
+      <div class="btn btn-secondary">
+        <router-link class="text-white" :to="{ name: 'GERENTE', params: { userRole: 'admin' } }">Módulo Gestión Festivales</router-link>
+      </div>
     </div>
     <div class="col-12">
-      <b-button><router-link class="text-white" :to="{ name: 'INTENDENTE', params: { userRole: 'admin' } }">Módulo Técnico Deportivo</router-link></b-button>
+      <div class="btn btn-secondary">
+        <router-link class="text-white" :to="{ name: 'INTENDENTE', params: { userRole: 'admin' } }">Módulo Técnico Deportivo</router-link>
+      </div>
     </div>
     <div class="col-12">
-      <b-button disabled>Módulo Entrenador</b-button>
+      <div class="btn btn-secondary disabled">
+        Módulo Entrenador
+      </div>
     </div>
     <div class="col-12">
-      <b-button disabled>Módulo Comunicación</b-button>
+      <div class="btn btn-secondary disabled">
+        Módulo Comunicación
+      </div>
     </div>
     <div class="col-12">
-      <b-button disabled>Módulo Médico</b-button>
+      <div class="btn btn-secondary disabled">
+        Módulo Médico
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +39,9 @@
       return {
 
       }
+    },
+    created() {
+      console.log("SORTUTA")
     }
   }
 </script>
@@ -38,5 +53,10 @@
   .admin .btn {
     margin-bottom:.5rem;
     width:250px;
+  }
+  .admin .btn a:active,
+  .admin .btn a:focus,
+  .admin .btn a:hover {
+    text-decoration:none;
   }
 </style>
