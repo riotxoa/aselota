@@ -4,7 +4,11 @@
       <div class="toolbar mb-0 py-1">
         <div class="container">
           <b-row>
+            <div class="col-sm-3">&nbsp;</div>
             <h4 class="col-sm-6 text-white font-weight-bold">GESTIÓN DE FESTIVALES</h4>
+            <div class="col-sm-3 text-right home-icon">
+              <b-button v-if="this.$route.params.userRole === 'admin'" size="sm" variant="outline" href="/" class="mt-1"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Admin Menú</b-button>
+            </div>
           </b-row>
         </div>
       </div>
@@ -117,6 +121,7 @@
         }
       },
       created() {
+        console.log("CREATED: " + JSON.stringify(this.$route.params) + "; isAdmin: " + this.isAdmin);
         store.dispatch('loadFestivales');
       },
       computed: {

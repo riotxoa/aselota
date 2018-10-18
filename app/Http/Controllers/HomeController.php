@@ -28,13 +28,6 @@ class HomeController extends Controller
     {
         $rol = Role::find(Auth::user()->role_id);
 
-        switch( $rol->name ) {
-          case 'admin':
-            return redirect('admin');
-            break;
-          default:
-            return view('home', ['role' => $rol->name]);
-            break;
-        }
+        return view('home', ['role' => $rol->name]);
     }
 }

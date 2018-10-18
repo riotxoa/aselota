@@ -71,7 +71,7 @@
                                       <a class="dropdown-item mt-1" href="/">
                                           <i class="voyager-home"></i> {{ __('Inicio') }}
                                       </a>
-                                      @if ( $role == 'rrhh' )
+                                      @if (( $role == 'rrhh' ) or ( $role == 'admin'))
                                         <a class="dropdown-item mt-1" href="/admin">
                                             <i class="voyager-settings"></i> {{ __('Admin') }}
                                         </a>

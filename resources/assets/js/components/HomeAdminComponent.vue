@@ -5,11 +5,8 @@
               <div class="card">
                   <div class="card-header bg-primary">
                     <div class="row">
-                      <div class="col-sm-8 col-md-9 col-lg-10">
+                      <div class="col-12 font-weight-bold text-uppercase text-center">
                         <router-link class="text-white" :to="this.home">{{ this.title }}</router-link>
-                      </div>
-                      <div v-if="this.$route.params.userRole == 'admin'" class="home-icon col-sm-4 col-md-3 col-lg-2">
-                        <b-button size="sm" variant="outline" href="/"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Admin Menú</b-button>
                       </div>
                     </div>
                   </div>
@@ -27,9 +24,30 @@
   export default {
     data () {
       return {
-        home: '/rrhh',
-        title: 'Gestión de RRHH',
+        home: '/administrador',
+        title: 'Administrador PilotApp',
       }
     }
   }
 </script>
+
+<style>
+  .home-icon {
+    text-align:right;
+  }
+  .home-icon a {
+    color:white;
+
+    -webkit-transition:all .15s ease-in-out;
+    -moz-transition:all .15s ease-in-out;
+    -ms-transition:all .15s ease-in-out;
+    -o-transition:all .15s ease-in-out;
+    transition:all .15s ease-in-out;
+  }
+  .home-icon a:active,
+  .home-icon a:focus,
+  .home-icon a:hover {
+    color:rgba(255,255,255,.5)!important;
+    text-decoration:none;
+  }
+</style>

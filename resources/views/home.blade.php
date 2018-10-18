@@ -4,6 +4,9 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         @switch($role)
+            @case ('admin')
+              <home-component user-role="admin"></home-component>
+              @break
             @case ('gerente')
               <home-component user-role="gerente"></home-component>
               @break

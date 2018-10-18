@@ -37,6 +37,12 @@ Vue.component('home-component', require('./components/HomeComponent.vue'));
 Vue.component('profile-component', require('./components/common_profile/ProfileComponent.vue'));
 Vue.component('calendar-component', require('./components/calendario/CalendarMainViewComponent.vue'));
 
+Vue.component('home-admin', require('./components/HomeAdminComponent.vue'));
+Vue.component('listado-modulos', require('./components/admin/ListadoModulosComponent.vue'));
+
+const HomeAdmin = { template: '<home-admin></home-admin>' };
+const ListModulos = { template: '<listado-modulos></listado-modulos>' };
+
 Vue.component('home-rrhh', require('./components/HomeRRHHComponent.vue'));
 Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));
 Vue.component('ficha-pelotari', require('./components/rrhh_pelotaris/FichaComponent.vue'));
@@ -66,10 +72,24 @@ const EditFestival_I = { template: '<ficha-festival form-title="Editar Festival"
 
 const routes = [
   {
+    path: '/administrador', component: HomeAdmin,
+    children: [
+      {
+        path: '', component: ListModulos
+      },
+      {
+        path: 'pelotari/new', component: CreatePelotari
+      },
+      {
+        path: 'pelotari/:id/edit', component: EditPelotari
+      },
+    ]
+  },
+  {
     path: '/rrhh', component: HomeRRHH,
     children: [
       {
-        path: '', component: ListPelotaris
+        path: '', name: 'RRHH', component: ListPelotaris
       },
       {
         path: 'pelotari/new', component: CreatePelotari
@@ -83,7 +103,7 @@ const routes = [
     path: '/gerente', component: HomeGerente,
     children: [
       {
-        path: '', component: ListFestivales_G
+        path: '', name: 'GERENTE', component: ListFestivales_G
       },
       {
         path: 'calendario', component: Calendario
@@ -100,7 +120,7 @@ const routes = [
     path: '/intendente', component: HomeIntendente,
     children: [
       {
-        path: '', component: ListFestivales_I
+        path: '', name: 'INTENDENTE', component: ListFestivales_I
       },
       {
         path: 'festival/:id/edit', component: EditFestival_I

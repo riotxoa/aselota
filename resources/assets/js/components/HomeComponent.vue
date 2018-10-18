@@ -13,20 +13,34 @@
     },
     created: function() {
       switch(this.userRole) {
+        case 'admin':
+          this.home = '/administrador';
+          this.title = "administrador";
+          this.$router.push('/administrador');
+          break;
         case 'rrhh':
           this.home = '/rrhh';
           this.title = "Gestión de RRHH";
-          this.$router.push('/rrhh');
+          this.$router.push({
+            name: 'RRHH',
+            params: { userRole: this.userRole },
+          })
           break;
         case 'gerente':
           this.home = '/gerente';
           this.title = "Gestión de Festivales";
-          this.$router.push('/gerente');
+          this.$router.push({
+            name: 'GERENTE',
+            params: { userRole: this.userRole },
+          })
           break;
         case 'intendente':
           this.home = '/intendente';
           this.title= "Gestión de Festivales";
-          this.$router.push('/intendente');
+          this.$router.push({
+            name: 'INTENDENTE',
+            params: { userRole: this.userRole },
+          })
           break;
         default:
           this.title = "SIN PERMISOS";
