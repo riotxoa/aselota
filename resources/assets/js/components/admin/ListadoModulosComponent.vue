@@ -1,19 +1,13 @@
 <template>
   <div class="admin row">
     <div class="col-12">
-      <div class="btn btn-secondary">
-        <router-link class="text-white" :to="{ name: 'RRHH', params: { userRole: 'admin' } }">Módulo RRHH</router-link>
-      </div>
+      <router-link class="text-white" :to="{ name: 'RRHH', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo RRHH</div></router-link>
     </div>
     <div class="col-12">
-      <div class="btn btn-secondary">
-        <router-link class="text-white" :to="{ name: 'GERENTE', params: { userRole: 'admin' } }">Módulo Gestión Festivales</router-link>
-      </div>
+      <router-link class="text-white" :to="{ name: 'GERENTE', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo Gestión Festivales</div></router-link>
     </div>
     <div class="col-12">
-      <div class="btn btn-secondary">
-        <router-link class="text-white" :to="{ name: 'INTENDENTE', params: { userRole: 'admin' } }">Módulo Técnico Deportivo</router-link>
-      </div>
+      <router-link class="text-white" :to="{ name: 'INTENDENTE', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo Técnico Deportivo</div></router-link>
     </div>
     <div class="col-12">
       <div class="btn btn-secondary disabled">
