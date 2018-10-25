@@ -66,9 +66,18 @@ const EditFestival_G = { template: '<ficha-festival form-title="Editar Festival"
 
 Vue.component('home-intendente', require('./components/HomeIntendenteComponent.vue'));
 
-const HomeIntendente = { template: '<home-intendente></home-intendente>'}
+const HomeIntendente = { template: '<home-intendente></home-intendente>' };
 const ListFestivales_I = { template: '<listado-festivales is-gerente=0></listado-festivales>' };
 const EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=0></ficha-festival>'};
+
+Vue.component('home-entrenador', require('./components/HomeEntrenadorComponent.vue'));
+Vue.component('listado-entrenos', require('./components/entrenos/ListadoComponent.vue'));
+Vue.component('ficha-entreno', require('./components/entrenos/FichaComponent.vue'));
+
+const HomeEntrenador = { template: '<home-entrenador></home-entrenador>' };
+const ListEntrenos = { template: '<listado-entrenos></listado-entrenos>' };
+const CreateEntreno = { template: '<ficha-entreno form-title="Nuevo Entrenamiento" :is-new-entreno=1></ficha-entreno>' };
+const EditEntreno = { template: '<ficha-entreno form-title="Editar Entrenamiento" :is-new-entreno=0></ficha-entreno>' };
 
 const routes = [
   {
@@ -127,7 +136,20 @@ const routes = [
       },
     ]
   },
-
+  {
+    path: '/entrenador', component: HomeEntrenador,
+    children: [
+      {
+        path: '', name: 'ENTRENADOR', component: ListEntrenos
+      },
+      {
+        path: 'entrenamiento/new', component: CreateEntreno
+      },
+      {
+        path: 'entrenamiento/:id/edit', component: EditEntreno
+      },
+    ]
+  },
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

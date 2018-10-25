@@ -37,6 +37,15 @@ export const store = new Vuex.Store({
     coste: 0.00,
     edit: false,
     calendario: null,
+    entrenamientos: [],
+    entr_contenidos: [],
+    entr_actitudes: [],
+    entr_aprovechamientos: [],
+    entr_evoluciones: [],
+    pelotaris: [],
+    provincias: [],
+    municipios: [],
+    entr_contenido: [],
   },
   getters: {
     festivales: state => state.festivales,
@@ -48,6 +57,15 @@ export const store = new Vuex.Store({
     facturacion: state => state.facturacion,
     edit: state => state.edit,
     calendario: state => state.calendario,
+    entrenamientos: state => state.entrenamientos,
+    entr_contenidos: state => state.entr_contenidos,
+    entr_frontones: state => state.entr_frontones,
+    entr_actitudes: state => state.entr_actitudes,
+    entr_aprovechamientos: state => state.entr_aprovechamientos,
+    entr_evoluciones: state => state.entr_evoluciones,
+    pelotaris: state => state.pelotaris,
+    provincias: state => state.provincias,
+    municipios: state => state.municipios,
   },
   mutations: {
     SET_FESTIVALES (state, festivales) {
@@ -144,16 +162,41 @@ export const store = new Vuex.Store({
     SET_CALENDARIO (state, calendario) {
       state.calendario = calendario;
     },
+    SET_ENTRENAMIENTOS (state, entrenamientos) {
+      state.entrenamientos = entrenamientos;
+      this.commit('SET_TOTAL_ENTRENAMIENTOS', entrenamientos.length);
+    },
+    SET_TOTAL_ENTRENAMIENTOS (state, total) {
+      state.total_entrenamientos = total;
+    },
+    SET_ENTR_CONTENIDOS (state, contenidos) {
+      state.entr_contenidos = contenidos;
+    },
+    SET_ENTR_FRONTONES (state, frontones) {
+      state.entr_frontones = frontones;
+    },
+    SET_ENTR_ACTITUDES (state, actitudes) {
+      state.entr_actitudes = actitudes;
+    },
+    SET_ENTR_APROVECHAMIENTOS (state, aprovechamientos) {
+      state.entr_aprovechamientos = aprovechamientos;
+    },
+    SET_ENTR_EVOLUCIONES (state, evoluciones) {
+      state.entr_evoluciones = evoluciones;
+    },
+    SET_PELOTARIS (state, pelotaris) {
+      state.pelotaris = pelotaris;
+    },
+    SET_PROVINCIAS (state, provincias) {
+      state.provincias = provincias;
+    },
+    SET_MUNICIPIOS (state, municipios) {
+      state.municipios = municipios;
+    },
   },
   actions: {
     loadFestivales({ commit, dispatch }) {
       dispatch('filterFestivales');
-      // axios
-      //   .get('/www/festivales')
-      //   .then( r => r.data )
-      //   .then( festivales => {
-      //     commit('SET_FESTIVALES', festivales);
-      //   });
     },
     addFilterFestival({ commit, dispatch }, value) {
       commit('ADD_FILTER_FESTIVAL', value);
@@ -361,5 +404,106 @@ export const store = new Vuex.Store({
           commit('SET_CALENDARIO', calendario);
         });
     },
+    loadEntrenamientos({ commit, dispatch }) {
+      axios
+        .get('/www/entrenamientos')
+        .then( r => r.data )
+        .then( entrenamientos => {
+          console.log("[loadEntrenamientos] entrenamientos: " + JSON.stringify(entrenamientos));
+          commit('SET_ENTRENAMIENTOS', entrenamientos)
+        });
+    },
+    loadEntrContenidos({ commit, dispatch }) {
+      axios
+        .get('/www/entrenamientos/contenidos')
+        .then( r => r.data )
+        .then( contenidos => {
+          var stringified = JSON.stringify(contenidos).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          contenidos = JSON.parse(stringified);
+          contenidos.unshift({ value: null, text: "Seleccionar contenido" });
+          commit('SET_ENTR_CONTENIDOS', contenidos)
+        });
+    },
+    loadEntrFrontones({ commit }) {
+      axios
+        .get('/www/entrenamientos/frontones')
+        .then( r => r.data )
+        .then( frontones => {
+          var stringified = JSON.stringify(frontones).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          frontones = JSON.parse(stringified);
+          frontones.unshift({ value: null, text: "Seleccionar frontón" });
+          commit('SET_ENTR_FRONTONES', frontones);
+        });
+    },
+    loadEntrActitudes({ commit, dispatch }) {
+      axios
+        .get('/www/entrenamientos/actitudes')
+        .then( r => r.data )
+        .then( actitudes => {
+          var stringified = JSON.stringify(actitudes).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          actitudes = JSON.parse(stringified);
+          actitudes.unshift({ value: null, text: "Seleccionar actitud" });
+          commit('SET_ENTR_ACTITUDES', actitudes)
+        });
+    },
+    loadEntrAprovechamientos({ commit, dispatch }) {
+      axios
+        .get('/www/entrenamientos/aprovechamientos')
+        .then( r => r.data )
+        .then( aprovechamientos => {
+          var stringified = JSON.stringify(aprovechamientos).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          aprovechamientos = JSON.parse(stringified);
+          aprovechamientos.unshift({ value: null, text: "Seleccionar aprovechamiento" });
+          commit('SET_ENTR_APROVECHAMIENTOS', aprovechamientos)
+        });
+    },
+    loadEntrEvoluciones({ commit, dispatch }) {
+      axios
+        .get('/www/entrenamientos/evoluciones')
+        .then( r => r.data )
+        .then( evoluciones => {
+          var stringified = JSON.stringify(evoluciones).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          evoluciones = JSON.parse(stringified);
+          evoluciones.unshift({ value: null, text: "Seleccionar evolución" });
+          commit('SET_ENTR_EVOLUCIONES', evoluciones)
+        });
+    },
+    loadPelotaris({ commit }, date) {
+      axios
+        .get('/www/pelotaris', {
+            params: {
+              fecha: date
+            }
+        })
+        .then( r => r.data )
+        .then( pelotaris => {
+          var stringified = JSON.stringify(pelotaris).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          pelotaris = JSON.parse(stringified);
+          pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+          commit('SET_PELOTARIS', pelotaris)
+        });
+    },
+    loadProvincias({ commit }) {
+      axios
+        .get('/www/provincias')
+        .then( r => r.data )
+        .then( provincias => {
+          var stringified = JSON.stringify(provincias).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          provincias = JSON.parse(stringified);
+          provincias.unshift({ value: null, text: "Seleccionar provincia" });
+          commit('SET_PROVINCIAS', provincias)
+        })
+    },
+    loadMunicipios({ commit }) {
+      axios
+        .get('/www/municipios')
+        .then( r => r.data )
+        .then( municipios => {
+          var stringified = JSON.stringify(municipios).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          municipios = JSON.parse(stringified);
+          municipios.unshift({ value: null, text: "Seleccionar municipio "});
+          commit('SET_MUNICIPIOS', municipios)
+        })
+    }
   }
 });

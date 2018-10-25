@@ -121,7 +121,6 @@
         }
       },
       created() {
-        console.log("CREATED: " + JSON.stringify(this.$route.params) + "; isAdmin: " + this.isAdmin);
         store.dispatch('loadFestivales');
       },
       computed: {

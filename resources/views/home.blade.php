@@ -14,21 +14,7 @@
               <home-component user-role="rrhh"></home-component>
               @break
             @case ('entrenador')
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard ENTRENADOR</div>
-                    <div class="card-body">
-                      @if (session('status'))
-                          <div class="alert alert-success" role="alert">
-                              {{ session('status') }}
-                          </div>
-                      @endif
-
-                      You are logged in! Your role is {{ $role }} !!
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <home-component user-role="entrenador"></home-component>
               @break
             @case ('intendente')
               <home-component user-role="intendente"></home-component>

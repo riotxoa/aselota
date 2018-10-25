@@ -42,6 +42,14 @@
             params: { userRole: this.userRole },
           })
           break;
+        case 'entrenador':
+          this.home = '/entrenador';
+          this.title= "Gestión de Entrenamientos";
+          this.$router.push({
+            name: 'ENTRENADOR',
+            params: { userRole: this.userRole },
+          })
+          break;
         default:
           this.title = "SIN PERMISOS";
           break;

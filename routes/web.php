@@ -37,6 +37,12 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('festival-facturacion', 'FestivalFacturacionController');
     Route::resource('formas-pago', 'FormasPagoController');
     Route::resource('envio-facturas', 'FacturaEnvioController');
+    Route::resource('entrenamientos/contenidos', 'EntrContenidoController');
+    Route::resource('entrenamientos/actitudes', 'EntrActitudController');
+    Route::resource('entrenamientos/aprovechamientos', 'EntrAprovechamientoController');
+    Route::resource('entrenamientos/evoluciones', 'EntrEvolucionController');
+    Route::resource('entrenamientos/frontones', 'EntrFrontonController');
+    Route::resource('entrenamientos', 'EntrenamientoController');
 
     Route::get('calendario', 'FestivaleController@getCalendarMonth');
 
