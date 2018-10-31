@@ -147,8 +147,9 @@
           sortBy: 'fecha_ini',
           sortDesc: true,
           fields: [
-            { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true },
-            { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true },
+            { key: 'name', label: '<span title="Contrato">Contrato</span>', sortable: true, variant: 'info' },
+            { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true },
+            { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true },
             { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
@@ -185,6 +186,7 @@
           })
           .then((response) => {
             var stringified = JSON.stringify(response.data);
+            console.log("[fetchTarifas] stringified: " + stringified);
             this.items = JSON.parse(stringified);
             this.totalRows = this.items.length;
           });

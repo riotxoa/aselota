@@ -52,7 +52,8 @@ const ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> '};
 const CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> '};
 const EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> '};
 
-Vue.component('contrato-pelotari', require('./components/rrhh_contratos/FichaComponent.vue'));
+Vue.component('contrato-header-pelotari', require('./components/rrhh_contratos/FichaHeaderComponent.vue'));
+Vue.component('contrato-tramo-pelotari', require('./components/rrhh_contratos/FichaTramoComponent.vue'));
 
 Vue.component('home-gerente', require('./components/HomeGerenteComponent.vue'));
 Vue.component('listado-festivales', require('./components/festivales/ListadoComponent.vue'));

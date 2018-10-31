@@ -25,10 +25,11 @@ class ContratoCampeonatoController extends Controller
         $items = DB::table('contrato_campeonatos')
           ->select(
               'contrato_campeonatos.*',
-              'contratos.fecha_ini',
-              'contratos.fecha_fin'
+              'contratos_header.name',
+              'contratos_header.fecha_ini',
+              'contratos_header.fecha_fin'
             )
-          ->leftJoin('contratos', 'contratos.id', '=', 'contrato_campeonatos.contrato_id')
+          ->leftJoin('contratos_header', 'contratos_header.id', '=', 'contrato_campeonatos.header_id')
           ->where('contrato_campeonatos.pelotari_id', '=', $pelotari_id)
           ->where('contrato_campeonatos.campeonato_id', '=', $campeonato_id)
           ->where('contrato_campeonatos.deleted_at', '=', null)
@@ -58,7 +59,7 @@ class ContratoCampeonatoController extends Controller
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
         $item = new ContratoCampeonato([
-          'contrato_id' => $request->get('contrato_id'),
+          'header_id' => $request->get('header_id'),
           'pelotari_id' => $request->get('pelotari_id'),
           'campeonato_id' => $request->get('campeonato_id'),
           'campeon' => $request->get('campeon'),
@@ -116,7 +117,7 @@ class ContratoCampeonatoController extends Controller
 
         $item = ContratoCampeonato::find($id);
 
-        $item->contrato_id = $request->get('contrato_id');
+        $item->header_id = $request->get('header_id');
         $item->campeon = $request->get('campeon');
         $item->subcampeon = $request->get('subcampeon');
         $item->liga_semifinal = $request->get('liga_semifinal');

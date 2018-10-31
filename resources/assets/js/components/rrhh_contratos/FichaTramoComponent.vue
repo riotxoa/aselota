@@ -15,7 +15,7 @@
                           class="col-sm-4">
               <b-form-input id="fecha_iniInput"
                             type="date"
-                            v-model="contrato.fecha_ini"
+                            v-model="tramo.fecha_ini"
                             required
                             placeholder="dd/mm/yyyy">
               </b-form-input>
@@ -25,7 +25,7 @@
                           class="col-sm-4">
               <b-form-input id="fecha_finInput"
                             type="date"
-                            v-model="contrato.fecha_fin"
+                            v-model="tramo.fecha_fin"
                             required
                             placeholder="dd/mm/yyyy">
               </b-form-input>
@@ -38,7 +38,7 @@
               <b-form-input id="d_basicaInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.dieta_mes"
+                            v-model="tramo.dieta_mes"
                             maxlength="8"
                             placeholder="0"
                             style="background-color:#c3e6cb">
@@ -50,7 +50,7 @@
               <b-form-input id="dieta_partidoInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.dieta_partido"
+                            v-model="tramo.dieta_partido"
                             maxlength="8"
                             placeholder="0"
                             style="background-color:#c3e6cb">
@@ -64,7 +64,7 @@
               <b-form-input id="prima_partidoInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.prima_partido"
+                            v-model="tramo.prima_partido"
                             maxlength="8"
                             placeholder="0"
                             style="background-color:#ffeeba">
@@ -76,7 +76,7 @@
               <b-form-input id="prima_estelarInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.prima_estelar"
+                            v-model="tramo.prima_estelar"
                             maxlength="8"
                             placeholder="0"
                             style="background-color:#ffeeba">
@@ -88,7 +88,7 @@
               <b-form-input id="prima_manomanistaInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.prima_manomanista"
+                            v-model="tramo.prima_manomanista"
                             maxlength="8"
                             placeholder="0"
                             style="background-color:#ffeeba">
@@ -102,7 +102,7 @@
               <b-form-input id="d_imagenInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.d_imagen"
+                            v-model="tramo.d_imagen"
                             maxlength="8"
                             placeholder="0">
               </b-form-input>
@@ -113,7 +113,7 @@
               <b-form-input id="costeInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.coste"
+                            v-model="tramo.coste"
                             maxlength="8"
                             placeholder="0">
               </b-form-input>
@@ -124,7 +124,7 @@
               <b-form-input id="garantiaInput"
                             class="text-right"
                             type="number"
-                            v-model="contrato.garantia"
+                            v-model="tramo.garantia"
                             maxlength="4"
                             placeholder="0">
               </b-form-input>
@@ -157,10 +157,10 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
-    props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getContratoRow', 'isNewContrato', 'formatAmount'],
+    props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getHeaderRow', 'getTramoRow', 'isNewTramo', 'formatAmount'],
     data () {
       return {
-        contrato: {
+        tramo: {
           id: null,
           pelotari_id: null,
           fecha_ini: null,
@@ -187,38 +187,40 @@
     created: function() {
       console.log("FichaComponent created");
 
-      this.contrato.pelotari_id = this.pelotariId;
-
-      if( this.isNewContrato() ) {
+      this.tramo.pelotari_id = this.pelotariId;
+      this.tramo.header_id = this.getHeaderRow().id;
+      // var header = this.getHeaderRow();
+console.log("[CREATED] this.tramo: " + JSON.stringify(this.tramo));
+      if( this.isNewTramo() ) {
         this.edit = false;
       } else {
         this.edit = true;
 
-        var rowContrato = this.getContratoRow();
+        var rowTramo = this.getTramoRow();
 
-        this.contrato.id = rowContrato.id;
-        this.contrato.fecha_ini = rowContrato.fecha_ini;
-        this.contrato.fecha_fin = rowContrato.fecha_fin;
-        this.contrato.dieta_mes = this.formatAmount(rowContrato.dieta_mes);
-        this.contrato.dieta_partido = this.formatAmount(rowContrato.dieta_partido);
-        this.contrato.prima_partido = this.formatAmount(rowContrato.prima_partido);
-        this.contrato.prima_estelar = this.formatAmount(rowContrato.prima_estelar);
-        this.contrato.prima_manomanista = this.formatAmount(rowContrato.prima_manomanista);
-        this.contrato.garantia = rowContrato.garantia;
-        this.contrato.coste = this.formatAmount(rowContrato.coste);
-        this.contrato.formacion = rowContrato.formacion;
-        this.contrato.d_imagen = this.formatAmount(rowContrato.d_imagen);
+        this.tramo.id = rowTramo.id;
+        this.tramo.fecha_ini = rowTramo.fecha_ini;
+        this.tramo.fecha_fin = rowTramo.fecha_fin;
+        this.tramo.dieta_mes = this.formatAmount(rowTramo.dieta_mes);
+        this.tramo.dieta_partido = this.formatAmount(rowTramo.dieta_partido);
+        this.tramo.prima_partido = this.formatAmount(rowTramo.prima_partido);
+        this.tramo.prima_estelar = this.formatAmount(rowTramo.prima_estelar);
+        this.tramo.prima_manomanista = this.formatAmount(rowTramo.prima_manomanista);
+        this.tramo.garantia = rowTramo.garantia;
+        this.tramo.coste = this.formatAmount(rowTramo.coste);
+        this.tramo.formacion = rowTramo.formacion;
+        this.tramo.d_imagen = this.formatAmount(rowTramo.d_imagen);
       }
     },
     methods: {
       onSubmit (evt) {
         evt.preventDefault();
 
-        let uri = '/www/contratos';
+        let uri = '/www/contratos/tramo';
 
         if(this.edit) {
-          console.log("[onSumbimt] this.contrato: " + JSON.stringify(this.contrato));
-          this.axios.post(uri + '/' + this.contrato.id + '/update', this.contrato)
+          console.log("[onSumbimt] this.tramo: " + JSON.stringify(this.tramo));
+          this.axios.post(uri + '/' + this.tramo.id + '/update', this.tramo)
             .then((response) => {
               console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
               showSnackbar("Contrato actualizado");
@@ -229,7 +231,8 @@
               showSnackbar("Se ha producido un ERROR");
             });
         } else {
-          this.axios.post(uri, this.contrato)
+          console.log("[onSubmit NEW] this.tramo: " + JSON.stringify(this.tramo));
+          this.axios.post(uri, this.tramo)
             .then((response) => {
               console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
               showSnackbar("Contrato creado");
@@ -244,17 +247,17 @@
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.contrato.fecha_ini = null;
-        this.contrato.fecha_fin = null;
-        this.contrato.dieta_mes = null;
-        this.contrato.dieta_partido = null;
-        this.contrato.prima_partido = null;
-        this.contrato.prima_estelar = null;
-        this.contrato.prima_manomanista = null;
-        this.contrato.garantia = null;
-        this.contrato.coste = null;
-        this.contrato.formacion = false;
-        this.contrato.d_imagen = null;
+        this.tramo.fecha_ini = null;
+        this.tramo.fecha_fin = null;
+        this.tramo.dieta_mes = null;
+        this.tramo.dieta_partido = null;
+        this.tramo.prima_partido = null;
+        this.tramo.prima_estelar = null;
+        this.tramo.prima_manomanista = null;
+        this.tramo.garantia = null;
+        this.tramo.coste = null;
+        this.tramo.formacion = false;
+        this.tramo.d_imagen = null;
       },
     }
   }

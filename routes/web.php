@@ -24,6 +24,8 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('campeonatos', 'CampeonatoController');
     Route::resource('pelotaris', 'PelotariController');
     Route::resource('pelotaris-aspe', 'PelotarisAspeController');
+    Route::resource('contratos/tramo', 'ContratoController');
+    Route::resource('contratos/header', 'ContratoHeaderController');
     Route::resource('contratos', 'ContratoController');
     Route::resource('tarifas', 'ContratoCampeonatoController');
     Route::resource('derechos', 'DerechoController');
@@ -48,7 +50,8 @@ Route::group(['prefix' => 'www'], function () {
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
-    Route::post('contratos/{id}/update', 'ContratoController@update');
+    Route::post('contratos/tramo/{id}/update', 'ContratoController@update');
+    Route::post('contratos/header/{id}/update', 'ContratoHeaderController@update');
     Route::post('tarifas/{id}/update', 'ContratoCampeonatoController@update');
     Route::post('derechos/{id}/update', 'DerechoController@update');
     Route::post('festivales/{id}/update', 'FestivaleController@update');

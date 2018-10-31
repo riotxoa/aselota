@@ -14,7 +14,7 @@
           <b-form-select id="contrato"
                         :options="contratos"
                         required
-                        v-model="tarifa.contrato_id"
+                        v-model="tarifa.header_id"
                         v-on:change="changeContrato">
           </b-form-select>
         </b-form-group>
@@ -157,6 +157,8 @@
 </template>
 
 <script>
+  import moment from 'moment';
+
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
@@ -176,7 +178,7 @@
           id: null,
           pelotari_id: null,
           campeonato_id: null,
-          contrato_id: null,
+          header_id: null,
           fecha_ini: null,
           fecha_fin: null,
           campeon: null,
@@ -215,9 +217,9 @@
         var rowTarifa = this.getTarifaRow();
 
         this.tarifa.id = rowTarifa.id;
-        this.tarifa.contrato_id = rowTarifa.contrato_id;
-        this.tarifa.fecha_ini = rowTarifa.fecha_ini;
-        this.tarifa.fecha_fin = rowTarifa.fecha_fin;
+        this.tarifa.header_id = rowTarifa.header_id;
+        this.tarifa.fecha_ini = this.formatDate(rowTarifa.fecha_ini);
+        this.tarifa.fecha_fin = this.formatDate(rowTarifa.fecha_fin);
         this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
         this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
         this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
@@ -238,7 +240,7 @@
             }
         })
         .then((response) => {
-          var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/periodo/g, "text");;
+          var stringified = JSON.stringify(response.data).replace(/id/g, "value").replace(/name/g, "text");;
           this.contratos = JSON.parse(stringified);
         });
       },
@@ -270,7 +272,7 @@
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.tarfia.contrato_id = null;
+        this.tarfia.header_id = null;
         this.tarifa.fecha_ini = null;
         this.tarifa.fecha_fin = null;
         this.tarifa.campeon = null;
@@ -285,9 +287,16 @@
       },
       changeContrato (evt) {
         var contrato = _.filter(this.contratos, { 'value': evt });
-        this.tarifa.fecha_ini = contrato[0].fecha_inicio;
-        this.tarifa.fecha_fin = contrato[0].fecha_final;
-      }
+        this.tarifa.fecha_ini = this.formatDate(contrato[0].fecha_ini);
+        this.tarifa.fecha_fin = this.formatDate(contrato[0].fecha_fin);
+      },
+      formatDate (date) {
+        if(date)
+          return moment(String(date)).format('DD/MM/YYYY');
+        else {
+          return "";
+        }
+      },
     }
   }
 </script>

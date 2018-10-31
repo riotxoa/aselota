@@ -495,6 +495,7 @@
   .nav-pills .nav-link.active,
   .nav-pills .show > .nav-link {
     background-color:#28a745;
+    font-weight:bold;
   }
   .nav-pills .nav-link:hover,
   .nav-pills .nav-link:active,

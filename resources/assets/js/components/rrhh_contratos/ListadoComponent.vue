@@ -2,89 +2,100 @@
   <div id="listado-contratos" class="container-fluid">
     <b-row>
 
-      <b-col class="col-sm-6 float-left my-1 mb-3">
-        <b-form-group v-if="filter" horizontal label="Filtro" class="mb-0">
-          <b-input-group>
-            <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
-            <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
+      <b-col class="col-sm-6 float-left my-1 mb-3"></b-col>
 
       <b-col class="col-sm-6 text-right float-right my-1 mb-3">
-        <b-btn variant="default" class="mb-0" size="sm" title="Crear Contrato" @click="showContratoForm(0)">Nuevo Contrato</b-btn>
+        <b-btn variant="default" class="mb-0" size="sm" title="Crear Contrato" @click="showContratoHeaderForm(0)">Nuevo Contrato</b-btn>
       </b-col>
 
     </b-row>
 
-    <b-table striped hover small responsive
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :per-page="perPage"
-      :current-page="currentPage"
-      :items="items"
-      :fields="fields"
-      :filter="filter"
-      @filtered="onFiltered">
-
-      <template slot="actions" slot-scope="row">
-        <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-        <b-button-group>
-          <b-button v-if="remove" size="sm" variant="danger" @click.stop="onClickDelete(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
-            <span class="icon voyager-trash"></span>
-          </b-button>
-          <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item)" title="Editar">
-            <span class="icon voyager-edit"></span>
-          </b-button>
-          <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
-            <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
-          </b-button>
-        </b-button-group>
-      </template>
-
-      <template v-if="display" slot="row-details" slot-scope="row">
-        <b-card>
-          <b-row>
-            <b-col sm="6">
-            </b-col>
-            <b-col sm="6">
-            </b-col>
+    <div role="tablist">
+      <b-card no-body class="mb-1" v-for="contrato in contratos" :key="contrato.id">
+        <b-card-header header-tag="header" class="p-0" role="tab">
+          <b-row class="m-0">
+            <div class="col-sm-3 p-0">
+              <b-btn block href="#" v-b-toggle="'#contrato-' + contrato.id" variant="secondary"><strong>{{ contrato.name }}</strong></b-btn>
+            </div>
+            <div class="col-sm-6 pt-2 text-left" title="Periodo de contrato" style="font-size:13px;">
+              <span class="icon voyager-calendar mr-1"></span>{{ contrato.fecha_ini | formatDate }} - {{ contrato.fecha_fin | formatDate }}
+            </div>
+            <div class="col-sm-3 p-0 text-right">
+              <b-button-group>
+                <b-button v-if="removeHeader" variant="danger" @click.stop="onClickDeleteHeader(contrato.id, contrato.fecha_ini, contrato.fecha_fin)" title="Eliminar">
+                  <span class="icon voyager-trash"></span>
+                </b-button>
+                <b-button v-if="updateHeader" variant="primary" @click.stop="onClickEditHeader(contrato)" title="Editar">
+                  <span class="icon voyager-edit"></span>
+                </b-button>
+                <b-button v-if="displayHeader" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+                  <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+                </b-button>
+              </b-button-group>
+            </div>
           </b-row>
-        </b-card>
-      </template>
+        </b-card-header>
+        <b-collapse :id="'#contrato-' + contrato.id" accordion="my-accordion" role="tabpanel">
+          <b-card-body>
+            <b-row>
+              <b-col class="col-sm-6">
+                <h5 class="font-weight-bold pt-1">Tramos</h5>
+              </b-col>
+              <b-col class="col-sm-6 text-right float-right my-1 mb-3">
+                <b-btn variant="default" class="mb-0" size="sm" title="Crear Tramo" @click="showContratoTramoForm(contrato, 0)">Nuevo Tramo</b-btn>
+              </b-col>
+            </b-row>
+            <b-table striped hover small responsive
+              :items="contrato.tramos"
+              :fields="fields_tramo">
+              <template slot="actions" slot-scope="row">
+                <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+                <b-button-group>
+                  <b-button v-if="removeTramo" size="sm" variant="danger" @click.stop="onClickDeleteTramo(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
+                    <span class="icon voyager-trash"></span>
+                  </b-button>
+                  <b-button v-if="updateTramo" size="sm" variant="primary" @click.stop="onClickEditTramo(row.item)" title="Editar">
+                    <span class="icon voyager-edit"></span>
+                  </b-button>
+                  <b-button v-if="displayTramo" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+                    <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+                  </b-button>
+                </b-button-group>
+              </template>
+            </b-table>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+    </div>
 
-    </b-table>
-
-    <b-row>
-      <b-col md="5" class="my-1">
-        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-      </b-col>
-      <b-col md="3" class="my-1 text-right">
-        <b-form-group horizontal class="mb-0" label="Total: ">
-          <b-form-input readonly plaintext v-model="totalRows"></b-form-input>
-        </b-form-group>
-      </b-col>
-      <b-col md="4" class="my-1">
-        <b-form-group horizontal label="Mostrar" class="mb-0">
-          <b-form-select :options="pageOptions" v-model="perPage" />
-        </b-form-group>
-      </b-col>
     </b-row>
 
-    <b-modal v-if="remove" ref="modalDelete" title="BORRAR Contrato" hide-footer>
+    <b-modal v-if="removeHeader" ref="modalDeleteHeader" title="BORRAR Contrato" hide-footer>
       <div class="modal-body">
-        <p>Se va a borrar el contrato de <strong id="deleteContratoAlias"></strong>¿Desea continuar?</p>
+        <p>Se va a borrar un contrato de <strong id="deleteTramoAlias"></strong>¿Desea continuar?</p>
       </div>
       <div class="modal-footer">
-        <b-btn variant="danger" @click="removeItem">Borrar</b-btn>
-        <b-btn @click="hideModalDelete">Cancelar</b-btn>
+        <b-btn variant="danger" @click="removeItemHeader">Borrar</b-btn>
+        <b-btn @click="hideModalDeleteHeader">Cancelar</b-btn>
       </div>
     </b-modal>
 
-    <b-modal id="contratoForm" ref="modalEdit" :title="formTitle" size="lg" hide-footer lazy>
-      <contrato-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelContratoForm" :get-contrato-row="getContratoRow" :is-new-contrato="isNewContrato" :format-amount="formatRowAmount"></contrato-pelotari>
+    <b-modal id="headerContratoForm" ref="modalEditHeader" :title="formHeaderTitle" size="lg" hide-footer lazy>
+      <contrato-header-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelHeaderForm" :get-header-row="getHeaderRow" :is-new-header="isNewHeader" :format-amount="formatRowAmount"></contrato-header-pelotari>
+    </b-modal>
+
+    <b-modal v-if="removeTramo" ref="modalDeleteTramo" title="BORRAR Tramo de Contrato" hide-footer>
+      <div class="modal-body">
+        <p>Se va a borrar un tramo de contrato de <strong id="deleteTramoAlias"></strong>¿Desea continuar?</p>
+      </div>
+      <div class="modal-footer">
+        <b-btn variant="danger" @click="removeItemTramo">Borrar</b-btn>
+        <b-btn @click="hideModalDeleteTramo">Cancelar</b-btn>
+      </div>
+    </b-modal>
+
+    <b-modal id="tramoContratoForm" ref="modalEditTramo" :title="formTramoTitle" size="lg" hide-footer lazy>
+      <contrato-tramo-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelTramoForm" :get-header-row="getHeaderRow" :get-tramo-row="getTramoRow" :is-new-tramo="isNewTramo" :format-amount="formatRowAmount"></contrato-tramo-pelotari>
     </b-modal>
 
   </div>
@@ -109,38 +120,43 @@
       data () {
         return {
           create: true,
-          remove: true,
-          update: true,
-          display: false,
-          filter: false,
+          removeHeader: true,
+          removeTramo: true,
+          updateHeader: true,
+          updateTramo: true,
+          displayHeader: false,
+          displayTramo: false,
           sortBy: 'fecha_ini',
           sortDesc: true,
-          fields: [
-            { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: 'formatDate', sortable: true },
-            { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: 'formatDate', sortable: true },
-            { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false },
-            { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'success', sortable: false },
-            { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false },
-            { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false },
-            { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: 'formatAmount', class: 'text-right', variant: 'warning', sortable: false },
-            { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
-            { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
+          fields_tramo: [
+            { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true },
+            { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true },
+            { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
+            { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
+            { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
+            { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
+            { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
+            { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false },
+            { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false },
             { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false },
             { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
-          items: [],
+          contratos: [],
           totalRows: 0,
-          perPage: 10,
-          currentPage: 1,
-          pageOptions: [ 10, 25, 50 ],
-          filter: null,
-          deleteId: null,
-          formTitle: '',
-          rowContrato: null,
-          newContrato: true,
-          cancelContratoForm: () => { this.hideContratoForm(); },
-          getContratoRow: () => { return this.rowContrato; },
-          isNewContrato: () => { return this.newContrato; },
+          deleteIdHeader: null,
+          deleteIdTramo: null,
+          formHeaderTitle: '',
+          formTramoTitle: '',
+          rowHeader: null,
+          rowTramo: null,
+          newHeader: true,
+          newTramo: true,
+          cancelHeaderForm: () => { this.hideHeaderForm(); },
+          cancelTramoForm: () => { this.hideTramoForm(); },
+          getHeaderRow: () => { return this.rowHeader; },
+          getTramoRow: () => { return this.rowTramo; },
+          isNewHeader: () => { return this.newHeader; },
+          isNewTramo: () => { return this.newTramo; },
           formatRowAmount: (amount) => { return this.formatAmount(amount); },
         }
       },
@@ -157,38 +173,54 @@
           })
           .then((response) => {
             var stringified = JSON.stringify(response.data);
-            this.items = JSON.parse(stringified);
-            this.totalRows = this.items.length;
+            this.contratos = JSON.parse(stringified);
+            this.totalRows = this.contratos.length;
           });
         },
-        onFiltered (filteredItems) {
-          // Trigger pagination to update the number of buttons/pages due to filtering
-          this.totalRows = filteredItems.length;
-          this.currentPage = 1;
+        onClickEditHeader (header) {
+          this.rowHeader = header;
+          this.showContratoHeaderForm(header.id);
         },
-        onClickEdit (item) {
-          this.rowContrato = item;
-          this.showContratoForm(item.id);
+        onClickEditTramo (tramo) {
+          this.rowTramo = tramo;
+          this.showContratoTramoForm(this.rowHeader.id, tramo.id);
         },
-        removeItem () {
-          let uri = '/www/contratos/' + this.deleteId;
-          console.log("BORRAR CONTRATO: " + uri);
+        removeItemHeader () {
+          let uri = '/www/contratos/header/' + this.deleteIdHeader;
+          console.log("BORRAR HEADER: " + uri);
           this.axios.delete(uri)
             .then((response) => {
-              this.deleteId = null;
-              this.$refs.modalDelete.hide();
+              this.deleteIdHeader = null;
+              this.$refs.modalDeleteHeader.hide();
               this.fetchContratos();
               showSnackbar("Contrato BORRADO");
             })
             .catch((error) => {
-              console.log("[removeItem] error: " + error);
-              this.deleteId = null;
-              this.$refs.modalDelete.hide();
-              showSnackbar("ERROR al borrar");
+              console.log("[removeHeader] error: " + error);
+              this.deleteIdHeader = null;
+              this.$refs.modalDeleteHeader.hide();
+              showSnackbar("ERROR al borrar contrato");
             });
         },
-        onClickDelete (id, fecha_ini, fecha_fin) {
-          this.deleteId = id;
+        removeItemTramo () {
+          let uri = '/www/contratos/' + this.deleteIdTramo;
+          console.log("BORRAR TRAMO: " + uri);
+          this.axios.delete(uri)
+            .then((response) => {
+              this.deleteIdTramo = null;
+              this.$refs.modalDeleteTramo.hide();
+              this.fetchContratos();
+              showSnackbar("Tramo de Contrato BORRADO");
+            })
+            .catch((error) => {
+              console.log("[removeTramo] error: " + error);
+              this.deleteIdTramo = null;
+              this.$refs.modalDeleteTramo.hide();
+              showSnackbar("ERROR al borrar tramo");
+            });
+        },
+        onClickDeleteHeader (id, fecha_ini, fecha_fin) {
+          this.deleteIdHeader = id;
 
           var msg = " \
             <div class='px-5 py-2'> \
@@ -198,11 +230,28 @@
 
           jQuery('#deleteContratoAlias').html(msg);
 
-          this.$refs.modalDelete.show();
+          this.$refs.modalDeleteHeader.show();
         },
-        hideModalDelete() {
-          this.deleteId = null;
-          this.$refs.modalDelete.hide();
+        hideModalDeleteHeader() {
+          this.deleteIdHeader = null;
+          this.$refs.modalDeleteHeader.hide();
+        },
+        onClickDeleteTramo (id, fecha_ini, fecha_fin) {
+          this.deleteIdTramo = id;
+
+          var msg = " \
+            <div class='px-5 py-2'> \
+              <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+              <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
+            </div>";
+
+          jQuery('#deleteTramoAlias').html(msg);
+
+          this.$refs.modalDeleteTramo.show();
+        },
+        hideModalDeleteTramo() {
+          this.deleteIdTramo = null;
+          this.$refs.modalDeleteTramo.hide();
         },
         formatDate (date) {
           if(date)
@@ -218,19 +267,35 @@
             return "";
           }
         },
-        showContratoForm ($id = 0) {
+        showContratoHeaderForm ($id = 0) {
           if($id) {
-            this.formTitle = 'Editar Contrato';
-            this.newContrato = false;
-            this.$refs.modalEdit.show();
+            this.formHeaderTitle = 'Editar Contrato';
+            this.newHeader = false;
+            this.$refs.modalEditHeader.show();
           } else {
-            this.formTitle = 'Nuevo Contrato';
-            this.newContrato = true;
-            this.$refs.modalEdit.show();
+            this.formHeaderTitle = 'Nuevo Contrato';
+            this.newHeader = true;
+            this.$refs.modalEditHeader.show();
           }
         },
-        hideContratoForm () {
-          this.$refs.modalEdit.hide();
+        hideHeaderForm () {
+          this.$refs.modalEditHeader.hide();
+          this.fetchContratos();
+        },
+        showContratoTramoForm ($header, $tramo_id = 0) {
+          this.rowHeader = $header;
+          if($tramo_id) {
+            this.formTramoTitle = 'Editar Tramo';
+            this.newTramo = false;
+            this.$refs.modalEditTramo.show();
+          } else {
+            this.formTramoTitle = 'Nuevo Tramo';
+            this.newTramo = true;
+            this.$refs.modalEditTramo.show();
+          }
+        },
+        hideTramoForm () {
+          this.$refs.modalEditTramo.hide();
           this.fetchContratos();
         }
       }
@@ -249,5 +314,13 @@
   #listado-contratos .b-table td.table-success,
   #listado-contratos .b-table td.table-warning {
     border-color:white;
+  }
+  #listado-contratos .card-header a.btn:not(.collapsed) {
+    background:#28a745;
+    border-color:#28a745;
+  }
+  #listado-contratos .card-header a.btn:focus {
+    -webkit-box-shadow:none;
+    box-shadow:none;
   }
 </style>

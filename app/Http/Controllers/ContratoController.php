@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Contrato;
+use App\ContratoHeader;
 
 class ContratoController extends Controller
 {
@@ -19,19 +20,12 @@ class ContratoController extends Controller
 
         $id = $request->get('pelotari_id');
 
-        // $items = Contrato::where('pelotari_id', $id)->get();
+        $items = \App\ContratoHeader::where('pelotari_id', $id)->orderBy('fecha_fin', 'desc')->get();
 
-        $items = DB::table('contratos')
-          ->select(
-            'contratos.*',
-            DB::raw('DATE_FORMAT(contratos.fecha_ini, "%d-%m-%Y") AS fecha_inicio'),
-            DB::raw('DATE_FORMAT(contratos.fecha_fin, "%d-%m-%Y") AS fecha_final'),
-            DB::raw('CONCAT("Del ", DATE_FORMAT(contratos.fecha_ini, "%d-%m-%Y"), " al ", DATE_FORMAT(contratos.fecha_fin, "%d-%m-%Y")) AS periodo')
-            )
-          ->where('pelotari_id', $id)
-          ->where('deleted_at', null)
-          ->orderBy('fecha_ini', 'desc')
-          ->get();
+        foreach($items as $key => $item) {
+          $tramo = \App\Contrato::where('header_id', $item->id)->orderBy('fecha_fin', 'desc')->get();
+          $item->tramos = $tramo;
+        }
 
         return response()->json($items, 200);
     }
@@ -57,6 +51,7 @@ class ContratoController extends Controller
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
         $item = new Contrato([
+          'header_id' => $request->get('header_id'),
           'pelotari_id' => $request->get('pelotari_id'),
           'fecha_ini' => $request->get('fecha_ini'),
           'fecha_fin' => $request->get('fecha_fin'),
@@ -144,6 +139,6 @@ class ContratoController extends Controller
 
         Contrato::destroy($id);
 
-        return response()->json("CONTRATO REMOVED", 200);
+        return response()->json("TRAMO REMOVED", 200);
     }
 }
