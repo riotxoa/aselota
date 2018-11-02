@@ -57,7 +57,7 @@
                   <b-button v-if="removeTramo" size="sm" variant="danger" @click.stop="onClickDeleteTramo(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
                     <span class="icon voyager-trash"></span>
                   </b-button>
-                  <b-button v-if="updateTramo" size="sm" variant="primary" @click.stop="onClickEditTramo(row.item)" title="Editar">
+                  <b-button v-if="updateTramo" size="sm" variant="primary" @click.stop="onClickEditTramo(contrato, row.item)" title="Editar">
                     <span class="icon voyager-edit"></span>
                   </b-button>
                   <b-button v-if="displayTramo" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
@@ -187,10 +187,11 @@
           this.rowHeader = header;
           this.showContratoHeaderForm(header.id);
         },
-        onClickEditTramo (tramo) {
+        onClickEditTramo (header, tramo) {
           this.rowTramo = tramo;
+          this.rowHeader = header;
 
-          this.showContratoTramoForm(tramo.header_id, tramo.id);
+          this.showContratoTramoForm(this.rowHeader, tramo.id);
         },
         removeItemHeader () {
           let uri = '/www/contratos/header/' + this.deleteIdHeader;

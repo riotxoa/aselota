@@ -1,10 +1,12 @@
 <template>
   <div>
 
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <b-form @submit="onSubmit" @reset="onReset">
 
-      <b-row class="mb-3 bg-danger py-3">
+      <b-row class="bg-danger mb-3 py-2">
         <div class="col-12 text-white"><strong>{{ pelotariAlias }}</strong></div>
+        <div class="col-6 text-white"><strong>Contrato: {{ header.name }}</strong></div>
+        <div class="col-6 text-white text-right"><strong><span class="icon voyager-calendar mr-2"></span>{{ header.fecha_ini | formatDate }} - {{ header.fecha_fin | formatDate }}</strong></div>
       </b-row>
 
       <b-row>
@@ -160,6 +162,7 @@
     props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getHeaderRow', 'getTramoRow', 'isNewTramo', 'formatAmount'],
     data () {
       return {
+        header: null,
         tramo: {
           id: null,
           header_id: null,
@@ -188,10 +191,10 @@
     created: function() {
       console.log("FichaComponent created");
 
+      this.header = this.getHeaderRow();
       this.tramo.pelotari_id = this.pelotariId;
       this.tramo.header_id = this.getHeaderRow().id;
-      // var header = this.getHeaderRow();
-console.log("[CREATED] this.tramo: " + JSON.stringify(this.tramo));
+
       if( this.isNewTramo() ) {
         this.edit = false;
       } else {
@@ -220,10 +223,8 @@ console.log("[CREATED] this.tramo: " + JSON.stringify(this.tramo));
         let uri = '/www/contratos/tramo';
 
         if(this.edit) {
-          console.log("[onSumbimt] this.tramo: " + JSON.stringify(this.tramo));
           this.axios.post(uri + '/' + this.tramo.id + '/update', this.tramo)
             .then((response) => {
-              console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
               showSnackbar("Contrato actualizado");
               this.goBack();
             })
@@ -232,10 +233,8 @@ console.log("[CREATED] this.tramo: " + JSON.stringify(this.tramo));
               showSnackbar("Se ha producido un ERROR");
             });
         } else {
-          console.log("[onSubmit NEW] this.tramo: " + JSON.stringify(this.tramo));
           this.axios.post(uri, this.tramo)
             .then((response) => {
-              console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
               showSnackbar("Contrato creado");
               this.goBack();
             })

@@ -89389,10 +89389,11 @@ var showSnackbar = function showSnackbar(msg) {
       this.rowHeader = header;
       this.showContratoHeaderForm(header.id);
     },
-    onClickEditTramo: function onClickEditTramo(tramo) {
+    onClickEditTramo: function onClickEditTramo(header, tramo) {
       this.rowTramo = tramo;
+      this.rowHeader = header;
 
-      this.showContratoTramoForm(tramo.header_id, tramo.id);
+      this.showContratoTramoForm(this.rowHeader, tramo.id);
     },
     removeItemHeader: function removeItemHeader() {
       var _this3 = this;
@@ -89852,7 +89853,10 @@ var render = function() {
                                             on: {
                                               click: function($event) {
                                                 $event.stopPropagation()
-                                                _vm.onClickEditTramo(row.item)
+                                                _vm.onClickEditTramo(
+                                                  contrato,
+                                                  row.item
+                                                )
                                               }
                                             }
                                           },
@@ -93540,6 +93544,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -93560,6 +93566,7 @@ var showSnackbar = function showSnackbar(msg) {
     var _this = this;
 
     return {
+      header: null,
       tramo: {
         id: null,
         header_id: null,
@@ -93589,10 +93596,10 @@ var showSnackbar = function showSnackbar(msg) {
   created: function created() {
     console.log("FichaComponent created");
 
+    this.header = this.getHeaderRow();
     this.tramo.pelotari_id = this.pelotariId;
     this.tramo.header_id = this.getHeaderRow().id;
-    // var header = this.getHeaderRow();
-    console.log("[CREATED] this.tramo: " + JSON.stringify(this.tramo));
+
     if (this.isNewTramo()) {
       this.edit = false;
     } else {
@@ -93623,9 +93630,7 @@ var showSnackbar = function showSnackbar(msg) {
       var uri = '/www/contratos/tramo';
 
       if (this.edit) {
-        console.log("[onSumbimt] this.tramo: " + JSON.stringify(this.tramo));
         this.axios.post(uri + '/' + this.tramo.id + '/update', this.tramo).then(function (response) {
-          console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
           showSnackbar("Contrato actualizado");
           _this2.goBack();
         }).catch(function (error) {
@@ -93633,9 +93638,7 @@ var showSnackbar = function showSnackbar(msg) {
           showSnackbar("Se ha producido un ERROR");
         });
       } else {
-        console.log("[onSubmit NEW] this.tramo: " + JSON.stringify(this.tramo));
         this.axios.post(uri, this.tramo).then(function (response) {
-          console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
           showSnackbar("Contrato creado");
           _this2.goBack();
         }).catch(function (error) {
@@ -93673,381 +93676,392 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.show
-        ? _c(
-            "b-form",
-            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
-            [
-              _c("b-row", { staticClass: "mb-3 bg-danger py-3" }, [
-                _c("div", { staticClass: "col-12 text-white" }, [
-                  _c("strong", [_vm._v(_vm._s(_vm.pelotariAlias))])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("b-row", [
+      _c(
+        "b-form",
+        { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+        [
+          _c("b-row", { staticClass: "bg-danger mb-3 py-2" }, [
+            _c("div", { staticClass: "col-12 text-white" }, [
+              _c("strong", [_vm._v(_vm._s(_vm.pelotariAlias))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6 text-white" }, [
+              _c("strong", [_vm._v("Contrato: " + _vm._s(_vm.header.name))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6 text-white text-right" }, [
+              _c("strong", [
+                _c("span", { staticClass: "icon voyager-calendar mr-2" }),
+                _vm._v(
+                  _vm._s(_vm._f("formatDate")(_vm.header.fecha_ini)) +
+                    " - " +
+                    _vm._s(_vm._f("formatDate")(_vm.header.fecha_fin))
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("b-row", [
+            _c(
+              "div",
+              { staticClass: "col-md-12" },
+              [
                 _c(
-                  "div",
-                  { staticClass: "col-md-12" },
+                  "b-row",
                   [
                     _c(
-                      "b-row",
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Fecha Inicio:",
+                          "label-for": "fecha_iniInput"
+                        }
+                      },
                       [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Fecha Inicio:",
-                              "label-for": "fecha_iniInput"
-                            }
+                        _c("b-form-input", {
+                          attrs: {
+                            id: "fecha_iniInput",
+                            type: "date",
+                            required: "",
+                            placeholder: "dd/mm/yyyy"
                           },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "fecha_iniInput",
-                                type: "date",
-                                required: "",
-                                placeholder: "dd/mm/yyyy"
-                              },
-                              model: {
-                                value: _vm.tramo.fecha_ini,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "fecha_ini", $$v)
-                                },
-                                expression: "tramo.fecha_ini"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Fecha Fin:",
-                              "label-for": "fecha_finInput"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "fecha_finInput",
-                                type: "date",
-                                required: "",
-                                placeholder: "dd/mm/yyyy"
-                              },
-                              model: {
-                                value: _vm.tramo.fecha_fin,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "fecha_fin", $$v)
-                                },
-                                expression: "tramo.fecha_fin"
-                              }
-                            })
-                          ],
-                          1
-                        )
+                          model: {
+                            value: _vm.tramo.fecha_ini,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "fecha_ini", $$v)
+                            },
+                            expression: "tramo.fecha_ini"
+                          }
+                        })
                       ],
                       1
                     ),
                     _vm._v(" "),
                     _c(
-                      "b-row",
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Fecha Fin:",
+                          "label-for": "fecha_finInput"
+                        }
+                      },
                       [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Dieta básica mensual:",
-                              "label-for": "d_basicaInput"
-                            }
+                        _c("b-form-input", {
+                          attrs: {
+                            id: "fecha_finInput",
+                            type: "date",
+                            required: "",
+                            placeholder: "dd/mm/yyyy"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              staticStyle: { "background-color": "#c3e6cb" },
-                              attrs: {
-                                id: "d_basicaInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.dieta_mes,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "dieta_mes", $$v)
-                                },
-                                expression: "tramo.dieta_mes"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Dieta por partido:",
-                              "label-for": "dieta_partidoInput"
-                            }
+                          model: {
+                            value: _vm.tramo.fecha_fin,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "fecha_fin", $$v)
+                            },
+                            expression: "tramo.fecha_fin"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Dieta básica mensual:",
+                          "label-for": "d_basicaInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#c3e6cb" },
+                          attrs: {
+                            id: "d_basicaInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              staticStyle: { "background-color": "#c3e6cb" },
-                              attrs: {
-                                id: "dieta_partidoInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.dieta_partido,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "dieta_partido", $$v)
-                                },
-                                expression: "tramo.dieta_partido"
-                              }
-                            })
-                          ],
-                          1
-                        )
+                          model: {
+                            value: _vm.tramo.dieta_mes,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "dieta_mes", $$v)
+                            },
+                            expression: "tramo.dieta_mes"
+                          }
+                        })
                       ],
                       1
                     ),
                     _vm._v(" "),
                     _c(
-                      "b-row",
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Dieta por partido:",
+                          "label-for": "dieta_partidoInput"
+                        }
+                      },
                       [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Prima por partido:",
-                              "label-for": "prima_partidoInput"
-                            }
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#c3e6cb" },
+                          attrs: {
+                            id: "dieta_partidoInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              staticStyle: { "background-color": "#ffeeba" },
-                              attrs: {
-                                id: "prima_partidoInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.prima_partido,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "prima_partido", $$v)
-                                },
-                                expression: "tramo.prima_partido"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Prima por estelar:",
-                              "label-for": "prima_estelarInput"
-                            }
+                          model: {
+                            value: _vm.tramo.dieta_partido,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "dieta_partido", $$v)
+                            },
+                            expression: "tramo.dieta_partido"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Prima por partido:",
+                          "label-for": "prima_partidoInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffeeba" },
+                          attrs: {
+                            id: "prima_partidoInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              staticStyle: { "background-color": "#ffeeba" },
-                              attrs: {
-                                id: "prima_estelarInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.prima_estelar,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "prima_estelar", $$v)
-                                },
-                                expression: "tramo.prima_estelar"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Prima Campeón Manomanista:",
-                              "label-for": "prima_manomanistaInput"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              staticStyle: { "background-color": "#ffeeba" },
-                              attrs: {
-                                id: "prima_manomanistaInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.prima_manomanista,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "prima_manomanista", $$v)
-                                },
-                                expression: "tramo.prima_manomanista"
-                              }
-                            })
-                          ],
-                          1
-                        )
+                          model: {
+                            value: _vm.tramo.prima_partido,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "prima_partido", $$v)
+                            },
+                            expression: "tramo.prima_partido"
+                          }
+                        })
                       ],
                       1
                     ),
                     _vm._v(" "),
                     _c(
-                      "b-row",
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Prima por estelar:",
+                          "label-for": "prima_estelarInput"
+                        }
+                      },
                       [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Dchos.Imagen (mes):",
-                              "label-for": "d_imagenInput"
-                            }
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffeeba" },
+                          attrs: {
+                            id: "prima_estelarInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              attrs: {
-                                id: "d_imagenInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.d_imagen,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "d_imagen", $$v)
-                                },
-                                expression: "tramo.d_imagen"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Coste por partido:",
-                              "label-for": "costeInput"
-                            }
+                          model: {
+                            value: _vm.tramo.prima_estelar,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "prima_estelar", $$v)
+                            },
+                            expression: "tramo.prima_estelar"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Prima Campeón Manomanista:",
+                          "label-for": "prima_manomanistaInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffeeba" },
+                          attrs: {
+                            id: "prima_manomanistaInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              attrs: {
-                                id: "costeInput",
-                                type: "number",
-                                maxlength: "8",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.coste,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "coste", $$v)
-                                },
-                                expression: "tramo.coste"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-sm-4",
-                            attrs: {
-                              label: "Partidos garantía:",
-                              "label-for": "garantiaInput"
-                            }
+                          model: {
+                            value: _vm.tramo.prima_manomanista,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "prima_manomanista", $$v)
+                            },
+                            expression: "tramo.prima_manomanista"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Dchos.Imagen (mes):",
+                          "label-for": "d_imagenInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "d_imagenInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
                           },
-                          [
-                            _c("b-form-input", {
-                              staticClass: "text-right",
-                              attrs: {
-                                id: "garantiaInput",
-                                type: "number",
-                                maxlength: "4",
-                                placeholder: "0"
-                              },
-                              model: {
-                                value: _vm.tramo.garantia,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.tramo, "garantia", $$v)
-                                },
-                                expression: "tramo.garantia"
-                              }
-                            })
-                          ],
-                          1
-                        )
+                          model: {
+                            value: _vm.tramo.d_imagen,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "d_imagen", $$v)
+                            },
+                            expression: "tramo.d_imagen"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Coste por partido:",
+                          "label-for": "costeInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "costeInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.coste,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "coste", $$v)
+                            },
+                            expression: "tramo.coste"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-4",
+                        attrs: {
+                          label: "Partidos garantía:",
+                          "label-for": "garantiaInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "garantiaInput",
+                            type: "number",
+                            maxlength: "4",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.garantia,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "garantia", $$v)
+                            },
+                            expression: "tramo.garantia"
+                          }
+                        })
                       ],
                       1
                     )
                   ],
                   1
                 )
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c(
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("b-button", { attrs: { type: "submit", variant: "primary" } }, [
+            _vm._v("Guardar")
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
+            [_vm._v("Cancelar")]
+          ),
+          _vm._v(" "),
+          !_vm.edit
+            ? _c(
                 "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Guardar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
-                [_vm._v("Cancelar")]
-              ),
-              _vm._v(" "),
-              !_vm.edit
-                ? _c(
-                    "b-button",
-                    {
-                      staticClass: "float-right mr-1",
-                      attrs: { type: "reset", variant: "danger" }
-                    },
-                    [_vm._v("Reset")]
-                  )
-                : _vm._e()
-            ],
-            1
-          )
-        : _vm._e()
+                {
+                  staticClass: "float-right mr-1",
+                  attrs: { type: "reset", variant: "danger" }
+                },
+                [_vm._v("Reset")]
+              )
+            : _vm._e()
+        ],
+        1
+      )
     ],
     1
   )
