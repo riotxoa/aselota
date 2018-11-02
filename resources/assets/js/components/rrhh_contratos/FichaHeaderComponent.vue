@@ -41,6 +41,26 @@
               </b-form-input>
             </b-form-group>
           </b-row>
+          <b-row>
+            <b-form-group label="Documento"
+                          class="col-sm-8">
+              <b-row>
+                <b-form-file class="mt-0 col-sm-10"
+                             v-on:change="onDocChange"
+                             accept=".doc, .docx, .pdf, .rtf"
+                             plain>
+                </b-form-file>
+              </b-row>
+            </b-form-group>
+            <b-form-group v-if="edit && header.file"
+                          label="Documento"
+                          label-for="fileInput"
+                          class="col-sm-4"
+                          style="color:transparent;">
+              <b-button block size="md" variant="success" class="mt-0 font-weight-bold" v-on:click="downloadContrato()"><span class="icon voyager-download mr-2"></span>{{ header.file }}</b-button>
+            </b-form-group>
+          </b-row>
+
         </div>
       </b-row>
 
@@ -75,6 +95,7 @@
           id: null,
           pelotari_id: null,
           name: '',
+          file: null,
           fecha_ini: null,
           fecha_fin: null,
           created_at: null,
@@ -103,19 +124,44 @@
         this.header.name = rowHeader.name;
         this.header.fecha_ini = rowHeader.fecha_ini;
         this.header.fecha_fin = rowHeader.fecha_fin;
+        this.header.file = rowHeader.file.replace('/storage/contratos/', '');
       }
     },
     methods: {
+      onDocChange (e) {
+        let files = e.target.files || e.dataTransfer.files;
+        if (!files.length)
+            return;
+        this.createFile(files[0]);
+      },
+      downloadContrato () {
+        window.open('/www/contratos/header/' + this.header.id + '/download');
+      },
+      createFile (file) {
+          let reader = new FileReader();
+          let vm = this;
+          reader.onload = (e) => {
+            vm.header.contrato = e.target.result;
+            vm.header.fileName = file.name;
+            vm.header.file = file;
+          };
+          reader.readAsDataURL(file);
+      },
       onSubmit (evt) {
         evt.preventDefault();
 
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
         let uri = '/www/contratos/header';
+        let data = new FormData();
+
+        data.append('form', JSON.stringify(this.header));
+        if(this.header.file)
+          data.append('file', this.header.file);
 
         if(this.edit) {
-          console.log("[onSumbimt] this.header: " + JSON.stringify(this.header));
-          this.axios.post(uri + '/' + this.header.id + '/update', this.header)
+          this.axios.post(uri + '/' + this.header.id + '/update', data, config)
             .then((response) => {
-              console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
               showSnackbar("Contrato actualizado");
               this.goBack();
             })
@@ -124,9 +170,8 @@
               showSnackbar("Se ha producido un ERROR");
             });
         } else {
-          this.axios.post(uri, this.header)
+          this.axios.post(uri, data, config)
             .then((response) => {
-              console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
               showSnackbar("Contrato creado");
               this.goBack();
             })
@@ -141,6 +186,7 @@
         /* Reset our form values */
         this.header.fecha_ini = null;
         this.header.fecha_fin = null;
+        this.header.file = null;
         this.header.name = '';
       },
     }

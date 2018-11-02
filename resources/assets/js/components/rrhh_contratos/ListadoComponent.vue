@@ -15,13 +15,16 @@
         <b-card-header header-tag="header" class="p-0" role="tab">
           <b-row class="m-0">
             <div class="col-sm-3 p-0">
-              <b-btn block href="#" v-b-toggle="'#contrato-' + contrato.id" variant="secondary"><strong>{{ contrato.name }}</strong></b-btn>
+              <b-btn block href="#" v-b-toggle="'#contrato-' + contrato.id" variant="secondary"><span class="icon voyager-plus float-left" style="font-size:18px;"></span><strong>{{ contrato.name }}</strong></b-btn>
             </div>
             <div class="col-sm-6 pt-2 text-left" title="Periodo de contrato" style="font-size:13px;">
               <span class="icon voyager-calendar mr-1"></span>{{ contrato.fecha_ini | formatDate }} - {{ contrato.fecha_fin | formatDate }}
             </div>
             <div class="col-sm-3 p-0 text-right">
               <b-button-group>
+                <b-button v-if="contrato.file" variant="success" @click.stop="onClickDownloadContrato(contrato.id)" title="Descargar documento adjunto" class="mr-2">
+                  <span class="icon voyager-download"></span>
+                </b-button>
                 <b-button v-if="removeHeader" variant="danger" @click.stop="onClickDeleteHeader(contrato.id, contrato.fecha_ini, contrato.fecha_fin)" title="Eliminar">
                   <span class="icon voyager-trash"></span>
                 </b-button>
@@ -177,17 +180,21 @@
             this.totalRows = this.contratos.length;
           });
         },
+        onClickDownloadContrato (id) {
+          window.open('/www/contratos/header/' + id + '/download');
+        },
         onClickEditHeader (header) {
           this.rowHeader = header;
           this.showContratoHeaderForm(header.id);
         },
         onClickEditTramo (tramo) {
           this.rowTramo = tramo;
-          this.showContratoTramoForm(this.rowHeader.id, tramo.id);
+
+          this.showContratoTramoForm(tramo.header_id, tramo.id);
         },
         removeItemHeader () {
           let uri = '/www/contratos/header/' + this.deleteIdHeader;
-          console.log("BORRAR HEADER: " + uri);
+
           this.axios.delete(uri)
             .then((response) => {
               this.deleteIdHeader = null;
@@ -204,7 +211,7 @@
         },
         removeItemTramo () {
           let uri = '/www/contratos/' + this.deleteIdTramo;
-          console.log("BORRAR TRAMO: " + uri);
+
           this.axios.delete(uri)
             .then((response) => {
               this.deleteIdTramo = null;
@@ -318,6 +325,11 @@
   #listado-contratos .card-header a.btn:not(.collapsed) {
     background:#28a745;
     border-color:#28a745;
+  }
+  #listado-contratos .card-header a.btn:not(.collapsed) .icon.voyager-plus:before {
+    content: "\70";
+    position:relative;
+    top:4px;
   }
   #listado-contratos .card-header a.btn:focus {
     -webkit-box-shadow:none;

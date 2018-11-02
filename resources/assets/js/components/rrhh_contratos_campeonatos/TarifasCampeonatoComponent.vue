@@ -186,7 +186,7 @@
           })
           .then((response) => {
             var stringified = JSON.stringify(response.data);
-            console.log("[fetchTarifas] stringified: " + stringified);
+
             this.items = JSON.parse(stringified);
             this.totalRows = this.items.length;
           });

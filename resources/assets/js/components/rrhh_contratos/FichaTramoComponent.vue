@@ -162,6 +162,7 @@
       return {
         tramo: {
           id: null,
+          header_id: null,
           pelotari_id: null,
           fecha_ini: null,
           fecha_fin: null,

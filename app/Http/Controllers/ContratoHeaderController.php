@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use App\Contrato;
 use App\ContratoHeader;
 use App\ContratoCampeonato;
@@ -19,12 +21,19 @@ class ContratoHeaderController extends Controller
   {
       $request->user()->authorizeRoles(['admin', 'rrhh']);
 
+      $data = json_decode($request->get('form'));
+
       $item = new ContratoHeader([
-        'pelotari_id' => $request->get('pelotari_id'),
-        'name' => $request->get('name'),
-        'fecha_ini' => $request->get('fecha_ini'),
-        'fecha_fin' => $request->get('fecha_fin'),
+        'pelotari_id' => $data->pelotari_id,
+        'name' => $data->name,
+        'fecha_ini' => $data->fecha_ini,
+        'fecha_fin' => $data->fecha_fin,
       ]);
+
+      if($request->file('file')) {
+        $path = $request->file('file')->storeAs('contratos', $data->fileName);
+        $item->file = Storage::url($path);
+      }
 
       $item->save();
 
@@ -42,15 +51,38 @@ class ContratoHeaderController extends Controller
   {
       $request->user()->authorizeRoles(['admin', 'rrhh']);
 
+      $data = json_decode($request->get('form'));
+
       $item = ContratoHeader::find($id);
 
-      $item->name = $request->get('name');
-      $item->fecha_ini = $request->get('fecha_ini');
-      $item->fecha_fin = $request->get('fecha_fin');
+      $item->name = $data->name;
+      $item->fecha_ini = $data->fecha_ini;
+      $item->fecha_fin = $data->fecha_fin;
+
+      if($request->file('file')) {
+        $path = $request->file('file')->storeAs('contratos', $data->fileName);
+        $item->file = Storage::url($path);
+      } else {
+        $item->file = "kakakulo";
+      }
 
       $item->save();
 
       return response()->json($item, 200);
+  }
+
+  public function download_contrato(Request $request, $id)
+  {
+    $request->user()->authorizeRoles(['admin', 'rrhh']);
+
+    $item = ContratoHeader::find($id);
+    $fileName = str_replace('/storage/contratos/', '', $item->file);
+
+    $headers = array(
+       'Content-Type: application/octet-stream',
+    );
+
+    return response()->download(storage_path('app/contratos/' . $fileName), $fileName, $headers);
   }
 
   /**
