@@ -24,7 +24,7 @@ class CreateEntrenamientosTable extends Migration
             $table->integer('municipio_id')->unsigned()->nullable()->default(null);
             $table->foreign('municipio_id')->references('id')->on('municipios')->onUpdate('cascade')->onDelete('set null');
             $table->integer('contenido_id')->unsigned()->nullable()->default(null);
-            $table->foreign('contenido_id')->references('id')->on('contenidos')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('contenido_id')->references('id')->on('entr_contenido')->onUpdate('cascade')->onDelete('set null');
             $table->boolean('asistencia');
             $table->char('duracion',3);
             $table->text('motivo');
