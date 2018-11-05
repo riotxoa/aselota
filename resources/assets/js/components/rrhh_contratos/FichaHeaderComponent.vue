@@ -43,7 +43,7 @@
           </b-row>
           <b-row style="border-top:1px solid lightgray; padding-top:1rem;">
             <b-form-group label="Contrato Deportivo"
-                          class="col-sm-8">
+                          class="col-sm-6">
               <b-row>
                 <b-form-file class="mt-0 col-sm-10"
                              v-on:change="onDocChange"
@@ -55,14 +55,14 @@
             <b-form-group v-if="edit && header.file"
                           label="Contrato Deportivo"
                           label-for="fileInput"
-                          class="col-sm-4"
+                          class="col-sm-6"
                           style="color:transparent;">
               <b-button block size="md" variant="success" class="mt-0 font-weight-bold" v-on:click="downloadContrato()" title="Descargar contrato deportivo"><span class="icon voyager-download mr-2"></span>{{ header.file }}</b-button>
             </b-form-group>
           </b-row>
           <b-row style="border-top:1px solid lightgray; padding-top:1rem;">
             <b-form-group label="Contrato Derechos de Imagen"
-                          class="col-sm-8">
+                          class="col-sm-6">
               <b-row>
                 <b-form-file class="mt-0 col-sm-10"
                              v-on:change="onDocDerechosChange"
@@ -74,7 +74,7 @@
             <b-form-group v-if="edit && header.file_derechos"
                           label="Contrato Derechos de Imagen"
                           label-for="fileDerechosInput"
-                          class="col-sm-4"
+                          class="col-sm-6"
                           style="color:transparent;">
               <b-button block size="md" variant="success" class="mt-0 font-weight-bold" v-on:click="downloadContratoDerechos()" title="Descargar contrato derechos de imagen"><span class="icon voyager-download mr-2"></span>{{ header.file_derechos }}</b-button>
             </b-form-group>

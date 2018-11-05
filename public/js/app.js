@@ -93299,7 +93299,7 @@ var render = function() {
                         _c(
                           "b-form-group",
                           {
-                            staticClass: "col-sm-8",
+                            staticClass: "col-sm-6",
                             attrs: { label: "Contrato Deportivo" }
                           },
                           [
@@ -93325,7 +93325,7 @@ var render = function() {
                           ? _c(
                               "b-form-group",
                               {
-                                staticClass: "col-sm-4",
+                                staticClass: "col-sm-6",
                                 staticStyle: { color: "transparent" },
                                 attrs: {
                                   label: "Contrato Deportivo",
@@ -93376,7 +93376,7 @@ var render = function() {
                         _c(
                           "b-form-group",
                           {
-                            staticClass: "col-sm-8",
+                            staticClass: "col-sm-6",
                             attrs: { label: "Contrato Derechos de Imagen" }
                           },
                           [
@@ -93402,7 +93402,7 @@ var render = function() {
                           ? _c(
                               "b-form-group",
                               {
-                                staticClass: "col-sm-4",
+                                staticClass: "col-sm-6",
                                 staticStyle: { color: "transparent" },
                                 attrs: {
                                   label: "Contrato Derechos de Imagen",
