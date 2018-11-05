@@ -89325,7 +89325,6 @@ var showSnackbar = function showSnackbar(msg) {
       removeTramo: true,
       updateHeader: true,
       updateTramo: true,
-      displayHeader: false,
       displayTramo: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
@@ -89574,7 +89573,10 @@ var render = function() {
                   _c("b-row", { staticClass: "m-0" }, [
                     _c(
                       "div",
-                      { staticClass: "col-sm-3 p-0" },
+                      {
+                        staticClass: "col-sm-2 p-0",
+                        staticStyle: { "max-width": "115px" }
+                      },
                       [
                         _c(
                           "b-btn",
@@ -89598,7 +89600,7 @@ var render = function() {
                               staticClass: "icon voyager-plus float-left",
                               staticStyle: { "font-size": "18px" }
                             }),
-                            _c("strong", [_vm._v(_vm._s(contrato.name))])
+                            _vm._v("Tramos")
                           ]
                         )
                       ],
@@ -89608,7 +89610,17 @@ var render = function() {
                     _c(
                       "div",
                       {
-                        staticClass: "col-sm-6 pt-2 text-left",
+                        staticClass: "col-sm-2 pt-2 text-center",
+                        staticStyle: { "font-size": "13px" },
+                        attrs: { title: "Descripción de contrato" }
+                      },
+                      [_c("strong", [_vm._v(_vm._s(contrato.name))])]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-4 pt-2 text-left",
                         staticStyle: { "font-size": "13px" },
                         attrs: { title: "Periodo de contrato" }
                       },
@@ -89627,7 +89639,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "col-sm-3 p-0 text-right" },
+                      {
+                        staticClass: "col-sm-4 p-0 text-right",
+                        staticStyle: { right: "0", position: "absolute" }
+                      },
                       [
                         _c(
                           "b-button-group",
@@ -89639,7 +89654,7 @@ var render = function() {
                                     staticClass: "mr-2",
                                     attrs: {
                                       variant: "success",
-                                      title: "Descargar documento adjunto"
+                                      title: "Descargar documento contrato"
                                     },
                                     on: {
                                       click: function($event) {
@@ -89651,33 +89666,6 @@ var render = function() {
                                   [
                                     _c("span", {
                                       staticClass: "icon voyager-download"
-                                    })
-                                  ]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.removeHeader
-                              ? _c(
-                                  "b-button",
-                                  {
-                                    attrs: {
-                                      variant: "danger",
-                                      title: "Eliminar"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        $event.stopPropagation()
-                                        _vm.onClickDeleteHeader(
-                                          contrato.id,
-                                          contrato.fecha_ini,
-                                          contrato.fecha_fin
-                                        )
-                                      }
-                                    }
-                                  },
-                                  [
-                                    _c("span", {
-                                      staticClass: "icon voyager-trash"
                                     })
                                   ]
                                 )
@@ -89706,28 +89694,28 @@ var render = function() {
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm.displayHeader
+                            _vm.removeHeader
                               ? _c(
                                   "b-button",
                                   {
                                     attrs: {
-                                      variant: "secondary",
-                                      title: "Mostrar/Ocultar Detalle"
+                                      variant: "danger",
+                                      title: "Eliminar"
                                     },
                                     on: {
                                       click: function($event) {
                                         $event.stopPropagation()
-                                        return _vm.row.toggleDetails($event)
+                                        _vm.onClickDeleteHeader(
+                                          contrato.id,
+                                          contrato.fecha_ini,
+                                          contrato.fecha_fin
+                                        )
                                       }
                                     }
                                   },
                                   [
                                     _c("span", {
-                                      staticClass: "icon",
-                                      class: {
-                                        "voyager-x": _vm.row.detailsShowing,
-                                        "voyager-eye": !_vm.row.detailsShowing
-                                      }
+                                      staticClass: "icon voyager-trash"
                                     })
                                   ]
                                 )

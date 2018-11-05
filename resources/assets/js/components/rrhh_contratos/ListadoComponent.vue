@@ -14,25 +14,25 @@
       <b-card no-body class="mb-1" v-for="contrato in contratos" :key="contrato.id">
         <b-card-header header-tag="header" class="p-0" role="tab">
           <b-row class="m-0">
-            <div class="col-sm-3 p-0">
-              <b-btn block href="#" v-b-toggle="'#contrato-' + contrato.id" variant="secondary"><span class="icon voyager-plus float-left" style="font-size:18px;"></span><strong>{{ contrato.name }}</strong></b-btn>
+            <div class="col-sm-2 p-0" style="max-width:115px;">
+              <b-btn block href="#" v-b-toggle="'#contrato-' + contrato.id" variant="secondary"><span class="icon voyager-plus float-left" style="font-size:18px;"></span>Tramos</b-btn>
             </div>
-            <div class="col-sm-6 pt-2 text-left" title="Periodo de contrato" style="font-size:13px;">
+            <div class="col-sm-2 pt-2 text-center" title="Descripción de contrato" style="font-size:13px;">
+              <strong>{{ contrato.name }}</strong>
+            </div>
+            <div class="col-sm-4 pt-2 text-left" title="Periodo de contrato" style="font-size:13px;">
               <span class="icon voyager-calendar mr-1"></span>{{ contrato.fecha_ini | formatDate }} - {{ contrato.fecha_fin | formatDate }}
             </div>
-            <div class="col-sm-3 p-0 text-right">
+            <div class="col-sm-4 p-0 text-right" style="right:0;position:absolute;">
               <b-button-group>
-                <b-button v-if="contrato.file" variant="success" @click.stop="onClickDownloadContrato(contrato.id)" title="Descargar documento adjunto" class="mr-2">
+                <b-button v-if="contrato.file" variant="success" @click.stop="onClickDownloadContrato(contrato.id)" title="Descargar documento contrato" class="mr-2">
                   <span class="icon voyager-download"></span>
-                </b-button>
-                <b-button v-if="removeHeader" variant="danger" @click.stop="onClickDeleteHeader(contrato.id, contrato.fecha_ini, contrato.fecha_fin)" title="Eliminar">
-                  <span class="icon voyager-trash"></span>
                 </b-button>
                 <b-button v-if="updateHeader" variant="primary" @click.stop="onClickEditHeader(contrato)" title="Editar">
                   <span class="icon voyager-edit"></span>
                 </b-button>
-                <b-button v-if="displayHeader" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
-                  <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+                <b-button v-if="removeHeader" variant="danger" @click.stop="onClickDeleteHeader(contrato.id, contrato.fecha_ini, contrato.fecha_fin)" title="Eliminar">
+                  <span class="icon voyager-trash"></span>
                 </b-button>
               </b-button-group>
             </div>
@@ -127,7 +127,6 @@
           removeTramo: true,
           updateHeader: true,
           updateTramo: true,
-          displayHeader: false,
           displayTramo: false,
           sortBy: 'fecha_ini',
           sortDesc: true,
