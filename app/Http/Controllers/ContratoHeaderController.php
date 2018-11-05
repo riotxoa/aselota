@@ -35,6 +35,11 @@ class ContratoHeaderController extends Controller
         $item->file = Storage::url($path);
       }
 
+      if($request->file('file_derechos')) {
+        $path = $request->file('file_derechos')->storeAs('contratos', $data->fileDerechosName);
+        $item->file_derechos = Storage::url($path);
+      }
+
       $item->save();
 
       return response()->json($request, 200);
@@ -62,8 +67,11 @@ class ContratoHeaderController extends Controller
       if($request->file('file')) {
         $path = $request->file('file')->storeAs('contratos', $data->fileName);
         $item->file = Storage::url($path);
-      } else {
-        $item->file = "kakakulo";
+      }
+
+      if($request->file('file_derechos')) {
+        $path = $request->file('file_derechos')->storeAs('contratos', $data->fileDerechosName);
+        $item->file_derechos = Storage::url($path);
       }
 
       $item->save();
@@ -83,6 +91,20 @@ class ContratoHeaderController extends Controller
     );
 
     return response()->download(storage_path('app/contratos/' . $fileName), $fileName, $headers);
+  }
+
+  public function download_contrato_derechos(Request $request, $id)
+  {
+    $request->user()->authorizeRoles(['admin', 'rrhh']);
+
+    $item = ContratoHeader::find($id);
+    $fileDerechosName = str_replace('/storage/contratos/', '', $item->file_derechos);
+
+    $headers = array(
+       'Content-Type: application/octet-stream',
+    );
+
+    return response()->download(storage_path('app/contratos/' . $fileDerechosName), $fileDerechosName, $headers);
   }
 
   /**

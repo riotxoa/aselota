@@ -14,7 +14,7 @@
           <b-row>
             <b-form-group label="Fecha Inicio:"
                           label-for="fecha_iniInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="fecha_iniInput"
                             type="date"
                             v-model="tramo.fecha_ini"
@@ -24,7 +24,7 @@
             </b-form-group>
             <b-form-group label="Fecha Fin:"
                           label-for="fecha_finInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="fecha_finInput"
                             type="date"
                             v-model="tramo.fecha_fin"
@@ -32,11 +32,9 @@
                             placeholder="dd/mm/yyyy">
               </b-form-input>
             </b-form-group>
-          </b-row>
-          <b-row>
             <b-form-group label="Dieta básica mensual:"
                           label-for="d_basicaInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="d_basicaInput"
                             class="text-right"
                             type="number"
@@ -48,7 +46,7 @@
             </b-form-group>
             <b-form-group label="Dieta por partido:"
                           label-for="dieta_partidoInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="dieta_partidoInput"
                             class="text-right"
                             type="number"
@@ -62,7 +60,7 @@
           <b-row>
             <b-form-group label="Prima por partido:"
                           label-for="prima_partidoInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="prima_partidoInput"
                             class="text-right"
                             type="number"
@@ -74,7 +72,7 @@
             </b-form-group>
             <b-form-group label="Prima por estelar:"
                           label-for="prima_estelarInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="prima_estelarInput"
                             class="text-right"
                             type="number"
@@ -84,9 +82,9 @@
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Prima Campeón Manomanista:"
+            <b-form-group label="Prima Campeón Mano.:"
                           label-for="prima_manomanistaInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="prima_manomanistaInput"
                             class="text-right"
                             type="number"
@@ -96,11 +94,9 @@
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
-          </b-row>
-          <b-row>
             <b-form-group label="Dchos.Imagen (mes):"
                           label-for="d_imagenInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="d_imagenInput"
                             class="text-right"
                             type="number"
@@ -109,9 +105,22 @@
                             placeholder="0">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Coste por partido:"
+          </b-row>
+          <b-row>
+            <b-form-group label="Partidos garantía:"
+                          label-for="garantiaInput"
+                          class="col-sm-3">
+              <b-form-input id="garantiaInput"
+                            class="text-right"
+                            type="number"
+                            v-model="tramo.garantia"
+                            maxlength="4"
+                            placeholder="0">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Coste/partido gar.:"
                           label-for="costeInput"
-                          class="col-sm-4">
+                          class="col-sm-3">
               <b-form-input id="costeInput"
                             class="text-right"
                             type="number"
@@ -120,14 +129,14 @@
                             placeholder="0">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Partidos garantía:"
-                          label-for="garantiaInput"
-                          class="col-sm-4">
-              <b-form-input id="garantiaInput"
+            <b-form-group label="Coste/partido NO gar.:"
+                          label-for="coste2Input"
+                          class="col-sm-3">
+              <b-form-input id="coste2Input"
                             class="text-right"
                             type="number"
-                            v-model="tramo.garantia"
-                            maxlength="4"
+                            v-model="tramo.coste_no_gar"
+                            maxlength="8"
                             placeholder="0">
               </b-form-input>
             </b-form-group>
@@ -176,6 +185,7 @@
           prima_manomanista: null,
           garantia: null,
           coste: null,
+          coste_no_gar: null,
           formacion: false,
           d_imagen: null,
           created_at: null,
@@ -212,6 +222,7 @@
         this.tramo.prima_manomanista = this.formatAmount(rowTramo.prima_manomanista);
         this.tramo.garantia = rowTramo.garantia;
         this.tramo.coste = this.formatAmount(rowTramo.coste);
+        this.tramo.coste_no_gar = this.formatAmount(rowTramo.coste_no_gar);
         this.tramo.formacion = rowTramo.formacion;
         this.tramo.d_imagen = this.formatAmount(rowTramo.d_imagen);
       }
@@ -256,6 +267,7 @@
         this.tramo.prima_manomanista = null;
         this.tramo.garantia = null;
         this.tramo.coste = null;
+        this.tramo.coste_no_gar = null;
         this.tramo.formacion = false;
         this.tramo.d_imagen = null;
       },

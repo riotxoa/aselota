@@ -62,6 +62,7 @@ class ContratoController extends Controller
           'prima_manomanista' => ($request->get('prima_manomanista') ? $request->get('prima_manomanista') : 0),
           'garantia' => ($request->get('garantia') ? $request->get('garantia') : 0),
           'coste' => ($request->get('coste') ? $request->get('coste') : 0),
+          'coste_no_gar' => ($request->get('coste_no_gar') ? $request->get('coste_no_gar') : 0),
           'formacion' => ($request->get('formacion') ? $request->get('formacion') : 0),
           'd_imagen' => ($request->get('d_imagen') ? $request->get('d_imagen') : 0),
         ]);
@@ -119,6 +120,7 @@ class ContratoController extends Controller
         $item->prima_manomanista = $request->get('prima_manomanista');
         $item->garantia = $request->get('garantia');
         $item->coste = $request->get('coste');
+        $item->coste_no_gar = $request->get('coste_no_gar');
         $item->formacion = $request->get('formacion');
         $item->d_imagen = $request->get('d_imagen');
 

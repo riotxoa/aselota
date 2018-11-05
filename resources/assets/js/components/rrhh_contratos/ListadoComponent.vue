@@ -25,8 +25,11 @@
             </div>
             <div class="col-sm-4 p-0 text-right" style="right:0;position:absolute;">
               <b-button-group>
-                <b-button v-if="contrato.file" variant="success" @click.stop="onClickDownloadContrato(contrato.id)" title="Descargar documento contrato" class="mr-2">
-                  <span class="icon voyager-download"></span>
+                <b-button v-if="contrato.file" variant="success" @click.stop="onClickDownloadContrato(contrato.id)" title="Descargar contrato deportivo">
+                  <span class="icon voyager-documentation"></span>
+                </b-button>
+                <b-button v-if="contrato.file" variant="secondary" @click.stop="onClickDownloadContratoDerechos(contrato.id)" title="Descargar contrato derechos de imagen" class="mr-2">
+                  <span class="icon voyager-polaroid"></span>
                 </b-button>
                 <b-button v-if="updateHeader" variant="primary" @click.stop="onClickEditHeader(contrato)" title="Editar">
                   <span class="icon voyager-edit"></span>

@@ -52,6 +52,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
     Route::post('contratos/tramo/{id}/update', 'ContratoController@update');
     Route::get('contratos/header/{id}/download', 'ContratoHeaderController@download_contrato');
+    Route::get('contratos/header/{id}/derechos/download', 'ContratoHeaderController@download_contrato_derechos');
     Route::post('contratos/header/{id}/update', 'ContratoHeaderController@update');
     Route::post('tarifas/{id}/update', 'ContratoCampeonatoController@update');
     Route::post('derechos/{id}/update', 'DerechoController@update');

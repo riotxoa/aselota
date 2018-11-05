@@ -89298,6 +89298,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -89651,10 +89654,9 @@ var render = function() {
                               ? _c(
                                   "b-button",
                                   {
-                                    staticClass: "mr-2",
                                     attrs: {
                                       variant: "success",
-                                      title: "Descargar documento contrato"
+                                      title: "Descargar contrato deportivo"
                                     },
                                     on: {
                                       click: function($event) {
@@ -89665,7 +89667,34 @@ var render = function() {
                                   },
                                   [
                                     _c("span", {
-                                      staticClass: "icon voyager-download"
+                                      staticClass: "icon voyager-documentation"
+                                    })
+                                  ]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            contrato.file
+                              ? _c(
+                                  "b-button",
+                                  {
+                                    staticClass: "mr-2",
+                                    attrs: {
+                                      variant: "secondary",
+                                      title:
+                                        "Descargar contrato derechos de imagen"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        $event.stopPropagation()
+                                        _vm.onClickDownloadContratoDerechos(
+                                          contrato.id
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", {
+                                      staticClass: "icon voyager-polaroid"
                                     })
                                   ]
                                 )
@@ -92979,6 +93008,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -93004,6 +93052,7 @@ var showSnackbar = function showSnackbar(msg) {
         pelotari_id: null,
         name: '',
         file: null,
+        file_derechos: null,
         fecha_ini: null,
         fecha_fin: null,
         created_at: null,
@@ -93033,7 +93082,8 @@ var showSnackbar = function showSnackbar(msg) {
       this.header.name = rowHeader.name;
       this.header.fecha_ini = rowHeader.fecha_ini;
       this.header.fecha_fin = rowHeader.fecha_fin;
-      this.header.file = rowHeader.file.replace('/storage/contratos/', '');
+      this.header.file = rowHeader.file ? rowHeader.file.replace('/storage/contratos/', '') : '';
+      this.header.file_derechos = rowHeader.file_derechos ? rowHeader.file_derechos.replace('/storage/contratos/', '') : '';
     }
   },
   methods: {
@@ -93055,6 +93105,24 @@ var showSnackbar = function showSnackbar(msg) {
       };
       reader.readAsDataURL(file);
     },
+    onDocDerechosChange: function onDocDerechosChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createFileDerechos(files[0]);
+    },
+    downloadContratoDerechos: function downloadContratoDerechos() {
+      window.open('/www/contratos/header/' + this.header.id + '/derechos/download');
+    },
+    createFileDerechos: function createFileDerechos(file) {
+      var reader = new FileReader();
+      var vm = this;
+      reader.onload = function (e) {
+        vm.header.contrato_derechos = e.target.result;
+        vm.header.fileDerechosName = file.name;
+        vm.header.file_derechos = file;
+      };
+      reader.readAsDataURL(file);
+    },
     onSubmit: function onSubmit(evt) {
       var _this2 = this;
 
@@ -93067,6 +93135,7 @@ var showSnackbar = function showSnackbar(msg) {
 
       data.append('form', JSON.stringify(this.header));
       if (this.header.file) data.append('file', this.header.file);
+      if (this.header.file_derechos) data.append('file_derechos', this.header.file_derechos);
 
       if (this.edit) {
         this.axios.post(uri + '/' + this.header.id + '/update', data, config).then(function (response) {
@@ -93092,6 +93161,7 @@ var showSnackbar = function showSnackbar(msg) {
       this.header.fecha_ini = null;
       this.header.fecha_fin = null;
       this.header.file = null;
+      this.header.file_derechos = null;
       this.header.name = '';
     }
   }
@@ -93219,12 +93289,18 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "b-row",
+                      {
+                        staticStyle: {
+                          "border-top": "1px solid lightgray",
+                          "padding-top": "1rem"
+                        }
+                      },
                       [
                         _c(
                           "b-form-group",
                           {
                             staticClass: "col-sm-8",
-                            attrs: { label: "Documento" }
+                            attrs: { label: "Contrato Deportivo" }
                           },
                           [
                             _c(
@@ -93252,7 +93328,7 @@ var render = function() {
                                 staticClass: "col-sm-4",
                                 staticStyle: { color: "transparent" },
                                 attrs: {
-                                  label: "Documento",
+                                  label: "Contrato Deportivo",
                                   "label-for": "fileInput"
                                 }
                               },
@@ -93264,7 +93340,8 @@ var render = function() {
                                     attrs: {
                                       block: "",
                                       size: "md",
-                                      variant: "success"
+                                      variant: "success",
+                                      title: "Descargar contrato deportivo"
                                     },
                                     on: {
                                       click: function($event) {
@@ -93277,6 +93354,84 @@ var render = function() {
                                       staticClass: "icon voyager-download mr-2"
                                     }),
                                     _vm._v(_vm._s(_vm.header.file))
+                                  ]
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      {
+                        staticStyle: {
+                          "border-top": "1px solid lightgray",
+                          "padding-top": "1rem"
+                        }
+                      },
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-8",
+                            attrs: { label: "Contrato Derechos de Imagen" }
+                          },
+                          [
+                            _c(
+                              "b-row",
+                              [
+                                _c("b-form-file", {
+                                  staticClass: "mt-0 col-sm-10",
+                                  attrs: {
+                                    accept: ".doc, .docx, .pdf, .rtf",
+                                    plain: ""
+                                  },
+                                  on: { change: _vm.onDocDerechosChange }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _vm.edit && _vm.header.file_derechos
+                          ? _c(
+                              "b-form-group",
+                              {
+                                staticClass: "col-sm-4",
+                                staticStyle: { color: "transparent" },
+                                attrs: {
+                                  label: "Contrato Derechos de Imagen",
+                                  "label-for": "fileDerechosInput"
+                                }
+                              },
+                              [
+                                _c(
+                                  "b-button",
+                                  {
+                                    staticClass: "mt-0 font-weight-bold",
+                                    attrs: {
+                                      block: "",
+                                      size: "md",
+                                      variant: "success",
+                                      title:
+                                        "Descargar contrato derechos de imagen"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.downloadContratoDerechos()
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", {
+                                      staticClass: "icon voyager-download mr-2"
+                                    }),
+                                    _vm._v(_vm._s(_vm.header.file_derechos))
                                   ]
                                 )
                               ],
@@ -93534,6 +93689,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -93568,6 +93732,7 @@ var showSnackbar = function showSnackbar(msg) {
         prima_manomanista: null,
         garantia: null,
         coste: null,
+        coste_no_gar: null,
         formacion: false,
         d_imagen: null,
         created_at: null,
@@ -93605,6 +93770,7 @@ var showSnackbar = function showSnackbar(msg) {
       this.tramo.prima_manomanista = this.formatAmount(rowTramo.prima_manomanista);
       this.tramo.garantia = rowTramo.garantia;
       this.tramo.coste = this.formatAmount(rowTramo.coste);
+      this.tramo.coste_no_gar = this.formatAmount(rowTramo.coste_no_gar);
       this.tramo.formacion = rowTramo.formacion;
       this.tramo.d_imagen = this.formatAmount(rowTramo.d_imagen);
     }
@@ -93647,6 +93813,7 @@ var showSnackbar = function showSnackbar(msg) {
       this.tramo.prima_manomanista = null;
       this.tramo.garantia = null;
       this.tramo.coste = null;
+      this.tramo.coste_no_gar = null;
       this.tramo.formacion = false;
       this.tramo.d_imagen = null;
     }
@@ -93700,7 +93867,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Fecha Inicio:",
                           "label-for": "fecha_iniInput"
@@ -93729,7 +93896,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Fecha Fin:",
                           "label-for": "fecha_finInput"
@@ -93753,18 +93920,12 @@ var render = function() {
                         })
                       ],
                       1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-row",
-                  [
+                    ),
+                    _vm._v(" "),
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Dieta básica mensual:",
                           "label-for": "d_basicaInput"
@@ -93795,7 +93956,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Dieta por partido:",
                           "label-for": "dieta_partidoInput"
@@ -93832,7 +93993,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Prima por partido:",
                           "label-for": "prima_partidoInput"
@@ -93863,7 +94024,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Prima por estelar:",
                           "label-for": "prima_estelarInput"
@@ -93894,9 +94055,9 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
-                          label: "Prima Campeón Manomanista:",
+                          label: "Prima Campeón Mano.:",
                           "label-for": "prima_manomanistaInput"
                         }
                       },
@@ -93920,18 +94081,12 @@ var render = function() {
                         })
                       ],
                       1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-row",
-                  [
+                    ),
+                    _vm._v(" "),
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
                           label: "Dchos.Imagen (mes):",
                           "label-for": "d_imagenInput"
@@ -93956,14 +94111,50 @@ var render = function() {
                         })
                       ],
                       1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Partidos garantía:",
+                          "label-for": "garantiaInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "garantiaInput",
+                            type: "number",
+                            maxlength: "4",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.garantia,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "garantia", $$v)
+                            },
+                            expression: "tramo.garantia"
+                          }
+                        })
+                      ],
+                      1
                     ),
                     _vm._v(" "),
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
-                          label: "Coste por partido:",
+                          label: "Coste/partido gar.:",
                           "label-for": "costeInput"
                         }
                       },
@@ -93991,27 +94182,27 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4",
+                        staticClass: "col-sm-3",
                         attrs: {
-                          label: "Partidos garantía:",
-                          "label-for": "garantiaInput"
+                          label: "Coste/partido NO gar.:",
+                          "label-for": "coste2Input"
                         }
                       },
                       [
                         _c("b-form-input", {
                           staticClass: "text-right",
                           attrs: {
-                            id: "garantiaInput",
+                            id: "coste2Input",
                             type: "number",
-                            maxlength: "4",
+                            maxlength: "8",
                             placeholder: "0"
                           },
                           model: {
-                            value: _vm.tramo.garantia,
+                            value: _vm.tramo.coste_no_gar,
                             callback: function($$v) {
-                              _vm.$set(_vm.tramo, "garantia", $$v)
+                              _vm.$set(_vm.tramo, "coste_no_gar", $$v)
                             },
-                            expression: "tramo.garantia"
+                            expression: "tramo.coste_no_gar"
                           }
                         })
                       ],
