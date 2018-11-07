@@ -185,6 +185,9 @@
         onClickDownloadContrato (id) {
           window.open('/www/contratos/header/' + id + '/download');
         },
+        onClickDownloadContratoDerechos (id) {
+          window.open('/www/contratos/header/' + id + '/derechos/download');
+        },
         onClickEditHeader (header) {
           this.rowHeader = header;
           this.showContratoHeaderForm(header.id);
