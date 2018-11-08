@@ -42,7 +42,9 @@
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
           <div v-if="data.pelotari_1" :class="{ 'brmn-clickable brmn-red': data.pelotari_1.asegarce && (!isGerente || isCelebrado()) }">
-            <span :class="{ 'brmn-tachado': !data.pelotari_1.asiste }">{{ this.data.pelotari_1.alias }}</span><span v-if="data.pelotari_1.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
+            <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_1.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_1.garantia + '\n Partidos jugados: ' + data.pelotari_1.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_1.fecha_contrato)">{{ this.data.pelotari_1.alias }}</span>
+            <span v-else :class="{ 'brmn-tachado': !data.pelotari_1.asiste }">{{ this.data.pelotari_1.alias }}</span>
+            <span v-if="data.pelotari_1.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_1.asiste"><br/>{{ this.data.pelotari_1.sustituto_alias }}</span>
           </div>
         </div>
@@ -68,7 +70,9 @@
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
           <div v-if="data.pelotari_3" :class="{ 'brmn-clickable brmn-blue': data.pelotari_3.asegarce && (!isGerente || isCelebrado()) }">
-            <span :class="{ 'brmn-tachado': !data.pelotari_3.asiste }">{{ this.data.pelotari_3.alias }}</span><span v-if="data.pelotari_3.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
+            <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_3.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_3.garantia + '\n Partidos jugados: ' + data.pelotari_3.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_3.fecha_contrato)">{{ this.data.pelotari_3.alias }}</span>
+            <span v-else :class="{ 'brmn-tachado': !data.pelotari_3.asiste }">{{ this.data.pelotari_3.alias }}</span>
+            <span v-if="data.pelotari_3.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_3.asiste"><br/>{{ this.data.pelotari_3.sustituto_alias }}</span>
           </div>
         </div>
@@ -98,7 +102,9 @@
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
           <div v-if="data.pelotari_2" :class="{ 'brmn-clickable brmn-red': data.pelotari_2.asegarce && (!isGerente || isCelebrado()) }">
-            <span :class="{ 'brmn-tachado': !data.pelotari_2.asiste }">{{ this.data.pelotari_2.alias }}</span><span v-if="data.pelotari_2.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
+            <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_2.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_2.garantia + '\n Partidos jugados: ' + data.pelotari_2.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_2.fecha_contrato)">{{ this.data.pelotari_2.alias }}</span>
+            <span v-else :class="{ 'brmn-tachado': !data.pelotari_2.asiste }">{{ this.data.pelotari_2.alias }}</span>
+            <span v-if="data.pelotari_2.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_2.asiste"><br/>{{ this.data.pelotari_2.sustituto_alias }}</span>
           </div>
         </div>
@@ -124,7 +130,9 @@
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
           <div v-if="data.pelotari_4" :class="{ 'brmn-clickable brmn-blue': data.pelotari_4.asegarce && (!isGerente || isCelebrado()) }">
-            <span :class="{ 'brmn-tachado': !data.pelotari_4.asiste }">{{ this.data.pelotari_4.alias }}</span><span v-if="data.pelotari_4.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
+            <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_4.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_4.garantia + '\n Partidos jugados: ' + data.pelotari_4.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_4.fecha_contrato)">{{ this.data.pelotari_4.alias }}</span>
+            <span v-else :class="{ 'brmn-tachado': !data.pelotari_4.asiste }">{{ this.data.pelotari_4.alias }}</span>
+            <span v-if="data.pelotari_4.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
             <span v-if="!data.pelotari_4.asiste"><br/>{{ this.data.pelotari_4.sustituto_alias }}</span>
           </div>
         </div>
@@ -198,6 +206,50 @@
       this.data = this.partido;
     },
     methods: {
+      formatDateShort(date) {
+        var short = new Date(date);
+        var month = '';
+
+        switch ( short.getMonth() ) {
+          case 0:
+            month = "Enero";
+            break;
+          case 1:
+            month = "Febrero";
+            break;
+          case 2:
+            month = "Marzo";
+            break;
+          case 3:
+            month = "Abril";
+            break;
+          case 4:
+            month = "Mayo";
+            break;
+          case 5:
+            month = "Junio";
+            break;
+          case 6:
+            month = "Julio";
+            break;
+          case 7:
+            month = "Agosto";
+            break;
+          case 8:
+            month = "Septiempre";
+            break;
+          case 9:
+            month = "Octubre";
+            break;
+          case 10:
+            month = "Noviembre";
+            break;
+          case 11:
+            month = "Diciembre";
+            break;
+        }
+        return short.getDate() + " de " + month;
+      },
       isCelebrado() {
         return (3 === this._header.estado_id);
       },

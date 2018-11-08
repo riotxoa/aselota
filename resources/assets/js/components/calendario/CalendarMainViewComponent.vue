@@ -27,7 +27,11 @@
           </thead>
           <tbody>
             <tr v-for="pelotari in pelotaris">
-              <th scope="row">{{ pelotari.alias }}</th>
+              <th scope="row">
+                {{ pelotari.alias }}<br/>
+                <small>Jugados: <strong>{{ pelotari.partidos_jugados}}</strong> - Garantía: <strong>{{ pelotari.garantia }}</strong></small><br/>
+                <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small>
+              </th>
             </tr>
           </tbody>
         </table>
@@ -54,6 +58,7 @@
   import { mapState } from 'vuex';
   import { store } from '../store/store';
   import APIGetters from '../utils/getters.js';
+  import Utils from '../utils/utils.js';
 
   export default {
     mixins: [APIGetters],
@@ -83,7 +88,7 @@
 
       this.today = new Date();
 
-      if( this._calendario ) {
+      if( this._calendario && this._calendario.length ) {
         this.curr_month = this._calendario[0].month - 1;
         this.curr_year = this._calendario[0].year;
 
@@ -107,6 +112,50 @@
         jQuery('[data-toggle="tooltip"]').tooltip();
     },
     methods: {
+      formatDateShort(date) {
+        var short = new Date(date);
+        var month = '';
+
+        switch ( short.getMonth() ) {
+          case 0:
+            month = "Enero";
+            break;
+          case 1:
+            month = "Febrero";
+            break;
+          case 2:
+            month = "Marzo";
+            break;
+          case 3:
+            month = "Abril";
+            break;
+          case 4:
+            month = "Mayo";
+            break;
+          case 5:
+            month = "Junio";
+            break;
+          case 6:
+            month = "Julio";
+            break;
+          case 7:
+            month = "Agosto";
+            break;
+          case 8:
+            month = "Septiempre";
+            break;
+          case 9:
+            month = "Octubre";
+            break;
+          case 10:
+            month = "Noviembre";
+            break;
+          case 11:
+            month = "Diciembre";
+            break;
+        }
+        return short.getDate() + " de " + month;
+      },
       showAgenda(pelotari, day) {
         var date = this.curr_year + "-" + (this.curr_month+1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
         var curr_agenda = _.filter(this._calendario, function(o) {
@@ -216,7 +265,7 @@
     border-top:1px solid black;
     font-size:.8rem;
     font-weight:bold;
-    height:2rem;
+    height:2.85rem;
     line-height:1;
     padding:.25rem 1rem;
     position:relative;

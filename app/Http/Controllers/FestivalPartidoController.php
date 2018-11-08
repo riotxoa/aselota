@@ -52,7 +52,7 @@ class FestivalPartidoController extends Controller
 
     private function getPelotaris(&$partido, $fecha) {
       $pelotaris = DB::table('festival_partido_pelotaris')
-                   ->select('festival_partido_pelotaris.*', 'contratos.coste')
+                   ->select('festival_partido_pelotaris.*', 'contratos.fecha_ini', 'contratos.coste', 'contratos.coste_no_gar', 'contratos.garantia')
                    ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
                    ->where( function ($query) use ($fecha) {
                      $query->where('festival_partido_pelotaris.asegarce', '=', 0)
@@ -74,11 +74,19 @@ class FestivalPartidoController extends Controller
 
         if( $p->asegarce ) {
           $pelotari = Pelotari::find($p->pelotari_id);
+          $pelotari->fecha_contrato = $p->fecha_ini;
           $pelotari->coste = $p->coste;
+          $pelotari->coste_no_gar = ($p->coste_no_gar ? $p->coste_no_gar : $p->coste);
+          $pelotari->garantia = $p->garantia;
+          $pelotari->partidos_jugados = Pelotari::get_partidos_jugados_contrato($p->pelotari_id, $fecha);
           $pelotari->asegarce = 1;
         } else {
           $pelotari = PelotarisAspe::find($p->pelotari_id);
+          $pelotari->fecha_contrato = null;
           $pelotari->coste = 0;
+          $pelotari->coste_no_gar = 0;
+          $pelotari->garantia = 0;
+          $pelotari->partidos_jugados = 0;
           $pelotari->asegarce = 0;
         }
 

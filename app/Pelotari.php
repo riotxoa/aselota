@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Pelotari extends Model
 {
@@ -31,5 +32,23 @@ class Pelotari extends Model
 
   public function contrato() {
     return $this->hasOne('App\Contrato');
+  }
+
+  static function get_partidos_jugados_contrato($pelotari_id, $fecha)
+  {
+    $items = DB::table('festival_partidos as fp')
+      ->leftJoin('festival_partido_pelotaris as fpp', 'fp.id', '=', 'fpp.festival_partido_id')
+      ->leftJoin('festivales', 'festivales.id', '=', 'fp.festival_id')
+      ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'fpp.pelotari_id')
+      ->where('fpp.asegarce', '=', 1)
+      ->where('fpp.pelotari_id', '=', $pelotari_id)
+      ->whereDate('contratos.fecha_ini', '<=', $fecha)
+      ->whereDate('contratos.fecha_fin', '>=', $fecha)
+      ->whereColumn('contratos.fecha_ini', '<=', 'festivales.fecha')
+      ->whereColumn('contratos.fecha_fin', '>=', 'festivales.fecha')
+      ->whereNull('contratos.deleted_at')
+      ->count();
+
+    return $items;
   }
 }

@@ -19,6 +19,8 @@ class PelotariController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
 
+        $get_partidos_jugados = false;
+
         $items = DB::table('pelotaris')
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
@@ -26,24 +28,35 @@ class PelotariController extends Controller
           ->where('pelotaris.deleted_at', null);
 
         if($request->get('fecha')) {
+          $get_partidos_jugados = true;
+
           $fecha = $request->get('fecha');
-          $items = $items->leftJoin('contratos', 'pelotaris.id', '=', 'contratos.pelotari_id')
-                         ->whereDate('contratos.fecha_ini', '<=', $fecha)
-                         ->whereDate('contratos.fecha_fin', '>=', $fecha)
-                         ->where('contratos.deleted_at', null);
+          $items = $items->leftJoin('contratos as c1', 'pelotaris.id', '=', 'c1.pelotari_id')
+                         ->whereDate('c1.fecha_ini', '<=', $fecha)
+                         ->whereDate('c1.fecha_fin', '>=', $fecha)
+                         ->where('c1.deleted_at', null)->addSelect('c1.fecha_ini as fecha_contrato', 'c1.coste', 'c1.coste_no_gar', 'c1.garantia');
         }
 
         if($request->get('fecha_ini')) {
+          $get_partidos_jugados = true;
+
           $fecha_ini = $request->get('fecha_ini');
           $fecha_fin = $request->get('fecha_fin');
           $items = $items->leftJoin('contratos as c2', 'pelotaris.id', '=', 'c2.pelotari_id')
                          ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
                          ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
-                         ->whereNull('c2.deleted_at');
+                         ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.coste', 'c2.coste_no_gar', 'c2.garantia');
         }
 
         $items = $items->orderBy('alias')
                        ->get();
+
+        if($get_partidos_jugados) {
+          $fecha = ( $request->get('fecha') ? $request->get('fecha') : $request->get('fecha_fin'));
+          foreach($items as $key => $item) {
+            $items[$key]->partidos_jugados = Pelotari::get_partidos_jugados_contrato($item->id, $fecha);
+          }
+        }
 
         return response()->json($items, 200);
     }

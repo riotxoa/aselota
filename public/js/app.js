@@ -86681,7 +86681,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  background:lightgreen;\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n", ""]);
+exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  background:lightgreen;\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n", ""]);
 
 // exports
 
@@ -86695,6 +86695,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(18);
 //
 //
 //
@@ -86747,6 +86748,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -86781,7 +86787,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     this.today = new Date();
 
-    if (this._calendario) {
+    if (this._calendario && this._calendario.length) {
       this.curr_month = this._calendario[0].month - 1;
       this.curr_year = this._calendario[0].year;
     } else {
@@ -86805,6 +86811,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    formatDateShort: function formatDateShort(date) {
+      var short = new Date(date);
+      var month = '';
+
+      switch (short.getMonth()) {
+        case 0:
+          month = "Enero";
+          break;
+        case 1:
+          month = "Febrero";
+          break;
+        case 2:
+          month = "Marzo";
+          break;
+        case 3:
+          month = "Abril";
+          break;
+        case 4:
+          month = "Mayo";
+          break;
+        case 5:
+          month = "Junio";
+          break;
+        case 6:
+          month = "Julio";
+          break;
+        case 7:
+          month = "Agosto";
+          break;
+        case 8:
+          month = "Septiempre";
+          break;
+        case 9:
+          month = "Octubre";
+          break;
+        case 10:
+          month = "Noviembre";
+          break;
+        case 11:
+          month = "Diciembre";
+          break;
+      }
+      return short.getDate() + " de " + month;
+    },
     showAgenda: function showAgenda(pelotari, day) {
       var date = this.curr_year + "-" + (this.curr_month + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
       var curr_agenda = _.filter(this._calendario, function (o) {
@@ -87028,7 +87078,27 @@ var render = function() {
                 _vm._l(_vm.pelotaris, function(pelotari) {
                   return _c("tr", [
                     _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(pelotari.alias))
+                      _vm._v("\n              " + _vm._s(pelotari.alias)),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("small", [
+                        _vm._v("Jugados: "),
+                        _c("strong", [
+                          _vm._v(_vm._s(pelotari.partidos_jugados))
+                        ]),
+                        _vm._v(" - Garantía: "),
+                        _c("strong", [_vm._v(_vm._s(pelotari.garantia))])
+                      ]),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("small", [
+                        _vm._v("Inicio periodo: "),
+                        _c("strong", [
+                          _vm._v(
+                            _vm._s(_vm.formatDateShort(pelotari.fecha_contrato))
+                          )
+                        ])
+                      ])
                     ])
                   ])
                 })
@@ -89386,6 +89456,9 @@ var showSnackbar = function showSnackbar(msg) {
     },
     onClickDownloadContrato: function onClickDownloadContrato(id) {
       window.open('/www/contratos/header/' + id + '/download');
+    },
+    onClickDownloadContratoDerechos: function onClickDownloadContratoDerechos(id) {
+      window.open('/www/contratos/header/' + id + '/derechos/download');
     },
     onClickEditHeader: function onClickEditHeader(header) {
       this.rowHeader = header;
@@ -98173,6 +98246,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -98212,6 +98293,50 @@ Vue.component('form-pelotari-i', __webpack_require__(461));
     this.data = this.partido;
   },
   methods: {
+    formatDateShort: function formatDateShort(date) {
+      var short = new Date(date);
+      var month = '';
+
+      switch (short.getMonth()) {
+        case 0:
+          month = "Enero";
+          break;
+        case 1:
+          month = "Febrero";
+          break;
+        case 2:
+          month = "Marzo";
+          break;
+        case 3:
+          month = "Abril";
+          break;
+        case 4:
+          month = "Mayo";
+          break;
+        case 5:
+          month = "Junio";
+          break;
+        case 6:
+          month = "Julio";
+          break;
+        case 7:
+          month = "Agosto";
+          break;
+        case 8:
+          month = "Septiempre";
+          break;
+        case 9:
+          month = "Octubre";
+          break;
+        case 10:
+          month = "Noviembre";
+          break;
+        case 11:
+          month = "Diciembre";
+          break;
+      }
+      return short.getDate() + " de " + month;
+    },
     isCelebrado: function isCelebrado() {
       return 3 === this._header.estado_id;
     },
@@ -99645,15 +99770,44 @@ var render = function() {
                         }
                       },
                       [
-                        _c(
-                          "span",
-                          {
-                            class: {
-                              "brmn-tachado": !_vm.data.pelotari_1.asiste
-                            }
-                          },
-                          [_vm._v(_vm._s(this.data.pelotari_1.alias))]
-                        ),
+                        _vm.isGerente
+                          ? _c(
+                              "span",
+                              {
+                                directives: [
+                                  {
+                                    name: "b-popover",
+                                    rawName: "v-b-popover.hover",
+                                    value:
+                                      "Partidos garantizados: " +
+                                      _vm.data.pelotari_1.garantia +
+                                      "\n Partidos jugados: " +
+                                      _vm.data.pelotari_1.partidos_jugados +
+                                      "\n Inicio periodo: " +
+                                      this.formatDateShort(
+                                        this.data.pelotari_1.fecha_contrato
+                                      ),
+                                    expression:
+                                      "'Partidos garantizados: ' + data.pelotari_1.garantia + '\\n Partidos jugados: ' + data.pelotari_1.partidos_jugados + '\\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_1.fecha_contrato)",
+                                    modifiers: { hover: true }
+                                  }
+                                ],
+                                class: {
+                                  "brmn-tachado": !_vm.data.pelotari_1.asiste
+                                }
+                              },
+                              [_vm._v(_vm._s(this.data.pelotari_1.alias))]
+                            )
+                          : _c(
+                              "span",
+                              {
+                                class: {
+                                  "brmn-tachado": !_vm.data.pelotari_1.asiste
+                                }
+                              },
+                              [_vm._v(_vm._s(this.data.pelotari_1.alias))]
+                            ),
+                        _vm._v(" "),
                         _vm.data.pelotari_1.observaciones
                           ? _c("span", [
                               _c("i", {
@@ -99812,15 +99966,44 @@ var render = function() {
                         }
                       },
                       [
-                        _c(
-                          "span",
-                          {
-                            class: {
-                              "brmn-tachado": !_vm.data.pelotari_3.asiste
-                            }
-                          },
-                          [_vm._v(_vm._s(this.data.pelotari_3.alias))]
-                        ),
+                        _vm.isGerente
+                          ? _c(
+                              "span",
+                              {
+                                directives: [
+                                  {
+                                    name: "b-popover",
+                                    rawName: "v-b-popover.hover",
+                                    value:
+                                      "Partidos garantizados: " +
+                                      _vm.data.pelotari_3.garantia +
+                                      "\n Partidos jugados: " +
+                                      _vm.data.pelotari_3.partidos_jugados +
+                                      "\n Inicio periodo: " +
+                                      this.formatDateShort(
+                                        this.data.pelotari_3.fecha_contrato
+                                      ),
+                                    expression:
+                                      "'Partidos garantizados: ' + data.pelotari_3.garantia + '\\n Partidos jugados: ' + data.pelotari_3.partidos_jugados + '\\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_3.fecha_contrato)",
+                                    modifiers: { hover: true }
+                                  }
+                                ],
+                                class: {
+                                  "brmn-tachado": !_vm.data.pelotari_3.asiste
+                                }
+                              },
+                              [_vm._v(_vm._s(this.data.pelotari_3.alias))]
+                            )
+                          : _c(
+                              "span",
+                              {
+                                class: {
+                                  "brmn-tachado": !_vm.data.pelotari_3.asiste
+                                }
+                              },
+                              [_vm._v(_vm._s(this.data.pelotari_3.alias))]
+                            ),
+                        _vm._v(" "),
                         _vm.data.pelotari_3.observaciones
                           ? _c("span", [
                               _c("i", {
@@ -99982,15 +100165,46 @@ var render = function() {
                             }
                           },
                           [
-                            _c(
-                              "span",
-                              {
-                                class: {
-                                  "brmn-tachado": !_vm.data.pelotari_2.asiste
-                                }
-                              },
-                              [_vm._v(_vm._s(this.data.pelotari_2.alias))]
-                            ),
+                            _vm.isGerente
+                              ? _c(
+                                  "span",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "b-popover",
+                                        rawName: "v-b-popover.hover",
+                                        value:
+                                          "Partidos garantizados: " +
+                                          _vm.data.pelotari_2.garantia +
+                                          "\n Partidos jugados: " +
+                                          _vm.data.pelotari_2.partidos_jugados +
+                                          "\n Inicio periodo: " +
+                                          this.formatDateShort(
+                                            this.data.pelotari_2.fecha_contrato
+                                          ),
+                                        expression:
+                                          "'Partidos garantizados: ' + data.pelotari_2.garantia + '\\n Partidos jugados: ' + data.pelotari_2.partidos_jugados + '\\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_2.fecha_contrato)",
+                                        modifiers: { hover: true }
+                                      }
+                                    ],
+                                    class: {
+                                      "brmn-tachado": !_vm.data.pelotari_2
+                                        .asiste
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(this.data.pelotari_2.alias))]
+                                )
+                              : _c(
+                                  "span",
+                                  {
+                                    class: {
+                                      "brmn-tachado": !_vm.data.pelotari_2
+                                        .asiste
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(this.data.pelotari_2.alias))]
+                                ),
+                            _vm._v(" "),
                             _vm.data.pelotari_2.observaciones
                               ? _c("span", [
                                   _c("i", {
@@ -100154,15 +100368,46 @@ var render = function() {
                             }
                           },
                           [
-                            _c(
-                              "span",
-                              {
-                                class: {
-                                  "brmn-tachado": !_vm.data.pelotari_4.asiste
-                                }
-                              },
-                              [_vm._v(_vm._s(this.data.pelotari_4.alias))]
-                            ),
+                            _vm.isGerente
+                              ? _c(
+                                  "span",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "b-popover",
+                                        rawName: "v-b-popover.hover",
+                                        value:
+                                          "Partidos garantizados: " +
+                                          _vm.data.pelotari_4.garantia +
+                                          "\n Partidos jugados: " +
+                                          _vm.data.pelotari_4.partidos_jugados +
+                                          "\n Inicio periodo: " +
+                                          this.formatDateShort(
+                                            this.data.pelotari_4.fecha_contrato
+                                          ),
+                                        expression:
+                                          "'Partidos garantizados: ' + data.pelotari_4.garantia + '\\n Partidos jugados: ' + data.pelotari_4.partidos_jugados + '\\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_4.fecha_contrato)",
+                                        modifiers: { hover: true }
+                                      }
+                                    ],
+                                    class: {
+                                      "brmn-tachado": !_vm.data.pelotari_4
+                                        .asiste
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(this.data.pelotari_4.alias))]
+                                )
+                              : _c(
+                                  "span",
+                                  {
+                                    class: {
+                                      "brmn-tachado": !_vm.data.pelotari_4
+                                        .asiste
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(this.data.pelotari_4.alias))]
+                                ),
+                            _vm._v(" "),
                             _vm.data.pelotari_4.observaciones
                               ? _c("span", [
                                   _c("i", {
