@@ -28,10 +28,10 @@
                 <b-button v-if="contrato.file" variant="success" @click.stop="onClickDownloadContrato(contrato.id)" title="Descargar contrato deportivo">
                   <span class="icon voyager-documentation"></span>
                 </b-button>
-                <b-button v-if="contrato.file" variant="secondary" @click.stop="onClickDownloadContratoDerechos(contrato.id)" title="Descargar contrato derechos de imagen" class="mr-2">
+                <b-button v-if="contrato.file_derechos" variant="secondary" @click.stop="onClickDownloadContratoDerechos(contrato.id)" title="Descargar contrato derechos de imagen">
                   <span class="icon voyager-polaroid"></span>
                 </b-button>
-                <b-button v-if="updateHeader" variant="primary" @click.stop="onClickEditHeader(contrato)" title="Editar">
+                <b-button v-if="updateHeader" variant="primary" @click.stop="onClickEditHeader(contrato)" title="Editar" class="ml-2">
                   <span class="icon voyager-edit"></span>
                 </b-button>
                 <b-button v-if="removeHeader" variant="danger" @click.stop="onClickDeleteHeader(contrato.id, contrato.fecha_ini, contrato.fecha_fin)" title="Eliminar">

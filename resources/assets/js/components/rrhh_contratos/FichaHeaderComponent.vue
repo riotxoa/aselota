@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="preload">
 
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
 
@@ -188,6 +188,8 @@
           reader.readAsDataURL(file);
       },
       onSubmit (evt) {
+        jQuery('#preload').addClass('preloader');
+
         evt.preventDefault();
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -204,22 +206,28 @@
         if(this.edit) {
           this.axios.post(uri + '/' + this.header.id + '/update', data, config)
             .then((response) => {
+              jQuery('#preload').removeClass('preloader');
               showSnackbar("Contrato actualizado");
               this.goBack();
             })
             .catch((error) => {
+              jQuery('#preload').removeClass('preloader');
               console.log(error);
               showSnackbar("Se ha producido un ERROR");
+              this.goBack();
             });
         } else {
           this.axios.post(uri, data, config)
             .then((response) => {
+              jQuery('#preload').removeClass('preloader');
               showSnackbar("Contrato creado");
               this.goBack();
             })
             .catch((error) => {
+              jQuery('#preload').removeClass('preloader');
               console.log(error);
               showSnackbar("Se ha producido un ERROR");
+              this.goBack();
             });
         }
       },
