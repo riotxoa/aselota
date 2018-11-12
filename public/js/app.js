@@ -88921,7 +88921,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 Vue.component('listado-contratos', __webpack_require__(386));
 Vue.component('listado-campeonatos', __webpack_require__(391));
@@ -92114,30 +92113,7 @@ var render = function() {
             _c("small", { staticClass: "text-capitalize" }, [
               _vm._v(_vm._s(this.pelotari.posicion))
             ])
-          ]),
-          _vm._v(" "),
-          _vm.edit
-            ? _c("p", { staticClass: "text-secondary m-0" }, [
-                _c("span", {
-                  staticClass: "icon voyager-calendar mr-1",
-                  attrs: { title: "Fecha de alta" }
-                }),
-                _vm._v(
-                  " " +
-                    _vm._s(_vm._f("formatDate")(this.pelotari.created)) +
-                    " "
-                ),
-                _c("span", { staticClass: "mx-1" }, [_vm._v("-")]),
-                _vm._v(" "),
-                _c("span", {
-                  staticClass: "icon voyager-pen mr-1",
-                  attrs: { title: "Fecha de última modificación" }
-                }),
-                _vm._v(
-                  " " + _vm._s(_vm._f("formatDate")(this.pelotari.updated))
-                )
-              ])
-            : _vm._e()
+          ])
         ]),
         _vm._v(" "),
         _c(
