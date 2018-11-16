@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use App\Contrato;
+use App\ContratoComercial;
 use App\ContratoHeader;
 use App\ContratoCampeonato;
 
@@ -121,6 +122,12 @@ class ContratoHeaderController extends Controller
 
       foreach($tramos as $tramo) {
         Contrato::destroy($tramo->id);
+      }
+
+      $comerciales = ContratoComercial::where('header_id', $id)->get();
+
+      foreach($comerciales as $comercial) {
+        ContratoComercial::destroy($comercial->id);
       }
 
       $campeonatos = ContratoCampeonato::where('header_id', $id)->get();
