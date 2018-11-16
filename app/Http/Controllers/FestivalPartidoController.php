@@ -52,15 +52,15 @@ class FestivalPartidoController extends Controller
 
     private function getPelotaris(&$partido, $fecha) {
       $pelotaris = DB::table('festival_partido_pelotaris')
-                   ->select('festival_partido_pelotaris.*', 'contratos.fecha_ini', 'contratos.coste', 'contratos.coste_no_gar', 'contratos.garantia')
+                   ->select('festival_partido_pelotaris.*', 'contratos.fecha_ini', 'contratos.garantia', 'contratos_comercial.coste')
                    ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
+                   ->leftJoin('contratos_comercial', 'contratos_comercial.header_id', '=', 'contratos.header_id')
                    ->where( function ($query) use ($fecha) {
                      $query->where('festival_partido_pelotaris.asegarce', '=', 0)
                            ->orWhere( function ($q) use ($fecha) {
                               $q->where('festival_partido_pelotaris.asegarce', '=', 1)
-                                ->whereDate('contratos.fecha_ini', '<=', $fecha)
-                                ->whereDate('contratos.fecha_fin', '>=', $fecha)
-                                ->whereNull('contratos.deleted_at');
+                                ->whereDate('contratos_comercial.fecha_ini', '<=', $fecha)
+                                ->whereDate('contratos_comercial.fecha_fin', '>=', $fecha);
                              }
                            );
                    })
@@ -76,7 +76,6 @@ class FestivalPartidoController extends Controller
           $pelotari = Pelotari::find($p->pelotari_id);
           $pelotari->fecha_contrato = $p->fecha_ini;
           $pelotari->coste = $p->coste;
-          $pelotari->coste_no_gar = ($p->coste_no_gar ? $p->coste_no_gar : $p->coste);
           $pelotari->garantia = $p->garantia;
           $pelotari->partidos_jugados = Pelotari::get_partidos_jugados_contrato($p->pelotari_id, $fecha);
           $pelotari->asegarce = 1;
@@ -84,7 +83,6 @@ class FestivalPartidoController extends Controller
           $pelotari = PelotarisAspe::find($p->pelotari_id);
           $pelotari->fecha_contrato = null;
           $pelotari->coste = 0;
-          $pelotari->coste_no_gar = 0;
           $pelotari->garantia = 0;
           $pelotari->partidos_jugados = 0;
           $pelotari->asegarce = 0;
