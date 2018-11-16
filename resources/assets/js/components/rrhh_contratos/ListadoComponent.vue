@@ -42,7 +42,9 @@
           </b-row>
         </b-card-header>
         <b-collapse :id="'#contrato-' + contrato.id" accordion="my-accordion" role="tabpanel">
+
           <b-card-body>
+            <!-- TRAMOS -->
             <b-row>
               <b-col class="col-sm-6">
                 <h5 class="font-weight-bold pt-1">Tramos</h5>
@@ -51,6 +53,7 @@
                 <b-btn variant="default" class="mb-0" size="sm" title="Crear Tramo" @click="showContratoTramoForm(contrato, 0)">Nuevo Tramo</b-btn>
               </b-col>
             </b-row>
+
             <b-table striped hover small responsive
               :items="contrato.tramos"
               :fields="fields_tramo">
@@ -69,7 +72,39 @@
                 </b-button-group>
               </template>
             </b-table>
+
+            <!-- COSTES COMERCIALES -->
+            <hr/>
+            <b-row>
+              <b-col class="col-sm-6">
+                <h5 class="font-weight-bold pt-1">Costes Comerciales</h5>
+              </b-col>
+              <b-col class="col-sm-6 text-right float-right my-1 mb-3">
+                <b-btn variant="default" class="mb-0" size="sm" title="Crear Tramo" @click="showContratoComercialForm(contrato, 0)">Nuevo Periodo</b-btn>
+              </b-col>
+            </b-row>
+
+            <b-table striped hover small responsive
+              :items="contrato.comerciales"
+              :fields="fields_comercial">
+              <template slot="actions" slot-scope="row">
+                <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+                <b-button-group>
+                  <b-button v-if="removeComercial" size="sm" variant="danger" @click.stop="onClickDeleteComercial(row.item.id, row.item.fecha_ini, row.item.fecha_fin)" title="Eliminar">
+                    <span class="icon voyager-trash"></span>
+                  </b-button>
+                  <b-button v-if="updateComercial" size="sm" variant="primary" @click.stop="onClickEditComercial(contrato, row.item)" title="Editar">
+                    <span class="icon voyager-edit"></span>
+                  </b-button>
+                  <b-button v-if="displayComercial" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+                    <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+                  </b-button>
+                </b-button-group>
+              </template>
+            </b-table>
+
           </b-card-body>
+
         </b-collapse>
       </b-card>
     </div>
@@ -78,7 +113,7 @@
 
     <b-modal v-if="removeHeader" ref="modalDeleteHeader" title="BORRAR Contrato" hide-footer>
       <div class="modal-body">
-        <p>Se va a borrar un contrato de <strong id="deleteTramoAlias"></strong>¿Desea continuar?</p>
+        <p>Se va a borrar un contrato de <strong id="deleteContratoAlias"></strong>¿Desea continuar?</p>
       </div>
       <div class="modal-footer">
         <b-btn variant="danger" @click="removeItemHeader">Borrar</b-btn>
@@ -102,6 +137,20 @@
 
     <b-modal id="tramoContratoForm" ref="modalEditTramo" :title="formTramoTitle" size="lg" hide-footer lazy>
       <contrato-tramo-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelTramoForm" :get-header-row="getHeaderRow" :get-tramo-row="getTramoRow" :is-new-tramo="isNewTramo" :format-amount="formatRowAmount"></contrato-tramo-pelotari>
+    </b-modal>
+
+    <b-modal v-if="removeComercial" ref="modalDeleteComercial" title="BORRAR Periodo Comercial de Contrato" hide-footer>
+      <div class="modal-body">
+        <p>Se va a borrar un Periodo Comercial de <strong id="deleteComercialAlias"></strong>¿Desea continuar?</p>
+      </div>
+      <div class="modal-footer">
+        <b-btn variant="danger" @click="removeItemComercial">Borrar</b-btn>
+        <b-btn @click="hideModalDeleteComercial">Cancelar</b-btn>
+      </div>
+    </b-modal>
+
+    <b-modal id="comercialContratoForm" ref="modalEditComercial" :title="formComercialTitle" size="md" hide-footer lazy>
+      <periodo-comercial-pelotari :pelotari-id="pelotariId" :pelotari-alias="pelotariAlias" :on-cancel="cancelComercialForm" :get-header-row="getHeaderRow" :get-comercial-row="getComercialRow" :is-new-comercial="isNewComercial" :format-amount="formatRowAmount"></periodo-comercial-pelotari>
     </b-modal>
 
   </div>
@@ -128,9 +177,12 @@
           create: true,
           removeHeader: true,
           removeTramo: true,
+          removeComercial: true,
           updateHeader: true,
           updateTramo: true,
+          updateComercial: true,
           displayTramo: false,
+          displayComercial: false,
           sortBy: 'fecha_ini',
           sortDesc: true,
           fields_tramo: [
@@ -146,22 +198,35 @@
             { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false },
             { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
+          fields_comercial: [
+            { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true },
+            { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true },
+            { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false },
+            { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
+          ],
           contratos: [],
           totalRows: 0,
           deleteIdHeader: null,
           deleteIdTramo: null,
+          deleteIdComercial: null,
           formHeaderTitle: '',
           formTramoTitle: '',
+          formComercialTitle: '',
           rowHeader: null,
           rowTramo: null,
+          rowComercial: null,
           newHeader: true,
           newTramo: true,
+          newComercial: true,
           cancelHeaderForm: () => { this.hideHeaderForm(); },
           cancelTramoForm: () => { this.hideTramoForm(); },
+          cancelComercialForm: () => { this.hideComercialForm(); },
           getHeaderRow: () => { return this.rowHeader; },
           getTramoRow: () => { return this.rowTramo; },
+          getComercialRow: () => { return this.rowComercial; },
           isNewHeader: () => { return this.newHeader; },
           isNewTramo: () => { return this.newTramo; },
+          isNewComercial: () => { return this.newComercial; },
           formatRowAmount: (amount) => { return this.formatAmount(amount); },
         }
       },
@@ -198,6 +263,12 @@
 
           this.showContratoTramoForm(this.rowHeader, tramo.id);
         },
+        onClickEditComercial (header, comercial) {
+          this.rowComercial = comercial;
+          this.rowHeader = header;
+
+          this.showContratoComercialForm(this.rowHeader, comercial.id);
+        },
         removeItemHeader () {
           let uri = '/www/contratos/header/' + this.deleteIdHeader;
 
@@ -230,6 +301,23 @@
               this.deleteIdTramo = null;
               this.$refs.modalDeleteTramo.hide();
               showSnackbar("ERROR al borrar tramo");
+            });
+        },
+        removeItemComercial () {
+          let uri = '/www/contratos/comercial/' + this.deleteIdComercial;
+
+          this.axios.delete(uri)
+            .then((response) => {
+              this.deleteIdComercial = null;
+              this.$refs.modalDeleteComercial.hide();
+              this.fetchContratos();
+              showSnackbar("Periodo Comercial BORRADO");
+            })
+            .catch((error) => {
+              console.log("[removeComercial] error: " + error);
+              this.deleteIdComercial = null;
+              this.$refs.modalDeleteComercial.hide();
+              showSnackbar("ERROR al borrar Periodo Comercial");
             });
         },
         onClickDeleteHeader (id, fecha_ini, fecha_fin) {
@@ -265,6 +353,23 @@
         hideModalDeleteTramo() {
           this.deleteIdTramo = null;
           this.$refs.modalDeleteTramo.hide();
+        },
+        onClickDeleteComercial (id, fecha_ini, fecha_fin) {
+          this.deleteIdComercial = id;
+
+          var msg = " \
+            <div class='px-5 py-2'> \
+              <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+              <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
+            </div>";
+
+          jQuery('#deleteComercialAlias').html(msg);
+
+          this.$refs.modalDeleteComercial.show();
+        },
+        hideModalDeleteComercial() {
+          this.deleteIdComercial = null;
+          this.$refs.modalDeleteComercial.hide();
         },
         formatDate (date) {
           if(date)
@@ -309,6 +414,22 @@
         },
         hideTramoForm () {
           this.$refs.modalEditTramo.hide();
+          this.fetchContratos();
+        },
+        showContratoComercialForm ($header, $comercial_id = 0) {
+          this.rowHeader = $header;
+          if($comercial_id) {
+            this.formComercialTitle = 'Editar Periodo';
+            this.newComercial = false;
+            this.$refs.modalEditComercial.show();
+          } else {
+            this.formComercialTitle = 'Nuevo Periodo';
+            this.newComercial = true;
+            this.$refs.modalEditComercial.show();
+          }
+        },
+        hideComercialForm () {
+          this.$refs.modalEditComercial.hide();
           this.fetchContratos();
         }
       }

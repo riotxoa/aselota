@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Contrato;
+use App\ContratoComercial;
 use App\ContratoHeader;
 
-class ContratoController extends Controller
+class ContratoComercialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,16 +18,9 @@ class ContratoController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $id = $request->get('pelotari_id');
+        $id = $request->get('header_id');
 
-        $items = \App\ContratoHeader::where('pelotari_id', $id)->orderBy('fecha_fin', 'desc')->get();
-
-        foreach($items as $key => $item) {
-          $tramo = \App\Contrato::where('header_id', $item->id)->orderBy('fecha_fin', 'desc')->get();
-          $comercial = \App\ContratoComercial::where('header_id', $item->id)->orderBy('fecha_fin', 'desc')->get();
-          $item->tramos = $tramo;
-          $item->comerciales = $comercial;
-        }
+        $items = \App\ContratoComercial::where('header_id', $id)->orderBy('fecha_fin', 'desc')->get();
 
         return response()->json($items, 200);
     }
@@ -52,21 +45,11 @@ class ContratoController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = new Contrato([
+        $item = new ContratoComercial([
           'header_id' => $request->get('header_id'),
-          'pelotari_id' => $request->get('pelotari_id'),
           'fecha_ini' => $request->get('fecha_ini'),
           'fecha_fin' => $request->get('fecha_fin'),
-          'dieta_mes' => ($request->get('dieta_mes') ? $request->get('dieta_mes') : 0),
-          'dieta_partido' => ($request->get('dieta_partido') ? $request->get('dieta_partido') : 0),
-          'prima_partido' => ($request->get('prima_partido') ? $request->get('prima_partido') : 0),
-          'prima_estelar' => ($request->get('prima_estelar') ? $request->get('prima_estelar') : 0),
-          'prima_manomanista' => ($request->get('prima_manomanista') ? $request->get('prima_manomanista') : 0),
-          'garantia' => ($request->get('garantia') ? $request->get('garantia') : 0),
           'coste' => ($request->get('coste') ? $request->get('coste') : 0),
-          'coste_no_gar' => ($request->get('coste_no_gar') ? $request->get('coste_no_gar') : 0),
-          'formacion' => ($request->get('formacion') ? $request->get('formacion') : 0),
-          'd_imagen' => ($request->get('d_imagen') ? $request->get('d_imagen') : 0),
         ]);
 
         $item->save();
@@ -84,7 +67,7 @@ class ContratoController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = Contrato::find($id);
+        $item = ContratoComercial::find($id);
 
         return response()->json($item, 200);
     }
@@ -111,20 +94,11 @@ class ContratoController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        $item = Contrato::find($id);
+        $item = ContratoComercial::find($id);
 
         $item->fecha_ini = $request->get('fecha_ini');
         $item->fecha_fin = $request->get('fecha_fin');
-        $item->dieta_mes = $request->get('dieta_mes');
-        $item->dieta_partido = $request->get('dieta_partido');
-        $item->prima_partido = $request->get('prima_partido');
-        $item->prima_estelar = $request->get('prima_estelar');
-        $item->prima_manomanista = $request->get('prima_manomanista');
-        $item->garantia = $request->get('garantia');
         $item->coste = $request->get('coste');
-        $item->coste_no_gar = $request->get('coste_no_gar');
-        $item->formacion = $request->get('formacion');
-        $item->d_imagen = $request->get('d_imagen');
 
         $item->save();
 
@@ -141,8 +115,8 @@ class ContratoController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'rrhh']);
 
-        Contrato::destroy($id);
+        ContratoComercial::destroy($id);
 
-        return response()->json("TRAMO REMOVED", 200);
+        return response()->json("COMERCIAL REMOVED", 200);
     }
 }

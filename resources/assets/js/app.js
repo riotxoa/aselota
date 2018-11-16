@@ -54,6 +54,7 @@ const EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"><
 
 Vue.component('contrato-header-pelotari', require('./components/rrhh_contratos/FichaHeaderComponent.vue'));
 Vue.component('contrato-tramo-pelotari', require('./components/rrhh_contratos/FichaTramoComponent.vue'));
+Vue.component('periodo-comercial-pelotari', require('./components/rrhh_contratos/FichaComercialComponent.vue'));
 
 Vue.component('home-gerente', require('./components/HomeGerenteComponent.vue'));
 Vue.component('listado-festivales', require('./components/festivales/ListadoComponent.vue'));

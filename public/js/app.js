@@ -49858,6 +49858,7 @@ var EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></f
 
 Vue.component('contrato-header-pelotari', __webpack_require__(405));
 Vue.component('contrato-tramo-pelotari', __webpack_require__(408));
+Vue.component('periodo-comercial-pelotari', __webpack_require__(501));
 
 Vue.component('home-gerente', __webpack_require__(411));
 Vue.component('listado-festivales', __webpack_require__(414));
@@ -89370,6 +89371,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -89395,27 +89445,38 @@ var showSnackbar = function showSnackbar(msg) {
       create: true,
       removeHeader: true,
       removeTramo: true,
+      removeComercial: true,
       updateHeader: true,
       updateTramo: true,
+      updateComercial: true,
       displayTramo: false,
+      displayComercial: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
       fields_tramo: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      fields_comercial: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       contratos: [],
       totalRows: 0,
       deleteIdHeader: null,
       deleteIdTramo: null,
+      deleteIdComercial: null,
       formHeaderTitle: '',
       formTramoTitle: '',
+      formComercialTitle: '',
       rowHeader: null,
       rowTramo: null,
+      rowComercial: null,
       newHeader: true,
       newTramo: true,
+      newComercial: true,
       cancelHeaderForm: function cancelHeaderForm() {
         _this.hideHeaderForm();
       },
       cancelTramoForm: function cancelTramoForm() {
         _this.hideTramoForm();
+      },
+      cancelComercialForm: function cancelComercialForm() {
+        _this.hideComercialForm();
       },
       getHeaderRow: function getHeaderRow() {
         return _this.rowHeader;
@@ -89423,11 +89484,17 @@ var showSnackbar = function showSnackbar(msg) {
       getTramoRow: function getTramoRow() {
         return _this.rowTramo;
       },
+      getComercialRow: function getComercialRow() {
+        return _this.rowComercial;
+      },
       isNewHeader: function isNewHeader() {
         return _this.newHeader;
       },
       isNewTramo: function isNewTramo() {
         return _this.newTramo;
+      },
+      isNewComercial: function isNewComercial() {
+        return _this.newComercial;
       },
       formatRowAmount: function formatRowAmount(amount) {
         return _this.formatAmount(amount);
@@ -89469,6 +89536,12 @@ var showSnackbar = function showSnackbar(msg) {
 
       this.showContratoTramoForm(this.rowHeader, tramo.id);
     },
+    onClickEditComercial: function onClickEditComercial(header, comercial) {
+      this.rowComercial = comercial;
+      this.rowHeader = header;
+
+      this.showContratoComercialForm(this.rowHeader, comercial.id);
+    },
     removeItemHeader: function removeItemHeader() {
       var _this3 = this;
 
@@ -89501,6 +89574,23 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.deleteIdTramo = null;
         _this4.$refs.modalDeleteTramo.hide();
         showSnackbar("ERROR al borrar tramo");
+      });
+    },
+    removeItemComercial: function removeItemComercial() {
+      var _this5 = this;
+
+      var uri = '/www/contratos/comercial/' + this.deleteIdComercial;
+
+      this.axios.delete(uri).then(function (response) {
+        _this5.deleteIdComercial = null;
+        _this5.$refs.modalDeleteComercial.hide();
+        _this5.fetchContratos();
+        showSnackbar("Periodo Comercial BORRADO");
+      }).catch(function (error) {
+        console.log("[removeComercial] error: " + error);
+        _this5.deleteIdComercial = null;
+        _this5.$refs.modalDeleteComercial.hide();
+        showSnackbar("ERROR al borrar Periodo Comercial");
       });
     },
     onClickDeleteHeader: function onClickDeleteHeader(id, fecha_ini, fecha_fin) {
@@ -89536,6 +89626,23 @@ var showSnackbar = function showSnackbar(msg) {
     hideModalDeleteTramo: function hideModalDeleteTramo() {
       this.deleteIdTramo = null;
       this.$refs.modalDeleteTramo.hide();
+    },
+    onClickDeleteComercial: function onClickDeleteComercial(id, fecha_ini, fecha_fin) {
+      this.deleteIdComercial = id;
+
+      var msg = " \
+          <div class='px-5 py-2'> \
+            <p class='mb-0'><strong>Pelotari:</strong> " + this.pelotariAlias + "</p> \
+            <p class='mb-0'><strong>Fecha inicio:</strong> " + this.formatDate(fecha_ini) + " - <strong>Fecha fin:</strong> " + this.formatDate(fecha_fin) + "</p> \
+          </div>";
+
+      jQuery('#deleteComercialAlias').html(msg);
+
+      this.$refs.modalDeleteComercial.show();
+    },
+    hideModalDeleteComercial: function hideModalDeleteComercial() {
+      this.deleteIdComercial = null;
+      this.$refs.modalDeleteComercial.hide();
     },
     formatDate: function formatDate(date) {
       if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('DD/MM/YYYY');else {
@@ -89580,6 +89687,24 @@ var showSnackbar = function showSnackbar(msg) {
     },
     hideTramoForm: function hideTramoForm() {
       this.$refs.modalEditTramo.hide();
+      this.fetchContratos();
+    },
+    showContratoComercialForm: function showContratoComercialForm($header) {
+      var $comercial_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+      this.rowHeader = $header;
+      if ($comercial_id) {
+        this.formComercialTitle = 'Editar Periodo';
+        this.newComercial = false;
+        this.$refs.modalEditComercial.show();
+      } else {
+        this.formComercialTitle = 'Nuevo Periodo';
+        this.newComercial = true;
+        this.$refs.modalEditComercial.show();
+      }
+    },
+    hideComercialForm: function hideComercialForm() {
+      this.$refs.modalEditComercial.hide();
       this.fetchContratos();
     }
   }
@@ -89991,6 +90116,156 @@ var render = function() {
                             }
                           }
                         ])
+                      }),
+                      _vm._v(" "),
+                      _c("hr"),
+                      _vm._v(" "),
+                      _c(
+                        "b-row",
+                        [
+                          _c("b-col", { staticClass: "col-sm-6" }, [
+                            _c("h5", { staticClass: "font-weight-bold pt-1" }, [
+                              _vm._v("Costes Comerciales")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "b-col",
+                            {
+                              staticClass:
+                                "col-sm-6 text-right float-right my-1 mb-3"
+                            },
+                            [
+                              _c(
+                                "b-btn",
+                                {
+                                  staticClass: "mb-0",
+                                  attrs: {
+                                    variant: "default",
+                                    size: "sm",
+                                    title: "Crear Tramo"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.showContratoComercialForm(contrato, 0)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Nuevo Periodo")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("b-table", {
+                        attrs: {
+                          striped: "",
+                          hover: "",
+                          small: "",
+                          responsive: "",
+                          items: contrato.comerciales,
+                          fields: _vm.fields_comercial
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "actions",
+                            fn: function(row) {
+                              return [
+                                _c(
+                                  "b-button-group",
+                                  [
+                                    _vm.removeComercial
+                                      ? _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              size: "sm",
+                                              variant: "danger",
+                                              title: "Eliminar"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.onClickDeleteComercial(
+                                                  row.item.id,
+                                                  row.item.fecha_ini,
+                                                  row.item.fecha_fin
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "icon voyager-trash"
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.updateComercial
+                                      ? _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              size: "sm",
+                                              variant: "primary",
+                                              title: "Editar"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.onClickEditComercial(
+                                                  contrato,
+                                                  row.item
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "icon voyager-edit"
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.displayComercial
+                                      ? _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              size: "sm",
+                                              variant: "secondary",
+                                              title: "Mostrar/Ocultar Detalle"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                return row.toggleDetails($event)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "icon",
+                                              class: {
+                                                "voyager-x": row.detailsShowing,
+                                                "voyager-eye": !row.detailsShowing
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  ],
+                                  1
+                                )
+                              ]
+                            }
+                          }
+                        ])
                       })
                     ],
                     1
@@ -90015,7 +90290,7 @@ var render = function() {
               _c("div", { staticClass: "modal-body" }, [
                 _c("p", [
                   _vm._v("Se va a borrar un contrato de "),
-                  _c("strong", { attrs: { id: "deleteTramoAlias" } }),
+                  _c("strong", { attrs: { id: "deleteContratoAlias" } }),
                   _vm._v("¿Desea continuar?")
                 ])
               ]),
@@ -90130,6 +90405,76 @@ var render = function() {
               "get-header-row": _vm.getHeaderRow,
               "get-tramo-row": _vm.getTramoRow,
               "is-new-tramo": _vm.isNewTramo,
+              "format-amount": _vm.formatRowAmount
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.removeComercial
+        ? _c(
+            "b-modal",
+            {
+              ref: "modalDeleteComercial",
+              attrs: {
+                title: "BORRAR Periodo Comercial de Contrato",
+                "hide-footer": ""
+              }
+            },
+            [
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [
+                  _vm._v("Se va a borrar un Periodo Comercial de "),
+                  _c("strong", { attrs: { id: "deleteComercialAlias" } }),
+                  _vm._v("¿Desea continuar?")
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-footer" },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      attrs: { variant: "danger" },
+                      on: { click: _vm.removeItemComercial }
+                    },
+                    [_vm._v("Borrar")]
+                  ),
+                  _vm._v(" "),
+                  _c("b-btn", { on: { click: _vm.hideModalDeleteComercial } }, [
+                    _vm._v("Cancelar")
+                  ])
+                ],
+                1
+              )
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalEditComercial",
+          attrs: {
+            id: "comercialContratoForm",
+            title: _vm.formComercialTitle,
+            size: "md",
+            "hide-footer": "",
+            lazy: ""
+          }
+        },
+        [
+          _c("periodo-comercial-pelotari", {
+            attrs: {
+              "pelotari-id": _vm.pelotariId,
+              "pelotari-alias": _vm.pelotariAlias,
+              "on-cancel": _vm.cancelComercialForm,
+              "get-header-row": _vm.getHeaderRow,
+              "get-comercial-row": _vm.getComercialRow,
+              "is-new-comercial": _vm.isNewComercial,
               "format-amount": _vm.formatRowAmount
             }
           })
@@ -103603,6 +103948,401 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 498 */,
+/* 499 */,
+/* 500 */,
+/* 501 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(502)
+/* template */
+var __vue_template__ = __webpack_require__(503)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/rrhh_contratos/FichaComercialComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-76abe0d7", Component.options)
+  } else {
+    hotAPI.reload("data-v-76abe0d7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 502 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['pelotariId', 'pelotariAlias', 'onCancel', 'getHeaderRow', 'getComercialRow', 'isNewComercial', 'formatAmount'],
+  data: function data() {
+    var _this = this;
+
+    return {
+      header: null,
+      comercial: {
+        id: null,
+        header_id: null,
+        fecha_ini: null,
+        fecha_fin: null,
+        coste: null,
+        created_at: null,
+        updated_at: null
+      },
+      edit: false,
+      show: true,
+      goBack: function goBack() {
+        _this.onCancel();
+      }
+    };
+  },
+
+  created: function created() {
+    console.log("FichaComponent created");
+
+    this.header = this.getHeaderRow();
+    this.comercial.header_id = this.getHeaderRow().id;
+
+    if (this.isNewComercial()) {
+      this.edit = false;
+    } else {
+      this.edit = true;
+
+      var rowComercial = this.getComercialRow();
+
+      this.comercial.id = rowComercial.id;
+      this.comercial.fecha_ini = rowComercial.fecha_ini;
+      this.comercial.fecha_fin = rowComercial.fecha_fin;
+      this.comercial.coste = this.formatAmount(rowComercial.coste);
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit(evt) {
+      var _this2 = this;
+
+      evt.preventDefault();
+
+      var uri = '/www/contratos/comercial';
+
+      if (this.edit) {
+        this.axios.post(uri + '/' + this.comercial.id + '/update', this.comercial).then(function (response) {
+          showSnackbar("Periodo actualizado");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      } else {
+        this.axios.post(uri, this.comercial).then(function (response) {
+          showSnackbar("Periodo creado");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log(error);
+          showSnackbar("Se ha producido un ERROR");
+        });
+      }
+    },
+    onReset: function onReset(evt) {
+      evt.preventDefault();
+      /* Reset our form values */
+      this.comercial.fecha_ini = null;
+      this.comercial.fecha_fin = null;
+      this.comercial.coste = null;
+    }
+  }
+});
+
+/***/ }),
+/* 503 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "b-form",
+        { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+        [
+          _c("b-row", { staticClass: "bg-danger mb-3 py-2" }, [
+            _c("div", { staticClass: "col-12 text-white" }, [
+              _c("strong", [_vm._v(_vm._s(_vm.pelotariAlias))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6 text-white" }, [
+              _c("strong", [_vm._v("Contrato: " + _vm._s(_vm.header.name))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6 text-white text-right" }, [
+              _c("strong", [
+                _c("span", { staticClass: "icon voyager-calendar mr-2" }),
+                _vm._v(
+                  _vm._s(_vm._f("formatDate")(_vm.header.fecha_ini)) +
+                    " - " +
+                    _vm._s(_vm._f("formatDate")(_vm.header.fecha_fin))
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("b-row", [
+            _c(
+              "div",
+              { staticClass: "col-md-12" },
+              [
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-6",
+                        attrs: {
+                          label: "Fecha Inicio:",
+                          "label-for": "fecha_iniInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: {
+                            id: "fecha_iniInput",
+                            type: "date",
+                            required: "",
+                            placeholder: "dd/mm/yyyy"
+                          },
+                          model: {
+                            value: _vm.comercial.fecha_ini,
+                            callback: function($$v) {
+                              _vm.$set(_vm.comercial, "fecha_ini", $$v)
+                            },
+                            expression: "comercial.fecha_ini"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-6",
+                        attrs: {
+                          label: "Fecha Fin:",
+                          "label-for": "fecha_finInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: {
+                            id: "fecha_finInput",
+                            type: "date",
+                            required: "",
+                            placeholder: "dd/mm/yyyy"
+                          },
+                          model: {
+                            value: _vm.comercial.fecha_fin,
+                            callback: function($$v) {
+                              _vm.$set(_vm.comercial, "fecha_fin", $$v)
+                            },
+                            expression: "comercial.fecha_fin"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-6",
+                        attrs: {
+                          label: "Coste Comercial:",
+                          "label-for": "costeInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          attrs: {
+                            id: "costeInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.comercial.coste,
+                            callback: function($$v) {
+                              _vm.$set(_vm.comercial, "coste", $$v)
+                            },
+                            expression: "comercial.coste"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("b-button", { attrs: { type: "submit", variant: "primary" } }, [
+            _vm._v("Guardar")
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
+            [_vm._v("Cancelar")]
+          ),
+          _vm._v(" "),
+          !_vm.edit
+            ? _c(
+                "b-button",
+                {
+                  staticClass: "float-right mr-1",
+                  attrs: { type: "reset", variant: "danger" }
+                },
+                [_vm._v("Reset")]
+              )
+            : _vm._e()
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-76abe0d7", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
