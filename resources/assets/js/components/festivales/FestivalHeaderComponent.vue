@@ -2,7 +2,7 @@
   <div class="header">
 
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-        <div class="toolbar mb-2 py-1">
+        <div class="toolbar mb-0 py-1">
           <div class="container">
             <b-row>
               <div class="col-sm-4">
@@ -18,6 +18,27 @@
             </b-row>
           </div>
         </div>
+        <div class="toolbar lightgray py-1 mb-2">
+          <div class="container">
+            <b-row>
+              <div style="margin:0 auto;">
+                <label for="fechaPresuInput">Fecha Presupuesto:</label>
+                <b-form-input id="fechaPresuInput"
+                              class="d-inline-block px-1"
+                              style="min-width:127px;max-width:145px;"
+                              :readonly="!editdatepresu || editdate && _edit"
+                              :disabled="!isGerente"
+                              type="date"
+                              v-model="_header.fecha_presu"
+                              required>
+                </b-form-input>
+                <b-btn v-if="_edit && isGerente" variant="secondary" size="sm" class="d-inline-block" style="margin-top:-2px;" @click="editDatePresu(true)">
+                  <i class="voyager-pen"></i>
+                </b-btn>
+              </div>
+            </b-row>
+          </div>
+        </div>
         <div class="container">
           <b-row>
             <b-form-group label="Fecha:"
@@ -26,7 +47,7 @@
               <b-form-input id="fechaInput"
                             class="d-inline-block px-1"
                             style="min-width:127px;width:calc(100% - 25px);"
-                            :readonly="!editdate && _edit"
+                            :readonly="(!editdate && _edit) || editdatepresu"
                             :disabled="!isGerente"
                             type="date"
                             v-model="_header.fecha"
@@ -52,7 +73,7 @@
                           label-for="hourInput"
                           class="col-sm-2">
               <b-form-input id="hourInput"
-                            :readonly="editdate"
+                            :readonly="editdate || editdatepresu"
                             :disabled="!isGerente"
                             type="time"
                             required
@@ -63,7 +84,7 @@
                           label-for="provinciaInput"
                           class="col-sm-2">
               <b-form-select id="provinciaInput"
-                             :readonly="editdate"
+                             :readonly="editdate || editdatepresu"
                              :disabled="!isGerente"
                              :options="provincias"
                              @change="onChangeProvincia"
@@ -74,7 +95,7 @@
                           label-for="municipioInput"
                           class="col-sm-3">
               <b-form-select id="municipioInput"
-                             :readonly="editdate"
+                             :readonly="editdate || editdatepresu"
                              :disabled="!isGerente"
                              :options="municipios_filtered"
                              @change="onChangeMunicipio"
@@ -87,7 +108,7 @@
                           label-for="frontonInput"
                           class="col-sm-3">
               <b-form-select id="frontonInput"
-                             :readonly="editdate"
+                             :readonly="editdate || editdatepresu"
                              :disabled="!isGerente"
                              :options="frontones_filtered"
                              @change="onChangeFronton"
@@ -99,7 +120,7 @@
                           label-for="televisionInput"
                           class="col-sm-2">
               <b-form-select id="televisionInput"
-                            :readonly="editdate"
+                            :readonly="editdate || editdatepresu"
                             :disabled="!isGerente"
                             :options="television"
                             required
@@ -110,7 +131,7 @@
                           label-for="televisionTxtInput"
                           class="col-sm-4 mt-1">
               <b-form-input id="televisionTxtInput"
-                            :readonly="editdate"
+                            :readonly="editdate || editdatepresu"
                             :disabled="!isGerente"
                             v-model="_header.television_txt">
               </b-form-input>
@@ -119,7 +140,7 @@
                           label-for="estadoInput"
                           class="col-sm-3">
               <b-form-select id="estadoInput"
-                             :readonly="editdate"
+                             :readonly="editdate || editdatepresu"
                              :options="festivalEstados"
                              required
                              v-model="_header.estado_id">
@@ -150,6 +171,7 @@
           { value: 1, text: "Sí" },
         ],
         editdate: false,
+        editdatepresu: false,
         show: true,
         destroy: true,
       }
@@ -172,6 +194,7 @@
         this._header.television = 0;
         this._header.television_txt = "";
         this._header.estado_id = 1;
+        this._header.fecha_presu = this.formatDateEN();
       }
     },
     beforeDestroy: function () {
@@ -221,6 +244,10 @@
         this.editdate = edit;
         store.commit('SET_EDIT', !this._edit);
       },
+      editDatePresu (edit) {
+        this.editdatepresu = edit;
+        store.commit('SET_EDIT', !this._edit);
+      },
       onSubmit (evt) {
         evt.preventDefault();
 
@@ -235,6 +262,8 @@
               this.showSnackbar("Festival actualizado");
               if(this.editdate) {
                 this.editDate(false);
+              } else if(this.editdatepresu) {
+                this.editDatePresu(false);
               } else {
                 if(this.isGerente)
                   this.goBack();
@@ -250,6 +279,7 @@
               this._header.id = response.data.id;
               store.commit('SET_EDIT', 1);
               this.editdate = false;
+              this.editdatepresu = false;
               this.showSnackbar("Festival creado");
             })
             .catch((error) => {
@@ -262,7 +292,9 @@
         evt.preventDefault();
 
         if(this.editdate)
-          this.editDate(false)
+          this.editDate(false);
+        else if(this.editdatepresu)
+          this.editDatePresu(false);
         else
           this.goBack();
       }
@@ -280,6 +312,9 @@
   }
   .header .toolbar {
     background-color:slategray;
+  }
+  .header .toolbar.lightgray {
+    background-color:lightgray;
   }
   .header h4 {
     line-height:1.75;

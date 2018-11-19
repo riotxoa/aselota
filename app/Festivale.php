@@ -16,5 +16,6 @@ class Festivale extends Model
     'television',
     'television_txt',
     'estado_id',
+    'fecha_presu',
   ];
 }

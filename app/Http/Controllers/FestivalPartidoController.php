@@ -26,8 +26,6 @@ class FestivalPartidoController extends Controller
         $festival_id = $request->get('festival_id');
         $festival_fecha = $request->get('festival_fecha');
 
-        // $items = FestivalPartido::where('festival_id', $festival_id)->get();
-
         $partidos = DB::table('festival_partidos as partido')
           ->select(
               'partido.*',
@@ -53,14 +51,15 @@ class FestivalPartidoController extends Controller
     private function getPelotaris(&$partido, $fecha) {
       $pelotaris = DB::table('festival_partido_pelotaris')
                    ->select('festival_partido_pelotaris.*', 'contratos.fecha_ini', 'contratos.garantia', 'contratos_comercial.coste')
-                   ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'festival_partido_pelotaris.pelotari_id')
-                   ->leftJoin('contratos_comercial', 'contratos_comercial.header_id', '=', 'contratos.header_id')
+                   ->leftJoin('festival_partidos', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
+                   ->leftJoin('festivales', 'festivales.id', '=', 'festival_partidos.festival_id')
+                   ->leftJoin('contratos', 'contratos.pelotari_id', '=', DB::raw('festival_partido_pelotaris.pelotari_id AND contratos.fecha_ini <= festivales.fecha AND contratos.fecha_fin >= festivales.fecha'))
+                   ->leftJoin('contratos_comercial', 'contratos_comercial.header_id', '=', DB::raw('contratos.header_id AND contratos_comercial.fecha_ini <= festivales.fecha_presu AND contratos_comercial.fecha_fin >= festivales.fecha_presu'))
                    ->where( function ($query) use ($fecha) {
                      $query->where('festival_partido_pelotaris.asegarce', '=', 0)
                            ->orWhere( function ($q) use ($fecha) {
                               $q->where('festival_partido_pelotaris.asegarce', '=', 1)
-                                ->whereDate('contratos_comercial.fecha_ini', '<=', $fecha)
-                                ->whereDate('contratos_comercial.fecha_fin', '>=', $fecha);
+                                ->whereNull('contratos.deleted_at');
                              }
                            );
                    })

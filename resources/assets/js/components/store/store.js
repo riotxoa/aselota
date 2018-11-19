@@ -158,6 +158,8 @@ export const store = new Vuex.Store({
     },
     SET_EDIT (state, edit) {
       state.edit = edit;
+      if( edit )
+        this.dispatch('loadPartidos');
     },
     SET_CALENDARIO (state, calendario) {
       state.calendario = calendario;

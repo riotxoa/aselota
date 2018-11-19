@@ -102,6 +102,7 @@ class FestivaleController extends Controller
           'television' => $request->get('television'),
           'television_txt' => $request->get('television_txt'),
           'estado_id' => $request->get('estado_id'),
+          'fecha_presu' => $request->get('fecha_presu'),
         ]);
 
         $item->save();
@@ -167,6 +168,7 @@ class FestivaleController extends Controller
         $item->television = $request->get('television');
         $item->television_txt = $request->get('television_txt');
         $item->estado_id = $request->get('estado_id');
+        $item->fecha_presu = $request->get('fecha_presu');
 
         $item->save();
 
@@ -194,25 +196,6 @@ class FestivaleController extends Controller
 
       $month = $request->get('month');
       $pelotaris = $request->get('pelotaris');
-
-      /*
-      SELECT pelotaris.id, pelotaris.alias,
-      festival_partido_pelotaris.festival_partido_id, festival_partido_pelotaris.asiste, festival_partido_pelotaris.sustituto_id,
-      festival_partidos.festival_id, festival_partidos.estelar, festival_partidos.campeonato_id,
-      festivales.fecha,
-      DAYOFMONTH(festivales.fecha) as day,
-	    MONTH(festivales.fecha) as month,
-	    YEAR(festivales.fecha) as year,
-      festivales.hora,
-      festivales.fronton_id, frontones.name as fronton_name, festivales.television
-      FROM pelotaris
-      LEFT JOIN festival_partido_pelotaris ON festival_partido_pelotaris.pelotari_id = pelotaris.id
-      LEFT JOIN festival_partidos ON festival_partidos.id = festival_partido_pelotaris.festival_partido_id
-      LEFT JOIN festivales ON festivales.id = festival_partidos.festival_id
-      LEFT JOIN frontones ON frontones.id = festivales.fronton_id
-      WHERE pelotaris.deleted_at is null
-      ORDER BY pelotaris.alias ASC
-      */
 
       $calendar = DB::table('pelotaris')
         ->leftJoin('festival_partido_pelotaris', 'festival_partido_pelotaris.pelotari_id', '=', 'pelotaris.id')
