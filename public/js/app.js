@@ -8043,8 +8043,8 @@ var APIGetters = {
       return new Promise(function (resolve, reject) {
         axios.get('/www/pelotaris', {
           params: {
-            fecha_ini: new Date(year, month, 1),
-            fecha_fin: new Date(year, month + 1, 0)
+            fecha_ini: new Date(), // new Date(year, month, 1),
+            fecha_fin: new Date() // new Date(year, month + 1, 0),
           }
         }).then(function (response) {
           var stringified = JSON.stringify(response.data);
@@ -89454,7 +89454,7 @@ var showSnackbar = function showSnackbar(msg) {
       displayComercial: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields_tramo: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      fields_tramo: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mes</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'formacion', label: '<span title="Periodo de Formación">Formación</span>', formatter: this.formatCheckbox, class: 'text-center', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       fields_comercial: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       contratos: [],
       totalRows: 0,
@@ -89653,6 +89653,11 @@ var showSnackbar = function showSnackbar(msg) {
     formatAmount: function formatAmount(amount) {
       if (amount) return parseFloat(amount).toFixed(2);else {
         return "";
+      }
+    },
+    formatCheckbox: function formatCheckbox(checked) {
+      if (checked) return "Sí";else {
+        return "-";
       }
     },
     showContratoHeaderForm: function showContratoHeaderForm() {
@@ -93897,6 +93902,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(504)
+}
 var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(409)
@@ -93905,7 +93914,7 @@ var __vue_template__ = __webpack_require__(410)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -94102,6 +94111,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -94132,12 +94155,12 @@ var showSnackbar = function showSnackbar(msg) {
         dieta_mes: null,
         dieta_partido: null,
         prima_partido: null,
+        prima_partido_no_gar: null,
         prima_estelar: null,
         prima_manomanista: null,
+        prima_manomanista_promo: null,
         garantia: null,
-        coste: null,
-        coste_no_gar: null,
-        formacion: false,
+        formacion: "false",
         d_imagen: null,
         created_at: null,
         updated_at: null
@@ -94170,12 +94193,12 @@ var showSnackbar = function showSnackbar(msg) {
       this.tramo.dieta_mes = this.formatAmount(rowTramo.dieta_mes);
       this.tramo.dieta_partido = this.formatAmount(rowTramo.dieta_partido);
       this.tramo.prima_partido = this.formatAmount(rowTramo.prima_partido);
+      this.tramo.prima_partido_no_gar = this.formatAmount(rowTramo.prima_partido_no_gar);
       this.tramo.prima_estelar = this.formatAmount(rowTramo.prima_estelar);
       this.tramo.prima_manomanista = this.formatAmount(rowTramo.prima_manomanista);
+      this.tramo.prima_manomanista_promo = this.formatAmount(rowTramo.prima_manomanista_promo);
       this.tramo.garantia = rowTramo.garantia;
-      this.tramo.coste = this.formatAmount(rowTramo.coste);
-      this.tramo.coste_no_gar = this.formatAmount(rowTramo.coste_no_gar);
-      this.tramo.formacion = rowTramo.formacion;
+      this.tramo.formacion = 1 === rowTramo.formacion ? "true" : "false";
       this.tramo.d_imagen = this.formatAmount(rowTramo.d_imagen);
     }
   },
@@ -94186,6 +94209,8 @@ var showSnackbar = function showSnackbar(msg) {
       evt.preventDefault();
 
       var uri = '/www/contratos/tramo';
+
+      this.tramo.formacion = "true" === this.tramo.formacion ? 1 : 0;
 
       if (this.edit) {
         this.axios.post(uri + '/' + this.tramo.id + '/update', this.tramo).then(function (response) {
@@ -94213,11 +94238,11 @@ var showSnackbar = function showSnackbar(msg) {
       this.tramo.dieta_mes = null;
       this.tramo.dieta_partido = null;
       this.tramo.prima_partido = null;
+      this.tramo.prima_partido_no_gar = null;
       this.tramo.prima_estelar = null;
       this.tramo.prima_manomanista = null;
+      this.tramo.prima_manomanista_promo = null;
       this.tramo.garantia = null;
-      this.tramo.coste = null;
-      this.tramo.coste_no_gar = null;
       this.tramo.formacion = false;
       this.tramo.d_imagen = null;
     }
@@ -94234,6 +94259,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { attrs: { id: "fichaTramoComponent" } },
     [
       _c(
         "b-form",
@@ -94331,7 +94357,85 @@ var render = function() {
                       {
                         staticClass: "col-sm-3",
                         attrs: {
-                          label: "Dieta básica mensual:",
+                          label: "Partidos garantía:",
+                          "label-for": "garantiaInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#d5e8ff" },
+                          attrs: {
+                            id: "garantiaInput",
+                            type: "number",
+                            maxlength: "4",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.garantia,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "garantia", $$v)
+                            },
+                            expression: "tramo.garantia"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "&nbsp;",
+                          "label-for": "formacionInput"
+                        }
+                      },
+                      [
+                        _c(
+                          "b-form-checkbox",
+                          {
+                            attrs: {
+                              id: "formacionInput",
+                              value: "true",
+                              "unchecked-value": "false"
+                            },
+                            model: {
+                              value: _vm.tramo.formacion,
+                              callback: function($$v) {
+                                _vm.$set(_vm.tramo, "formacion", $$v)
+                              },
+                              expression: "tramo.formacion"
+                            }
+                          },
+                          [
+                            _c(
+                              "span",
+                              {
+                                staticClass: "d-inline-block",
+                                staticStyle: { "padding-top": "0.35rem" }
+                              },
+                              [_vm._v("Formación")]
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Dieta mes:",
                           "label-for": "d_basicaInput"
                         }
                       },
@@ -94362,7 +94466,7 @@ var render = function() {
                       {
                         staticClass: "col-sm-3",
                         attrs: {
-                          label: "Dieta por partido:",
+                          label: "Dieta partido:",
                           "label-for": "dieta_partidoInput"
                         }
                       },
@@ -94386,20 +94490,14 @@ var render = function() {
                         })
                       ],
                       1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-row",
-                  [
+                    ),
+                    _vm._v(" "),
                     _c(
                       "b-form-group",
                       {
                         staticClass: "col-sm-3",
                         attrs: {
-                          label: "Prima por partido:",
+                          label: "Prima partido:",
                           "label-for": "prima_partidoInput"
                         }
                       },
@@ -94430,7 +94528,44 @@ var render = function() {
                       {
                         staticClass: "col-sm-3",
                         attrs: {
-                          label: "Prima por estelar:",
+                          label: "Prima partido > Gtía.:",
+                          "label-for": "coste2Input"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffeeba" },
+                          attrs: {
+                            id: "coste2Input",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.prima_partido_no_gar,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "prima_partido_no_gar", $$v)
+                            },
+                            expression: "tramo.prima_partido_no_gar"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Plus estelar:",
                           "label-for": "prima_estelarInput"
                         }
                       },
@@ -94461,7 +94596,7 @@ var render = function() {
                       {
                         staticClass: "col-sm-3",
                         attrs: {
-                          label: "Prima Campeón Mano.:",
+                          label: "Plus Campeón Mano. 1ª:",
                           "label-for": "prima_manomanistaInput"
                         }
                       },
@@ -94492,13 +94627,49 @@ var render = function() {
                       {
                         staticClass: "col-sm-3",
                         attrs: {
-                          label: "Dchos.Imagen (mes):",
+                          label: "Plus Campeón Mano.Prom.:",
+                          "label-for": "prima_manomanistaPromoInput"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffeeba" },
+                          attrs: {
+                            id: "prima_manomanistaPromoInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.prima_manomanista_promo,
+                            callback: function($$v) {
+                              _vm.$set(
+                                _vm.tramo,
+                                "prima_manomanista_promo",
+                                $$v
+                              )
+                            },
+                            expression: "tramo.prima_manomanista_promo"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: {
+                          label: "Dchos.Imagen / Mes:",
                           "label-for": "d_imagenInput"
                         }
                       },
                       [
                         _c("b-form-input", {
                           staticClass: "text-right",
+                          staticStyle: { "background-color": "#fadde3" },
                           attrs: {
                             id: "d_imagenInput",
                             type: "number",
@@ -94511,102 +94682,6 @@ var render = function() {
                               _vm.$set(_vm.tramo, "d_imagen", $$v)
                             },
                             expression: "tramo.d_imagen"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-row",
-                  [
-                    _c(
-                      "b-form-group",
-                      {
-                        staticClass: "col-sm-3",
-                        attrs: {
-                          label: "Partidos garantía:",
-                          "label-for": "garantiaInput"
-                        }
-                      },
-                      [
-                        _c("b-form-input", {
-                          staticClass: "text-right",
-                          attrs: {
-                            id: "garantiaInput",
-                            type: "number",
-                            maxlength: "4",
-                            placeholder: "0"
-                          },
-                          model: {
-                            value: _vm.tramo.garantia,
-                            callback: function($$v) {
-                              _vm.$set(_vm.tramo, "garantia", $$v)
-                            },
-                            expression: "tramo.garantia"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-form-group",
-                      {
-                        staticClass: "col-sm-3",
-                        attrs: {
-                          label: "Coste/partido gar.:",
-                          "label-for": "costeInput"
-                        }
-                      },
-                      [
-                        _c("b-form-input", {
-                          staticClass: "text-right",
-                          attrs: {
-                            id: "costeInput",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0"
-                          },
-                          model: {
-                            value: _vm.tramo.coste,
-                            callback: function($$v) {
-                              _vm.$set(_vm.tramo, "coste", $$v)
-                            },
-                            expression: "tramo.coste"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-form-group",
-                      {
-                        staticClass: "col-sm-3",
-                        attrs: {
-                          label: "Coste/partido NO gar.:",
-                          "label-for": "coste2Input"
-                        }
-                      },
-                      [
-                        _c("b-form-input", {
-                          staticClass: "text-right",
-                          attrs: {
-                            id: "coste2Input",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0"
-                          },
-                          model: {
-                            value: _vm.tramo.coste_no_gar,
-                            callback: function($$v) {
-                              _vm.$set(_vm.tramo, "coste_no_gar", $$v)
-                            },
-                            expression: "tramo.coste_no_gar"
                           }
                         })
                       ],
@@ -104434,6 +104509,49 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 501 */,
+/* 502 */,
+/* 503 */,
+/* 504 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(505);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(7)("11282675", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c46fade\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FichaTramoComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c46fade\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FichaTramoComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 505 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#fichaTramoComponent label {\n  font-weight:600;\n  letter-spacing:-.75px;\n  line-height:1;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

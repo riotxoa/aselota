@@ -20,7 +20,7 @@ class ContratoController extends Controller
 
         $id = $request->get('pelotari_id');
 
-        $items = \App\ContratoHeader::where('pelotari_id', $id)->orderBy('fecha_fin', 'desc')->get();
+        $items = \App\ContratoHeader::where('pelotari_id', $id)->where('deleted_at', null)->orderBy('fecha_fin', 'desc')->get();
 
         foreach($items as $key => $item) {
           $tramo = \App\Contrato::where('header_id', $item->id)->orderBy('fecha_fin', 'desc')->get();
@@ -60,11 +60,11 @@ class ContratoController extends Controller
           'dieta_mes' => ($request->get('dieta_mes') ? $request->get('dieta_mes') : 0),
           'dieta_partido' => ($request->get('dieta_partido') ? $request->get('dieta_partido') : 0),
           'prima_partido' => ($request->get('prima_partido') ? $request->get('prima_partido') : 0),
+          'prima_partido_no_gar' => ($request->get('prima_partido_no_gar') ? $request->get('prima_partido_no_gar') : 0),
           'prima_estelar' => ($request->get('prima_estelar') ? $request->get('prima_estelar') : 0),
           'prima_manomanista' => ($request->get('prima_manomanista') ? $request->get('prima_manomanista') : 0),
+          'prima_manomanista_promo' => ($request->get('prima_manomanista_promo') ? $request->get('prima_manomanista_promo') : 0),
           'garantia' => ($request->get('garantia') ? $request->get('garantia') : 0),
-          'coste' => ($request->get('coste') ? $request->get('coste') : 0),
-          'coste_no_gar' => ($request->get('coste_no_gar') ? $request->get('coste_no_gar') : 0),
           'formacion' => ($request->get('formacion') ? $request->get('formacion') : 0),
           'd_imagen' => ($request->get('d_imagen') ? $request->get('d_imagen') : 0),
         ]);
@@ -118,11 +118,11 @@ class ContratoController extends Controller
         $item->dieta_mes = $request->get('dieta_mes');
         $item->dieta_partido = $request->get('dieta_partido');
         $item->prima_partido = $request->get('prima_partido');
+        $item->prima_partido_no_gar = $request->get('prima_partido_no_gar');
         $item->prima_estelar = $request->get('prima_estelar');
         $item->prima_manomanista = $request->get('prima_manomanista');
+        $item->prima_manomanista_promo = $request->get('prima_manomanista_promo');
         $item->garantia = $request->get('garantia');
-        $item->coste = $request->get('coste');
-        $item->coste_no_gar = $request->get('coste_no_gar');
         $item->formacion = $request->get('formacion');
         $item->d_imagen = $request->get('d_imagen');
 

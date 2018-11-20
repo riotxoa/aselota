@@ -188,14 +188,13 @@
           fields_tramo: [
             { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true },
             { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true },
-            { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mensual</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
+            { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mes</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
             { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
             { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
             { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
-            { key: 'prima_manomanista', label: '<span title="Prima por Campeón de manomanista">Pr. Cpto.Mano</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
             { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false },
-            { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false },
             { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false },
+            { key: 'formacion', label: '<span title="Periodo de Formación">Formación</span>', formatter: this.formatCheckbox, class: 'text-center', sortable: true },
             { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
           fields_comercial: [
@@ -383,6 +382,13 @@
             return parseFloat(amount).toFixed(2);
           else {
             return "";
+          }
+        },
+        formatCheckbox (checked) {
+          if(checked)
+            return "Sí";
+          else {
+            return "-";
           }
         },
         showContratoHeaderForm ($id = 0) {

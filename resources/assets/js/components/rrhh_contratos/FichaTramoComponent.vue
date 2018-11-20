@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="fichaTramoComponent">
 
     <b-form @submit="onSubmit" @reset="onReset">
 
@@ -32,7 +32,31 @@
                             placeholder="dd/mm/yyyy">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Dieta básica mensual:"
+            <b-form-group label="Partidos garantía:"
+                          label-for="garantiaInput"
+                          class="col-sm-3">
+              <b-form-input id="garantiaInput"
+                            class="text-right"
+                            type="number"
+                            v-model="tramo.garantia"
+                            maxlength="4"
+                            placeholder="0"
+                            style="background-color:#d5e8ff">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="&nbsp;"
+                          label-for="formacionInput"
+                          class="col-sm-3">
+              <b-form-checkbox id="formacionInput"
+                               v-model="tramo.formacion"
+                               value="true"
+                               unchecked-value="false">
+                    <span class="d-inline-block" style="padding-top:0.35rem;">Formación</span>
+              </b-form-checkbox>
+            </b-form-group>
+          </b-row>
+          <b-row>
+            <b-form-group label="Dieta mes:"
                           label-for="d_basicaInput"
                           class="col-sm-3">
               <b-form-input id="d_basicaInput"
@@ -44,7 +68,7 @@
                             style="background-color:#c3e6cb">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Dieta por partido:"
+            <b-form-group label="Dieta partido:"
                           label-for="dieta_partidoInput"
                           class="col-sm-3">
               <b-form-input id="dieta_partidoInput"
@@ -56,9 +80,7 @@
                             style="background-color:#c3e6cb">
               </b-form-input>
             </b-form-group>
-          </b-row>
-          <b-row>
-            <b-form-group label="Prima por partido:"
+            <b-form-group label="Prima partido:"
                           label-for="prima_partidoInput"
                           class="col-sm-3">
               <b-form-input id="prima_partidoInput"
@@ -70,7 +92,21 @@
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Prima por estelar:"
+            <b-form-group label="Prima partido > Gtía.:"
+                          label-for="coste2Input"
+                          class="col-sm-3">
+              <b-form-input id="coste2Input"
+                            class="text-right"
+                            type="number"
+                            v-model="tramo.prima_partido_no_gar"
+                            maxlength="8"
+                            placeholder="0"
+                            style="background-color:#ffeeba">
+              </b-form-input>
+            </b-form-group>
+          </b-row>
+          <b-row>
+            <b-form-group label="Plus estelar:"
                           label-for="prima_estelarInput"
                           class="col-sm-3">
               <b-form-input id="prima_estelarInput"
@@ -82,7 +118,7 @@
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Prima Campeón Mano.:"
+            <b-form-group label="Plus Campeón Mano. 1ª:"
                           label-for="prima_manomanistaInput"
                           class="col-sm-3">
               <b-form-input id="prima_manomanistaInput"
@@ -94,7 +130,19 @@
                             style="background-color:#ffeeba">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Dchos.Imagen (mes):"
+            <b-form-group label="Plus Campeón Mano.Prom.:"
+                          label-for="prima_manomanistaPromoInput"
+                          class="col-sm-3">
+              <b-form-input id="prima_manomanistaPromoInput"
+                            class="text-right"
+                            type="number"
+                            v-model="tramo.prima_manomanista_promo"
+                            maxlength="8"
+                            placeholder="0"
+                            style="background-color:#ffeeba">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Dchos.Imagen / Mes:"
                           label-for="d_imagenInput"
                           class="col-sm-3">
               <b-form-input id="d_imagenInput"
@@ -102,42 +150,8 @@
                             type="number"
                             v-model="tramo.d_imagen"
                             maxlength="8"
-                            placeholder="0">
-              </b-form-input>
-            </b-form-group>
-          </b-row>
-          <b-row>
-            <b-form-group label="Partidos garantía:"
-                          label-for="garantiaInput"
-                          class="col-sm-3">
-              <b-form-input id="garantiaInput"
-                            class="text-right"
-                            type="number"
-                            v-model="tramo.garantia"
-                            maxlength="4"
-                            placeholder="0">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Coste/partido gar.:"
-                          label-for="costeInput"
-                          class="col-sm-3">
-              <b-form-input id="costeInput"
-                            class="text-right"
-                            type="number"
-                            v-model="tramo.coste"
-                            maxlength="8"
-                            placeholder="0">
-              </b-form-input>
-            </b-form-group>
-            <b-form-group label="Coste/partido NO gar.:"
-                          label-for="coste2Input"
-                          class="col-sm-3">
-              <b-form-input id="coste2Input"
-                            class="text-right"
-                            type="number"
-                            v-model="tramo.coste_no_gar"
-                            maxlength="8"
-                            placeholder="0">
+                            placeholder="0"
+                            style="background-color:#fadde3">
               </b-form-input>
             </b-form-group>
           </b-row>
@@ -181,12 +195,12 @@
           dieta_mes: null,
           dieta_partido: null,
           prima_partido: null,
+          prima_partido_no_gar: null,
           prima_estelar: null,
           prima_manomanista: null,
+          prima_manomanista_promo: null,
           garantia: null,
-          coste: null,
-          coste_no_gar: null,
-          formacion: false,
+          formacion: "false",
           d_imagen: null,
           created_at: null,
           updated_at: null,
@@ -218,12 +232,12 @@
         this.tramo.dieta_mes = this.formatAmount(rowTramo.dieta_mes);
         this.tramo.dieta_partido = this.formatAmount(rowTramo.dieta_partido);
         this.tramo.prima_partido = this.formatAmount(rowTramo.prima_partido);
+        this.tramo.prima_partido_no_gar = this.formatAmount(rowTramo.prima_partido_no_gar);
         this.tramo.prima_estelar = this.formatAmount(rowTramo.prima_estelar);
         this.tramo.prima_manomanista = this.formatAmount(rowTramo.prima_manomanista);
+        this.tramo.prima_manomanista_promo = this.formatAmount(rowTramo.prima_manomanista_promo);
         this.tramo.garantia = rowTramo.garantia;
-        this.tramo.coste = this.formatAmount(rowTramo.coste);
-        this.tramo.coste_no_gar = this.formatAmount(rowTramo.coste_no_gar);
-        this.tramo.formacion = rowTramo.formacion;
+        this.tramo.formacion = ( 1 === rowTramo.formacion ? "true" : "false");
         this.tramo.d_imagen = this.formatAmount(rowTramo.d_imagen);
       }
     },
@@ -232,6 +246,8 @@
         evt.preventDefault();
 
         let uri = '/www/contratos/tramo';
+
+        this.tramo.formacion = ("true" === this.tramo.formacion ? 1 : 0);
 
         if(this.edit) {
           this.axios.post(uri + '/' + this.tramo.id + '/update', this.tramo)
@@ -263,14 +279,22 @@
         this.tramo.dieta_mes = null;
         this.tramo.dieta_partido = null;
         this.tramo.prima_partido = null;
+        this.tramo.prima_partido_no_gar = null;
         this.tramo.prima_estelar = null;
         this.tramo.prima_manomanista = null;
+        this.tramo.prima_manomanista_promo = null;
         this.tramo.garantia = null;
-        this.tramo.coste = null;
-        this.tramo.coste_no_gar = null;
         this.tramo.formacion = false;
         this.tramo.d_imagen = null;
       },
     }
   }
 </script>
+
+<style>
+#fichaTramoComponent label {
+  font-weight:600;
+  letter-spacing:-.75px;
+  line-height:1;
+}
+</style>

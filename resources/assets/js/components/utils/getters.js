@@ -190,8 +190,8 @@ var APIGetters = {
       return new Promise( (resolve, reject) => {
         axios.get('/www/pelotaris', {
           params: {
-            fecha_ini: new Date(year, month, 1),
-            fecha_fin: new Date(year, month + 1, 0),
+            fecha_ini: new Date(), // new Date(year, month, 1),
+            fecha_fin: new Date(), // new Date(year, month + 1, 0),
           }
         }).then((response) => {
           var stringified = JSON.stringify(response.data);

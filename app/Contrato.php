@@ -17,10 +17,11 @@ class Contrato extends Model
     'dieta_mes',
     'dieta_partido',
     'prima_partido',
+    'prima_partido_no_gar',
     'prima_estelar',
     'prima_manomanista',
+    'prima_manomanista_promo',
     'garantia',
-    'coste',
     'formacion',
     'd_imagen',
   ];
