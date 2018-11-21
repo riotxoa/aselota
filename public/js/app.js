@@ -105046,11 +105046,11 @@ var render = function() {
               staticClass: "d-inline-block px-1 text-right",
               attrs: { id: "precioInput", type: "number", required: "" },
               model: {
-                value: _vm.entradas.price.toFixed(2),
+                value: _vm.entradas.price,
                 callback: function($$v) {
-                  _vm.$set(_vm.entradas.price, "toFixed(2)", $$v)
+                  _vm.$set(_vm.entradas, "price", $$v)
                 },
-                expression: "entradas.price.toFixed(2)"
+                expression: "entradas.price"
               }
             })
           ],

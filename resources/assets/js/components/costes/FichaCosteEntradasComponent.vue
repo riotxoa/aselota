@@ -26,7 +26,7 @@
         <b-form-input id="precioInput"
                       class="d-inline-block px-1 text-right"
                       type="number"
-                      v-model="entradas.price.toFixed(2)"
+                      v-model="entradas.price"
                       required>
         </b-form-input>
       </div>
