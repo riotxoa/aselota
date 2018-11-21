@@ -12,8 +12,6 @@ class FestivalCoste extends Model
     'coste_empresa',
     'importe_venta',
     'aportacion',
-    'num_entradas',
-    'precio_entradas',
     'num_espectadores',
     'ingreso_taquilla',
     'ingreso_ayto',

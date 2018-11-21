@@ -63,31 +63,26 @@
                               @input="updatePrecioTotal">
                 </b-form-input>
               </b-row>
-              <b-row>
-                <label class="col-md-7">Nº entradas:</label>
-                <b-form-input id="coste_num_entradas"
-                              class="col-md-5 text-right"
-                              type="number"
-                              maxlength="8"
-                              placeholder="0.00"
-                              v-model="_costes.num_entradas"
-                              v-on:focus.native="$event.target.select()"
-                              @input="updatePrecioTotal">
-                </b-form-input>
+
+              <b-row class="mt-4">
+                <div class="col-12">
+                  <b-table striped hover small :items="_costes.entradas" :fields="fields">
+                    <template slot="actions" slot-scope="row">
+                      <b-button size="sm" variant="danger" title="Borrar Entradas" @click.stop="onClickDeleteEntradas(row.item)">
+                        <span class="icon voyager-trash"></span>
+                      </b-button>
+                      <b-button size="sm" variant="primary" title="Editar Entradas" @click.stop="onClickEditEntradas(row.item)">
+                        <span class="icon voyager-edit"></span>
+                      </b-button>
+                    </template>
+                  </b-table>
+                </div>
+                <div class="col-md-8">&nbsp;</div>
+                <div class="col-md-4">
+                  <b-btn size="sm" @click="onClickAddEntradas">Añadir Entradas</b-btn>
+                </div>
               </b-row>
-              <b-row>
-                <label class="col-md-7">Precio entradas:</label>
-                <b-form-input id="coste_precio_entradas"
-                              class="col-md-5 text-right"
-                              type="number"
-                              maxlength="8"
-                              placeholder="0.00"
-                              v-model="_costes.precio_entradas"
-                              v-on:focus.native="$event.target.select()"
-                              v-on:blur.native="formatCurrency"
-                              @input="updatePrecioTotal">
-                </b-form-input>
-              </b-row>
+
             </div>
           </div>
           <div class="card mb-3">
@@ -97,7 +92,7 @@
                 <b-form-input id="coste_precio_total"
                               class="col-md-5 text-right"
                               type="text"
-                              :value="_costes.precio_total.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})"
+                              v-model="precio_total"
                               v-if="_costes.precio_total"
                               tabindex="-1"
                               readonly>
@@ -190,18 +185,57 @@
 
       </b-row>
     </b-form>
+
+    <b-modal id="costeEntradasForm" ref="costeEntradasModal" title="Coste Entradas" size="sm" hide-footer lazy>
+      <ficha-coste-entradas :festival-id="_costes.festival_id" :on-cancel="cancelCosteEntradasForm" :on-submit="submitCosteEntradasForm" :is-new-coste="isNewCosteEntradas" :data="editCosteEntradas"></ficha-coste-entradas>
+    </b-modal>
+    <b-modal id="delEntradas" ref="delEntradasModal" title="Eliminar Coste Entradas" size="md" @shown="focusModal" hide-footer lazy>
+        <b-row class="mx-0">
+          Se van a eliminar las siguientes entradas:
+        </b-row>
+        <b-row class="mx-0">
+          <ul v-if="delCosteEntradas" class="mt-2">
+            <li><strong>Entradas:</strong> {{ this.delCosteEntradas.name }}</li>
+            <li><strong>Cantidad:</strong> {{ this.delCosteEntradas.amount }}</li>
+            <li><strong>Precio:</strong> {{ parseFloat(this.delCosteEntradas.price).toFixed(2) }}&nbsp;&euro;</li>
+          </ul>
+        </b-row>
+        <b-row class="mx-0">
+          ¿Está seguro?
+        </b-row>
+        <hr/>
+        <b-row class="mx-0 float-right">
+          <b-btn class="mr-3" variant="primary" @click.stop="deleteCosteEntradas">Borrar</b-btn>
+          <b-btn variant="default" ref="focusThis" @click.stop="hideDeleteEntradasModal">Cancelar</b-btn>
+        </b-row>
+    </b-modal>
   </div>
 </template>
 
 <script>
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
+  import { store } from '../store/store';
   import { mapState } from 'vuex';
 
   export default {
     mixins: [APIGetters, Utils],
     data () {
-      return {}
+      return {
+        fields: [
+          { key: 'id', label: '', class: 'sr-only' },
+          { key: 'name', label: 'Entradas', sortable: true, class: 'text-left' },
+          { key: 'amount', label: 'Cant.', sortable: true, class: 'text-right' },
+          { key: 'price', label: 'Precio', sortable: true, class: 'text-right', formatter: 'formatPrice' },
+          { key: 'actions', label: 'Acciones', class: 'text-right' },
+        ],
+        precio_total: 0,
+        isNewCosteEntradas: false,
+        editCosteEntradas: null,
+        delCosteEntradas: null,
+        cancelCosteEntradasForm: () => { this.hideCosteEntradasForm(); },
+        submitCosteEntradasForm: (entradas) => { this.saveCosteEntradasForm(entradas); },
+      }
     },
     created: function () {
       console.log("FestivalFichaCostesComponent created");
@@ -226,11 +260,64 @@
       onReset() {
         this.$store.dispatch('loadCostes');
       },
+      onClickAddEntradas() {
+        this.isNewCosteEntradas = true;
+        this.$refs.costeEntradasModal.show();
+      },
+      onClickEditEntradas(data) {
+        this.isNewCosteEntradas = false;
+        this.editCosteEntradas = data;
+        this.$refs.costeEntradasModal.show();
+      },
+      onClickDeleteEntradas(data) {
+        this.delCosteEntradas = data;
+        this.$refs.delEntradasModal.show();
+      },
+      hideCosteEntradasForm() {
+        this.$refs.costeEntradasModal.hide();
+      },
+      hideDeleteEntradasModal() {
+        this.$refs.delEntradasModal.hide();
+      },
+      focusModal() {
+        this.$refs.focusThis.focus();
+      },
+      saveCosteEntradasForm(entrada) {
+        if( this.isNewCosteEntradas ) {
+          store.dispatch('addCosteEntradas', entrada).then( () => {
+            this.showSnackbar("Precio de entradas añadido");
+            this.updatePrecioTotal();
+            this.$refs.costeEntradasModal.hide();
+          });
+        } else {
+          store.dispatch('updateCosteEntradas', entrada).then( () => {
+            this.showSnackbar("Precio de entradas actualizado");
+            this.updatePrecioTotal();
+            this.$refs.costeEntradasModal.hide();
+          });
+        }
+      },
+      deleteCosteEntradas(entrada) {
+        store.dispatch('deleteCosteEntradas', this.delCosteEntradas).then( () => {
+          this.delCosteEntradas = null;
+          this.showSnackbar("Precio de entradas eliminado");
+          this.updatePrecioTotal();
+          this.$refs.delEntradasModal.hide();
+        });
+      },
       updatePrecioTotal() {
-        this._costes.precio_total = parseFloat(this._costes.aportacion) + (this._costes.num_entradas * this._costes.precio_entradas);
+        var total = parseFloat(this._costes.aportacion);
+        this._costes.entradas.forEach( function(value, index) {
+          total += (value.amount * value.price);
+        });
+        this._costes.precio_total = total;
+        this.precio_total = total.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2});
       },
       updateTotal() {
         this._costes.total = parseFloat(this._costes.ingreso_taquilla) + parseFloat(this._costes.ingreso_ayto) + parseFloat(this._costes.ingreso_otros);
+      },
+      formatPrice(value) {
+        return parseFloat(value).toFixed(2);
       },
       formatCurrency(ev) {
         let value = ev.target.value;

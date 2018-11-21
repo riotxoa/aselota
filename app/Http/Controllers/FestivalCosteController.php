@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\FestivalCoste;
+use App\FestivalCosteEntradas;
 
 class FestivalCosteController extends Controller
 {
@@ -20,6 +21,11 @@ class FestivalCosteController extends Controller
         $id = $request->get('festival_id');
 
         $costes = FestivalCoste::where('festival_id', $id)->get();
+
+        foreach( $costes as $key => $coste ) {
+          $entradas = FestivalCosteEntradas::where('festival_id', $id)->orderBy('id')->get();
+          $costes[$key]->entradas = $entradas;
+        }
 
         return response()->json($costes, 200);
     }
@@ -54,8 +60,6 @@ class FestivalCosteController extends Controller
           'coste_empresa' => $request->get('coste_empresa'),
           'importe_venta' => $request->get('importe_venta'),
           'aportacion' => $request->get('aportacion'),
-          'num_entradas' => $request->get('num_entradas'),
-          'precio_entradas' => $request->get('precio_entradas'),
           'num_espectadores' => $request->get('num_espectadores'),
           'ingreso_taquilla' => $request->get('ingreso_taquilla'),
           'ingreso_ayto' => $request->get('ingreso_ayto'),
@@ -111,8 +115,6 @@ class FestivalCosteController extends Controller
         $costes->coste_empresa = $request->get('coste_empresa');
         $costes->importe_venta = $request->get('importe_venta');
         $costes->aportacion = $request->get('aportacion');
-        $costes->num_entradas = $request->get('num_entradas');
-        $costes->precio_entradas = $request->get('precio_entradas');
         $costes->num_espectadores = $request->get('num_espectadores');
         $costes->ingreso_taquilla = $request->get('ingreso_taquilla');
         $costes->ingreso_ayto = $request->get('ingreso_ayto');

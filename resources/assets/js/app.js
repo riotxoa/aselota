@@ -59,6 +59,7 @@ Vue.component('periodo-comercial-pelotari', require('./components/rrhh_contratos
 Vue.component('home-gerente', require('./components/HomeGerenteComponent.vue'));
 Vue.component('listado-festivales', require('./components/festivales/ListadoComponent.vue'));
 Vue.component('ficha-festival', require('./components/festivales/FichaComponent.vue'));
+Vue.component('ficha-coste-entradas', require('./components/costes/FichaCosteEntradasComponent.vue'));
 
 const HomeGerente = { template: '<home-gerente></home-gerente>' };
 const ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };

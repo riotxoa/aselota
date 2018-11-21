@@ -16,8 +16,7 @@ export const store = new Vuex.Store({
       cliente_id: null,
       cliente_txt: '',
       aportacion: 0,
-      num_entradas: 0,
-      precio_entradas: 0,
+      entradas: [],
       num_espectadores: 0,
       ingreso_taquilla: 0,
       ingreso_ayto: 0,
@@ -94,8 +93,7 @@ export const store = new Vuex.Store({
         cliente_id: null,
         cliente_txt: '',
         aportacion: 0,
-        num_entradas: 0,
-        precio_entradas: 0,
+        entradas: [],
         num_espectadores: 0,
         ingreso_taquilla: 0,
         ingreso_ayto: 0,
@@ -138,7 +136,10 @@ export const store = new Vuex.Store({
     SET_COSTES (state, costes) {
       if(costes.length) {
         state.costes = costes[0];
-        state.costes.precio_total = parseFloat(state.costes.aportacion) + (state.costes.num_entradas * state.costes.precio_entradas);
+        state.costes.precio_total = parseFloat(state.costes.aportacion);
+        state.costes.entradas.forEach( (value, index) => {
+          state.costes.precio_total += (value.amount * value.price);
+        });
         state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
       }
     },
@@ -150,6 +151,23 @@ export const store = new Vuex.Store({
       state.coste += (partido.pelotari_2 ? partido.pelotari_2.coste : 0);
       state.coste += (partido.pelotari_3 ? partido.pelotari_3.coste : 0);
       state.coste += (partido.pelotari_4 ? partido.pelotari_4.coste : 0);
+    },
+    ADD_ENTRADAS (state, entradas) {
+      state.costes.entradas.push(entradas);
+    },
+    UPDATE_ENTRADAS (state, entrada) {
+      var index = _.findIndex( state.costes.entradas, { "id": entrada.id } );
+
+      state.costes.entradas[index].name = entrada.name;
+      state.costes.entradas[index].amount = entrada.amount;
+      state.costes.entradas[index].price = entrada.price;
+    },
+    DELETE_ENTRADAS (state, entrada) {
+      var index = _.findIndex( state.costes.entradas, { "id": entrada.id } );
+
+      if( index > -1 ) {
+        state.costes.entradas.splice(index, 1);
+      }
     },
     SET_FACTURACION (state, facturacion) {
       if(facturacion.length) {
@@ -327,7 +345,6 @@ export const store = new Vuex.Store({
           .post(uri, partido)
           .then( r => r.data )
           .then( (response) => {
-            console.log()
             resolve(response);
           })
           .catch((error) => {
@@ -357,6 +374,56 @@ export const store = new Vuex.Store({
           .post(uri, costes)
           .then( r => r.data )
           .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    addCosteEntradas({ commit }, entradas) {
+      let uri = '/www/festival-entradas';
+      entradas.festival_id = this.getters.header.id;
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, entradas)
+          .then( r => r.data )
+          .then((response) => {
+            entradas.id = response.id;
+            commit('ADD_ENTRADAS', entradas);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
+    },
+    updateCosteEntradas({ commit }, entrada) {
+      let uri = '/www/festival-entradas/' + entrada.id + '/update';
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, entrada)
+          .then( r => r.data )
+          .then((response) => {
+            commit('UPDATE_ENTRADAS', entrada);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
+
+    },
+    deleteCosteEntradas({ commit }, entrada) {
+      let uri = '/www/festival-entradas/' + entrada.id;
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .delete(uri)
+          .then( r => r.data )
+          .then(( response) => {
+            commit('DELETE_ENTRADAS', entrada);
             resolve(response);
           })
           .catch((error) => {
@@ -411,7 +478,6 @@ export const store = new Vuex.Store({
         .get('/www/entrenamientos')
         .then( r => r.data )
         .then( entrenamientos => {
-          console.log("[loadEntrenamientos] entrenamientos: " + JSON.stringify(entrenamientos));
           commit('SET_ENTRENAMIENTOS', entrenamientos)
         });
     },

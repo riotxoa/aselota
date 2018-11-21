@@ -38,6 +38,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('clientes', 'ClienteController');
     Route::resource('festival-costes', 'FestivalCosteController');
     Route::resource('festival-facturacion', 'FestivalFacturacionController');
+    Route::resource('festival-entradas', 'FestivalCosteEntradasController');
     Route::resource('formas-pago', 'FormasPagoController');
     Route::resource('envio-facturas', 'FacturaEnvioController');
     Route::resource('entrenamientos/contenidos', 'EntrContenidoController');
@@ -59,6 +60,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('tarifas/{id}/update', 'ContratoCampeonatoController@update');
     Route::post('derechos/{id}/update', 'DerechoController@update');
     Route::post('festivales/{id}/update', 'FestivaleController@update');
+    Route::post('festival-entradas/{id}/update', 'FestivalCosteEntradasController@update' );
     Route::post('partidos/{id}/update', 'FestivalPartidoController@update');
     Route::post('partido-pelotaris/{id}/update', 'FestivalPartidoController@update_pelotari');
     Route::post('partido-celebrado/{id}/update', 'FestivalPartidoController@update_partido_celebrado');

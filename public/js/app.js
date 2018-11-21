@@ -7202,8 +7202,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       cliente_id: null,
       cliente_txt: '',
       aportacion: 0,
-      num_entradas: 0,
-      precio_entradas: 0,
+      entradas: [],
       num_espectadores: 0,
       ingreso_taquilla: 0,
       ingreso_ayto: 0,
@@ -7316,8 +7315,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         cliente_id: null,
         cliente_txt: '',
         aportacion: 0,
-        num_entradas: 0,
-        precio_entradas: 0,
+        entradas: [],
         num_espectadores: 0,
         ingreso_taquilla: 0,
         ingreso_ayto: 0,
@@ -7362,7 +7360,10 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     SET_COSTES: function SET_COSTES(state, costes) {
       if (costes.length) {
         state.costes = costes[0];
-        state.costes.precio_total = parseFloat(state.costes.aportacion) + state.costes.num_entradas * state.costes.precio_entradas;
+        state.costes.precio_total = parseFloat(state.costes.aportacion);
+        state.costes.entradas.forEach(function (value, index) {
+          state.costes.precio_total += value.amount * value.price;
+        });
         state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
       }
     },
@@ -7374,6 +7375,23 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.coste += partido.pelotari_2 ? partido.pelotari_2.coste : 0;
       state.coste += partido.pelotari_3 ? partido.pelotari_3.coste : 0;
       state.coste += partido.pelotari_4 ? partido.pelotari_4.coste : 0;
+    },
+    ADD_ENTRADAS: function ADD_ENTRADAS(state, entradas) {
+      state.costes.entradas.push(entradas);
+    },
+    UPDATE_ENTRADAS: function UPDATE_ENTRADAS(state, entrada) {
+      var index = _.findIndex(state.costes.entradas, { "id": entrada.id });
+
+      state.costes.entradas[index].name = entrada.name;
+      state.costes.entradas[index].amount = entrada.amount;
+      state.costes.entradas[index].price = entrada.price;
+    },
+    DELETE_ENTRADAS: function DELETE_ENTRADAS(state, entrada) {
+      var index = _.findIndex(state.costes.entradas, { "id": entrada.id });
+
+      if (index > -1) {
+        state.costes.entradas.splice(index, 1);
+      }
     },
     SET_FACTURACION: function SET_FACTURACION(state, facturacion) {
       if (facturacion.length) {
@@ -7571,7 +7589,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, partido).then(function (r) {
           return r.data;
         }).then(function (response) {
-          console.log();
           resolve(response);
         }).catch(function (error) {
           reject(error);
@@ -7608,8 +7625,57 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadFacturacion: function loadFacturacion(_ref17) {
+    addCosteEntradas: function addCosteEntradas(_ref17, entradas) {
       var commit = _ref17.commit;
+
+      var uri = '/www/festival-entradas';
+      entradas.festival_id = this.getters.header.id;
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, entradas).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          entradas.id = response.id;
+          commit('ADD_ENTRADAS', entradas);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    updateCosteEntradas: function updateCosteEntradas(_ref18, entrada) {
+      var commit = _ref18.commit;
+
+      var uri = '/www/festival-entradas/' + entrada.id + '/update';
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, entrada).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          commit('UPDATE_ENTRADAS', entrada);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    deleteCosteEntradas: function deleteCosteEntradas(_ref19, entrada) {
+      var commit = _ref19.commit;
+
+      var uri = '/www/festival-entradas/' + entrada.id;
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete(uri).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          commit('DELETE_ENTRADAS', entrada);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadFacturacion: function loadFacturacion(_ref20) {
+      var commit = _ref20.commit;
 
       var data = {
         params: {
@@ -7622,8 +7688,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FACTURACION', facturacion);
       });
     },
-    addFacturacion: function addFacturacion(_ref18, facturacion) {
-      var commit = _ref18.commit;
+    addFacturacion: function addFacturacion(_ref21, facturacion) {
+      var commit = _ref21.commit;
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
@@ -7637,8 +7703,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCalendario: function loadCalendario(_ref19, month) {
-      var commit = _ref19.commit;
+    loadCalendario: function loadCalendario(_ref22, month) {
+      var commit = _ref22.commit;
 
       var data = {
         params: {
@@ -7652,20 +7718,19 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_CALENDARIO', calendario);
       });
     },
-    loadEntrenamientos: function loadEntrenamientos(_ref20) {
-      var commit = _ref20.commit,
-          dispatch = _ref20.dispatch;
+    loadEntrenamientos: function loadEntrenamientos(_ref23) {
+      var commit = _ref23.commit,
+          dispatch = _ref23.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos').then(function (r) {
         return r.data;
       }).then(function (entrenamientos) {
-        console.log("[loadEntrenamientos] entrenamientos: " + JSON.stringify(entrenamientos));
         commit('SET_ENTRENAMIENTOS', entrenamientos);
       });
     },
-    loadEntrContenidos: function loadEntrContenidos(_ref21) {
-      var commit = _ref21.commit,
-          dispatch = _ref21.dispatch;
+    loadEntrContenidos: function loadEntrContenidos(_ref24) {
+      var commit = _ref24.commit,
+          dispatch = _ref24.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/contenidos').then(function (r) {
         return r.data;
@@ -7676,8 +7741,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_CONTENIDOS', contenidos);
       });
     },
-    loadEntrFrontones: function loadEntrFrontones(_ref22) {
-      var commit = _ref22.commit;
+    loadEntrFrontones: function loadEntrFrontones(_ref25) {
+      var commit = _ref25.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/frontones').then(function (r) {
         return r.data;
@@ -7688,9 +7753,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_FRONTONES', frontones);
       });
     },
-    loadEntrActitudes: function loadEntrActitudes(_ref23) {
-      var commit = _ref23.commit,
-          dispatch = _ref23.dispatch;
+    loadEntrActitudes: function loadEntrActitudes(_ref26) {
+      var commit = _ref26.commit,
+          dispatch = _ref26.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/actitudes').then(function (r) {
         return r.data;
@@ -7701,9 +7766,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_ACTITUDES', actitudes);
       });
     },
-    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref24) {
-      var commit = _ref24.commit,
-          dispatch = _ref24.dispatch;
+    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref27) {
+      var commit = _ref27.commit,
+          dispatch = _ref27.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/aprovechamientos').then(function (r) {
         return r.data;
@@ -7714,9 +7779,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_APROVECHAMIENTOS', aprovechamientos);
       });
     },
-    loadEntrEvoluciones: function loadEntrEvoluciones(_ref25) {
-      var commit = _ref25.commit,
-          dispatch = _ref25.dispatch;
+    loadEntrEvoluciones: function loadEntrEvoluciones(_ref28) {
+      var commit = _ref28.commit,
+          dispatch = _ref28.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/evoluciones').then(function (r) {
         return r.data;
@@ -7727,8 +7792,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_EVOLUCIONES', evoluciones);
       });
     },
-    loadPelotaris: function loadPelotaris(_ref26, date) {
-      var commit = _ref26.commit;
+    loadPelotaris: function loadPelotaris(_ref29, date) {
+      var commit = _ref29.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris', {
         params: {
@@ -7743,8 +7808,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadProvincias: function loadProvincias(_ref27) {
-      var commit = _ref27.commit;
+    loadProvincias: function loadProvincias(_ref30) {
+      var commit = _ref30.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/provincias').then(function (r) {
         return r.data;
@@ -7755,8 +7820,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PROVINCIAS', provincias);
       });
     },
-    loadMunicipios: function loadMunicipios(_ref28) {
-      var commit = _ref28.commit;
+    loadMunicipios: function loadMunicipios(_ref31) {
+      var commit = _ref31.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/municipios').then(function (r) {
         return r.data;
@@ -49864,6 +49929,7 @@ Vue.component('periodo-comercial-pelotari', __webpack_require__(411));
 Vue.component('home-gerente', __webpack_require__(414));
 Vue.component('listado-festivales', __webpack_require__(417));
 Vue.component('ficha-festival', __webpack_require__(429));
+Vue.component('ficha-coste-entradas', __webpack_require__(506));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
@@ -101685,7 +101751,8 @@ exports.push([module.i, "\n.festival-costes .card {\n  border-color:#707f8f;\n}\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(10);
 //
 //
 //
@@ -101881,6 +101948,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -101889,7 +101976,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__["a" /* default */]],
   data: function data() {
-    return {};
+    var _this = this;
+
+    return {
+      fields: [{ key: 'id', label: '', class: 'sr-only' }, { key: 'name', label: 'Entradas', sortable: true, class: 'text-left' }, { key: 'amount', label: 'Cant.', sortable: true, class: 'text-right' }, { key: 'price', label: 'Precio', sortable: true, class: 'text-right', formatter: 'formatPrice' }, { key: 'actions', label: 'Acciones', class: 'text-right' }],
+      precio_total: 0,
+      isNewCosteEntradas: false,
+      editCosteEntradas: null,
+      delCosteEntradas: null,
+      cancelCosteEntradasForm: function cancelCosteEntradasForm() {
+        _this.hideCosteEntradasForm();
+      },
+      submitCosteEntradasForm: function submitCosteEntradasForm(entradas) {
+        _this.saveCosteEntradasForm(entradas);
+      }
+    };
   },
 
   created: function created() {
@@ -101897,29 +101998,86 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.getClientes();
     this.$store.dispatch('loadCostes');
   },
-  computed: Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
+  computed: Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["b" /* mapState */])({
     _costes: 'costes',
     _coste: 'coste'
   }),
   methods: {
     onSubmit: function onSubmit() {
-      var _this = this;
+      var _this2 = this;
 
       this.$store.dispatch('addCostes', this._costes).then(function (response) {
-        _this.showSnackbar("Costes GUARDADOS");
+        _this2.showSnackbar("Costes GUARDADOS");
       }).catch(function (error) {
         console.log(error);
-        _this.showSnackbar("Se ha producido un ERROR al guardar los COSTES");
+        _this2.showSnackbar("Se ha producido un ERROR al guardar los COSTES");
       });
     },
     onReset: function onReset() {
       this.$store.dispatch('loadCostes');
     },
+    onClickAddEntradas: function onClickAddEntradas() {
+      this.isNewCosteEntradas = true;
+      this.$refs.costeEntradasModal.show();
+    },
+    onClickEditEntradas: function onClickEditEntradas(data) {
+      this.isNewCosteEntradas = false;
+      this.editCosteEntradas = data;
+      this.$refs.costeEntradasModal.show();
+    },
+    onClickDeleteEntradas: function onClickDeleteEntradas(data) {
+      this.delCosteEntradas = data;
+      this.$refs.delEntradasModal.show();
+    },
+    hideCosteEntradasForm: function hideCosteEntradasForm() {
+      this.$refs.costeEntradasModal.hide();
+    },
+    hideDeleteEntradasModal: function hideDeleteEntradasModal() {
+      this.$refs.delEntradasModal.hide();
+    },
+    focusModal: function focusModal() {
+      this.$refs.focusThis.focus();
+    },
+    saveCosteEntradasForm: function saveCosteEntradasForm(entrada) {
+      var _this3 = this;
+
+      if (this.isNewCosteEntradas) {
+        __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('addCosteEntradas', entrada).then(function () {
+          _this3.showSnackbar("Precio de entradas añadido");
+          _this3.updatePrecioTotal();
+          _this3.$refs.costeEntradasModal.hide();
+        });
+      } else {
+        __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('updateCosteEntradas', entrada).then(function () {
+          _this3.showSnackbar("Precio de entradas actualizado");
+          _this3.updatePrecioTotal();
+          _this3.$refs.costeEntradasModal.hide();
+        });
+      }
+    },
+    deleteCosteEntradas: function deleteCosteEntradas(entrada) {
+      var _this4 = this;
+
+      __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('deleteCosteEntradas', this.delCosteEntradas).then(function () {
+        _this4.delCosteEntradas = null;
+        _this4.showSnackbar("Precio de entradas eliminado");
+        _this4.updatePrecioTotal();
+        _this4.$refs.delEntradasModal.hide();
+      });
+    },
     updatePrecioTotal: function updatePrecioTotal() {
-      this._costes.precio_total = parseFloat(this._costes.aportacion) + this._costes.num_entradas * this._costes.precio_entradas;
+      var total = parseFloat(this._costes.aportacion);
+      this._costes.entradas.forEach(function (value, index) {
+        total += value.amount * value.price;
+      });
+      this._costes.precio_total = total;
+      this.precio_total = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     },
     updateTotal: function updateTotal() {
       this._costes.total = parseFloat(this._costes.ingreso_taquilla) + parseFloat(this._costes.ingreso_ayto) + parseFloat(this._costes.ingreso_otros);
+    },
+    formatPrice: function formatPrice(value) {
+      return parseFloat(value).toFixed(2);
     },
     formatCurrency: function formatCurrency(ev) {
       var value = ev.target.value;
@@ -102106,74 +102264,94 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _vm._v("Nº entradas:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-5 text-right",
-                          attrs: {
-                            id: "coste_num_entradas",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0.00"
-                          },
-                          on: { input: _vm.updatePrecioTotal },
-                          nativeOn: {
-                            focus: function($event) {
-                              $event.target.select()
-                            }
-                          },
-                          model: {
-                            value: _vm._costes.num_entradas,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "num_entradas", $$v)
+                    _c("b-row", { staticClass: "mt-4" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col-12" },
+                        [
+                          _c("b-table", {
+                            attrs: {
+                              striped: "",
+                              hover: "",
+                              small: "",
+                              items: _vm._costes.entradas,
+                              fields: _vm.fields
                             },
-                            expression: "_costes.num_entradas"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _vm._v("Precio entradas:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-5 text-right",
-                          attrs: {
-                            id: "coste_precio_entradas",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0.00"
-                          },
-                          on: { input: _vm.updatePrecioTotal },
-                          nativeOn: {
-                            focus: function($event) {
-                              $event.target.select()
+                            scopedSlots: _vm._u([
+                              {
+                                key: "actions",
+                                fn: function(row) {
+                                  return [
+                                    _c(
+                                      "b-button",
+                                      {
+                                        attrs: {
+                                          size: "sm",
+                                          variant: "danger",
+                                          title: "Borrar Entradas"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            _vm.onClickDeleteEntradas(row.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "icon voyager-trash"
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "b-button",
+                                      {
+                                        attrs: {
+                                          size: "sm",
+                                          variant: "primary",
+                                          title: "Editar Entradas"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            $event.stopPropagation()
+                                            _vm.onClickEditEntradas(row.item)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "icon voyager-edit"
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                }
+                              }
+                            ])
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-8" }, [_vm._v(" ")]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col-md-4" },
+                        [
+                          _c(
+                            "b-btn",
+                            {
+                              attrs: { size: "sm" },
+                              on: { click: _vm.onClickAddEntradas }
                             },
-                            blur: function($event) {
-                              return _vm.formatCurrency($event)
-                            }
-                          },
-                          model: {
-                            value: _vm._costes.precio_entradas,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "precio_entradas", $$v)
-                            },
-                            expression: "_costes.precio_entradas"
-                          }
-                        })
-                      ],
-                      1
-                    )
+                            [_vm._v("Añadir Entradas")]
+                          )
+                        ],
+                        1
+                      )
+                    ])
                   ],
                   1
                 )
@@ -102197,15 +102375,15 @@ var render = function() {
                               attrs: {
                                 id: "coste_precio_total",
                                 type: "text",
-                                value: _vm._costes.precio_total.toLocaleString(
-                                  "de-DE",
-                                  {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                  }
-                                ),
                                 tabindex: "-1",
                                 readonly: ""
+                              },
+                              model: {
+                                value: _vm.precio_total,
+                                callback: function($$v) {
+                                  _vm.precio_total = $$v
+                                },
+                                expression: "precio_total"
                               }
                             })
                           : _vm._e()
@@ -102440,6 +102618,125 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
           ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "costeEntradasModal",
+          attrs: {
+            id: "costeEntradasForm",
+            title: "Coste Entradas",
+            size: "sm",
+            "hide-footer": "",
+            lazy: ""
+          }
+        },
+        [
+          _c("ficha-coste-entradas", {
+            attrs: {
+              "festival-id": _vm._costes.festival_id,
+              "on-cancel": _vm.cancelCosteEntradasForm,
+              "on-submit": _vm.submitCosteEntradasForm,
+              "is-new-coste": _vm.isNewCosteEntradas,
+              data: _vm.editCosteEntradas
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "delEntradasModal",
+          attrs: {
+            id: "delEntradas",
+            title: "Eliminar Coste Entradas",
+            size: "md",
+            "hide-footer": "",
+            lazy: ""
+          },
+          on: { shown: _vm.focusModal }
+        },
+        [
+          _c("b-row", { staticClass: "mx-0" }, [
+            _vm._v(
+              "\n        Se van a eliminar las siguientes entradas:\n      "
+            )
+          ]),
+          _vm._v(" "),
+          _c("b-row", { staticClass: "mx-0" }, [
+            _vm.delCosteEntradas
+              ? _c("ul", { staticClass: "mt-2" }, [
+                  _c("li", [
+                    _c("strong", [_vm._v("Entradas:")]),
+                    _vm._v(" " + _vm._s(this.delCosteEntradas.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("strong", [_vm._v("Cantidad:")]),
+                    _vm._v(" " + _vm._s(this.delCosteEntradas.amount))
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("strong", [_vm._v("Precio:")]),
+                    _vm._v(
+                      " " +
+                        _vm._s(
+                          parseFloat(this.delCosteEntradas.price).toFixed(2)
+                        ) +
+                        " €"
+                    )
+                  ])
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("b-row", { staticClass: "mx-0" }, [
+            _vm._v("\n        ¿Está seguro?\n      ")
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "b-row",
+            { staticClass: "mx-0 float-right" },
+            [
+              _c(
+                "b-btn",
+                {
+                  staticClass: "mr-3",
+                  attrs: { variant: "primary" },
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      return _vm.deleteCosteEntradas($event)
+                    }
+                  }
+                },
+                [_vm._v("Borrar")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-btn",
+                {
+                  ref: "focusThis",
+                  attrs: { variant: "default" },
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      return _vm.hideDeleteEntradasModal($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancelar")]
+              )
+            ],
+            1
+          )
         ],
         1
       )
@@ -104552,6 +104849,258 @@ exports.push([module.i, "\n#fichaTramoComponent label {\n  font-weight:600;\n  l
 
 // exports
 
+
+/***/ }),
+/* 506 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(507)
+/* template */
+var __vue_template__ = __webpack_require__(508)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/costes/FichaCosteEntradasComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-25abaac5", Component.options)
+  } else {
+    hotAPI.reload("data-v-25abaac5", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 507 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['festivalId', 'onCancel', 'onSubmit', 'isNewCoste', 'data'],
+  data: function data() {
+    return {
+      entradas: {
+        id: 0,
+        name: '',
+        amount: 0,
+        price: 0
+      }
+    };
+  },
+
+  created: function created() {
+    console.log("FichaCosteEntradasComponent created");
+    if (!this.isNewCoste) {
+      this.entradas.id = this.data.id;
+      this.entradas.name = this.data.name;
+      this.entradas.amount = this.data.amount;
+      this.entradas.price = this.data.price;
+    }
+  },
+  methods: {
+    onSave: function onSave() {
+      this.onSubmit(this.entradas);
+    }
+  }
+});
+
+/***/ }),
+/* 508 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    [
+      _c("b-row", { staticClass: "mx-0" }, [
+        _c(
+          "div",
+          { staticClass: "col-12 px-0" },
+          [
+            _c("label", { attrs: { for: "nameInput" } }, [
+              _vm._v("Descripción:")
+            ]),
+            _vm._v(" "),
+            _c("b-form-input", {
+              staticClass: "d-inline-block px-1",
+              attrs: { id: "nameInput", type: "text", required: "" },
+              model: {
+                value: _vm.entradas.name,
+                callback: function($$v) {
+                  _vm.$set(_vm.entradas, "name", $$v)
+                },
+                expression: "entradas.name"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("b-row", { staticClass: "mx-0" }, [
+        _c(
+          "div",
+          { staticClass: "col-sm-6 pl-0" },
+          [
+            _c("label", { attrs: { for: "cantidadInput" } }, [
+              _vm._v("Cantidad:")
+            ]),
+            _vm._v(" "),
+            _c("b-form-input", {
+              staticClass: "d-inline-block px-1 text-right",
+              attrs: { id: "cantidadInput", type: "number", required: "" },
+              model: {
+                value: _vm.entradas.amount,
+                callback: function($$v) {
+                  _vm.$set(_vm.entradas, "amount", $$v)
+                },
+                expression: "entradas.amount"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-sm-6 pr-0" },
+          [
+            _c("label", { attrs: { for: "precioInput" } }, [_vm._v("Precio:")]),
+            _vm._v(" "),
+            _c("b-form-input", {
+              staticClass: "d-inline-block px-1 text-right",
+              attrs: { id: "precioInput", type: "number", required: "" },
+              model: {
+                value: _vm.entradas.price.toFixed(2),
+                callback: function($$v) {
+                  _vm.$set(_vm.entradas.price, "toFixed(2)", $$v)
+                },
+                expression: "entradas.price.toFixed(2)"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("b-row", { staticClass: "mx-0" }, [
+        _c(
+          "div",
+          { staticClass: "col-12 px-0" },
+          [
+            _c(
+              "b-btn",
+              {
+                staticClass: "float-right",
+                attrs: { variant: "default" },
+                on: { click: _vm.onCancel }
+              },
+              [_vm._v("Cancelar")]
+            ),
+            _vm._v(" "),
+            _c(
+              "b-btn",
+              {
+                staticClass: "float-right mr-2",
+                attrs: { variant: "primary" },
+                on: { click: _vm.onSave }
+              },
+              [_vm._v("Aceptar")]
+            )
+          ],
+          1
+        )
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-25abaac5", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
