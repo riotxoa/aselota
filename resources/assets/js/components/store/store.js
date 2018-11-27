@@ -53,6 +53,7 @@ export const store = new Vuex.Store({
     filter_festivales: state => state.filter_festivales,
     header: state => state.header,
     partidos: state => state.partidos,
+    costes: state => state.costes,
     coste: state => state.coste,
     facturacion: state => state.facturacion,
     edit: state => state.edit,

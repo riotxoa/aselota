@@ -135,7 +135,6 @@
 
         this.axios.post(uri + '/' + this.user.id + '/update', data, config)
           .then((response) => {
-            console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
             showSnackbar("Perfil actualizado");
           })
           .catch((error) => {

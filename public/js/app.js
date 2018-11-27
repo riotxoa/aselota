@@ -7205,6 +7205,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     partidos: function partidos(state) {
       return state.partidos;
     },
+    costes: function costes(state) {
+      return state.costes;
+    },
     coste: function coste(state) {
       return state.coste;
     },
@@ -86426,7 +86429,6 @@ var showSnackbar = function showSnackbar(msg) {
       if (this.file) data.append('photo', this.file);
 
       this.axios.post(uri + '/' + this.user.id + '/update', data, config).then(function (response) {
-        console.log("[onSubmit] response.data: " + JSON.stringify(response.data));
         showSnackbar("Perfil actualizado");
       }).catch(function (error) {
         console.log(error);
@@ -96926,6 +96928,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     _edit: function _edit() {
       return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.edit;
+    },
+    _costes: function _costes() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.costes;
+    },
+    _facturacion: function _facturacion() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.facturacion;
     }
   },
   methods: {
@@ -96976,7 +96984,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var uri = '/www/festivales';
 
       if (this.edit || this._header.id) {
-        this.axios.post(uri + '/' + this._header.id + '/update', this._header).then(function (response) {
+        var data = {
+          header: this._header,
+          costes: this._costes,
+          facturacion: this._facturacion
+        };
+
+        this.axios.post(uri + '/' + this._header.id + '/update', data).then(function (response) {
           _this.showSnackbar("Festival actualizado");
           if (_this.editdate) {
             _this.editDate(false);

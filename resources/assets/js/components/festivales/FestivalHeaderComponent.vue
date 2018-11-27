@@ -210,6 +210,12 @@
       _edit () {
         return store.getters.edit;
       },
+      _costes () {
+        return store.getters.costes;
+      },
+      _facturacion() {
+        return store.getters.facturacion;
+      },
     },
     methods: {
       dontDestroyComponent () {
@@ -257,7 +263,13 @@
         let uri = '/www/festivales';
 
         if(this.edit || this._header.id) {
-          this.axios.post(uri + '/' + this._header.id + '/update', this._header)
+          var data = {
+            header: this._header,
+            costes: this._costes,
+            facturacion: this._facturacion,
+          }
+
+          this.axios.post(uri + '/' + this._header.id + '/update', data)
             .then((response) => {
               this.showSnackbar("Festival actualizado");
               if(this.editdate) {

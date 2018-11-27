@@ -18,4 +18,12 @@ class Festivale extends Model
     'estado_id',
     'fecha_presu',
   ];
+
+  public function costes() {
+    return $this->hasOne('App\FestivalCoste', 'festival_id');
+  }
+
+  public function facturacion() {
+    return $this->hasOne('App\FestivalFacturacion', 'festival_id');
+  }
 }

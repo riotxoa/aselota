@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use App\Festivale;
+use App\FestivalCoste;
+use App\FestivalFacturacion;
 use App\User;
 use TCG\Voyager\Models\Role;
 
@@ -160,19 +162,50 @@ class FestivaleController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'gerente', 'intendente']);
 
-        $item = Festivale::find($id);
+        $header = $request->get('header');
+        $costes = $request->get('costes');
+        $facturacion = $request->get('facturacion');
 
-        $item->fecha = $request->get('fecha');
-        $item->hora = $request->get('hora');
-        $item->fronton_id = $request->get('fronton_id');
-        $item->television = $request->get('television');
-        $item->television_txt = $request->get('television_txt');
-        $item->estado_id = $request->get('estado_id');
-        $item->fecha_presu = $request->get('fecha_presu');
+        $fest_header = Festivale::find($id);
 
-        $item->save();
+        $fest_header->fecha = $header['fecha'];
+        $fest_header->hora = $header['hora'];
+        $fest_header->fronton_id = $header['fronton_id'];
+        $fest_header->television = $header['television'];
+        $fest_header->television_txt = $header['television_txt'];
+        $fest_header->estado_id = $header['estado_id'];
+        $fest_header->fecha_presu = $header['fecha_presu'];
 
-        return response()->json($item, 200);
+        $fest_header->save();
+
+        $fest_costes = FestivalCoste::find($fest_header->costes()->first()->id);
+
+        $fest_costes->coste_empresa = $costes['coste_empresa'];
+        $fest_costes->importe_venta = $costes['importe_venta'];
+        $fest_costes->aportacion = $costes['aportacion'];
+        $fest_costes->num_espectadores = $costes['num_espectadores'];
+        $fest_costes->ingreso_taquilla = $costes['ingreso_taquilla'];
+        $fest_costes->ingreso_ayto = $costes['ingreso_ayto'];
+        $fest_costes->ingreso_otros = $costes['ingreso_otros'];
+        $fest_costes->cliente_id = $costes['cliente_id'];
+        $fest_costes->cliente_txt = $costes['cliente_txt'];
+        $fest_costes->porcentaje = $costes['porcentaje'];
+
+        $fest_costes->save();
+
+        $fest_facturacion = FestivalFacturacion::find($fest_header->facturacion()->first()->id);
+
+        $fest_facturacion->fpago_id = $facturacion['fpago_id'];
+        $fest_facturacion->fecha = $facturacion['fecha'];
+        $fest_facturacion->importe = $facturacion['importe'];
+        $fest_facturacion->enviar_id = $facturacion['enviar_id'];
+        $fest_facturacion->observaciones = $facturacion['observaciones'];
+        $fest_facturacion->pagado = $facturacion['pagado'];
+        $fest_facturacion->seguimiento = $facturacion['seguimiento'];
+
+        $fest_facturacion->save();
+
+        return response()->json($fest_header, 200);
     }
 
     /**
