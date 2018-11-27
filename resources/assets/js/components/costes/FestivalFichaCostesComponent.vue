@@ -77,8 +77,8 @@
                     </template>
                   </b-table>
                 </div>
-                <div class="col-md-8">&nbsp;</div>
-                <div class="col-md-4">
+                <div class="col-md-7">&nbsp;</div>
+                <div class="col-md-5 text-right">
                   <b-btn size="sm" @click="onClickAddEntradas">Añadir Entradas</b-btn>
                 </div>
               </b-row>
@@ -103,6 +103,24 @@
         </div>
 
         <div class="col-md-5 position-relative">
+          <div class="card mb-3">
+            <div class="card-body p-2">
+              <b-row class="m-0 p-0">
+                <label class="ml-0 mr-2">Porcentaje Asegarce:</label>
+                <div class="">{{ _costes.porcentaje }}&nbsp;%</div>
+              </b-row>
+              <b-row class="px-3">
+                <b-form-input id="coste_porcentaje"
+                              class="col-12 px-0"
+                              type="range"
+                              min="0"
+                              max="100"
+                              step="5"
+                              v-model="_costes.porcentaje">
+                </b-form-input>
+              </b-row>
+            </div>
+          </div>
           <div class="card mb-3 background-gray">
             <div class="card-body">
               <b-row>

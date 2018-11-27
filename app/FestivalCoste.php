@@ -18,5 +18,6 @@ class FestivalCoste extends Model
     'ingreso_otros',
     'cliente_id',
     'cliente_txt',
+    'porcentaje',
   ];
 }

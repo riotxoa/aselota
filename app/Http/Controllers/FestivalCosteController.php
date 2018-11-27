@@ -66,6 +66,7 @@ class FestivalCosteController extends Controller
           'ingreso_otros' => $request->get('ingreso_otros'),
           'cliente_id' => $request->get('cliente_id'),
           'cliente_txt' => $request->get('cliente_txt'),
+          'porcentaje' => $request->get('porcentaje'),
         ]);
 
         $costes->save();
@@ -121,6 +122,7 @@ class FestivalCosteController extends Controller
         $costes->ingreso_otros = $request->get('ingreso_otros');
         $costes->cliente_id = $request->get('cliente_id');
         $costes->cliente_txt = $request->get('cliente_txt');
+        $costes->porcentaje = $request->get('porcentaje');
 
         $costes->save();
 

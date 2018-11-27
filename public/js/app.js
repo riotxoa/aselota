@@ -7157,6 +7157,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       importe_venta: 0,
       cliente_id: null,
       cliente_txt: '',
+      porcentaje: 100,
       aportacion: 0,
       entradas: [],
       num_espectadores: 0,
@@ -7270,6 +7271,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         importe_venta: 0,
         cliente_id: null,
         cliente_txt: '',
+        porcentaje: 100,
         aportacion: 0,
         entradas: [],
         num_espectadores: 0,
@@ -101998,6 +102000,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -102365,11 +102385,11 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "col-md-8" }, [_vm._v(" ")]),
+                      _c("div", { staticClass: "col-md-7" }, [_vm._v(" ")]),
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "col-md-4" },
+                        { staticClass: "col-md-5 text-right" },
                         [
                           _c(
                             "b-btn",
@@ -102431,6 +102451,50 @@ var render = function() {
               "div",
               { staticClass: "col-md-5 position-relative" },
               [
+                _c("div", { staticClass: "card mb-3" }, [
+                  _c(
+                    "div",
+                    { staticClass: "card-body p-2" },
+                    [
+                      _c("b-row", { staticClass: "m-0 p-0" }, [
+                        _c("label", { staticClass: "ml-0 mr-2" }, [
+                          _vm._v("Porcentaje Asegarce:")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", {}, [
+                          _vm._v(_vm._s(_vm._costes.porcentaje) + " %")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "b-row",
+                        { staticClass: "px-3" },
+                        [
+                          _c("b-form-input", {
+                            staticClass: "col-12 px-0",
+                            attrs: {
+                              id: "coste_porcentaje",
+                              type: "range",
+                              min: "0",
+                              max: "100",
+                              step: "5"
+                            },
+                            model: {
+                              value: _vm._costes.porcentaje,
+                              callback: function($$v) {
+                                _vm.$set(_vm._costes, "porcentaje", $$v)
+                              },
+                              expression: "_costes.porcentaje"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ]),
+                _vm._v(" "),
                 _c("div", { staticClass: "card mb-3 background-gray" }, [
                   _c(
                     "div",
