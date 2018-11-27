@@ -34,6 +34,10 @@ class Pelotari extends Model
     return $this->hasOne('App\Contrato');
   }
 
+  public function comercial() {
+    return $this->hasOne('App\ContratoComercial');
+  }
+
   static function get_partidos_jugados_contrato($pelotari_id, $fecha)
   {
     $items = DB::table('festival_partidos as fp')

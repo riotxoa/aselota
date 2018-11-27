@@ -147,10 +147,10 @@ export const store = new Vuex.Store({
       state.coste = coste;
     },
     INC_COSTE (state, partido) {
-      state.coste += (partido.pelotari_1 ? partido.pelotari_1.coste : 0);
-      state.coste += (partido.pelotari_2 ? partido.pelotari_2.coste : 0);
-      state.coste += (partido.pelotari_3 ? partido.pelotari_3.coste : 0);
-      state.coste += (partido.pelotari_4 ? partido.pelotari_4.coste : 0);
+      state.coste += (partido.pelotari_1 ? ( 1 === partido.pelotari_1.asiste ? partido.pelotari_1.coste : partido.pelotari_1.sustituto_coste ) : 0);
+      state.coste += (partido.pelotari_2 ? ( 1 === partido.pelotari_2.asiste ? partido.pelotari_2.coste : partido.pelotari_2.sustituto_coste ) : 0);
+      state.coste += (partido.pelotari_3 ? ( 1 === partido.pelotari_3.asiste ? partido.pelotari_3.coste : partido.pelotari_3.sustituto_coste ) : 0);
+      state.coste += (partido.pelotari_4 ? ( 1 === partido.pelotari_4.asiste ? partido.pelotari_4.coste : partido.pelotari_4.sustituto_coste ) : 0);
     },
     ADD_ENTRADAS (state, entradas) {
       state.costes.entradas.push(entradas);
@@ -291,7 +291,7 @@ export const store = new Vuex.Store({
           });
       });
     },
-    updatePartido({ commit }, partido) {
+    updatePartido({ commit, dispatch }, partido) {
       let uri = '/www/partidos/' + partido.id + '/update';
 
       return new Promise( (resolve, reject) => {
@@ -299,6 +299,7 @@ export const store = new Vuex.Store({
           .post(uri, partido)
           .then( r => r.data )
           .then( (response) => {
+            dispatch('loadPartidos');
             resolve(response);
           })
           .catch((error) => {
@@ -322,7 +323,7 @@ export const store = new Vuex.Store({
           });
       });
     },
-    updatePartidoPelotari({ commit }, pelotari) {
+    updatePartidoPelotari({ commit, dispatch }, pelotari) {
       let uri = '/www/partido-pelotaris/' + pelotari.id + '/update';
 
       return new Promise( (resolve, reject) => {
@@ -330,6 +331,7 @@ export const store = new Vuex.Store({
           .post(uri, pelotari)
           .then( r => r.data )
           .then( (response) => {
+            this.dispatch('loadPartidos');
             resolve(response);
           })
           .catch((error) => {

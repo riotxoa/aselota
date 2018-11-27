@@ -47,6 +47,7 @@ class ContratoComercialController extends Controller
 
         $item = new ContratoComercial([
           'header_id' => $request->get('header_id'),
+          'pelotari_id' => $request->get('pelotari_id'),
           'fecha_ini' => $request->get('fecha_ini'),
           'fecha_fin' => $request->get('fecha_fin'),
           'coste' => ($request->get('coste') ? $request->get('coste') : 0),

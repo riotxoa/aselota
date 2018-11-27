@@ -22,4 +22,14 @@ class FestivalPartidoPelotari extends Model
   public function pelotari() {
     return $this->belongsTo('App\Pelotari');
   }
+
+  public function comercial() {
+    $pelotari = Pelotari::find($this->pelotari_id);
+    return $pelotari->comercial();
+  }
+
+  public function festival() {
+    $partido = FestivalPartido::find($this->festival_partido_id);
+    return $partido->festival();
+  }
 }

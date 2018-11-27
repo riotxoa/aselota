@@ -22,4 +22,8 @@ class FestivalPartido extends Model
     'puntos_rojo',
     'puntos_azul',
   ];
+
+  public function festival() {
+    return $this->belongsTo('App\Festivale');
+  }
 }

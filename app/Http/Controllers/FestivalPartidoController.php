@@ -11,6 +11,7 @@ use App\FestivalPartidoPelotari;
 use App\FestivalPartidoTanteo;
 use App\FestivalPartidoMarcadore;
 use App\TipoPartido;
+use Illuminate\Support\Facades\Log;
 
 class FestivalPartidoController extends Controller
 {
@@ -50,7 +51,7 @@ class FestivalPartidoController extends Controller
 
     private function getPelotaris(&$partido, $fecha) {
       $pelotaris = DB::table('festival_partido_pelotaris')
-                   ->select('festival_partido_pelotaris.*', 'contratos.fecha_ini', 'contratos.garantia', 'contratos_comercial.coste')
+                   ->select('festival_partido_pelotaris.*', 'contratos.fecha_ini', 'contratos.garantia', 'contratos_comercial.coste', 'festivales.fecha_presu')
                    ->leftJoin('festival_partidos', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
                    ->leftJoin('festivales', 'festivales.id', '=', 'festival_partidos.festival_id')
                    ->leftJoin('contratos', 'contratos.pelotari_id', '=', DB::raw('festival_partido_pelotaris.pelotari_id AND contratos.fecha_ini <= festivales.fecha AND contratos.fecha_fin >= festivales.fecha'))
@@ -98,20 +99,23 @@ class FestivalPartidoController extends Controller
 
         if( $p->sustituto_id ) {
           $sustituto = Pelotari::find($p->sustituto_id);
+
           $pelotari->sustituto_alias = $sustituto->alias;
-          $pelotari->sustituto_coste = ($sustituto->contrato ? $sustituto->contrato->coste : 666);
+
+          $sustituto_coste = $sustituto->comercial()->whereDate('fecha_ini', '<=', $p->fecha_presu)->whereDate('fecha_fin', '>=', $p->fecha_presu)->orderBy('created_at', 'desc')->first();
+          $pelotari->sustituto_coste = ($sustituto_coste ? $sustituto_coste->coste : null);
         }
 
         if( "R" === $p->color ) {
           if( "D" === $p->posicion)
-            $partido->pelotari_1 = $pelotari; // Pelotari::find($p->pelotari_id);
+            $partido->pelotari_1 = $pelotari;
           else
-            $partido->pelotari_2 = $pelotari; // Pelotari::find($p->pelotari_id);
+            $partido->pelotari_2 = $pelotari;
         } else {
           if( "D" === $p->posicion)
-            $partido->pelotari_3 = $pelotari; // Pelotari::find($p->pelotari_id);
+            $partido->pelotari_3 = $pelotari;
           else
-            $partido->pelotari_4 = $pelotari; // Pelotari::find($p->pelotari_id);
+            $partido->pelotari_4 = $pelotari;
         }
       }
     }
@@ -458,6 +462,8 @@ class FestivalPartidoController extends Controller
         $sustituto->asiste = 1;
         $sustituto->is_sustituto = 1;
         $sustituto->save();
+
+        $item->sustituto_coste = $sustituto->comercial()->whereDate('fecha_ini', '<=', $item->festival->fecha_presu)->whereDate('fecha_fin', '>=', $item->festival->fecha_presu)->orderBy('created_at', 'desc')->first()->coste;
       }
 
       return response()->json($item, 200);

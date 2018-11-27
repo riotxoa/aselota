@@ -80,6 +80,7 @@
         comercial: {
           id: null,
           header_id: null,
+          pelotari_id: null,
           fecha_ini: null,
           fecha_fin: null,
           coste: null,
@@ -97,7 +98,8 @@
       console.log("FichaComponent created");
 
       this.header = this.getHeaderRow();
-      this.comercial.header_id = this.getHeaderRow().id;
+      this.comercial.header_id = this.header.id;
+      this.comercial.pelotari_id = this.header.pelotari_id;
 
       if( this.isNewComercial() ) {
         this.edit = false;

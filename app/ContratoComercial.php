@@ -10,6 +10,7 @@ class ContratoComercial extends Model
 
     protected $fillable = [
       'header_id',
+      'pelotari_id',
       'fecha_ini',
       'fecha_fin',
       'coste',

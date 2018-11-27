@@ -35,13 +35,13 @@
 
     <b-row class="mb-1">
 
-      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_1.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_1)">
+      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_1.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_1)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_1.asiste }]">
           <img v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :src="data.pelotari_1.foto" />
           <img v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" :src=" '/storage/' + data.pelotari_1.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_1" :class="{ 'brmn-clickable brmn-red': data.pelotari_1.asegarce && (!isGerente || isCelebrado()) }">
+          <div v-if="data.pelotari_1" :class="{ 'brmn-clickable brmn-red': data.pelotari_1.asegarce }">
             <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_1.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_1.garantia + '\n Partidos jugados: ' + data.pelotari_1.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_1.fecha_contrato)">{{ this.data.pelotari_1.alias }}</span>
             <span v-else :class="{ 'brmn-tachado': !data.pelotari_1.asiste }">{{ this.data.pelotari_1.alias }}</span>
             <span v-if="data.pelotari_1.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
@@ -52,7 +52,7 @@
       <div class="col-2 coste rojo text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
           <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_1.asiste }, { 'pt-2': data.pelotari_1.asiste }]">{{ ( this.data.pelotari_1.coste ? this.data.pelotari_1.coste.toFixed(2) + '&nbsp;&euro;' : 'No configurado' ) }}</span>
-          <span v-if="!data.pelotari_1.asiste">{{ ( this.data.pelotari_1.sustituto_coste ? this.data.pelotari_1.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_1.asiste">{{ ( this.data.pelotari_1.sustituto_coste ? this.data.pelotari_1.sustituto_coste.toFixed(2) + '&nbsp;&euro;' : 'N/A' ) }}</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_1 && 1 == data.pelotari_1.asegarce" @click.stop="onClickEditPelotari(data.pelotari_1)">
@@ -63,13 +63,13 @@
         <span v-if="data.pelotari_1 && 0 == data.pelotari_1.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
-      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_3.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_3)">
+      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_3.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_3)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_3.asiste }]">
           <img v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :src="data.pelotari_3.foto" />
           <img v-if="data.pelotari_3 && 0 == data.pelotari_3.asegarce" :src=" '/storage/' + data.pelotari_3.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_3" :class="{ 'brmn-clickable brmn-blue': data.pelotari_3.asegarce && (!isGerente || isCelebrado()) }">
+          <div v-if="data.pelotari_3" :class="{ 'brmn-clickable brmn-blue': data.pelotari_3.asegarce }">
             <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_3.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_3.garantia + '\n Partidos jugados: ' + data.pelotari_3.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_3.fecha_contrato)">{{ this.data.pelotari_3.alias }}</span>
             <span v-else :class="{ 'brmn-tachado': !data.pelotari_3.asiste }">{{ this.data.pelotari_3.alias }}</span>
             <span v-if="data.pelotari_3.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
@@ -80,7 +80,7 @@
       <div class="col-2 coste azul text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
           <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_3.asiste }, { 'pt-2': data.pelotari_3.asiste }]">{{ ( this.data.pelotari_3.coste ? this.data.pelotari_3.coste.toFixed(2) + '&nbsp;&euro;' : 'No configurado' ) }}</span>
-          <span v-if="!data.pelotari_3.asiste">{{ ( this.data.pelotari_3.sustituto_coste ? this.data.pelotari_3.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_3.asiste">{{ ( this.data.pelotari_3.sustituto_coste ? this.data.pelotari_3.sustituto_coste.toFixed(2) + '&nbsp;&euro;' : 'N/A' ) }}</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_3 && 1 == data.pelotari_3.asegarce" @click.stop="onClickEditPelotari(data.pelotari_3)">
@@ -95,13 +95,13 @@
 
     <b-row v-if="data.is_partido_parejas">
 
-      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_2.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_2)">
+      <div :class="['equipo rojo col-4 p-0 ml-md-3', { 'brmn-pointer': data.pelotari_2.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_2)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_2.asiste }]">
           <img v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" :src="data.pelotari_2.foto" />
           <img v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" :src=" '/storage/' + data.pelotari_2.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_2" :class="{ 'brmn-clickable brmn-red': data.pelotari_2.asegarce && (!isGerente || isCelebrado()) }">
+          <div v-if="data.pelotari_2" :class="{ 'brmn-clickable brmn-red': data.pelotari_2.asegarce }">
             <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_2.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_2.garantia + '\n Partidos jugados: ' + data.pelotari_2.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_2.fecha_contrato)">{{ this.data.pelotari_2.alias }}</span>
             <span v-else :class="{ 'brmn-tachado': !data.pelotari_2.asiste }">{{ this.data.pelotari_2.alias }}</span>
             <span v-if="data.pelotari_2.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
@@ -112,7 +112,7 @@
       <div class="col-2 coste rojo text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
           <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_2.asiste }, { 'pt-2': data.pelotari_2.asiste }]">{{ ( this.data.pelotari_2.coste ? this.data.pelotari_2.coste.toFixed(2) + '&nbsp;&euro;' : 'No configurado' ) }}</span>
-          <span v-if="!data.pelotari_2.asiste">{{ ( this.data.pelotari_2.sustituto_coste ? this.data.pelotari_2.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_2.asiste">{{ ( this.data.pelotari_2.sustituto_coste ? this.data.pelotari_2.sustituto_coste.toFixed(2) + '&nbsp;&euro;' : 'N/A' ) }}</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_2 && 1 == data.pelotari_2.asegarce" @click.stop="onClickEditPelotari(data.pelotari_2)">
@@ -123,13 +123,13 @@
         <span v-if="data.pelotari_2 && 0 == data.pelotari_2.asegarce" class="fas fa-ban" style="top:12.5px"></span>
       </div>
 
-      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_4.asegarce && (!isGerente || isCelebrado()) }]" @click.stop="onClickEditPelotari(data.pelotari_4)">
+      <div :class="['equipo azul col-4 p-0 ml-md-1 ml-lg-3', { 'brmn-pointer': data.pelotari_4.asegarce }]" @click.stop="onClickEditPelotari(data.pelotari_4)">
         <div :class="['pelotari-foto d-none d-sm-inline-block', { 'brmn-img-tachado': !data.pelotari_4.asiste }]">
           <img v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" :src="data.pelotari_4.foto" />
           <img v-if="data.pelotari_4 && 0 == data.pelotari_4.asegarce" :src=" '/storage/' + data.pelotari_4.foto" class="grayscale" />
         </div>
         <div class="pelotari-name d-inline-block text-left text-uppercase px-3">
-          <div v-if="data.pelotari_4" :class="{ 'brmn-clickable brmn-blue': data.pelotari_4.asegarce && (!isGerente || isCelebrado()) }">
+          <div v-if="data.pelotari_4" :class="{ 'brmn-clickable brmn-blue': data.pelotari_4.asegarce }">
             <span v-if="isGerente" :class="{ 'brmn-tachado': !data.pelotari_4.asiste }" v-b-popover.hover="'Partidos garantizados: ' + data.pelotari_4.garantia + '\n Partidos jugados: ' + data.pelotari_4.partidos_jugados + '\n Inicio periodo: ' + this.formatDateShort(this.data.pelotari_4.fecha_contrato)">{{ this.data.pelotari_4.alias }}</span>
             <span v-else :class="{ 'brmn-tachado': !data.pelotari_4.asiste }">{{ this.data.pelotari_4.alias }}</span>
             <span v-if="data.pelotari_4.observaciones"><i class="far fa-comment px-2" title="Hay observaciones"></i></span>
@@ -140,7 +140,7 @@
       <div class="col-2 coste azul text-center p-0">
         <div v-if="isGerente"> <!-- Gerente -->
           <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce"  :class="['d-block', { 'pt-1 brmn-tachado': !data.pelotari_4.asiste }, { 'pt-2': data.pelotari_4.asiste }]">{{ ( this.data.pelotari_4.coste ? this.data.pelotari_4.coste.toFixed(2) + '&nbsp;&euro;' : 'No configurado' ) }}</span>
-          <span v-if="!data.pelotari_4.asiste">{{ ( this.data.pelotari_4.sustituto_coste ? this.data.pelotari_4.sustituto_coste.toFixed(2) : 0 ) }}&nbsp;&euro;</span>
+          <span v-if="!data.pelotari_4.asiste">{{ ( this.data.pelotari_4.sustituto_coste ? this.data.pelotari_4.sustituto_coste.toFixed(2) + '&nbsp;&euro;' : 'N/A' ) }}</span>
         </div>
         <div v-else> <!-- Intendente -->
           <span v-if="data.pelotari_4 && 1 == data.pelotari_4.asegarce" @click.stop="onClickEditPelotari(data.pelotari_4)">
@@ -300,7 +300,7 @@
         this.partido.is_partido_parejas = p.is_partido_parejas;
       },
       onClickEditPelotari(p) {
-        if( p.asegarce && (!this.isGerente || this.isCelebrado()) ) {
+        if( p.asegarce ) { 
           this.pelotari = p;
           this.$root.$emit('bv::show::modal', this.modalPelotariID);
         }
@@ -311,6 +311,7 @@
         this.pelotari.sustituto_id = p.sustituto_id;
         this.pelotari.sustituto_alias = p.sustituto_alias;
         this.pelotari.sustituto_txt = p.sustituto_txt;
+        this.pelotari.sustituto_coste = p.sustituto_coste;
         this.pelotari.observaciones = p.observaciones;
       },
     }
