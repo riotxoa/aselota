@@ -10,9 +10,7 @@
       <router-link class="text-white" :to="{ name: 'INTENDENTE', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo Técnico Deportivo</div></router-link>
     </div>
     <div class="col-12">
-      <div class="btn btn-secondary disabled">
-        Módulo Entrenador
-      </div>
+      <router-link class="text-white" :to="{ name: 'ENTRENADOR', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo Gestión Entrenamientos</div></router-link>
     </div>
     <div class="col-12">
       <div class="btn btn-secondary disabled">

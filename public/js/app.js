@@ -87665,8 +87665,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -87746,24 +87744,32 @@ var render = function() {
       1
     ),
     _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-12" },
+      [
+        _c(
+          "router-link",
+          {
+            staticClass: "text-white",
+            attrs: { to: { name: "ENTRENADOR", params: { userRole: "admin" } } }
+          },
+          [
+            _c("div", { staticClass: "btn btn-secondary" }, [
+              _vm._v("Módulo Gestión Entrenamientos")
+            ])
+          ]
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
     _vm._m(0),
     _vm._v(" "),
-    _vm._m(1),
-    _vm._v(" "),
-    _vm._m(2)
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12" }, [
-      _c("div", { staticClass: "btn btn-secondary disabled" }, [
-        _vm._v("\n      Módulo Entrenador\n    ")
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
