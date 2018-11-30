@@ -35,7 +35,7 @@ var APIGetters = {
       this.provincia_id = evt;
       if (null === evt) {
         this.municipios_filtered = this.municipios;
-        this.frontones_filterd = this.frontones;
+        this.frontones_filtered = this.frontones;
       } else {
         this.municipios_filtered = _.filter(this.municipios, { 'provincia_id': evt });
         this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
