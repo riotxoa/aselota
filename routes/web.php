@@ -49,6 +49,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('entrenamientos', 'EntrenamientoController');
 
     Route::get('calendario', 'FestivaleController@getCalendarMonth');
+    Route::get('entrenamiento', 'EntrenamientoController@getEntrenamiento');
 
     Route::post('users/{id}/update', 'UserController@update');
     Route::post('pelotaris/{id}/update', 'PelotariController@update');
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('partidos/{id}/update', 'FestivalPartidoController@update');
     Route::post('partido-pelotaris/{id}/update', 'FestivalPartidoController@update_pelotari');
     Route::post('partido-celebrado/{id}/update', 'FestivalPartidoController@update_partido_celebrado');
+    Route::post('entrenamientos/{id}/update', 'EntrenamientoController@update');
 });
 
 Auth::routes();

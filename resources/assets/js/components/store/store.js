@@ -45,6 +45,9 @@ export const store = new Vuex.Store({
     pelotaris: [],
     provincias: [],
     municipios: [],
+    municipios_filtered: [],
+    frontones: [],
+    frontones_filtered: [],
     entr_contenido: [],
   },
   getters: {
@@ -67,6 +70,9 @@ export const store = new Vuex.Store({
     pelotaris: state => state.pelotaris,
     provincias: state => state.provincias,
     municipios: state => state.municipios,
+    municipios_filtered: state => state.municipios_filtered,
+    frontones: state => state.frontones,
+    frontones_filtered: state => state.frontones_filtered,
   },
   mutations: {
     SET_FESTIVALES (state, festivales) {
@@ -172,6 +178,37 @@ export const store = new Vuex.Store({
         state.costes.entradas.splice(index, 1);
       }
     },
+    ADD_ENTRENAMIENTO (state, entrenamiento) {
+      state.entrenamientos.push(entrenamiento);
+      state.entrenamientos = _.sortBy(state.entrenamientos, ['fecha']);
+    },
+    UPDATE_ENTRENAMIENTO (state, entrenamiento) {
+      var index = _.findIndex( state.entrenamientos, { "id": entrenamiento.id } );
+
+      state.entrenamientos[index].pelotari_id = entrenamiento.pelotari_id;
+      state.entrenamientos[index].provincia_id = entrenamiento.provincia_id;
+      state.entrenamientos[index].municipio_id = entrenamiento.municipio_id;
+      state.entrenamientos[index].asistencia = entrenamiento.asistencia;
+      state.entrenamientos[index].duracion = entrenamiento.duracion;
+      state.entrenamientos[index].fecha = entrenamiento.fecha;
+      state.entrenamientos[index].hora = entrenamiento.hora;
+      state.entrenamientos[index].contenido_id = entrenamiento.contenido_id;
+      state.entrenamientos[index].fronton_id = entrenamiento.fronton_id;
+      state.entrenamientos[index].pre_entreno = entrenamiento.pre_entreno;
+      state.entrenamientos[index].contenido = entrenamiento.contenido;
+      state.entrenamientos[index].post_entreno = entrenamiento.post_entreno;
+      state.entrenamientos[index].actitud_id = entrenamiento.actitud_id;
+      state.entrenamientos[index].aprovechamiento_id = entrenamiento.aprovechamiento_id;
+      state.entrenamientos[index].evolucion_id = entrenamiento.evolucion_id;
+      state.entrenamientos[index].comentarios = entrenamiento.comentarios;
+    },
+    DELETE_ENTRENAMIENTO (state, entrenamiento) {
+      var index = _.findIndex( state.entrenamientos, { "id": entrenamiento.id } );
+
+      if( index > -1 ) {
+        state.entrenamientos.splice(index, 1);
+      }
+    },
     SET_FACTURACION (state, facturacion) {
       if(facturacion.length) {
         state.facturacion = facturacion[0];
@@ -215,6 +252,15 @@ export const store = new Vuex.Store({
     },
     SET_MUNICIPIOS (state, municipios) {
       state.municipios = municipios;
+    },
+    SET_MUNICIPIOS_FILTERED (state, municipios) {
+      state.municipios_filtered = municipios;
+    },
+    SET_FRONTONES (state, frontones) {
+      state.frontones = frontones;
+    },
+    SET_FRONTONES_FILTERED (state, frontones) {
+      state.frontones_filtered = frontones;
     },
   },
   actions: {
@@ -436,6 +482,36 @@ export const store = new Vuex.Store({
           });
       });
     },
+    addEntrenamiento({ commit }, entreno) {
+      let uri = '/www/entrenamientos';
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, entreno)
+          .then( r => r.data )
+          .then((response) => {
+            commit('ADD_ENTRENAMIENTO', response);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    updateEntrenamiento({ commit }, entreno) {
+      let uri = '/www/entrenamientos/' + entreno.id + '/update';
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, entreno)
+          .then( r => r.data )
+          .then((response) => {
+            commit('UPDATE_ENTRENAMIENTO', response);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
     loadFacturacion({ commit }) {
       let data = {
         params: {
@@ -575,7 +651,37 @@ export const store = new Vuex.Store({
           var stringified = JSON.stringify(municipios).replace(/"id"/g, '"value"').replace(/name/g, "text");
           municipios = JSON.parse(stringified);
           municipios.unshift({ value: null, text: "Seleccionar municipio "});
-          commit('SET_MUNICIPIOS', municipios)
+          commit('SET_MUNICIPIOS', municipios);
+          commit('SET_MUNICIPIOS_FILTERED', municipios);
+        })
+    },
+    filterMunicipiosByProvincia({ commit }, id) {
+      if (null === id) {
+        commit('SET_MUNICIPIOS_FILTERED', this.getters.municipios);
+        commit('SET_FRONTONES_FILTERED', this.getters.frontones);
+      } else {
+        var municipios = this.getters.municipios;
+        var municipios_filtered = _.filter(municipios, { 'provincia_id': id });
+
+        municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
+        commit('SET_MUNICIPIOS_FILTERED', municipios_filtered);
+
+        var frontones = this.getters.frontones;
+        var frontones_filtered = _.filter(frontones, { 'provincia_id': id });
+
+        frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+        commit('SET_FRONTONES_FILTERED', frontones_filtered);
+      }
+    },
+    loadFrontones({ commit }) {
+      axios
+        .get('/www/frontones')
+        .then( r => r.data )
+        .then( frontones => {
+          var stringified = JSON.stringify(frontones).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          frontones = JSON.parse(stringified);
+          municipios.unshift({ value: null, text: "Seleccionar frontón "});
+          commit('SET_FRONTONES', frontones)
         })
     }
   }

@@ -7187,6 +7187,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     pelotaris: [],
     provincias: [],
     municipios: [],
+    municipios_filtered: [],
+    frontones: [],
+    frontones_filtered: [],
     entr_contenido: []
   },
   getters: {
@@ -7246,6 +7249,15 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     municipios: function municipios(state) {
       return state.municipios;
+    },
+    municipios_filtered: function municipios_filtered(state) {
+      return state.municipios_filtered;
+    },
+    frontones: function frontones(state) {
+      return state.frontones;
+    },
+    frontones_filtered: function frontones_filtered(state) {
+      return state.frontones_filtered;
     }
   },
   mutations: {
@@ -7354,6 +7366,37 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         state.costes.entradas.splice(index, 1);
       }
     },
+    ADD_ENTRENAMIENTO: function ADD_ENTRENAMIENTO(state, entrenamiento) {
+      state.entrenamientos.push(entrenamiento);
+      state.entrenamientos = _.sortBy(state.entrenamientos, ['fecha']);
+    },
+    UPDATE_ENTRENAMIENTO: function UPDATE_ENTRENAMIENTO(state, entrenamiento) {
+      var index = _.findIndex(state.entrenamientos, { "id": entrenamiento.id });
+
+      state.entrenamientos[index].pelotari_id = entrenamiento.pelotari_id;
+      state.entrenamientos[index].provincia_id = entrenamiento.provincia_id;
+      state.entrenamientos[index].municipio_id = entrenamiento.municipio_id;
+      state.entrenamientos[index].asistencia = entrenamiento.asistencia;
+      state.entrenamientos[index].duracion = entrenamiento.duracion;
+      state.entrenamientos[index].fecha = entrenamiento.fecha;
+      state.entrenamientos[index].hora = entrenamiento.hora;
+      state.entrenamientos[index].contenido_id = entrenamiento.contenido_id;
+      state.entrenamientos[index].fronton_id = entrenamiento.fronton_id;
+      state.entrenamientos[index].pre_entreno = entrenamiento.pre_entreno;
+      state.entrenamientos[index].contenido = entrenamiento.contenido;
+      state.entrenamientos[index].post_entreno = entrenamiento.post_entreno;
+      state.entrenamientos[index].actitud_id = entrenamiento.actitud_id;
+      state.entrenamientos[index].aprovechamiento_id = entrenamiento.aprovechamiento_id;
+      state.entrenamientos[index].evolucion_id = entrenamiento.evolucion_id;
+      state.entrenamientos[index].comentarios = entrenamiento.comentarios;
+    },
+    DELETE_ENTRENAMIENTO: function DELETE_ENTRENAMIENTO(state, entrenamiento) {
+      var index = _.findIndex(state.entrenamientos, { "id": entrenamiento.id });
+
+      if (index > -1) {
+        state.entrenamientos.splice(index, 1);
+      }
+    },
     SET_FACTURACION: function SET_FACTURACION(state, facturacion) {
       if (facturacion.length) {
         state.facturacion = facturacion[0];
@@ -7396,6 +7439,15 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     SET_MUNICIPIOS: function SET_MUNICIPIOS(state, municipios) {
       state.municipios = municipios;
+    },
+    SET_MUNICIPIOS_FILTERED: function SET_MUNICIPIOS_FILTERED(state, municipios) {
+      state.municipios_filtered = municipios;
+    },
+    SET_FRONTONES: function SET_FRONTONES(state, frontones) {
+      state.frontones = frontones;
+    },
+    SET_FRONTONES_FILTERED: function SET_FRONTONES_FILTERED(state, frontones) {
+      state.frontones_filtered = frontones;
     }
   },
   actions: {
@@ -7641,8 +7693,38 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadFacturacion: function loadFacturacion(_ref20) {
+    addEntrenamiento: function addEntrenamiento(_ref20, entreno) {
       var commit = _ref20.commit;
+
+      var uri = '/www/entrenamientos';
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, entreno).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          commit('ADD_ENTRENAMIENTO', response);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    updateEntrenamiento: function updateEntrenamiento(_ref21, entreno) {
+      var commit = _ref21.commit;
+
+      var uri = '/www/entrenamientos/' + entreno.id + '/update';
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, entreno).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          commit('UPDATE_ENTRENAMIENTO', response);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadFacturacion: function loadFacturacion(_ref22) {
+      var commit = _ref22.commit;
 
       var data = {
         params: {
@@ -7655,8 +7737,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FACTURACION', facturacion);
       });
     },
-    addFacturacion: function addFacturacion(_ref21, facturacion) {
-      var commit = _ref21.commit;
+    addFacturacion: function addFacturacion(_ref23, facturacion) {
+      var commit = _ref23.commit;
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
@@ -7670,8 +7752,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCalendario: function loadCalendario(_ref22, month) {
-      var commit = _ref22.commit;
+    loadCalendario: function loadCalendario(_ref24, month) {
+      var commit = _ref24.commit;
 
       var data = {
         params: {
@@ -7685,9 +7767,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_CALENDARIO', calendario);
       });
     },
-    loadEntrenamientos: function loadEntrenamientos(_ref23) {
-      var commit = _ref23.commit,
-          dispatch = _ref23.dispatch;
+    loadEntrenamientos: function loadEntrenamientos(_ref25) {
+      var commit = _ref25.commit,
+          dispatch = _ref25.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos').then(function (r) {
         return r.data;
@@ -7695,9 +7777,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTRENAMIENTOS', entrenamientos);
       });
     },
-    loadEntrContenidos: function loadEntrContenidos(_ref24) {
-      var commit = _ref24.commit,
-          dispatch = _ref24.dispatch;
+    loadEntrContenidos: function loadEntrContenidos(_ref26) {
+      var commit = _ref26.commit,
+          dispatch = _ref26.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/contenidos').then(function (r) {
         return r.data;
@@ -7708,8 +7790,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_CONTENIDOS', contenidos);
       });
     },
-    loadEntrFrontones: function loadEntrFrontones(_ref25) {
-      var commit = _ref25.commit;
+    loadEntrFrontones: function loadEntrFrontones(_ref27) {
+      var commit = _ref27.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/frontones').then(function (r) {
         return r.data;
@@ -7720,9 +7802,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_FRONTONES', frontones);
       });
     },
-    loadEntrActitudes: function loadEntrActitudes(_ref26) {
-      var commit = _ref26.commit,
-          dispatch = _ref26.dispatch;
+    loadEntrActitudes: function loadEntrActitudes(_ref28) {
+      var commit = _ref28.commit,
+          dispatch = _ref28.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/actitudes').then(function (r) {
         return r.data;
@@ -7733,9 +7815,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_ACTITUDES', actitudes);
       });
     },
-    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref27) {
-      var commit = _ref27.commit,
-          dispatch = _ref27.dispatch;
+    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref29) {
+      var commit = _ref29.commit,
+          dispatch = _ref29.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/aprovechamientos').then(function (r) {
         return r.data;
@@ -7746,9 +7828,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_APROVECHAMIENTOS', aprovechamientos);
       });
     },
-    loadEntrEvoluciones: function loadEntrEvoluciones(_ref28) {
-      var commit = _ref28.commit,
-          dispatch = _ref28.dispatch;
+    loadEntrEvoluciones: function loadEntrEvoluciones(_ref30) {
+      var commit = _ref30.commit,
+          dispatch = _ref30.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/evoluciones').then(function (r) {
         return r.data;
@@ -7759,8 +7841,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_EVOLUCIONES', evoluciones);
       });
     },
-    loadPelotaris: function loadPelotaris(_ref29, date) {
-      var commit = _ref29.commit;
+    loadPelotaris: function loadPelotaris(_ref31, date) {
+      var commit = _ref31.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris', {
         params: {
@@ -7775,8 +7857,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadProvincias: function loadProvincias(_ref30) {
-      var commit = _ref30.commit;
+    loadProvincias: function loadProvincias(_ref32) {
+      var commit = _ref32.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/provincias').then(function (r) {
         return r.data;
@@ -7787,8 +7869,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PROVINCIAS', provincias);
       });
     },
-    loadMunicipios: function loadMunicipios(_ref31) {
-      var commit = _ref31.commit;
+    loadMunicipios: function loadMunicipios(_ref33) {
+      var commit = _ref33.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/municipios').then(function (r) {
         return r.data;
@@ -7797,6 +7879,39 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         municipios = JSON.parse(stringified);
         municipios.unshift({ value: null, text: "Seleccionar municipio " });
         commit('SET_MUNICIPIOS', municipios);
+        commit('SET_MUNICIPIOS_FILTERED', municipios);
+      });
+    },
+    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref34, id) {
+      var commit = _ref34.commit;
+
+      if (null === id) {
+        commit('SET_MUNICIPIOS_FILTERED', this.getters.municipios);
+        commit('SET_FRONTONES_FILTERED', this.getters.frontones);
+      } else {
+        var municipios = this.getters.municipios;
+        var municipios_filtered = _.filter(municipios, { 'provincia_id': id });
+
+        municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
+        commit('SET_MUNICIPIOS_FILTERED', municipios_filtered);
+
+        var frontones = this.getters.frontones;
+        var frontones_filtered = _.filter(frontones, { 'provincia_id': id });
+
+        frontones_filtered.unshift({ value: null, text: "Seleccionar frontón" });
+        commit('SET_FRONTONES_FILTERED', frontones_filtered);
+      }
+    },
+    loadFrontones: function loadFrontones(_ref35) {
+      var commit = _ref35.commit;
+
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/frontones').then(function (r) {
+        return r.data;
+      }).then(function (frontones) {
+        var stringified = JSON.stringify(frontones).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        frontones = JSON.parse(stringified);
+        municipios.unshift({ value: null, text: "Seleccionar frontón " });
+        commit('SET_FRONTONES', frontones);
       });
     }
   }
@@ -7958,7 +8073,7 @@ var APIGetters = {
       this.provincia_id = evt;
       if (null === evt) {
         this.municipios_filtered = this.municipios;
-        this.frontones_filterd = this.frontones;
+        this.frontones_filtered = this.frontones;
       } else {
         this.municipios_filtered = _.filter(this.municipios, { 'provincia_id': evt });
         this.municipios_filtered.unshift({ value: null, text: "Seleccionar municipio" });
@@ -104012,6 +104127,66 @@ exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(16);
+var _mixins$data$computed;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -104047,30 +104222,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = ({
+
+
+Vue.component('delete-modal', __webpack_require__(206));
+
+/* harmony default export */ __webpack_exports__["default"] = (_mixins$data$computed = {
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
   data: function data() {
-    return {};
-  },
-  created: function created() {
-    var myDate = new Date();
-    var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
-    var date = ('0' + myDate.getDate()).slice(-2);
-    var year = myDate.getFullYear();
-    var formattedDate = year + '/' + month + '/' + date;
-
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotaris', formattedDate);
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadProvincias');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadMunicipios');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrActitudes');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrContenidos');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrFrontones');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrEvoluciones');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrAprovechamientos');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrenamientos');
+    return {
+      remove: true,
+      update: true,
+      display: false,
+      sortBy: 'age',
+      sortDesc: false,
+      fields: [{ key: 'fecha', label: 'Fecha', sortable: true }, { key: 'hora', label: 'Hora', sortable: true }, { key: 'provincia_name', label: 'Provincia', sortable: true }, { key: 'municipio_name', label: 'Municipio', sortable: true }, { key: 'alias', label: 'Pelotari', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
+      perPage: 10,
+      currentPage: 1,
+      pageOptions: [10, 25, 50],
+      filter: null,
+      deleteId: null
+    };
   },
 
-  methods: {}
-});
+  computed: Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
+    _entrenamientos: 'entrenamientos'
+  })
+}, _defineProperty(_mixins$data$computed, 'computed', {
+  _entrenamientos: function _entrenamientos() {
+    return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.entrenamientos;
+  },
+
+  _totalRows: {
+    get: function get() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.entrenamientos.length;
+    },
+    set: function set(value) {
+      // do nothing
+    }
+  }
+}), _defineProperty(_mixins$data$computed, 'created', function created() {
+  var myDate = new Date();
+  var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
+  var date = ('0' + myDate.getDate()).slice(-2);
+  var year = myDate.getFullYear();
+  var formattedDate = year + '/' + month + '/' + date;
+
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotaris', formattedDate);
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadProvincias');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadMunicipios');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrActitudes');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrContenidos');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrFrontones');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrEvoluciones');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrAprovechamientos');
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrenamientos');
+}), _defineProperty(_mixins$data$computed, 'methods', {
+  onClickDelete: function onClickDelete(item) {
+    this.$root.$emit('bv::show::modal', 'modalDelete');
+    var msg = "Se va a borrar el Entrenamiento que se celebrará con <strong>" + item.alias + "</strong> en <strong>" + item.municipio_name + "</strong> el próximo <strong>" + this.formatDateES(item.fecha) + "</strong> a las <strong>" + item.hora + "</strong>.";
+    this.deleteId = item.id;
+    jQuery('#deleteMsg').html(msg);
+  },
+  onClickEdit: function onClickEdit(item) {
+    this.$router.push({ path: '/entrenador/entrenamiento/' + item.id + '/edit/', query: { entrenamiento: item } });
+  },
+  onClickRow: function onClickRow(item, index, ev) {
+    this.onClickEdit(item);
+  },
+  removeItem: function removeItem() {
+    var _this = this;
+
+    var uri = '/www/entrenamientos/' + this.deleteId;
+    this.axios.delete(uri).then(function (response) {
+      _this.deleteId = null;
+      _this.$root.$emit('bv::hide::modal', 'modalDelete');
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrenamientos');
+      _this.showSnackbar("Entrenamiento BORRADO");
+    }).catch(function (error) {
+      console.log("[remove] error: " + error);
+      _this.deleteId = null;
+      _this.$root.$emit('bv::hide::modal', 'modalDelete');
+      _this.showSnackbar("ERROR al borrar");
+    });
+  }
+}), _mixins$data$computed);
 
 /***/ }),
 /* 499 */
@@ -104093,7 +104328,7 @@ var render = function() {
               _c(
                 "h4",
                 { staticClass: "col-sm-6 text-white font-weight-bold" },
-                [_vm._v("GESTIÓN DE ENTRENAMIENTOS")]
+                [_vm._v("ENTRENAMIENTOS")]
               ),
               _vm._v(" "),
               _c(
@@ -104162,10 +104397,239 @@ var render = function() {
                 )
               ],
               1
+            ),
+            _vm._v(" "),
+            _c("b-table", {
+              attrs: {
+                striped: "",
+                hover: "",
+                responsive: "",
+                "sort-by": _vm.sortBy,
+                "sort-desc": _vm.sortDesc,
+                "per-page": _vm.perPage,
+                "current-page": _vm.currentPage,
+                items: _vm._entrenamientos,
+                fields: _vm.fields
+              },
+              on: {
+                "row-clicked": _vm.onClickRow,
+                "update:sortBy": function($event) {
+                  _vm.sortBy = $event
+                },
+                "update:sortDesc": function($event) {
+                  _vm.sortDesc = $event
+                }
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "actions",
+                  fn: function(row) {
+                    return [
+                      _c(
+                        "b-button-group",
+                        [
+                          _vm.remove
+                            ? _c(
+                                "b-button",
+                                {
+                                  attrs: {
+                                    size: "md",
+                                    variant: "danger",
+                                    title: "Eliminar"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      _vm.onClickDelete(row.item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", {
+                                    staticClass: "icon voyager-trash"
+                                  })
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.update
+                            ? _c(
+                                "b-button",
+                                {
+                                  attrs: {
+                                    size: "md",
+                                    variant: "primary",
+                                    title: "Editar"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      _vm.onClickEdit(row.item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", {
+                                    staticClass: "icon voyager-edit"
+                                  })
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.display
+                            ? _c(
+                                "b-button",
+                                {
+                                  attrs: {
+                                    size: "md",
+                                    variant: "secondary",
+                                    title: "Mostrar/Ocultar Detalle"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      $event.stopPropagation()
+                                      return row.toggleDetails($event)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", {
+                                    staticClass: "icon",
+                                    class: {
+                                      "voyager-x": row.detailsShowing,
+                                      "voyager-eye": !row.detailsShowing
+                                    }
+                                  })
+                                ]
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ]
+                  }
+                },
+                {
+                  key: "row-details",
+                  fn: function(row) {
+                    return _vm.display
+                      ? [
+                          _c(
+                            "b-card",
+                            [
+                              _c(
+                                "b-row",
+                                [
+                                  _c("b-col", { attrs: { sm: "6" } }),
+                                  _vm._v(" "),
+                                  _c("b-col", { attrs: { sm: "6" } })
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ]
+                      : undefined
+                  }
+                }
+              ])
+            }),
+            _vm._v(" "),
+            _c(
+              "b-row",
+              { staticClass: "col-12" },
+              [
+                _c(
+                  "b-col",
+                  { staticClass: "my-1", attrs: { md: "5" } },
+                  [
+                    _c("b-pagination", {
+                      staticClass: "my-0",
+                      attrs: {
+                        "total-rows": _vm._totalRows,
+                        "per-page": _vm.perPage
+                      },
+                      model: {
+                        value: _vm.currentPage,
+                        callback: function($$v) {
+                          _vm.currentPage = $$v
+                        },
+                        expression: "currentPage"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-col",
+                  { staticClass: "my-1 text-right", attrs: { md: "3" } },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "mb-0",
+                        attrs: { horizontal: "", label: "Total: " }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: { readonly: "", plaintext: "" },
+                          model: {
+                            value: _vm._totalRows,
+                            callback: function($$v) {
+                              _vm._totalRows = $$v
+                            },
+                            expression: "_totalRows"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-col",
+                  { staticClass: "my-1", attrs: { md: "4" } },
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "mb-0",
+                        attrs: { horizontal: "", label: "Mostrar" }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: { options: _vm.pageOptions },
+                          model: {
+                            value: _vm.perPage,
+                            callback: function($$v) {
+                              _vm.perPage = $$v
+                            },
+                            expression: "perPage"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
             )
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c("delete-modal", {
+          attrs: {
+            "object-name": "Entrenamiento",
+            "remove-item": _vm.removeItem
+          }
+        })
       ],
       1
     )
@@ -104280,6 +104744,8 @@ exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(16);
 //
 //
 //
@@ -104469,6 +104935,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+
+
 
 
 
@@ -104488,23 +104959,26 @@ var showSnackbar = function showSnackbar(msg) {
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['formTitle', 'isNewEntreno'],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__["a" /* default */]],
   data: function data() {
+    var _this = this;
+
     return {
       entreno: {},
       asistencia: { 0: 'No', 1: 'Sí' },
       argazkia: '/storage/avatars/default/default.jpg',
       edit: true,
-      show: false
+      show: false,
+      goBack: function goBack() {
+        window.history.length > 1 ? _this.$router.go(-1) : _this.$router.push('/');
+      }
     };
   },
 
   created: function created() {
     console.log("FichaComponent created");
 
-    console.log("[ENTRENOS] this._pelotaris: " + JSON.stringify(this._pelotaris));
-
     if (this.isNewEntreno) {
-      console.log("IS NEW ENTRENO");
       this.edit = false;
 
       var myDate = new Date();
@@ -104514,6 +104988,7 @@ var showSnackbar = function showSnackbar(msg) {
       var formattedDate = year + '-' + month + '-' + date;
 
       this.entreno = {
+        id: null,
         pelotari_id: null,
         provincia_id: null,
         municipio_id: null,
@@ -104531,6 +105006,10 @@ var showSnackbar = function showSnackbar(msg) {
         evolucion_id: null,
         comentarios: ''
       };
+    } else {
+      this.edit = true;
+      this.entreno = this.$route.query.entrenamiento;
+      this.argazkia = this.$route.query.entrenamiento.foto;
     }
 
     this.show = true;
@@ -104539,6 +105018,7 @@ var showSnackbar = function showSnackbar(msg) {
     _pelotaris: 'pelotaris',
     _provincias: 'provincias',
     _municipios: 'municipios',
+    _municipios_filtered: 'municipios_filtered',
     _entr_contenidos: 'entr_contenidos',
     _entr_frontones: 'entr_frontones',
     _entr_actitudes: 'entr_actitudes',
@@ -104546,24 +105026,45 @@ var showSnackbar = function showSnackbar(msg) {
     _entr_evoluciones: 'entr_evoluciones'
   }),
   methods: {
-    onSubmit: function onSubmit() {
-      alert("SUBMIT");
+    onSubmit: function onSubmit(evt) {
+      var _this2 = this;
+
+      evt.preventDefault();
+      if (this.edit) {
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('updateEntrenamiento', this.entreno).then(function (response) {
+          _this2.showSnackbar("Entrenamiento actualizado");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log("[error] error: " + JSON.stringify(error));
+          _this2.showSnackbar("ERROR al actualizar Entrenamiento");
+        });
+      } else {
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('addEntrenamiento', this.entreno).then(function (response) {
+          _this2.showSnackbar("Entrenamiento creado");
+          _this2.goBack();
+        }).catch(function (error) {
+          console.log("[error] error: " + JSON.stringify(error));
+          _this2.showSnackbar("ERROR al crear Entrenamiento");
+        });
+      }
     },
     onReset: function onReset() {
-      alert("RESET");
+      this.goBack();
     },
     onChangePelotari: function onChangePelotari(evt) {
-      console.log("[onChangePelotari] evt: " + JSON.stringify(evt));
-      console.log("[onChangePelotari] this._pelotaris: " + JSON.stringify(this._pelotaris));
       var pelotari = _.filter(this._pelotaris, { 'value': evt });
       this.argazkia = pelotari[0].foto;
-      console.log("[onChangePelotari] pelotari: " + JSON.stringify(pelotari));
     },
-    onChangeProvincia: function onChangeProvincia() {
-      console.log("onChangeProvincia");
+    onChangeProvincia: function onChangeProvincia(evt) {
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('filterMunicipiosByProvincia', evt);
     },
-    onChangeMunicipio: function onChangeMunicipio() {
-      console.log("onChangeMunicipio");
+    onChangeMunicipio: function onChangeMunicipio(evt) {
+      if (null !== evt) {
+        if (null === this.entreno.provincia_id) {
+          this.entreno.provincia_id = _.filter(this._municipios, { 'value': evt })[0].provincia_id;
+          this.onChangeProvincia(this.entreno.provincia_id);
+        }
+      }
     }
   }
 });
@@ -104697,7 +105198,8 @@ var render = function() {
                           _c("b-form-select", {
                             attrs: {
                               id: "provinciaInput",
-                              options: _vm._provincias
+                              options: _vm._provincias,
+                              required: ""
                             },
                             on: { change: _vm.onChangeProvincia },
                             model: {
@@ -104725,7 +105227,8 @@ var render = function() {
                           _c("b-form-select", {
                             attrs: {
                               id: "municipioInput",
-                              options: _vm._municipios
+                              options: _vm._municipios_filtered,
+                              required: ""
                             },
                             on: { change: _vm.onChangeMunicipio },
                             model: {
@@ -104759,7 +105262,8 @@ var render = function() {
                           _c("b-form-select", {
                             attrs: {
                               id: "pelotariInput",
-                              options: _vm._pelotaris
+                              options: _vm._pelotaris,
+                              required: ""
                             },
                             on: { change: _vm.onChangePelotari },
                             model: {
@@ -105099,11 +105603,11 @@ var render = function() {
                             options: _vm._entr_evoluciones
                           },
                           model: {
-                            value: _vm.entreno.aprovechamiento_id,
+                            value: _vm.entreno.evolucion_id,
                             callback: function($$v) {
-                              _vm.$set(_vm.entreno, "aprovechamiento_id", $$v)
+                              _vm.$set(_vm.entreno, "evolucion_id", $$v)
                             },
-                            expression: "entreno.aprovechamiento_id"
+                            expression: "entreno.evolucion_id"
                           }
                         })
                       ],

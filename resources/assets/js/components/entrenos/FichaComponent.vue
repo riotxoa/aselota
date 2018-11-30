@@ -44,16 +44,18 @@
               <b-form-select id="provinciaInput"
                              :options="_provincias"
                              @change="onChangeProvincia"
-                             v-model="entreno.provincia_id">
+                             v-model="entreno.provincia_id"
+                             required>
               </b-form-select>
             </b-form-group>
             <b-form-group label="Municipio:"
                           label-for="municipioInput"
                           class="col-sm-4 pl-0 pr-2">
               <b-form-select id="municipioInput"
-                             :options="_municipios"
+                             :options="_municipios_filtered"
                              @change="onChangeMunicipio"
-                             v-model="entreno.municipio_id">
+                             v-model="entreno.municipio_id"
+                             required>
               </b-form-select>
             </b-form-group>
           </b-row>
@@ -64,7 +66,8 @@
               <b-form-select id="pelotariInput"
                              :options="_pelotaris"
                              @change="onChangePelotari"
-                             v-model="entreno.pelotari_id">
+                             v-model="entreno.pelotari_id"
+                             required>
               </b-form-select>
             </b-form-group>
             <b-form-group label="Contenido:"
@@ -167,7 +170,7 @@
                         class="col-11 col-sm-3 pl-2 pr-4 font-weight-bold">
             <b-form-select id="evolucionInput"
                            :options="_entr_evoluciones"
-                           v-model="entreno.aprovechamiento_id">
+                           v-model="entreno.evolucion_id">
             </b-form-select>
           </b-form-group>
         </b-row>
@@ -190,6 +193,8 @@
 <script>
   import { store } from '../store/store';
   import { mapState } from 'vuex';
+  import APIGetters from '../utils/getters.js';
+  import Utils from '../utils/utils.js';
 
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
@@ -204,6 +209,7 @@
   }
   export default {
     props: ['formTitle', 'isNewEntreno'],
+    mixins: [APIGetters, Utils],
     data () {
       return {
         entreno: {},
@@ -211,15 +217,17 @@
         argazkia: '/storage/avatars/default/default.jpg',
         edit: true,
         show: false,
+        goBack: () => {
+          window.history.length > 1
+            ? this.$router.go(-1)
+            : this.$router.push('/')
+        }
       }
     },
     created: function() {
       console.log("FichaComponent created");
 
-      console.log("[ENTRENOS] this._pelotaris: " + JSON.stringify(this._pelotaris));
-
       if( this.isNewEntreno ) {
-        console.log("IS NEW ENTRENO")
         this.edit = false;
 
         var myDate = new Date();
@@ -229,6 +237,7 @@
         var formattedDate = year + '-' + month + '-' + date;
 
         this.entreno = {
+          id: null,
           pelotari_id: null,
           provincia_id: null,
           municipio_id: null,
@@ -246,6 +255,10 @@
           evolucion_id: null,
           comentarios: '',
         }
+      } else {
+        this.edit = true;
+        this.entreno = this.$route.query.entrenamiento;
+        this.argazkia = this.$route.query.entrenamiento.foto;
       }
 
       this.show = true;
@@ -254,6 +267,7 @@
       _pelotaris: 'pelotaris',
       _provincias: 'provincias',
       _municipios: 'municipios',
+      _municipios_filtered: 'municipios_filtered',
       _entr_contenidos: 'entr_contenidos',
       _entr_frontones: 'entr_frontones',
       _entr_actitudes: 'entr_actitudes',
@@ -261,24 +275,47 @@
       _entr_evoluciones: 'entr_evoluciones',
     }),
     methods: {
-      onSubmit() {
-        alert("SUBMIT");
+      onSubmit(evt) {
+        evt.preventDefault();
+        if( this.edit ) {
+          store.dispatch('updateEntrenamiento', this.entreno)
+            .then( (response) => {
+              this.showSnackbar("Entrenamiento actualizado");
+              this.goBack();
+            })
+            .catch( (error) => {
+              console.log("[error] error: " + JSON.stringify(error));
+              this.showSnackbar("ERROR al actualizar Entrenamiento");
+            });
+        } else {
+          store.dispatch('addEntrenamiento', this.entreno)
+            .then( (response) => {
+              this.showSnackbar("Entrenamiento creado");
+              this.goBack();
+            })
+            .catch( (error) => {
+              console.log("[error] error: " + JSON.stringify(error));
+              this.showSnackbar("ERROR al crear Entrenamiento");
+            });
+        }
       },
       onReset() {
-        alert("RESET");
+        this.goBack();
       },
       onChangePelotari(evt) {
-        console.log("[onChangePelotari] evt: " + JSON.stringify(evt));
-        console.log("[onChangePelotari] this._pelotaris: " + JSON.stringify(this._pelotaris));
         var pelotari = _.filter(this._pelotaris, { 'value': evt });
         this.argazkia = pelotari[0].foto;
-        console.log("[onChangePelotari] pelotari: " + JSON.stringify(pelotari));
       },
-      onChangeProvincia() {
-        console.log("onChangeProvincia");
+      onChangeProvincia(evt) {
+        store.dispatch('filterMunicipiosByProvincia', evt);
       },
-      onChangeMunicipio() {
-        console.log("onChangeMunicipio");
+      onChangeMunicipio(evt) {
+        if (null !== evt) {
+          if (null === this.entreno.provincia_id) {
+            this.entreno.provincia_id = _.filter(this._municipios, { 'value': evt })[0].provincia_id;
+            this.onChangeProvincia(this.entreno.provincia_id);
+          }
+        }
       },
     }
   }
