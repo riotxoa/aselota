@@ -50,6 +50,13 @@
             params: { userRole: this.userRole },
           })
           break;
+        case 'prensa':
+          this.home = '/prensa';
+          this.title = "Gestión de Eventos de Prensa";
+          this.$router.push({
+            name: 'PRENSA',
+            params: { userRole: this.userRole },
+          })
         default:
           this.title = "SIN PERMISOS";
           break;

@@ -82,6 +82,15 @@ const ListEntrenos = { template: '<listado-entrenos></listado-entrenos>' };
 const CreateEntreno = { template: '<ficha-entreno form-title="Nuevo Entrenamiento" :is-new-entreno=1></ficha-entreno>' };
 const EditEntreno = { template: '<ficha-entreno form-title="Editar Entrenamiento" :is-new-entreno=0></ficha-entreno>' };
 
+Vue.component('home-prensa', require('./components/HomePrensaComponent.vue'));
+Vue.component('listado-eventos', require('./components/eventos/ListadoComponent.vue'));
+Vue.component('ficha-evento', require('./components/eventos/FichaComponent.vue'));
+
+const HomePrensa = { template: '<home-entrenador></home-entrenador>' };
+const ListEventos = { template: '<listado-eventos></listado-eventos>' };
+const CreateEvento = { template: '<ficha-evento form-title="Nuevo Evento de Prensa" :is-new-evento=1></ficha-evento>' };
+const EditEvento = { template: '<ficha-evento form-title="Editar Evento de Prensa" :is-new-evento=0></ficha-evento>' };
+
 const routes = [
   {
     path: '/administrador', component: HomeAdmin,
@@ -150,6 +159,20 @@ const routes = [
       },
       {
         path: 'entrenamiento/:id/edit', component: EditEntreno
+      },
+    ]
+  },
+  {
+    path: '/prensa', component: HomeEntrenador,
+    children: [
+      {
+        path: '', name: 'PRENSA', component: ListEventos
+      },
+      {
+        path: 'evento/new', component: CreateEvento
+      },
+      {
+        path: 'evento/:id/edit', component: EditEvento
       },
     ]
   },

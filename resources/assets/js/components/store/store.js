@@ -36,6 +36,7 @@ export const store = new Vuex.Store({
     },
     coste: 0.00,
     edit: false,
+    edit_evento: false,
     calendario: null,
     entrenamientos: [],
     entr_contenidos: [],
@@ -43,11 +44,18 @@ export const store = new Vuex.Store({
     entr_aprovechamientos: [],
     entr_evoluciones: [],
     pelotaris: [],
+    eventos: [],
+    evento_motivos: [],
+    evento: {
+      header: {},
+      pelotaris: [],
+    },
     provincias: [],
     municipios: [],
     municipios_filtered: [],
     frontones: [],
     frontones_filtered: [],
+    campeonatos: [],
     entr_contenido: [],
   },
   getters: {
@@ -60,6 +68,7 @@ export const store = new Vuex.Store({
     coste: state => state.coste,
     facturacion: state => state.facturacion,
     edit: state => state.edit,
+    edit_evento: state => state.edit_evento,
     calendario: state => state.calendario,
     entrenamientos: state => state.entrenamientos,
     entr_contenidos: state => state.entr_contenidos,
@@ -68,11 +77,15 @@ export const store = new Vuex.Store({
     entr_aprovechamientos: state => state.entr_aprovechamientos,
     entr_evoluciones: state => state.entr_evoluciones,
     pelotaris: state => state.pelotaris,
+    eventos: state => state.eventos,
+    evento_motivos: state => state.evento_motivos,
+    evento: state => state.evento,
     provincias: state => state.provincias,
     municipios: state => state.municipios,
     municipios_filtered: state => state.municipios_filtered,
     frontones: state => state.frontones,
     frontones_filtered: state => state.frontones_filtered,
+    campeonatos: state => state.campeonatos,
   },
   mutations: {
     SET_FESTIVALES (state, festivales) {
@@ -209,6 +222,34 @@ export const store = new Vuex.Store({
         state.entrenamientos.splice(index, 1);
       }
     },
+    ADD_EVENTO (state, evento) {
+      state.eventos.push(evento);
+      state.eventos = _.sortBy(state.eventos, ['fecha']);
+    },
+    UPDATE_EVENTO (state, evento) {
+      var index = _.findIndex( state.eventos, { "id": evento.id } );
+
+      state.eventos[index].motivo_id = evento.motivo_id;
+      state.eventos[index].campeonato_id = evento.campeonato_id;
+      state.eventos[index].provincia_id = evento.provincia_id;
+      state.eventos[index].municipio_id = evento.municipio_id;
+      state.eventos[index].fecha = evento.fecha;
+      state.eventos[index].hora = evento.hora;
+      state.eventos[index].desc = evento.desc;
+    },
+    DELETE_EVENTO (state, evento) {
+      var index = _.findIndex( state.eventos, { "id": evento.id } );
+
+      if( index > -1 ) {
+        state.eventos.splice(index, 1);
+      }
+    },
+    RESET_EVENTO_HEADER (state) {
+      state.evento.header = {};
+    },
+    RESET_EVENTO_BODY (state) {
+      state.evento.pelotaris = [];
+    },
     SET_FACTURACION (state, facturacion) {
       if(facturacion.length) {
         state.facturacion = facturacion[0];
@@ -218,6 +259,11 @@ export const store = new Vuex.Store({
       state.edit = edit;
       if( edit )
         this.dispatch('loadPartidos');
+    },
+    SET_EVENTO_EDIT (state, edit) {
+      state.edit_evento = edit;
+      if( edit )
+        this.dispatch('loadEventos');
     },
     SET_CALENDARIO (state, calendario) {
       state.calendario = calendario;
@@ -244,6 +290,21 @@ export const store = new Vuex.Store({
     SET_ENTR_EVOLUCIONES (state, evoluciones) {
       state.entr_evoluciones = evoluciones;
     },
+    SET_EVENTOS (state, eventos) {
+      state.eventos = eventos;
+    },
+    SET_EVENTO_MOTIVOS (state, motivos) {
+      state.evento_motivos = motivos;
+    },
+    SET_EVENTO_HEADER_ID (state, id)  {
+      state.evento.header.id = id;
+    },
+    SET_EVENTO_HEADER (state, header) {
+      state.evento.header = header;
+    },
+    SET_EVENTO_BODY (state, pelotaris) {
+      state.evento.pelotaris = pelotaris;
+    },
     SET_PELOTARIS (state, pelotaris) {
       state.pelotaris = pelotaris;
     },
@@ -261,6 +322,9 @@ export const store = new Vuex.Store({
     },
     SET_FRONTONES_FILTERED (state, frontones) {
       state.frontones_filtered = frontones;
+    },
+    SET_CAMPEONATOS (state, campeonatos) {
+      state.campeonatos = campeonatos;
     },
   },
   actions: {
@@ -617,6 +681,47 @@ export const store = new Vuex.Store({
           commit('SET_ENTR_EVOLUCIONES', evoluciones)
         });
     },
+    resetEvento({ commit }) {
+      commit('RESET_EVENTO_HEADER');
+      commit('RESET_EVENTO_BODY');
+    },
+    loadEventos({ commit, dispatch }) {
+      axios
+        .get('/www/eventos')
+        .then( r => r.data )
+        .then( eventos => {
+          commit('SET_EVENTOS', eventos)
+        });
+    },
+    loadEventoMotivos({ commit, dispatch }) {
+      axios
+        .get('/www/eventos/motivos')
+        .then( r => r.data )
+        .then( motivos => {
+          var stringified = JSON.stringify(motivos).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          motivos = JSON.parse(stringified);
+          motivos.unshift({ value: null, text: "Seleccionar motivo" });
+          commit('SET_EVENTO_MOTIVOS', motivos);
+        });
+    },
+    loadEventoPelotaris({ commit }, id) {
+      axios
+        .get('/www/eventos/pelotaris/' + id)
+        .then( r => r.data )
+        .then( pelotaris => {
+          commit('SET_EVENTO_BODY', pelotaris);
+        });
+    },
+    resetEvento({ commit }) {
+      commit('RESET_EVENTO_HEADER');
+      commit('RESET_EVENTO_BODY');
+    },
+    clearEventoHeader({ commit }) {
+      commit('RESET_EVENTO_HEADER');
+    },
+    clearEventoBody({ commit }) {
+      commit('RESET_EVENTO_BODY');
+    },
     loadPelotaris({ commit }, date) {
       axios
         .get('/www/pelotaris', {
@@ -680,9 +785,20 @@ export const store = new Vuex.Store({
         .then( frontones => {
           var stringified = JSON.stringify(frontones).replace(/"id"/g, '"value"').replace(/name/g, "text");
           frontones = JSON.parse(stringified);
-          municipios.unshift({ value: null, text: "Seleccionar frontón "});
-          commit('SET_FRONTONES', frontones)
+          frontones.unshift({ value: null, text: "Seleccionar frontón "});
+          commit('SET_FRONTONES', frontones);
         })
-    }
+    },
+    loadCampeonatos({ commit }) {
+      axios
+        .get('/www/campeonatos')
+        .then( r => r.data )
+        .then( campeonatos => {
+          var stringified = JSON.stringify(campeonatos).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          campeonatos = JSON.parse(stringified);
+          campeonatos.unshift({ value: null, text: "Seleccionar campeonato"});
+          commit('SET_CAMPEONATOS', campeonatos);
+        })
+    },
   }
 });
