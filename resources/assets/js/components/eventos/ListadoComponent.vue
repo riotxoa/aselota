@@ -51,11 +51,18 @@
 
           <template v-if="display" slot="row-details" slot-scope="row">
             <b-card>
-              <b-row>
-                <b-col sm="6">
-                </b-col>
-                <b-col sm="6">
-                </b-col>
+              <b-row class="info-pelotari-row">
+                <div v-for="pelotari in row.item.pelotaris" class="info-pelotari col-sm-6">
+                  <b-row class="mb-3">
+                    <b-col class="col-sm-2"><img :src="pelotari.foto"/></b-col>
+                    <b-col class="col-sm-5"><div class="ml-3 mt-3"><p class="mb-0 font-weight-bold">Pelotari:</p>{{ pelotari.alias }}</div></b-col>
+                    <b-col class="col-sm-5"><div class="ml-3 mt-3"><p class="mb-0 font-weight-bold">Asiste:</p>{{ (1 == pelotari.asiste ? "Sí" : "No") }}</div></b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col class="col-sm-6 font-weight-bold mt-2">Observaciones:</b-col>
+                    <b-col class="col-sm-12 motivo">{{ pelotari.motivo }}</b-col>
+                  </b-row>
+                </div>
               </b-row>
             </b-card>
           </template>
@@ -96,7 +103,7 @@
         return {
           remove: true,
           update: true,
-          display: false,
+          display: true,
           sortBy: 'age',
           sortDesc: false,
           fields: [
@@ -188,5 +195,12 @@
   .main-header h4 {
     line-height:1.75;
     margin:0 auto;
+  }
+  .info-pelotari {
+    margin-bottom:1rem;
+    padding:1.5rem;
+  }
+  .info-pelotari-row .info-pelotari:nth-child(odd) {
+    border-right:1px solid #efefef;
   }
 </style>

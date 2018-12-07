@@ -106033,7 +106033,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-1.45rem;\n}\n.main-header .toolbar {\n  background-color:slategray;\n  padding:10px 0;\n  text-align:center;\n}\n.main-header h4 {\n  line-height:1.75;\n  margin:0 auto;\n}\n", ""]);
+exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-1.45rem;\n}\n.main-header .toolbar {\n  background-color:slategray;\n  padding:10px 0;\n  text-align:center;\n}\n.main-header h4 {\n  line-height:1.75;\n  margin:0 auto;\n}\n.info-pelotari {\n  margin-bottom:1rem;\n  padding:1.5rem;\n}\n.info-pelotari-row .info-pelotari:nth-child(odd) {\n  border-right:1px solid #efefef;\n}\n", ""]);
 
 // exports
 
@@ -106132,6 +106132,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -106144,7 +106151,7 @@ Vue.component('delete-modal', __webpack_require__(31));
     return {
       remove: true,
       update: true,
-      display: false,
+      display: true,
       sortBy: 'age',
       sortDesc: false,
       fields: [{ key: 'fecha', label: 'Fecha', sortable: true }, { key: 'hora', label: 'Hora', sortable: true }, { key: 'provincia_name', label: 'Provincia', sortable: true }, { key: 'municipio_name', label: 'Municipio', sortable: true }, { key: 'motivo_name', label: 'Motivo', sortable: true }, { key: 'desc', label: 'Descripción', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
@@ -106426,12 +106433,103 @@ var render = function() {
                             [
                               _c(
                                 "b-row",
-                                [
-                                  _c("b-col", { attrs: { sm: "6" } }),
-                                  _vm._v(" "),
-                                  _c("b-col", { attrs: { sm: "6" } })
-                                ],
-                                1
+                                { staticClass: "info-pelotari-row" },
+                                _vm._l(row.item.pelotaris, function(pelotari) {
+                                  return _c(
+                                    "div",
+                                    { staticClass: "info-pelotari col-sm-6" },
+                                    [
+                                      _c(
+                                        "b-row",
+                                        { staticClass: "mb-3" },
+                                        [
+                                          _c(
+                                            "b-col",
+                                            { staticClass: "col-sm-2" },
+                                            [
+                                              _c("img", {
+                                                attrs: { src: pelotari.foto }
+                                              })
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "b-col",
+                                            { staticClass: "col-sm-5" },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "ml-3 mt-3" },
+                                                [
+                                                  _c(
+                                                    "p",
+                                                    {
+                                                      staticClass:
+                                                        "mb-0 font-weight-bold"
+                                                    },
+                                                    [_vm._v("Pelotari:")]
+                                                  ),
+                                                  _vm._v(_vm._s(pelotari.alias))
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "b-col",
+                                            { staticClass: "col-sm-5" },
+                                            [
+                                              _c(
+                                                "div",
+                                                { staticClass: "ml-3 mt-3" },
+                                                [
+                                                  _c(
+                                                    "p",
+                                                    {
+                                                      staticClass:
+                                                        "mb-0 font-weight-bold"
+                                                    },
+                                                    [_vm._v("Asiste:")]
+                                                  ),
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      1 == pelotari.asiste
+                                                        ? "Sí"
+                                                        : "No"
+                                                    )
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-row",
+                                        [
+                                          _c(
+                                            "b-col",
+                                            {
+                                              staticClass:
+                                                "col-sm-6 font-weight-bold mt-2"
+                                            },
+                                            [_vm._v("Observaciones:")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "b-col",
+                                            { staticClass: "col-sm-12 motivo" },
+                                            [_vm._v(_vm._s(pelotari.motivo))]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                })
                               )
                             ],
                             1
