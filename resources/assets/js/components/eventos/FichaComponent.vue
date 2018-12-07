@@ -33,7 +33,7 @@
 
       this.$store.commit('SET_EVENTO_EDIT', !this.isNewEvento);
       if(!this.isNewEvento) {
-        this.$store.commit('SET_EVENTO_HEADER_ID', this.$route.params.id);
+        this.$store.commit('SET_EVENTO_ID', this.$route.params.id);
       } else {
         store.dispatch('resetEvento');
       }
@@ -42,7 +42,7 @@
       _edit: 'edit_evento',
     }),
     methods: {
-      
+
     }
   }
 </script>

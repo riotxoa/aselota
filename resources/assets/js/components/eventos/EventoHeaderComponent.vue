@@ -26,7 +26,7 @@
               <b-form-input id="fechaInput"
                             class="d-inline-block px-1"
                             type="date"
-                            v-model="_header.fecha"
+                            v-model="_evento.fecha"
                             @change="onChangeDate()"
                             @input="onChangeDate()"
                             required>
@@ -47,7 +47,7 @@
               <b-form-input id="hourInput"
                             type="time"
                             required
-                            v-model="_header.hora">
+                            v-model="_evento.hora">
               </b-form-input>
             </b-form-group>
             <b-form-group label="Provincia:"
@@ -56,7 +56,7 @@
               <b-form-select id="provinciaInput"
                              :options="_provincias"
                              @change="onChangeProvincia"
-                             v-model="_header.provincia_id">
+                             v-model="_evento.provincia_id">
               </b-form-select>
             </b-form-group>
             <b-form-group label="Municipio:"
@@ -65,7 +65,7 @@
               <b-form-select id="municipioInput"
                              :options="_municipios"
                              @change="onChangeMunicipio"
-                             v-model="_header.municipio_id">
+                             v-model="_evento.municipio_id">
               </b-form-select>
             </b-form-group>
           </b-row>
@@ -76,14 +76,14 @@
                 <b-form-select id="motivoInput"
                                :options="_motivos"
                                required
-                               v-model="_header.motivo_id">
+                               v-model="_evento.motivo_id">
                 </b-form-select>
               </b-form-group>
               <b-form-group label="Campeonato:"
                             label-for="campeonatoInput">
                 <b-form-select id="campeonatoInput"
                                :options="_campeonatos"
-                               v-model="_header.campeonato_id">
+                               v-model="_evento.campeonato_id">
                 </b-form-select>
               </b-form-group>
             </b-col>
@@ -91,7 +91,7 @@
               <b-form-group label="Descripción"
                             label-for="descInput">
                 <b-form-textarea id="descInput"
-                                 v-model="_header.desc"
+                                 v-model="_evento.desc"
                                  :rows="4"
                                  :max-rows="4"
                                  style="max-height:95px">
@@ -125,29 +125,28 @@
       console.log("EventoHeaderComponent created");
 
       if (this._edit) {
-        this._header = this.$route.query.evento;
+        this._evento = this.$route.query.evento;
       } else {
-        this._header.fecha = this.formatDateEN();
-        this._header.hora = "";
-        this._header.provincia_id = null;
-        this._header.municipio_id = null;
-        this._header.motivo_id = null;
-        this._header.campeonato_id = null;
+        this._evento.fecha = this.formatDateEN();
+        this._evento.hora = "";
+        this._evento.provincia_id = null;
+        this._evento.municipio_id = null;
+        this._evento.motivo_id = null;
+        this._evento.campeonato_id = null;
       }
     },
     beforeDestroy: function () {
       if( true === this.destroy ) {
-        store.dispatch('clearEventoHeader');
-        store.dispatch('clearEventoBody');
+        store.dispatch('resetEvento');
       }
     },
     computed: {
-      _header: {
+      _evento: {
         get() {
-          return store.getters.evento.header;
+          return store.getters.evento;
         },
-        set(h) {
-          store.commit('SET_EVENTO_HEADER', h);
+        set(evento) {
+          store.commit('SET_EVENTO', evento);
         },
       },
       _motivos () {
@@ -176,7 +175,7 @@
         this.destroy = false;
       },
       onChangeDate () {
-        switch (new Date(this._header.fecha).getDay()) {
+        switch (new Date(this._evento.fecha).getDay()) {
           case 0:
             this.dia = "Domingo";
             break;
@@ -199,14 +198,15 @@
             this.dia = "Sábado";
             break;
         }
+        store.dispatch('loadPelotaris', this._evento.fecha);
       },
       onChangeProvincia(evt) {
         store.dispatch('filterMunicipiosByProvincia', evt);
       },
       onChangeMunicipio(evt) {
         if (null !== evt) {
-          this._header.provincia_id = _.filter(this._municipios, { 'value': evt })[0].provincia_id;
-          this.onChangeProvincia(this._header.provincia_id);
+          this._evento.provincia_id = _.filter(this._municipios, { 'value': evt })[0].provincia_id;
+          this.onChangeProvincia(this._evento.provincia_id);
         }
       },
       onSubmit (evt) {
@@ -214,8 +214,8 @@
 
         let uri = '/www/eventos';
 
-        if(this._edit || this._header.id) {
-          this.axios.post(uri + '/' + this._header.id + '/update', this._header)
+        if(this._edit || this._evento.id) {
+          this.axios.post(uri + '/' + this._evento.id + '/update', this._evento)
             .then((response) => {
               this.showSnackbar("Evento actualizado");
               this.goBack();
@@ -225,9 +225,9 @@
               this.showSnackbar("Se ha producido un ERROR");
             });
         } else {
-          this.axios.post(uri, this._header)
+          this.axios.post(uri, this._evento)
             .then((response) => {
-              this._header.id = response.data.id;
+              this._evento.id = response.data.id;
               this._edit = 1;
               this.showSnackbar("Evento creado");
             })

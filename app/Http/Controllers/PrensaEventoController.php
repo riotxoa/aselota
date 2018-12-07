@@ -26,14 +26,14 @@ class PrensaEventoController extends Controller
                  ->orderBy('fecha', 'desc')
                  ->get();
 
-      return response()->json($items, 200);
-    }
-
-    public function get_pelotaris(Request $request, $id)
-    {
-      $request->user()->authorizeRoles(['admin', 'prensa']);
-
-      $items = PrensaEvento::find($id)->pelotaris();
+      foreach($items as $key => $item) {
+        $pelotaris = DB::table('prensa_evento_pelotaris')
+                      ->select('prensa_evento_pelotaris.*', 'pelotaris.*')
+                      ->where('prensa_evento_id', $item->id)
+                      ->leftJoin('pelotaris', 'pelotaris.id', '=', 'prensa_evento_pelotaris.pelotari_id')
+                      ->get();
+        $items[$key]->pelotaris = $pelotaris;
+      }
 
       return response()->json($items, 200);
     }
@@ -144,5 +144,60 @@ class PrensaEventoController extends Controller
       PrensaEvento::destroy($id);
 
       return response()->json("EVENTO REMOVED", 200);
+    }
+
+    public function get_pelotaris(Request $request, $id)
+    {
+      $request->user()->authorizeRoles(['admin', 'prensa']);
+
+      $items = PrensaEvento::find($id)->pelotaris();
+
+      return response()->json($items, 200);
+    }
+
+    public function add_pelotari(Request $request, $id)
+    {
+      $request->user()->authorizeRoles(['admin', 'prensa']);
+
+      $item = new PrensaPelotari([
+        'prensa_evento_id' => $id,
+        'pelotari_id' => $request->value,
+        'asiste' => $request->asiste,
+        'motivo' => $request->motivo,
+      ]);
+      $item->save();
+
+      $pelotari = DB::table('prensa_evento_pelotaris')
+                    ->select('prensa_evento_pelotaris.*', 'pelotaris.*')
+                    ->where('pelotaris.id', '=', $request->value)
+                    ->leftJoin('pelotaris', 'pelotaris.id', '=', 'prensa_evento_pelotaris.pelotari_id')
+                    ->first();
+      $pelotari->asiste = $request->asiste;
+      $pelotari->motivo = $request->motivo;
+
+      return response()->json($pelotari, 200);
+    }
+
+    public function update_pelotari(Request $request, $id)
+    {
+      $request->user()->authorizeRoles(['admin', 'prensa']);
+
+      $pelotari = PrensaPelotari::where('prensa_evento_id', $id)->where('pelotari_id', $request->id)->first();
+
+      $pelotari->asiste = $request->asiste;
+      $pelotari->motivo = $request->motivo;
+
+      $pelotari->save();
+
+      return response()->json($pelotari, 200);
+    }
+
+    public function delete_pelotari(Request $request, $id)
+    {
+      $request->user()->authorizeRoles(['admin', 'prensa']);
+
+      PrensaPelotari::where('prensa_evento_id', $id)->where('pelotari_id', $request->id)->delete();
+
+      return response()->json("PELOTARI $request->id ELIMINADO DEL EVENTO $id; Resquest: " . json_encode($request->all()), 200);
     }
 }

@@ -37,13 +37,13 @@
           <template slot="actions" slot-scope="row">
             <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
             <b-button-group>
-              <b-button v-if="remove" size="md" variant="danger" @click.stop="onClickDelete(row.item)" title="Eliminar">
+              <b-button v-if="remove" size="sm" variant="danger" @click.stop="onClickDelete(row.item)" title="Eliminar">
                 <span class="icon voyager-trash"></span>
               </b-button>
-              <b-button v-if="update" size="md" variant="primary" @click.stop="onClickEdit(row.item)" title="Editar">
+              <b-button v-if="update" size="sm" variant="primary" @click.stop="onClickEdit(row.item)" title="Editar">
                 <span class="icon voyager-edit"></span>
               </b-button>
-              <b-button v-if="display" size="md" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+              <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
                 <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
               </b-button>
             </b-button-group>
@@ -131,13 +131,13 @@
       created() {
         var myDate = new Date();
         var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
-        var date = ('0' + myDate.getDate()).slice(-2);
+        var day = ('0' + myDate.getDate()).slice(-2);
         var year = myDate.getFullYear();
-        var formattedDate = year + '/' + month + '/' + date;
+        var formattedDate = year + '/' + month + '/' + day;
 
         store.dispatch('loadProvincias');
         store.dispatch('loadMunicipios');
-        store.dispatch('loadPelotaris');
+        store.dispatch('loadPelotaris', year + '-' + month + '-' + day);
         store.dispatch('loadCampeonatos');
         store.dispatch('loadEventoMotivos');
         store.dispatch('loadEventos');

@@ -46,10 +46,7 @@ export const store = new Vuex.Store({
     pelotaris: [],
     eventos: [],
     evento_motivos: [],
-    evento: {
-      header: {},
-      pelotaris: [],
-    },
+    evento: {},
     provincias: [],
     municipios: [],
     municipios_filtered: [],
@@ -244,11 +241,26 @@ export const store = new Vuex.Store({
         state.eventos.splice(index, 1);
       }
     },
-    RESET_EVENTO_HEADER (state) {
-      state.evento.header = {};
+    RESET_EVENTO (state) {
+      state.evento = {};
     },
-    RESET_EVENTO_BODY (state) {
-      state.evento.pelotaris = [];
+    ADD_EVENTO_PELOTARI (state, pelotari) {
+      state.evento.pelotaris.push(pelotari);
+    },
+    UPDATE_EVENTO_PELOTARI (state, pelotari) {
+      var index = _.findIndex( state.evento.pelotaris, { "id": pelotari.id } );
+
+      if( index > -1 ) {
+        state.evento.pelotaris[index].asiste = pelotari.asiste;
+        state.evento.pelotaris[index].motivo = pelotari.motivo;
+      }
+    },
+    DEL_EVENTO_PELOTARI (state, id) {
+      var index = _.findIndex( state.evento.pelotaris, { "id": id } );
+
+      if( index > -1 ) {
+        state.evento.pelotaris.splice(index, 1);
+      }
     },
     SET_FACTURACION (state, facturacion) {
       if(facturacion.length) {
@@ -296,13 +308,13 @@ export const store = new Vuex.Store({
     SET_EVENTO_MOTIVOS (state, motivos) {
       state.evento_motivos = motivos;
     },
-    SET_EVENTO_HEADER_ID (state, id)  {
-      state.evento.header.id = id;
+    SET_EVENTO_ID (state, id)  {
+      state.evento.id = id;
     },
-    SET_EVENTO_HEADER (state, header) {
-      state.evento.header = header;
+    SET_EVENTO (state, evento) {
+      state.evento = evento;
     },
-    SET_EVENTO_BODY (state, pelotaris) {
+    SET_EVENTO_PELOTARIS (state, pelotaris) {
       state.evento.pelotaris = pelotaris;
     },
     SET_PELOTARIS (state, pelotaris) {
@@ -682,15 +694,14 @@ export const store = new Vuex.Store({
         });
     },
     resetEvento({ commit }) {
-      commit('RESET_EVENTO_HEADER');
-      commit('RESET_EVENTO_BODY');
+      commit('RESET_EVENTO');
     },
     loadEventos({ commit, dispatch }) {
       axios
         .get('/www/eventos')
         .then( r => r.data )
         .then( eventos => {
-          commit('SET_EVENTOS', eventos)
+          commit('SET_EVENTOS', eventos);
         });
     },
     loadEventoMotivos({ commit, dispatch }) {
@@ -704,23 +715,32 @@ export const store = new Vuex.Store({
           commit('SET_EVENTO_MOTIVOS', motivos);
         });
     },
-    loadEventoPelotaris({ commit }, id) {
+    addPelotariToEvento({ commit }, pelotari) {
+      var uri = '/www/eventos/' + this.getters.evento.id + '/add/pelotari';
       axios
-        .get('/www/eventos/pelotaris/' + id)
+        .post(uri, pelotari)
         .then( r => r.data )
-        .then( pelotaris => {
-          commit('SET_EVENTO_BODY', pelotaris);
+        .then( response => {
+          commit('ADD_EVENTO_PELOTARI', response);
         });
     },
-    resetEvento({ commit }) {
-      commit('RESET_EVENTO_HEADER');
-      commit('RESET_EVENTO_BODY');
+    updatePelotariFromEvento({ commit }, pelotari) {
+      var uri = '/www/eventos/' + this.getters.evento.id + '/update/pelotari';
+      axios
+        .post(uri, pelotari)
+        .then( r => r.data )
+        .then( response => {
+          commit('UPDATE_EVENTO_PELOTARI', response);
+        });
     },
-    clearEventoHeader({ commit }) {
-      commit('RESET_EVENTO_HEADER');
-    },
-    clearEventoBody({ commit }) {
-      commit('RESET_EVENTO_BODY');
+    deletePelotariFromEvento({ commit }, id) {
+      var uri = '/www/eventos/' + this.getters.evento.id + '/delete/pelotari';
+      axios
+        .post(uri, { id: id })
+        .then( r => r.data )
+        .then( response => {
+          commit('DEL_EVENTO_PELOTARI', id);
+        });
     },
     loadPelotaris({ commit }, date) {
       axios

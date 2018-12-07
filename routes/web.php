@@ -69,6 +69,9 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('partido-celebrado/{id}/update', 'FestivalPartidoController@update_partido_celebrado');
     Route::post('entrenamientos/{id}/update', 'EntrenamientoController@update');
     Route::get('eventos/pelotaris/{id}', 'PrensaEventoController@get_pelotaris');
+    Route::post('eventos/{id}/add/pelotari', 'PrensaEventoController@add_pelotari');
+    Route::post('eventos/{id}/update/pelotari', 'PrensaEventoController@update_pelotari');
+    Route::post('eventos/{id}/delete/pelotari', 'PrensaEventoController@delete_pelotari');
     Route::post('eventos/{id}/update', 'PrensaEventoController@update');
 });
 
