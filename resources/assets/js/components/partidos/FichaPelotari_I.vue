@@ -40,6 +40,7 @@
                                 v-model="pelotari.asiste"
                                 :options="asiste_options"
                                 name="radiosBtnDefault" />
+
           </div>
         </b-row>
 
@@ -48,7 +49,8 @@
           <div class="col-sm-4 px-0 pt-3 pb-0 ml-md-3">
             <b-form-group label="Sustituto">
               <b-form-select :options="pelotaris"
-                             v-model="pelotari.sustituto_id">
+                             v-model="pelotari.sustituto_id"
+                             :disabled="(isPrensa ? true : false)">
               </b-form-select>
             </b-form-group>
           </div>
@@ -56,7 +58,8 @@
           <div class="col-sm-7 px-0 pt-3 pb-0 ml-md-3">
             <b-form-group label="Motivo sustitución">
               <b-form-input v-model="pelotari.sustituto_txt"
-                            placeholder="Motivo de la sustitución">
+                            placeholder="Motivo de la sustitución"
+                            :disabled="(isPrensa ? true : false)">
               </b-form-input>
             </b-form-group>
           </div>
@@ -69,13 +72,14 @@
             <b-form-textarea  v-model="pelotari.observaciones"
                               placeholder="Observaciones"
                               rows="3"
-                              max-rows="6">
+                              max-rows="6"
+                              :disabled="(isPrensa ? true : false)">
             </b-form-textarea>
           </b-form-group>
         </b-row>
 
         <b-row>
-          <b-button variant="danger" type="submit" style="margin-left:15px;">Guardar</b-button>
+          <b-button v-if="!isPrensa" variant="danger" type="submit" style="margin-left:15px;">Guardar</b-button>
           <b-button variant="default" @click="onClickCancelar()" class="ml-2">Cancelar</b-button>
         </b-row>
 
@@ -92,7 +96,7 @@
 
   export default {
     mixins: [APIGetters, Utils],
-    props: ['partido', 'pelotari', 'modalId'],
+    props: ['partido', 'pelotari', 'modalId', 'isPrensa'],
     data () {
       return {
         asiste_options: [
@@ -103,6 +107,12 @@
     },
     created() {
       this.getPelotaris(this._header.fecha);
+      if( this.isPrensa ) {
+        this.asiste_options = [
+          { text: "Asiste", value: 1, disabled: (this.pelotari.asiste ? false : true) },
+          { text: "No asiste", value: 0, disabled: (this.pelotari.asiste ? true : false) },
+        ];
+      }
     },
     computed: mapState({
       _header: 'header',

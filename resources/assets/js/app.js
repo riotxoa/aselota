@@ -83,13 +83,16 @@ const CreateEntreno = { template: '<ficha-entreno form-title="Nuevo Entrenamient
 const EditEntreno = { template: '<ficha-entreno form-title="Editar Entrenamiento" :is-new-entreno=0></ficha-entreno>' };
 
 Vue.component('home-prensa', require('./components/HomePrensaComponent.vue'));
+Vue.component('prensa-tabs', require('./components/eventos/PrensaHomePageComponent.vue'));
 Vue.component('listado-eventos', require('./components/eventos/ListadoComponent.vue'));
 Vue.component('ficha-evento', require('./components/eventos/FichaComponent.vue'));
 
-const HomePrensa = { template: '<home-entrenador></home-entrenador>' };
+const HomePrensa = { template: '<home-prensa></home-prensa>' };
+const PrensaTabs = { template: '<prensa-tabs></prensa-tabs>' };
 const ListEventos = { template: '<listado-eventos></listado-eventos>' };
 const CreateEvento = { template: '<ficha-evento form-title="Nuevo Evento de Prensa" :is-new-evento=1></ficha-evento>' };
 const EditEvento = { template: '<ficha-evento form-title="Editar Evento de Prensa" :is-new-evento=0></ficha-evento>' };
+const ViewFestival = { template: '<ficha-festival form-title="Consultar Festival" :is-new-festival=0 :is-gerente=0 :is-prensa=1></ficha-festival>' };
 
 const routes = [
   {
@@ -163,16 +166,19 @@ const routes = [
     ]
   },
   {
-    path: '/prensa', component: HomeEntrenador,
+    path: '/prensa', component: HomePrensa,
     children: [
       {
-        path: '', name: 'PRENSA', component: ListEventos
+        path: '', name: 'PRENSA', component: PrensaTabs // ListEventos
       },
       {
         path: 'evento/new', component: CreateEvento
       },
       {
         path: 'evento/:id/edit', component: EditEvento
+      },
+      {
+        path: 'festival/:id/view', component: ViewFestival
       },
     ]
   },

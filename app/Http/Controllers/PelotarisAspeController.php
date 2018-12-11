@@ -15,7 +15,7 @@ class PelotarisAspeController extends Controller
      */
     public function index(Request $request)
     {
-      $request->user()->authorizeRoles(['admin', 'gerente', 'intendente']);
+      $request->user()->authorizeRoles(['admin', 'gerente', 'intendente', 'prensa']);
 
       $items = \App\PelotarisAspe::orderBy('alias', 'asc')->get();
 

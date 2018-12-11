@@ -8,6 +8,7 @@
         <div class="col-sm-3 marcador rojo float-left text-left position-relative">
           <b-form-select
             v-model="tanteo.puntos_rojo"
+            :disabled="(isPrensa ? true : false)"
             :options="tantos" />
           <div class="pelotaris position-absolute">
             <p v-if="partido.pelotari_1" class="mb-0 text-uppercase font-weight-bold">{{ partido.pelotari_1.alias }}</p>
@@ -22,6 +23,7 @@
         <div class="col-sm-3 marcador azul float-right text-right position-relative">
           <b-form-select
             v-model="tanteo.puntos_azul"
+            :disabled="(isPrensa ? true : false)"
             :options="tantos" />
           <div class="pelotaris position-absolute">
             <p v-if="partido.pelotari_3" class="mb-0 text-uppercase font-weight-bold">{{ partido.pelotari_3.alias }}</p>
@@ -35,19 +37,19 @@
         <b-card no-body class="mb-3">
           <b-tabs pills card>
             <b-tab title="Tanteo" active>
-              <tab-tanteo :partido="partido" :tanteo="tanteo"></tab-tanteo>
+              <tab-tanteo :partido="partido" :tanteo="tanteo" :is-prensa="isPrensa"></tab-tanteo>
             </b-tab>
             <b-tab title="Marcadores">
-              <tab-marcadores :partido="partido" :marcadores="marcadores"></tab-marcadores>
+              <tab-marcadores :partido="partido" :marcadores="marcadores" :is-prensa="isPrensa"></tab-marcadores>
             </b-tab>
             <b-tab title="Anotaciones">
-              <tab-anotaciones :partido="partido" :anotaciones="anotaciones"></tab-anotaciones>
+              <tab-anotaciones :partido="partido" :anotaciones="anotaciones" :is-prensa="isPrensa"></tab-anotaciones>
             </b-tab>
           </b-tabs>
         </b-card>
 
         <b-row class="m-0">
-          <b-button variant="danger" type="submit">Guardar</b-button>
+          <b-button v-if="!isPrensa" variant="danger" type="submit">Guardar</b-button>
           <b-button variant="default" @click="onClickCancelar()" class="ml-2">Cancelar</b-button>
         </b-row>
 
@@ -66,7 +68,7 @@
 
   export default {
     mixins: [APIGetters, Utils],
-    props: ['partido', 'modalId'],
+    props: ['partido', 'modalId', 'isPrensa'],
     data () {
       return {
         tanteo: {
@@ -188,7 +190,7 @@
           marcadores: this.marcadores,
           anotaciones: this.anotaciones,
         }
-        
+
         this.$store.dispatch('updatePartidoCelebrado', data)
           .then((response) => {
             this.showSnackbar("Partido actualizado");
@@ -210,7 +212,7 @@
   }
 
   Vue.component('tab-tanteo', {
-    props: ['partido', 'tanteo'],
+    props: ['partido', 'tanteo', 'isPrensa'],
     data: function() {
       return {
         fields: [],
@@ -298,10 +300,30 @@
     template: `
       <div>
         <b-row>
-          <b-col sm="4"><label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label></b-col>
-          <b-col sm="2"><b-form-input id="pelotazos" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.pelotazos" step="1" min="0" max="2000"/></b-col>
-          <b-col sm="4"><label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duración partido:</label></b-col>
-          <b-col sm="2"><b-form-input id="duracion" class="text-right" type="number" @focus.native="onFocusInput($event.target)" v-model="tanteo.duracion" step="1" min="0" max="120"/></b-col>
+          <b-col sm="4">
+            <label for="pelotazos" class="pt-1 mb-0 font-weight-bold float-right">Total pelotazos:</label>
+          </b-col>
+          <b-col sm="2">
+            <b-form-input id="pelotazos"
+              class="text-right"
+              type="number"
+              @focus.native="onFocusInput($event.target)"
+              v-model="tanteo.pelotazos"
+              step="1" min="0" max="2000"
+              :disabled="(isPrensa ? true : false)" />
+          </b-col>
+          <b-col sm="4">
+            <label for="duracion" class="pt-1 mb-0 font-weight-bold float-right">Duración partido:</label>
+          </b-col>
+          <b-col sm="2">
+            <b-form-input id="duracion"
+              class="text-right"
+              type="number"
+              @focus.native="onFocusInput($event.target)"
+              v-model="tanteo.duracion"
+              step="1" min="0" max="120"
+              :disabled="(isPrensa ? true : false)" />
+          </b-col>
         </b-row>
 
         <b-row class="mt-3">
@@ -319,16 +341,28 @@
               <tr v-for="item in this.tanteo.tantos" class="text-center">
                   <td class="text-left text-uppercase font-weight-bold">{{ item.name.replace("_", " ").toUpperCase() }}</td>
                   <td>
-                    <b-form-select class="rojo" v-model="item.pelotari_1" :options="tantos" />
+                    <b-form-select class="rojo"
+                      v-model="item.pelotari_1"
+                      :options="tantos"
+                      :disabled="(isPrensa ? true : false)" />
                   </td>
                   <td v-if="partido.is_partido_parejas">
-                    <b-form-select class="rojo" v-model="item.pelotari_2" :options="tantos" />
+                    <b-form-select class="rojo"
+                      v-model="item.pelotari_2"
+                      :options="tantos"
+                      :disabled="(isPrensa ? true : false)" />
                   </td>
                   <td>
-                    <b-form-select class="azul" v-model="item.pelotari_3" :options="tantos" />
+                    <b-form-select class="azul"
+                      v-model="item.pelotari_3"
+                      :options="tantos"
+                      :disabled="(isPrensa ? true : false)" />
                   </td>
                   <td v-if="partido.is_partido_parejas">
-                    <b-form-select class="azul" v-model="item.pelotari_4" :options="tantos" />
+                    <b-form-select class="azul"
+                      v-model="item.pelotari_4"
+                      :options="tantos"
+                      :disabled="(isPrensa ? true : false)" />
                   </td>
               </tr>
             </tbody>
@@ -339,7 +373,7 @@
   });
 
   Vue.component('tab-marcadores', {
-    props: ['partido', 'marcadores'],
+    props: ['partido', 'marcadores', 'isPrensa'],
     data: function() {
       return {
         tantos: [
@@ -388,8 +422,8 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i }}:&nbsp;</td>
-                <td><b-form-select class="rojo" v-model="marcadores.rojo[i - 1]" :options="tantos" /></td>
-                <td><b-form-select class="azul" v-model="marcadores.azul[i - 1]" :options="tantos" /></td>
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i - 1]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i - 1]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
               </tr>
             </tbody>
           </table>
@@ -404,8 +438,8 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i + 11 }}:&nbsp;</td>
-                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 10]" :options="tantos" /></td>
-                <td><b-form-select class="azul" v-model="marcadores.azul[i + 10]" :options="tantos" /></td>
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 10]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i + 10]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
               </tr>
             </tbody>
           </table>
@@ -420,8 +454,8 @@
             <tbody>
               <tr v-for="i in 11">
                 <td class="text-center font-weight-bold">{{ i + 22 }}:&nbsp;</td>
-                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 21]" :options="tantos" /></td>
-                <td><b-form-select class="azul" v-model="marcadores.azul[i + 21]" :options="tantos" /></td>
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 21]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i + 21]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
               </tr>
             </tbody>
           </table>
@@ -436,8 +470,8 @@
             <tbody>
               <tr v-for="i in 10">
                 <td class="text-center font-weight-bold">{{ i + 33 }}:&nbsp;</td>
-                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 32]" :options="tantos" /></td>
-                <td><b-form-select class="azul" v-model="marcadores.azul[i + 32]" :options="tantos" /></td>
+                <td><b-form-select class="rojo" v-model="marcadores.rojo[i + 32]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
+                <td><b-form-select class="azul" v-model="marcadores.azul[i + 32]" :options="tantos" :disabled="(isPrensa ? true : false)" /></td>
               </tr>
             </tbody>
           </table>
@@ -447,7 +481,7 @@
   });
 
   Vue.component('tab-anotaciones', {
-    props: ['partido', 'anotaciones'],
+    props: ['partido', 'anotaciones', 'isPrensa'],
     data: function() {
       return {
 
@@ -461,7 +495,8 @@
           <b-form-textarea id="afluencia"
                            v-model="anotaciones.afluencia"
                            :rows="3"
-                           :max-rows="6">
+                           :max-rows="6"
+                           :disabled="(isPrensa ? true : false)">
           </b-form-textarea>
         </b-form-group>
         <b-form-group label="Condiciones frontón"
@@ -470,7 +505,8 @@
           <b-form-textarea id="fronton"
                            v-model="anotaciones.fronton"
                            :rows="3"
-                           :max-rows="6">
+                           :max-rows="6"
+                           :disabled="(isPrensa ? true : false)">
           </b-form-textarea>
         </b-form-group>
         <b-form-group label="Alguna incidencia"
@@ -479,7 +515,8 @@
           <b-form-textarea id="incidencias"
                            v-model="anotaciones.incidencias"
                            :rows="3"
-                           :max-rows="6">
+                           :max-rows="6"
+                           :disabled="(isPrensa ? true : false)">
           </b-form-textarea>
         </b-form-group>
         <b-form-group label="Otros comentarios"
@@ -488,7 +525,8 @@
           <b-form-textarea id="comentarios"
                            v-model="anotaciones.comentarios"
                            :rows="3"
-                           :max-rows="6">
+                           :max-rows="6"
+                           :disabled="(isPrensa ? true : false)">
           </b-form-textarea>
         </b-form-group>
       </b-row>

@@ -22,7 +22,7 @@ class FestivalPartidoController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'gerente', 'intendente']);
+        $request->user()->authorizeRoles(['admin', 'gerente', 'intendente', 'prensa']);
 
         $festival_id = $request->get('festival_id');
         $festival_fecha = $request->get('festival_fecha');

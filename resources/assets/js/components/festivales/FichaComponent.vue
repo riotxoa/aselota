@@ -1,9 +1,9 @@
 <template>
   <div id="preloader">
-    <festival-header :form-title="formTitle" :is-gerente="isGerente"></festival-header>
+    <festival-header :form-title="formTitle" :is-gerente="isGerente" :is-prensa="isPrensa"></festival-header>
     <festival-body v-if="_edit && isGerente"></festival-body>
     <!-- <list-partidos-i v-else></list-partidos-i> -->
-    <list-partidos-i v-if="_edit && !isGerente"></list-partidos-i>
+    <list-partidos-i v-if="_edit && !isGerente" :is-prensa="isPrensa"></list-partidos-i>
   </div>
 </template>
 
@@ -26,7 +26,7 @@
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
   export default {
-    props: ['formTitle', 'isNewFestival', 'isGerente'],
+    props: ['formTitle', 'isNewFestival', 'isGerente', 'isPrensa'],
     data () {
       return {
       }

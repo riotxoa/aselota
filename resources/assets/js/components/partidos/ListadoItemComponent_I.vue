@@ -154,11 +154,11 @@
     </b-row>
 
     <b-modal class="modalEditPartido modalEditPartidoCelebrado" :id="modalPartidoC_ID" :title="modalPartidoTitle" size="lg" hideFooter lazy>
-      <form-partido-i :partido="partido" :modal-id="modalPartidoC_ID" v-on:update-partido="updatePartidoCelebrado($event)"></form-partido-i>
+      <form-partido-i :partido="partido" :modal-id="modalPartidoC_ID" v-on:update-partido="updatePartidoCelebrado($event)" :is-prensa="isPrensa"></form-partido-i>
     </b-modal>
 
     <b-modal class="modalEditPelotari" :id="modalPelotariID" title="Asistencia Pelotari" size="lg" hideFooter lazy>
-      <form-pelotari-i :partido="partido" :pelotari="pelotari" :modal-id="modalPelotariID" v-on:update-pelotari="updatePelotari($event)"></form-pelotari-i>
+      <form-pelotari-i :partido="partido" :pelotari="pelotari" :modal-id="modalPelotariID" v-on:update-pelotari="updatePelotari($event)" :is-prensa="isPrensa"></form-pelotari-i>
     </b-modal>
 
     <b-modal class="modalEditPartido modalEditPartidoPendiente" :id="modalPartidoP_ID" size="lg" hideFooter lazy>
@@ -176,7 +176,7 @@
   Vue.component('form-pelotari-i', require('./FichaPelotari_I.vue'));
 
   export default {
-    props: ['partido', 'isGerente'],
+    props: ['partido', 'isGerente', 'isPrensa'],
     data () {
       return {
         data: null,
@@ -300,7 +300,7 @@
         this.partido.is_partido_parejas = p.is_partido_parejas;
       },
       onClickEditPelotari(p) {
-        if( p.asegarce ) { 
+        if( p.asegarce ) {
           this.pelotari = p;
           this.$root.$emit('bv::show::modal', this.modalPelotariID);
         }

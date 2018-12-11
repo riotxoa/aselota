@@ -94,7 +94,7 @@
   Vue.component('filtro-festivales', require('./FiltroFestivalComponent.vue'));
   export default {
       mixins: [ Utils ],
-      props: ['isGerente'],
+      props: ['isGerente', 'isPrensa'],
       data () {
         return {
           filter: true,
@@ -150,7 +150,10 @@
           this.$router.push('/gerente/festival/' + id + '/edit/');
         },
         onClickEdit_I (id) {
-          this.$router.push('/intendente/festival/' + id + '/edit/');
+          if( this.isPrensa )
+            this.$router.push('/prensa/festival/' + id + '/view/');
+          else
+            this.$router.push('/intendente/festival/' + id + '/edit/');
         },
         onClickRow(item, index, ev) {
           if( this.update && 1 == this.isGerente ) {

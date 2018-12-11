@@ -12,7 +12,7 @@
                 <h4 class="text-white text-uppercase text-center font-weight-bold m-0">{{ this.formTitle }}</h4>
               </div>
               <div class="col-sm-4 text-right">
-                <b-button type="submit" variant="danger">Guardar</b-button>
+                <b-button v-if="!isPrensa" type="submit" variant="danger">Guardar</b-button>
                 <b-button type="reset" variant="default">Volver</b-button>
               </div>
             </b-row>
@@ -142,6 +142,7 @@
               <b-form-select id="estadoInput"
                              :readonly="editdate || editdatepresu"
                              :options="festivalEstados"
+                             :disabled="(isPrensa ? true : false)"
                              required
                              v-model="_header.estado_id">
               </b-form-select>
@@ -162,7 +163,7 @@
 
   export default {
     mixins: [APIGetters, Nav, Utils],
-    props: ['formTitle', 'isGerente'],
+    props: ['formTitle', 'isGerente', 'isPrensa'],
     data () {
       return {
         dia: '',
@@ -307,7 +308,7 @@
           this.editDate(false);
         else if(this.editdatepresu)
           this.editDatePresu(false);
-        else
+        else 
           this.goBack();
       }
     }

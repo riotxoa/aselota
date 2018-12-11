@@ -66,7 +66,7 @@ class FestivaleController extends Controller
             }
           }
 
-          if( $request->user()->hasRole("Intendente") ) {
+          if( $request->user()->hasAnyRole( array("Intendente", "Prensa") ) ) {
             $items = $items->where('festivales.estado_id', '>', 1); // Estado !== 'Estimación'
           }
 

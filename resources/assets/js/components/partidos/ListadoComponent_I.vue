@@ -2,7 +2,7 @@
   <div v-if="_partidos" class="list-partidos-festival container px-0">
     <ul class="mt-3 px-3">
       <li v-for="partido in _partidos">
-        <partido-i :partido="partido" :is-gerente="isGerente" v-on:delete-partido="showDeleteModal($event)"></partido-i>
+        <partido-i :partido="partido" :is-gerente="isGerente" :is-prensa="isPrensa" v-on:delete-partido="showDeleteModal($event)"></partido-i>
       </li>
     </ul>
     <delete-modal v-if="isGerente" object-name="Partido" :remove-item="deletePartido"></delete-modal>
@@ -18,7 +18,7 @@
 
   export default {
     mixins: [Utils],
-    props: ['isGerente'],
+    props: ['isGerente', 'isPrensa'],
     data() {
       return {
         deleteID: null,
