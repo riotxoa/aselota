@@ -13,9 +13,7 @@
       <router-link class="text-white" :to="{ name: 'ENTRENADOR', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo Gestión Entrenamientos</div></router-link>
     </div>
     <div class="col-12">
-      <div class="btn btn-secondary disabled">
-        Módulo Comunicación
-      </div>
+      <router-link class="text-white" :to="{ name: 'PRENSA', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Módulo Comunicación</div></router-link>
     </div>
     <div class="col-12">
       <div class="btn btn-secondary disabled">
