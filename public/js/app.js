@@ -106242,7 +106242,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-1.45rem;\n}\n.main-header .toolbar {\n  background-color:slategray;\n  padding:10px 0;\n  text-align:center;\n}\n.main-header h4 {\n  line-height:1.75;\n  margin:0 auto;\n}\n.info-pelotari {\n  margin-bottom:1rem;\n  padding:1.5rem;\n}\n.info-pelotari-row .info-pelotari:nth-child(odd) {\n  border-right:1px solid #efefef;\n}\n", ""]);
+exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-1.45rem;\n}\n.main-header .toolbar {\n  background-color:slategray;\n  padding:10px 0;\n  text-align:center;\n}\n.main-header h4 {\n  line-height:1.75;\n  margin:0 auto;\n}\n.info-pelotari {\n  margin-bottom:1rem;\n  padding:1.5rem;\n}\n.info-pelotari-row .info-pelotari:nth-child(odd) {\n  border-right:1px solid #efefef;\n}\n.td-descripcion {\n  max-width:200px;\n  width:30%;\n}\n", ""]);
 
 // exports
 
@@ -106363,7 +106363,7 @@ Vue.component('delete-modal', __webpack_require__(31));
       display: true,
       sortBy: 'age',
       sortDesc: false,
-      fields: [{ key: 'fecha', label: 'Fecha', sortable: true }, { key: 'hora', label: 'Hora', sortable: true }, { key: 'provincia_name', label: 'Provincia', sortable: true }, { key: 'municipio_name', label: 'Municipio', sortable: true }, { key: 'motivo_name', label: 'Motivo', sortable: true }, { key: 'desc', label: 'Descripción', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
+      fields: [{ key: 'fecha', label: 'Fecha', sortable: true }, { key: 'hora', label: 'Hora', sortable: true }, { key: 'provincia_name', label: 'Provincia', sortable: true }, { key: 'municipio_name', label: 'Municipio', sortable: true }, { key: 'motivo_name', label: 'Motivo', sortable: true }, { key: 'desc', label: 'Descripción', sortable: true, tdClass: "td-descripcion" }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
       perPage: 10,
       currentPage: 1,
       pageOptions: [10, 25, 50],

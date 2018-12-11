@@ -112,7 +112,7 @@
             { key: 'provincia_name', label: 'Provincia', sortable: true },
             { key: 'municipio_name', label: 'Municipio', sortable: true },
             { key: 'motivo_name', label: 'Motivo', sortable: true },
-            { key: 'desc', label: 'Descripción', sortable: true },
+            { key: 'desc', label: 'Descripción', sortable: true, tdClass: "td-descripcion" },
             { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" },
           ],
           perPage: 10,
@@ -202,5 +202,9 @@
   }
   .info-pelotari-row .info-pelotari:nth-child(odd) {
     border-right:1px solid #efefef;
+  }
+  .td-descripcion {
+    max-width:200px;
+    width:30%;
   }
 </style>
