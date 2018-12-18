@@ -24,7 +24,11 @@
     </b-row>
 
     <!-- Pelotaris convocados -->
-    <evento-pelotaris></evento-pelotaris>
+    <b-row>
+      <div v-for="pelotari in _evento.pelotaris" class="col-sm-4">
+        <evento-pelotaris :pelotari="pelotari"></evento-pelotaris>
+      </div>
+    </b-row>
 
   </div>
 </template>
@@ -34,8 +38,6 @@
   import { mapState } from 'vuex';
   import Utils from '../utils/utils.js';
 
-  Vue.component('evento-pelotaris', require('./EventoPelotariComponent.vue'));
-
   export default {
     mixins: [Utils],
     data() {
@@ -44,30 +46,24 @@
         pelotariSelected: false,
       }
     },
-    created: function () {
-      console.log("EventoBodyComponent created");
-    },
     computed: mapState({
       _evento: 'evento',
       _pelotaris: 'pelotaris',
     }),
     methods: {
       onConvocarPelotari() {
-        if( false && _.findIndex(this._evento.pelotaris, { "id": this.pelotari_id }) > -1 ) {
+        if( _.findIndex(this._evento.pelotaris, { "id": this.pelotari_id }) > -1 ) {
           this.showSnackbar("El Pelotari seleccionado ya se encuentra convocado al Evento");
           return;
         } else {
           var pelotari = _.find(this._pelotaris, { value: this.pelotari_id });
-
           pelotari.asiste = 1;
           pelotari.motivo = '';
-
-          store.dispatch('addPelotariToEvento', pelotari);
-
-          this.pelotari_id = null;
-          this.pelotariSelected = false;
-
-          this.showSnackbar("Pelotari añadido al Evento de Prensa");
+          store.dispatch('addPelotariToEvento', pelotari).then( (response) => {
+            this.pelotari_id = null;
+            this.pelotariSelected = false;
+            this.showSnackbar("Pelotari añadido al Evento de Prensa");
+          });
         }
       },
       onChangePelotari() {

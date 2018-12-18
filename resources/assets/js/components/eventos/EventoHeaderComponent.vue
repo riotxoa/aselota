@@ -107,6 +107,7 @@
 
 <script>
   import { store } from '../store/store';
+  import { mapState } from 'vuex';
 
   import Nav from '../utils/nav.js';
   import Utils from '../utils/utils.js';
@@ -124,8 +125,8 @@
     created: function () {
       console.log("EventoHeaderComponent created");
 
-      if (this._edit) {
-        this._evento = this.$route.query.evento;
+      if (this._edit || this.$route.params.id) {
+        store.commit('SET_EVENTO', this.$route.query.evento);
       } else {
         this._evento.fecha = this.formatDateEN();
         this._evento.hora = "";
@@ -140,36 +141,14 @@
         store.dispatch('resetEvento');
       }
     },
-    computed: {
-      _evento: {
-        get() {
-          return store.getters.evento;
-        },
-        set(evento) {
-          store.commit('SET_EVENTO', evento);
-        },
-      },
-      _motivos () {
-        return store.getters.evento_motivos;
-      },
-      _provincias () {
-        return store.getters.provincias;
-      },
-      _municipios () {
-        return store.getters.municipios_filtered;
-      },
-      _campeonatos () {
-        return store.getters.campeonatos;
-      },
-      _edit: {
-        get() {
-          return store.getters.edit_evento;
-        },
-        set(value) {
-          store.commit('SET_EVENTO_EDIT', value);
-        }
-      },
-    },
+    computed: mapState({
+      _evento: 'evento',
+      _motivos: 'evento_motivos',
+      _provincias: 'provincias',
+      _municipios: 'municipios_filtered',
+      _campeonatos: 'campeonatos',
+      _edit: 'edit_evento',
+    }),
     methods: {
       dontDestroyComponent () {
         this.destroy = false;
@@ -227,8 +206,8 @@
         } else {
           this.axios.post(uri, this._evento)
             .then((response) => {
-              this._evento.id = response.data.id;
-              this._edit = 1;
+              store.commit('SET_EVENTO', response.data);
+              store.commit('SET_EVENTO_EDIT', 1);
               this.showSnackbar("Evento creado");
             })
             .catch((error) => {

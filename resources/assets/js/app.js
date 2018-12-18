@@ -86,6 +86,9 @@ Vue.component('home-prensa', require('./components/HomePrensaComponent.vue'));
 Vue.component('prensa-tabs', require('./components/eventos/PrensaHomePageComponent.vue'));
 Vue.component('listado-eventos', require('./components/eventos/ListadoComponent.vue'));
 Vue.component('ficha-evento', require('./components/eventos/FichaComponent.vue'));
+Vue.component('evento-pelotaris', require('./components/eventos/EventoPelotariComponent.vue'));
+Vue.component('evento-header', require('./components/eventos/EventoHeaderComponent.vue'));
+Vue.component('evento-body', require('./components/eventos/EventoBodyComponent.vue'));
 
 const HomePrensa = { template: '<home-prensa></home-prensa>' };
 const PrensaTabs = { template: '<prensa-tabs></prensa-tabs>' };

@@ -245,6 +245,9 @@ export const store = new Vuex.Store({
       state.evento = {};
     },
     ADD_EVENTO_PELOTARI (state, pelotari) {
+      if( !state.evento.pelotaris )
+        state.evento.pelotaris = [];
+
       state.evento.pelotaris.push(pelotari);
     },
     UPDATE_EVENTO_PELOTARI (state, pelotari) {
@@ -717,12 +720,19 @@ export const store = new Vuex.Store({
     },
     addPelotariToEvento({ commit }, pelotari) {
       var uri = '/www/eventos/' + this.getters.evento.id + '/add/pelotari';
-      axios
-        .post(uri, pelotari)
-        .then( r => r.data )
-        .then( response => {
-          commit('ADD_EVENTO_PELOTARI', response);
-        });
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, pelotari)
+          .then( r => r.data )
+          .then( (response) => {
+            commit('ADD_EVENTO_PELOTARI', response);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     },
     updatePelotariFromEvento({ commit }, pelotari) {
       var uri = '/www/eventos/' + this.getters.evento.id + '/update/pelotari';

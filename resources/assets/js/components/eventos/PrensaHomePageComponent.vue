@@ -30,9 +30,6 @@
 </template>
 
 <script>
-  Vue.component('listado-eventos', require('./ListadoComponent.vue'));
-  Vue.component('listado-festivales', require('../festivales/ListadoComponent.vue'));
-
   var store_prensa = {
     tabIndex: 0,
   }

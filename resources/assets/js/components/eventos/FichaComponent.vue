@@ -9,8 +9,6 @@
   import { store } from '../store/store';
   import { mapState } from 'vuex';
 
-  Vue.component('evento-header', require('./EventoHeaderComponent.vue'));
-  Vue.component('evento-body', require('./EventoBodyComponent.vue'));
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
