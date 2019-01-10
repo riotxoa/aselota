@@ -102153,7 +102153,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.festival-costes .card {\n  border-color:#707f8f;\n}\n.festival-costes label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-costes input {\n  height:27px;\n}\n.festival-costes input[type=\"text\"],\n.festival-costes input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-costes .background-gray {\n  background-color:darkgray;\n  border-color:darkgray;\n}\n.festival-costes .background-red {\n  background-color:#dd3545;\n  border-color:#dd3545;\n  color:white;\n  font-size:1.15rem;\n}\n.festival-costes .background-red input {\n  font-size:1.15rem;\n  font-weight:bold;\n}\n.festival-costes .botonera {\n  margin-left:0;\n}\n@media screen and (min-width:768px) {\n.festival-costes .botonera {\n    bottom:15px;\n    right:30px;\n    position:absolute;\n}\n}\n", ""]);
+exports.push([module.i, "\n.festival-costes .card {\n  border-color:#707f8f;\n}\n.festival-costes label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-costes input {\n  height:27px;\n}\n.festival-costes input[type=\"text\"],\n.festival-costes input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-costes .background-gray {\n  background-color:darkgray;\n  border-color:darkgray;\n}\n.festival-costes .background-red {\n  background-color:#dd3545;\n  border-color:#dd3545;\n  color:white;\n  font-size:1.15rem;\n}\n.festival-costes .background-red input {\n  font-size:1.15rem;\n  font-weight:bold;\n}\n.festival-costes .botonera {\n  margin-left:0;\n}\n@media screen and (min-width:768px) {\n.festival-costes .botonera {\n    float:right;\n    margin-top:3rem;\n    padding-right:15px;\n}\n}\n", ""]);
 
 // exports
 
@@ -102168,6 +102168,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(8);
+//
 //
 //
 //
@@ -102542,6 +102543,50 @@ var render = function() {
               _c("div", { staticClass: "card mb-3" }, [
                 _c(
                   "div",
+                  { staticClass: "card-body p-2" },
+                  [
+                    _c("b-row", { staticClass: "m-0 p-0" }, [
+                      _c("label", { staticClass: "ml-0 mr-2" }, [
+                        _vm._v("Porcentaje Asegarce:")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {}, [
+                        _vm._v(_vm._s(_vm._costes.porcentaje) + " %")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      { staticClass: "px-3" },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "col-12 px-0",
+                          attrs: {
+                            id: "coste_porcentaje",
+                            type: "range",
+                            min: "0",
+                            max: "100",
+                            step: "5"
+                          },
+                          model: {
+                            value: _vm._costes.porcentaje,
+                            callback: function($$v) {
+                              _vm.$set(_vm._costes, "porcentaje", $$v)
+                            },
+                            expression: "_costes.porcentaje"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
                   { staticClass: "card-body" },
                   [
                     _c(
@@ -102638,8 +102683,12 @@ var render = function() {
                         }
                       },
                       [
-                        _c("b-form-input", {
-                          attrs: { id: "coste_texto_libre", type: "text" },
+                        _c("b-form-textarea", {
+                          attrs: {
+                            id: "coste_texto_libre",
+                            rows: 3,
+                            "max-rows": 6
+                          },
                           model: {
                             value: _vm._costes.cliente_txt,
                             callback: function($$v) {
@@ -102656,227 +102705,191 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
+              false
+                ? _c("div", { staticClass: "card mb-3" }, [
                     _c(
-                      "b-row",
+                      "div",
+                      { staticClass: "card-body" },
                       [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _vm._v("Aportación:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-5 text-right",
-                          attrs: {
-                            id: "coste_aportacion",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0.00"
-                          },
-                          on: { input: _vm.updatePrecioTotal },
-                          nativeOn: {
-                            focus: function($event) {
-                              $event.target.select()
-                            },
-                            blur: function($event) {
-                              return _vm.formatCurrency($event)
-                            }
-                          },
-                          model: {
-                            value: _vm._costes.aportacion,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "aportacion", $$v)
-                            },
-                            expression: "_costes.aportacion"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("b-row", { staticClass: "mt-4" }, [
-                      _c(
-                        "div",
-                        { staticClass: "col-12" },
-                        [
-                          _c("b-table", {
-                            attrs: {
-                              striped: "",
-                              hover: "",
-                              small: "",
-                              items: _vm._costes.entradas,
-                              fields: _vm.fields
-                            },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "actions",
-                                fn: function(row) {
-                                  return [
-                                    _c(
-                                      "b-button",
-                                      {
-                                        attrs: {
-                                          size: "sm",
-                                          variant: "danger",
-                                          title: "Borrar Entradas"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.onClickDeleteEntradas(row.item)
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("span", {
-                                          staticClass: "icon voyager-trash"
-                                        })
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-button",
-                                      {
-                                        attrs: {
-                                          size: "sm",
-                                          variant: "primary",
-                                          title: "Editar Entradas"
-                                        },
-                                        on: {
-                                          click: function($event) {
-                                            $event.stopPropagation()
-                                            _vm.onClickEditEntradas(row.item)
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("span", {
-                                          staticClass: "icon voyager-edit"
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                }
-                              }
-                            ])
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-7" }, [_vm._v(" ")]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md-5 text-right" },
-                        [
-                          _c(
-                            "b-btn",
-                            {
-                              attrs: { size: "sm" },
-                              on: { click: _vm.onClickAddEntradas }
-                            },
-                            [_vm._v("Añadir Entradas")]
-                          )
-                        ],
-                        1
-                      )
-                    ])
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _vm._v("Precio total:")
-                        ]),
-                        _vm._v(" "),
-                        _vm._costes.precio_total
-                          ? _c("b-form-input", {
+                        _c(
+                          "b-row",
+                          [
+                            _c("label", { staticClass: "col-md-7" }, [
+                              _vm._v("Aportación:")
+                            ]),
+                            _vm._v(" "),
+                            _c("b-form-input", {
                               staticClass: "col-md-5 text-right",
                               attrs: {
-                                id: "coste_precio_total",
-                                type: "text",
-                                tabindex: "-1",
-                                readonly: ""
+                                id: "coste_aportacion",
+                                type: "number",
+                                maxlength: "8",
+                                placeholder: "0.00"
+                              },
+                              on: { input: _vm.updatePrecioTotal },
+                              nativeOn: {
+                                focus: function($event) {
+                                  $event.target.select()
+                                },
+                                blur: function($event) {
+                                  return _vm.formatCurrency($event)
+                                }
                               },
                               model: {
-                                value: _vm.precio_total,
+                                value: _vm._costes.aportacion,
                                 callback: function($$v) {
-                                  _vm.precio_total = $$v
+                                  _vm.$set(_vm._costes, "aportacion", $$v)
                                 },
-                                expression: "precio_total"
+                                expression: "_costes.aportacion"
                               }
                             })
-                          : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("b-row", { staticClass: "mt-4" }, [
+                          _c(
+                            "div",
+                            { staticClass: "col-12" },
+                            [
+                              _c("b-table", {
+                                attrs: {
+                                  striped: "",
+                                  hover: "",
+                                  small: "",
+                                  items: _vm._costes.entradas,
+                                  fields: _vm.fields
+                                },
+                                scopedSlots: _vm._u([
+                                  {
+                                    key: "actions",
+                                    fn: function(row) {
+                                      return [
+                                        _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              size: "sm",
+                                              variant: "danger",
+                                              title: "Borrar Entradas"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.onClickDeleteEntradas(
+                                                  row.item
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "icon voyager-trash"
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "b-button",
+                                          {
+                                            attrs: {
+                                              size: "sm",
+                                              variant: "primary",
+                                              title: "Editar Entradas"
+                                            },
+                                            on: {
+                                              click: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.onClickEditEntradas(
+                                                  row.item
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c("span", {
+                                              staticClass: "icon voyager-edit"
+                                            })
+                                          ]
+                                        )
+                                      ]
+                                    }
+                                  }
+                                ])
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-7" }, [_vm._v(" ")]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-md-5 text-right" },
+                            [
+                              _c(
+                                "b-btn",
+                                {
+                                  attrs: { size: "sm" },
+                                  on: { click: _vm.onClickAddEntradas }
+                                },
+                                [_vm._v("Añadir Entradas")]
+                              )
+                            ],
+                            1
+                          )
+                        ])
                       ],
                       1
                     )
-                  ],
-                  1
-                )
-              ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              false
+                ? _c("div", { staticClass: "card mb-3" }, [
+                    _c(
+                      "div",
+                      { staticClass: "card-body" },
+                      [
+                        _c(
+                          "b-row",
+                          [
+                            _c("label", { staticClass: "col-md-7" }, [
+                              _vm._v("Precio total:")
+                            ]),
+                            _vm._v(" "),
+                            _vm._costes.precio_total
+                              ? _c("b-form-input", {
+                                  staticClass: "col-md-5 text-right",
+                                  attrs: {
+                                    id: "coste_precio_total",
+                                    type: "text",
+                                    tabindex: "-1",
+                                    readonly: ""
+                                  },
+                                  model: {
+                                    value: _vm.precio_total,
+                                    callback: function($$v) {
+                                      _vm.precio_total = $$v
+                                    },
+                                    expression: "precio_total"
+                                  }
+                                })
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "col-md-5 position-relative" },
               [
-                _c("div", { staticClass: "card mb-3" }, [
-                  _c(
-                    "div",
-                    { staticClass: "card-body p-2" },
-                    [
-                      _c("b-row", { staticClass: "m-0 p-0" }, [
-                        _c("label", { staticClass: "ml-0 mr-2" }, [
-                          _vm._v("Porcentaje Asegarce:")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", {}, [
-                          _vm._v(_vm._s(_vm._costes.porcentaje) + " %")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "b-row",
-                        { staticClass: "px-3" },
-                        [
-                          _c("b-form-input", {
-                            staticClass: "col-12 px-0",
-                            attrs: {
-                              id: "coste_porcentaje",
-                              type: "range",
-                              min: "0",
-                              max: "100",
-                              step: "5"
-                            },
-                            model: {
-                              value: _vm._costes.porcentaje,
-                              callback: function($$v) {
-                                _vm.$set(_vm._costes, "porcentaje", $$v)
-                              },
-                              expression: "_costes.porcentaje"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
                 _c("div", { staticClass: "card mb-3 background-gray" }, [
                   _c(
                     "div",

@@ -7,6 +7,24 @@
 
         <div class="col-md-5">
           <div class="card mb-3">
+            <div class="card-body p-2">
+              <b-row class="m-0 p-0">
+                <label class="ml-0 mr-2">Porcentaje Asegarce:</label>
+                <div class="">{{ _costes.porcentaje }}&nbsp;%</div>
+              </b-row>
+              <b-row class="px-3">
+                <b-form-input id="coste_porcentaje"
+                              class="col-12 px-0"
+                              type="range"
+                              min="0"
+                              max="100"
+                              step="5"
+                              v-model="_costes.porcentaje">
+                </b-form-input>
+              </b-row>
+            </div>
+          </div>
+          <div class="card mb-3">
             <div class="card-body">
               <b-row>
                 <label class="col-md-7">Coste empresa festival:</label>
@@ -41,14 +59,15 @@
               </b-row>
               <b-form-group label="Observaciones:"
                             label-for="coste_texto_libre">
-                <b-form-input id="coste_texto_libre"
-                              type="text"
-                              v-model="_costes.cliente_txt">
-                </b-form-input>
+                <b-form-textarea id="coste_texto_libre"
+                                 v-model="_costes.cliente_txt"
+                                 :rows="3"
+                                 :max-rows="6">
+                </b-form-textarea>
               </b-form-group>
             </div>
           </div>
-          <div class="card mb-3">
+          <div v-if="false" class="card mb-3">
             <div class="card-body">
               <b-row>
                 <label class="col-md-7">Aportación:</label>
@@ -85,7 +104,7 @@
 
             </div>
           </div>
-          <div class="card mb-3">
+          <div v-if="false" class="card mb-3">
             <div class="card-body">
               <b-row>
                 <label class="col-md-7">Precio total:</label>
@@ -103,24 +122,6 @@
         </div>
 
         <div class="col-md-5 position-relative">
-          <div class="card mb-3">
-            <div class="card-body p-2">
-              <b-row class="m-0 p-0">
-                <label class="ml-0 mr-2">Porcentaje Asegarce:</label>
-                <div class="">{{ _costes.porcentaje }}&nbsp;%</div>
-              </b-row>
-              <b-row class="px-3">
-                <b-form-input id="coste_porcentaje"
-                              class="col-12 px-0"
-                              type="range"
-                              min="0"
-                              max="100"
-                              step="5"
-                              v-model="_costes.porcentaje">
-                </b-form-input>
-              </b-row>
-            </div>
-          </div>
           <div class="card mb-3 background-gray">
             <div class="card-body">
               <b-row>
@@ -379,9 +380,9 @@
   }
   @media screen and (min-width:768px) {
     .festival-costes .botonera {
-      bottom:15px;
-      right:30px;
-      position:absolute;
+      float:right;
+      margin-top:3rem;
+      padding-right:15px;
     }
   }
 </style>
