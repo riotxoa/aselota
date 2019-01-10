@@ -98017,9 +98017,6 @@ Vue.component('festival-facturacion', __webpack_require__(479));
   created: function created() {
     console.log("FestivalBodyComponent created");
   },
-  // beforeDestroy: function () {
-  //   store.dispatch('clearPartidos');
-  // },
   computed: Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
     _header: 'header'
   }),

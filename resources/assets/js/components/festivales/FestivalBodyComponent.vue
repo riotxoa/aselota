@@ -32,9 +32,6 @@
     created: function () {
       console.log("FestivalBodyComponent created");
     },
-    // beforeDestroy: function () {
-    //   store.dispatch('clearPartidos');
-    // },
     computed: mapState({
       _header: 'header',
     }),
