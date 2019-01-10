@@ -97217,6 +97217,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -97231,6 +97242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       dia: '',
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
+      organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Asegarce" }, { value: 'beste', text: "Aspe" }],
       editdate: false,
       editdatepresu: false,
       show: true,
@@ -97255,6 +97267,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this._header.fronton_id = null;
       this._header.television = 0;
       this._header.television_txt = "";
+      this._header.organizador = null;
       this._header.estado_id = 1;
       this._header.fecha_presu = this.formatDateEN();
     }
@@ -97768,7 +97781,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-4 mt-1",
+                        staticClass: "col-sm-2 mt-1",
                         attrs: { label: " ", "label-for": "televisionTxtInput" }
                       },
                       [
@@ -97784,6 +97797,36 @@ var render = function() {
                               _vm.$set(_vm._header, "television_txt", $$v)
                             },
                             expression: "_header.television_txt"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: {
+                          label: "Organizador",
+                          "label-for": "organizadorInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "organizadorInput",
+                            readonly: _vm.editdate || _vm.editdatepresu,
+                            disabled: !_vm.isGerente,
+                            options: _vm.organizador,
+                            required: ""
+                          },
+                          model: {
+                            value: _vm._header.organizador,
+                            callback: function($$v) {
+                              _vm.$set(_vm._header, "organizador", $$v)
+                            },
+                            expression: "_header.organizador"
                           }
                         })
                       ],

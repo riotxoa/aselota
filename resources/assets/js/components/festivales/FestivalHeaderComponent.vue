@@ -129,12 +129,23 @@
             </b-form-group>
             <b-form-group label=" "
                           label-for="televisionTxtInput"
-                          class="col-sm-4 mt-1">
+                          class="col-sm-2 mt-1">
               <b-form-input id="televisionTxtInput"
                             :readonly="editdate || editdatepresu"
                             :disabled="!isGerente"
                             v-model="_header.television_txt">
               </b-form-input>
+            </b-form-group>
+            <b-form-group label="Organizador"
+                          label-for="organizadorInput"
+                          class="col-sm-2">
+              <b-form-select id="organizadorInput"
+                :readonly="editdate || editdatepresu"
+                :disabled="!isGerente"
+                :options="organizador"
+                required
+                v-model="_header.organizador">
+              </b-form-select>
             </b-form-group>
             <b-form-group label="Estado festival:"
                           label-for="estadoInput"
@@ -171,6 +182,11 @@
           { value: 0, text: "No" },
           { value: 1, text: "Sí" },
         ],
+        organizador: [
+          { value: null, text: "Seleccionar" },
+          { value: 'gugeu', text: "Asegarce" },
+          { value: 'beste', text: "Aspe" },
+        ],
         editdate: false,
         editdatepresu: false,
         show: true,
@@ -194,6 +210,7 @@
         this._header.fronton_id = null;
         this._header.television = 0;
         this._header.television_txt = "";
+        this._header.organizador = null;
         this._header.estado_id = 1;
         this._header.fecha_presu = this.formatDateEN();
       }
@@ -308,7 +325,7 @@
           this.editDate(false);
         else if(this.editdatepresu)
           this.editDatePresu(false);
-        else 
+        else
           this.goBack();
       }
     }
