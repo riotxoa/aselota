@@ -168,6 +168,7 @@
                             <strong>Fecha: </strong> " + match.fecha + " - " + match.hora + "<br> \
                             <strong>Nº Partido:</strong> " + match.orden + " - <strong>Estelar:</strong> " + (match.estelar ? "Sí" : "No") + "<br> \
                             <strong>Modalidad:</strong> " + match.tipo_partido_name + "<br> \
+                            <strong>Frontón:</strong> " + match.fronton_name + " (" + match.municipio_name + ")<br> \
                          ";
           if( match.campeonato_id ) {
             tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)";
@@ -175,7 +176,7 @@
 
           tooltip += "</div>";
 
-          return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.fronton_name + "</div>";
+          return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.municipio_name + "</div>";
         } else {
           return "<span>&nbsp;</span>";
         }

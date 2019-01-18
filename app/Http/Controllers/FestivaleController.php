@@ -269,6 +269,7 @@ class FestivaleController extends Controller
         ->leftJoin('festival_partidos', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
         ->leftJoin('festivales', 'festivales.id', '=', 'festival_partidos.festival_id')
         ->leftJoin('frontones', 'frontones.id', '=', 'festivales.fronton_id')
+        ->leftJoin('municipios', 'municipios.id', '=', 'frontones.municipio_id')
         ->leftJoin('campeonatos', 'campeonatos.id', '=', 'festival_partidos.campeonato_id')
         ->leftJoin('tipo_partidos', 'tipo_partidos.id', '=', 'festival_partidos.tipo_partido_id')
         ->select(
@@ -291,6 +292,7 @@ class FestivaleController extends Controller
             'festivales.hora',
             'festivales.fronton_id',
             'frontones.name as fronton_name',
+            'municipios.name as municipio_name',
             'festivales.television'
           );
 
