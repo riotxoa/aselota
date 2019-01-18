@@ -58,6 +58,7 @@
           { value: 'festivales.fecha_fin', text: 'Fecha hasta' },
           { value: 'festivales.fronton_id', text: 'Frontón' },
           { value: 'frontones.municipio_id', text: 'Municipio' },
+          { value: 'festivales.organizador', text: 'Organizador' },
           { value: 'festival_facturacion.pagado', text: 'Pagado' },
           { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' },
           { value: 'frontones.provincia_id', text: 'Provincia' },
@@ -106,6 +107,13 @@
             break;
           case 'frontones.municipio_id':
             this.filterValueOptions = this.municipios;
+            break;
+          case 'festivales.organizador':
+            this.filterValueOptions = [
+              { value: null, text: "Seleccionar valor" },
+              { value: "gugeu", text: "Baiko Pilota" },
+              { value: "beste", text: "Aspe" },
+            ];
             break;
           case 'festival_facturacion.pagado':
             this.filterValueOptions = [

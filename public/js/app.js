@@ -96208,7 +96208,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   data: function data() {
     return {
       selectedFilterType: null,
-      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }],
+      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festivales.organizador', text: 'Organizador' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }],
       selectedFilterValue: null,
       filterValueOptions: [{ value: null, text: "Seleccionar filtro" }],
       filterValueDate: null,
@@ -96250,6 +96250,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           break;
         case 'frontones.municipio_id':
           this.filterValueOptions = this.municipios;
+          break;
+        case 'festivales.organizador':
+          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: "gugeu", text: "Baiko Pilota" }, { value: "beste", text: "Aspe" }];
           break;
         case 'festival_facturacion.pagado':
           this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
