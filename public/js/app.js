@@ -6641,6 +6641,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     header: function header(state) {
       return state.header;
     },
+    television_txt: function television_txt(state) {
+      return state.header.television_txt;
+    },
     partidos: function partidos(state) {
       return state.partidos;
     },
@@ -6763,6 +6766,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     SET_HEADER_ID: function SET_HEADER_ID(state, id) {
       state.header.id = id;
+    },
+    SET_TELEVISION_TXT: function SET_TELEVISION_TXT(state, txt) {
+      state.header.television_txt = txt;
     },
     SET_PARTIDOS: function SET_PARTIDOS(state, partidos) {
       var _this = this;
@@ -97236,6 +97242,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -97251,6 +97258,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       dia: '',
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
       organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Asegarce" }, { value: 'beste', text: "Aspe" }],
+      television_txt: "",
+      loaded: false,
       editdate: false,
       editdatepresu: false,
       show: true,
@@ -97278,6 +97287,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this._header.organizador = null;
       this._header.estado_id = 1;
       this._header.fecha_presu = this.formatDateEN();
+    }
+  },
+  updated: function updated() {
+    if (!this.loaded && this._edit && this._header.television) {
+      this.loaded = true;
+      this.television_txt = this._header.television_txt;
     }
   },
   beforeDestroy: function beforeDestroy() {
@@ -97337,6 +97352,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.editdatepresu = edit;
       __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_EDIT', !this._edit);
     },
+    onChangeTelevision: function onChangeTelevision(value) {
+      if (1 == value && false == this._edit && "" == this._header.television_txt) {
+        this.television_txt = "ETB-1";
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_TELEVISION_TXT', 'ETB-1');
+      }
+    },
     onSubmit: function onSubmit(evt) {
       var _this = this;
 
@@ -97344,6 +97365,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this._header.municipio_id = this.municipio_id;
       this._header.provincia_id = this.provincia_id;
+      this._header.television_txt = this.television_txt;
 
       var uri = '/www/festivales';
 
@@ -97774,6 +97796,7 @@ var render = function() {
                             options: _vm.television,
                             required: ""
                           },
+                          on: { change: _vm.onChangeTelevision },
                           model: {
                             value: _vm._header.television,
                             callback: function($$v) {
@@ -97800,11 +97823,11 @@ var render = function() {
                             disabled: !_vm.isGerente
                           },
                           model: {
-                            value: _vm._header.television_txt,
+                            value: _vm.television_txt,
                             callback: function($$v) {
-                              _vm.$set(_vm._header, "television_txt", $$v)
+                              _vm.television_txt = $$v
                             },
-                            expression: "_header.television_txt"
+                            expression: "television_txt"
                           }
                         })
                       ],

@@ -60,6 +60,7 @@ export const store = new Vuex.Store({
     total_festivales: state => state.total_festivales,
     filter_festivales: state => state.filter_festivales,
     header: state => state.header,
+    television_txt: state => state.header.television_txt,
     partidos: state => state.partidos,
     costes: state => state.costes,
     coste: state => state.coste,
@@ -136,6 +137,9 @@ export const store = new Vuex.Store({
     },
     SET_HEADER_ID (state, id)  {
       state.header.id = id;
+    },
+    SET_TELEVISION_TXT (state, txt) {
+      state.header.television_txt = txt;
     },
     SET_PARTIDOS (state, partidos) {
       state.partidos = partidos;

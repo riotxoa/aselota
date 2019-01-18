@@ -123,6 +123,7 @@
                             :readonly="editdate || editdatepresu"
                             :disabled="!isGerente"
                             :options="television"
+                            @change="onChangeTelevision"
                             required
                             v-model="_header.television">
               </b-form-select>
@@ -133,7 +134,7 @@
               <b-form-input id="televisionTxtInput"
                             :readonly="editdate || editdatepresu"
                             :disabled="!isGerente"
-                            v-model="_header.television_txt">
+                            v-model="television_txt">
               </b-form-input>
             </b-form-group>
             <b-form-group label="Organizador"
@@ -187,6 +188,8 @@
           { value: 'gugeu', text: "Asegarce" },
           { value: 'beste', text: "Aspe" },
         ],
+        television_txt: "",
+        loaded: false,
         editdate: false,
         editdatepresu: false,
         show: true,
@@ -213,6 +216,12 @@
         this._header.organizador = null;
         this._header.estado_id = 1;
         this._header.fecha_presu = this.formatDateEN();
+      }
+    },
+    updated: function () {
+      if( !this.loaded && this._edit && this._header.television ) {
+        this.loaded = true;
+        this.television_txt = this._header.television_txt;
       }
     },
     beforeDestroy: function () {
@@ -272,11 +281,18 @@
         this.editdatepresu = edit;
         store.commit('SET_EDIT', !this._edit);
       },
+      onChangeTelevision (value) {
+        if( 1 == value && false == this._edit && "" == this._header.television_txt ) {
+          this.television_txt = "ETB-1";
+          store.commit('SET_TELEVISION_TXT', 'ETB-1');
+        }
+      },
       onSubmit (evt) {
         evt.preventDefault();
 
         this._header.municipio_id = this.municipio_id;
         this._header.provincia_id = this.provincia_id;
+        this._header.television_txt = this.television_txt;
 
         let uri = '/www/festivales';
 
