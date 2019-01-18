@@ -283,8 +283,8 @@
       },
       onChangeTelevision (value) {
         if( 1 == value && false == this._edit && "" == this._header.television_txt ) {
-          this.television_txt = "ETB-1";
-          store.commit('SET_TELEVISION_TXT', 'ETB-1');
+          this.television_txt = "Etb1";
+          store.commit('SET_TELEVISION_TXT', 'Etb1');
         }
       },
       onSubmit (evt) {
