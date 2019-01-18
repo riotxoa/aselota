@@ -95885,7 +95885,7 @@ Vue.component('filtro-festivales', __webpack_require__(426));
       display: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" }],
+      fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" }],
       items: [],
       totalRows: 0,
       perPage: 10,
@@ -95900,6 +95900,10 @@ Vue.component('filtro-festivales', __webpack_require__(426));
 
   computed: {
     _items: function _items() {
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.festivales.map(function (val, key) {
+        val.organizador = "gugeu" == val.organizador ? "Baiko Pilota" : "Aspe";
+      });
+
       return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.festivales;
     },
 

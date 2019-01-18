@@ -108,6 +108,7 @@
             { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false },
             { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true },
             { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true },
+            { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true },
             { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true },
             { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true },
             { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" },
@@ -125,6 +126,10 @@
       },
       computed: {
         _items () {
+          store.getters.festivales.map( (val, key) => {
+            val.organizador = ( "gugeu" == val.organizador ? "Baiko Pilota" : "Aspe");
+          });
+
           return store.getters.festivales;
         },
         _totalRows: {
