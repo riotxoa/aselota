@@ -9,7 +9,7 @@
           <div class="card mb-3">
             <div class="card-body p-2">
               <b-row class="m-0 p-0">
-                <label class="ml-0 mr-2">Porcentaje Asegarce:</label>
+                <label class="ml-0 mr-2">Porcentaje Baiko:</label>
                 <div class="">{{ _costes.porcentaje }}&nbsp;%</div>
               </b-row>
               <b-row class="px-3">

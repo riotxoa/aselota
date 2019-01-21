@@ -185,7 +185,7 @@
         ],
         organizador: [
           { value: null, text: "Seleccionar" },
-          { value: 'gugeu', text: "Asegarce" },
+          { value: 'gugeu', text: "Baiko Pilota" },
           { value: 'beste', text: "Aspe" },
         ],
         television_txt: "",

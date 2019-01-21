@@ -64,8 +64,8 @@
                    unchecked-value="0"
                    @change="changeEmpresaPelotari1">
         </b-form-checkbox>
-        <img v-if="1 == pelotari_1_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
-        <img v-if="0 == pelotari_1_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
+        <img v-if="1 == pelotari_1_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_1_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari1gorriaInput"
                        :options="pelotaris"
                        v-model="pelotari_1"
@@ -89,8 +89,8 @@
                    unchecked-value="0"
                    @change="changeEmpresaPelotari2">
         </b-form-checkbox>
-        <img v-if="1 == pelotari_2_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
-        <img v-if="0 == pelotari_2_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
+        <img v-if="1 == pelotari_2_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_2_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari2gorriaInput"
                        :options="pelotaris"
                        v-model="pelotari_2"
@@ -120,8 +120,8 @@
                    unchecked-value="0"
                    @change="changeEmpresaPelotari3">
         </b-form-checkbox>
-        <img v-if="1 == pelotari_3_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
-        <img v-if="0 == pelotari_3_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
+        <img v-if="1 == pelotari_3_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_3_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari1urdinaInput"
                        :options="pelotaris"
                        v-model="pelotari_3"
@@ -145,8 +145,8 @@
                    unchecked-value="0"
                    @change="changeEmpresaPelotari4">
         </b-form-checkbox>
-        <img v-if="1 == pelotari_4_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon"/>
-        <img v-if="0 == pelotari_4_asegarce" src="/storage/asegarce.jpg" width="20" class="float-right asegarce-icon grayscale"/>
+        <img v-if="1 == pelotari_4_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon"/>
+        <img v-if="0 == pelotari_4_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon grayscale"/>
         <b-form-select id="pelotari2urdinaInput"
                        :options="pelotaris"
                        v-model="pelotari_4"

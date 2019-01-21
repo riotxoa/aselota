@@ -8215,50 +8215,6 @@ function clickHandlerFactory(_ref3) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* Form control contextual state class computation
- *
- * Returned class is either 'is-valid' or 'is-invalid' based on the 'state' prop
- * state can be one of five values:
- *  - true or 'valid' for is-valid
- *  - false or 'invalid' for is-invalid
- *  - null (or empty string) for no contextual state
- */
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  props: {
-    state: {
-      // true/'valid', false/'invalid', '',null
-      type: [Boolean, String],
-      default: null
-    }
-  },
-  computed: {
-    computedState: function computedState() {
-      var state = this.state;
-      if (state === true || state === 'valid') {
-        return true;
-      } else if (state === false || state === 'invalid') {
-        return false;
-      }
-      return null;
-    },
-    stateClass: function stateClass() {
-      var state = this.computedState;
-      if (state === true) {
-        return 'is-valid';
-      } else if (state === false) {
-        return 'is-invalid';
-      }
-      return null;
-    }
-  }
-});
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 var APIGetters = {
   data: function data() {
     return {
@@ -8507,6 +8463,50 @@ var APIGetters = {
 
 };
 /* harmony default export */ __webpack_exports__["a"] = (APIGetters);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* Form control contextual state class computation
+ *
+ * Returned class is either 'is-valid' or 'is-invalid' based on the 'state' prop
+ * state can be one of five values:
+ *  - true or 'valid' for is-valid
+ *  - false or 'invalid' for is-invalid
+ *  - null (or empty string) for no contextual state
+ */
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  props: {
+    state: {
+      // true/'valid', false/'invalid', '',null
+      type: [Boolean, String],
+      default: null
+    }
+  },
+  computed: {
+    computedState: function computedState() {
+      var state = this.state;
+      if (state === true || state === 'valid') {
+        return true;
+      } else if (state === false || state === 'invalid') {
+        return false;
+      }
+      return null;
+    },
+    stateClass: function stateClass() {
+      var state = this.computedState;
+      if (state === true) {
+        return 'is-valid';
+      } else if (state === false) {
+        return 'is-invalid';
+      }
+      return null;
+    }
+  }
+});
 
 /***/ }),
 /* 18 */
@@ -36716,7 +36716,7 @@ var props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form_radio_check__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_loose_equal__ = __webpack_require__(42);
@@ -37007,7 +37007,7 @@ var props = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_radio_check__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_loose_equal__ = __webpack_require__(42);
 
@@ -50243,7 +50243,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(211);
-module.exports = __webpack_require__(534);
+module.exports = __webpack_require__(539);
 
 
 /***/ }),
@@ -50321,7 +50321,7 @@ Vue.component('periodo-comercial-pelotari', __webpack_require__(414));
 Vue.component('home-gerente', __webpack_require__(417));
 Vue.component('listado-festivales', __webpack_require__(420));
 Vue.component('ficha-festival', __webpack_require__(432));
-Vue.component('ficha-coste-entradas', __webpack_require__(486));
+Vue.component('ficha-coste-entradas', __webpack_require__(491));
 
 var HomeGerente = { template: '<home-gerente></home-gerente>' };
 var ListFestivales_G = { template: '<listado-festivales is-gerente=1></listado-festivales>' };
@@ -50329,28 +50329,28 @@ var Calendario = { template: '<calendar-component></calendar-component>' };
 var CreateFestival_G = { template: '<ficha-festival form-title="Nuevo Festival" :is-new-festival=1 :is-gerente=1></ficha-festival>' };
 var EditFestival_G = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=1></ficha-festival>' };
 
-Vue.component('home-intendente', __webpack_require__(489));
+Vue.component('home-intendente', __webpack_require__(494));
 
 var HomeIntendente = { template: '<home-intendente></home-intendente>' };
 var ListFestivales_I = { template: '<listado-festivales is-gerente=0></listado-festivales>' };
 var EditFestival_I = { template: '<ficha-festival form-title="Editar Festival" :is-new-festival=0 :is-gerente=0></ficha-festival>' };
 
-Vue.component('home-entrenador', __webpack_require__(492));
-Vue.component('listado-entrenos', __webpack_require__(495));
-Vue.component('ficha-entreno', __webpack_require__(500));
+Vue.component('home-entrenador', __webpack_require__(497));
+Vue.component('listado-entrenos', __webpack_require__(500));
+Vue.component('ficha-entreno', __webpack_require__(505));
 
 var HomeEntrenador = { template: '<home-entrenador></home-entrenador>' };
 var ListEntrenos = { template: '<listado-entrenos></listado-entrenos>' };
 var CreateEntreno = { template: '<ficha-entreno form-title="Nuevo Entrenamiento" :is-new-entreno=1></ficha-entreno>' };
 var EditEntreno = { template: '<ficha-entreno form-title="Editar Entrenamiento" :is-new-entreno=0></ficha-entreno>' };
 
-Vue.component('home-prensa', __webpack_require__(505));
-Vue.component('prensa-tabs', __webpack_require__(508));
-Vue.component('listado-eventos', __webpack_require__(513));
-Vue.component('ficha-evento', __webpack_require__(518));
-Vue.component('evento-pelotaris', __webpack_require__(521));
-Vue.component('evento-header', __webpack_require__(524));
-Vue.component('evento-body', __webpack_require__(529));
+Vue.component('home-prensa', __webpack_require__(510));
+Vue.component('prensa-tabs', __webpack_require__(513));
+Vue.component('listado-eventos', __webpack_require__(518));
+Vue.component('ficha-evento', __webpack_require__(523));
+Vue.component('evento-pelotaris', __webpack_require__(526));
+Vue.component('evento-header', __webpack_require__(529));
+Vue.component('evento-body', __webpack_require__(534));
 
 var HomePrensa = { template: '<home-prensa></home-prensa>' };
 var PrensaTabs = { template: '<prensa-tabs></prensa-tabs>' };
@@ -75552,7 +75552,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_warn__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_id__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__layout_form_row__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__form_form_text__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_form_invalid_feedback__ = __webpack_require__(71);
@@ -75888,7 +75888,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_options__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_checkbox__ = __webpack_require__(73);
 
@@ -76037,7 +76037,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form_options__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_radio__ = __webpack_require__(75);
 
@@ -76181,7 +76181,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_size__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_array__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__form_input_css__ = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__form_input_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__form_input_css__);
@@ -76413,7 +76413,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_size__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_state__ = __webpack_require__(17);
 
 
 
@@ -76593,7 +76593,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_array__ = __webpack_require__(7);
 
@@ -76878,7 +76878,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form_options__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(7);
 
@@ -87186,7 +87186,7 @@ exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  fo
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(12);
 //
 //
@@ -96249,7 +96249,7 @@ exports.push([module.i, "\n.filter-value-list li {\n  color:#007bff;\n}\n.filter
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(8);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -97159,7 +97159,7 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(433)
 /* template */
-var __vue_template__ = __webpack_require__(485)
+var __vue_template__ = __webpack_require__(490)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -97358,7 +97358,7 @@ exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_nav_js__ = __webpack_require__(207);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(12);
 //
@@ -97543,7 +97543,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       dia: '',
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
-      organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Asegarce" }, { value: 'beste', text: "Aspe" }],
+      organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Baiko Pilota" }, { value: 'beste', text: "Aspe" }],
       television_txt: "",
       loaded: false,
       editdate: false,
@@ -98222,7 +98222,7 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(442)
 /* template */
-var __vue_template__ = __webpack_require__(484)
+var __vue_template__ = __webpack_require__(489)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -98336,7 +98336,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Vue.component('festival-partidos', __webpack_require__(443));
 Vue.component('festival-costes', __webpack_require__(474));
 Vue.component('festival-facturacion', __webpack_require__(479));
-Vue.component('festival-contactos', __webpack_require__(538));
+Vue.component('festival-contactos', __webpack_require__(484));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -98607,7 +98607,7 @@ exports.push([module.i, "\n.pelotari {\n  max-width:23.75%;\n}\n.pelotari::befor
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
 //
 //
@@ -99152,14 +99152,14 @@ var render = function() {
               1 == _vm.pelotari_1_asegarce
                 ? _c("img", {
                     staticClass: "float-right asegarce-icon",
-                    attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                    attrs: { src: "/storage/baiko.jpg", width: "20" }
                   })
                 : _vm._e(),
               _vm._v(" "),
               0 == _vm.pelotari_1_asegarce
                 ? _c("img", {
                     staticClass: "float-right asegarce-icon grayscale",
-                    attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                    attrs: { src: "/storage/baiko.jpg", width: "20" }
                   })
                 : _vm._e(),
               _vm._v(" "),
@@ -99228,14 +99228,14 @@ var render = function() {
                   1 == _vm.pelotari_2_asegarce
                     ? _c("img", {
                         staticClass: "float-right asegarce-icon",
-                        attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                        attrs: { src: "/storage/baiko.jpg", width: "20" }
                       })
                     : _vm._e(),
                   _vm._v(" "),
                   0 == _vm.pelotari_2_asegarce
                     ? _c("img", {
                         staticClass: "float-right asegarce-icon grayscale",
-                        attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                        attrs: { src: "/storage/baiko.jpg", width: "20" }
                       })
                     : _vm._e(),
                   _vm._v(" "),
@@ -99324,14 +99324,14 @@ var render = function() {
               1 == _vm.pelotari_3_asegarce
                 ? _c("img", {
                     staticClass: "float-right asegarce-icon",
-                    attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                    attrs: { src: "/storage/baiko.jpg", width: "20" }
                   })
                 : _vm._e(),
               _vm._v(" "),
               0 == _vm.pelotari_3_asegarce
                 ? _c("img", {
                     staticClass: "float-right asegarce-icon grayscale",
-                    attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                    attrs: { src: "/storage/baiko.jpg", width: "20" }
                   })
                 : _vm._e(),
               _vm._v(" "),
@@ -99400,14 +99400,14 @@ var render = function() {
                   1 == _vm.pelotari_4_asegarce
                     ? _c("img", {
                         staticClass: "float-right asegarce-icon",
-                        attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                        attrs: { src: "/storage/baiko.jpg", width: "20" }
                       })
                     : _vm._e(),
                   _vm._v(" "),
                   0 == _vm.pelotari_4_asegarce
                     ? _c("img", {
                         staticClass: "float-right asegarce-icon grayscale",
-                        attrs: { src: "/storage/asegarce.jpg", width: "20" }
+                        attrs: { src: "/storage/baiko.jpg", width: "20" }
                       })
                     : _vm._e(),
                   _vm._v(" "),
@@ -100219,7 +100219,7 @@ exports.push([module.i, "\n.tabs {\n  border:none;\n  margin-bottom:0;\n}\n.moda
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
 //
 //
@@ -100839,7 +100839,7 @@ exports.push([module.i, "\n.ficha-pelotari-i .modal-header {\n  padding:.5rem 1r
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
 //
 //
@@ -102533,7 +102533,7 @@ exports.push([module.i, "\n.festival-costes .card {\n  border-color:#707f8f;\n}\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_store__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(8);
@@ -102916,7 +102916,7 @@ var render = function() {
                   [
                     _c("b-row", { staticClass: "m-0 p-0" }, [
                       _c("label", { staticClass: "ml-0 mr-2" }, [
-                        _vm._v("Porcentaje Asegarce:")
+                        _vm._v("Porcentaje Baiko:")
                       ]),
                       _vm._v(" "),
                       _c("div", {}, [
@@ -103710,7 +103710,7 @@ exports.push([module.i, "\n.festival-facturacion .card {\n  border-color:#707f8f
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(8);
 //
@@ -104133,6 +104133,880 @@ if (false) {
 /* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(485)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(487)
+/* template */
+var __vue_template__ = __webpack_require__(488)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/contactos/FestivalFichaContactosComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-79348030", Component.options)
+  } else {
+    hotAPI.reload("data-v-79348030", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 485 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(486);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("73bea266", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-79348030\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaContactosComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-79348030\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaContactosComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 486 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.festival-contactos .card {\n  border-color:#707f8f;\n}\n.festival-contactos label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-contactos input {\n  height:27px;\n}\n.festival-contactos input[type=\"text\"],\n.festival-contactos input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-contactos div[role=\"radiogroup\"] .custom-radio:first-child {\n  margin-right:35px;\n}\n.festival-contactos .botonera {\n  margin-left:0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 487 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
+  data: function data() {
+    return {
+      contactos: {
+        contact_01_name: '',
+        contact_01_desc: '',
+        contact_01_email_1: '',
+        contact_01_email_2: '',
+        contact_01_telephone_1: '',
+        contact_01_telephone_2: '',
+        contact_02_name: '',
+        contact_02_desc: '',
+        contact_02_email_1: '',
+        contact_02_email_2: '',
+        contact_02_telephone_1: '',
+        contact_02_telephone_2: '',
+        observaciones: ''
+      }
+    };
+  },
+
+  created: function created() {
+    var _this = this;
+
+    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadContactos').then(function (response) {
+      if (response) {
+        _this.contactos = response[0];
+      }
+    });
+  },
+  computed: {
+    _contactos: function _contactos() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.contactos;
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      var _this2 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('addContactos', this.contactos).then(function (response) {
+        _this2.showSnackbar("Contactos GUARDADOS");
+      }).catch(function (error) {
+        console.log(error);
+        _this2.showSnackbar("Se ha producido un ERROR al guardar los CONTACTOS");
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 488 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "festival-contactos" },
+    [
+      _c(
+        "b-form",
+        { on: { submit: _vm.onSubmit } },
+        [
+          _c("b-row", [
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-10" }, [
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c("b-row", [
+                      _c("h5", { staticClass: "col-12" }, [
+                        _vm._v("Contacto 1")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: { label: "Nombre", "label-for": "c1_nombre" }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_nombre", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_01_name,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_name",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_name"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-8",
+                            attrs: {
+                              label: "Descripción",
+                              "label-for": "c1_descripcion"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_descripcion", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_01_desc,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_desc",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_desc"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 1",
+                              "label-for": "c1_email1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_email_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_email_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_email_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 2",
+                              "label-for": "c1_email2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_email_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_email_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_email_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 1",
+                              "label-for": "c1_phone1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_telephone_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_telephone_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_telephone_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 2",
+                              "label-for": "c1_phone2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_telephone_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_telephone_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_telephone_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+          ]),
+          _vm._v(" "),
+          _c("b-row", [
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-10" }, [
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c("b-row", [
+                      _c("h5", { staticClass: "col-12" }, [
+                        _vm._v("Contacto 2")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: { label: "Nombre", "label-for": "c1_nombre" }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_nombre", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_02_name,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_name",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_name"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-8",
+                            attrs: {
+                              label: "Descripción",
+                              "label-for": "c1_descripcion"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_descripcion", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_02_desc,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_desc",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_desc"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 1",
+                              "label-for": "c1_email1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_email_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_email_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_email_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 2",
+                              "label-for": "c1_email2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_email_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_email_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_email_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 1",
+                              "label-for": "c1_phone1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_telephone_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_telephone_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_telephone_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 2",
+                              "label-for": "c1_phone2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_telephone_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_telephone_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_telephone_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-row",
+            [
+              _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "col-md-10",
+                  attrs: {
+                    label: "Observaciones:",
+                    "label-for": "observaciones"
+                  }
+                },
+                [
+                  _c("b-form-textarea", {
+                    attrs: { id: "observaciones", rows: 3, "max-rows": 6 },
+                    model: {
+                      value: _vm.contactos.observaciones,
+                      callback: function($$v) {
+                        _vm.$set(_vm.contactos, "observaciones", $$v)
+                      },
+                      expression: "contactos.observaciones"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("b-row", { staticClass: "botonera" }, [
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-10 text-right" },
+              [
+                _c(
+                  "b-button",
+                  {
+                    staticClass: "ml-1",
+                    attrs: { variant: "danger" },
+                    on: { click: _vm.onSubmit }
+                  },
+                  [_vm._v("Guardar")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-79348030", module.exports)
+  }
+}
+
+/***/ }),
+/* 489 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -104197,7 +105071,7 @@ if (false) {
 }
 
 /***/ }),
-/* 485 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -104236,15 +105110,15 @@ if (false) {
 }
 
 /***/ }),
-/* 486 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(487)
+var __vue_script__ = __webpack_require__(492)
 /* template */
-var __vue_template__ = __webpack_require__(488)
+var __vue_template__ = __webpack_require__(493)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -104283,7 +105157,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 487 */
+/* 492 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104362,7 +105236,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 488 */
+/* 493 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -104488,15 +105362,15 @@ if (false) {
 }
 
 /***/ }),
-/* 489 */
+/* 494 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(490)
+var __vue_script__ = __webpack_require__(495)
 /* template */
-var __vue_template__ = __webpack_require__(491)
+var __vue_template__ = __webpack_require__(496)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -104535,7 +105409,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 490 */
+/* 495 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104558,7 +105432,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 491 */
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -104583,15 +105457,15 @@ if (false) {
 }
 
 /***/ }),
-/* 492 */
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(493)
+var __vue_script__ = __webpack_require__(498)
 /* template */
-var __vue_template__ = __webpack_require__(494)
+var __vue_template__ = __webpack_require__(499)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -104630,7 +105504,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 493 */
+/* 498 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104653,7 +105527,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 494 */
+/* 499 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -104678,19 +105552,19 @@ if (false) {
 }
 
 /***/ }),
-/* 495 */
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(496)
+  __webpack_require__(501)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(498)
+var __vue_script__ = __webpack_require__(503)
 /* template */
-var __vue_template__ = __webpack_require__(499)
+var __vue_template__ = __webpack_require__(504)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -104729,13 +105603,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 496 */
+/* 501 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(497);
+var content = __webpack_require__(502);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -104755,7 +105629,7 @@ if(false) {
 }
 
 /***/ }),
-/* 497 */
+/* 502 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -104769,7 +105643,7 @@ exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-
 
 
 /***/ }),
-/* 498 */
+/* 503 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104956,7 +105830,7 @@ Vue.component('delete-modal', __webpack_require__(31));
 }), _mixins$data$computed);
 
 /***/ }),
-/* 499 */
+/* 504 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -105294,19 +106168,19 @@ if (false) {
 }
 
 /***/ }),
-/* 500 */
+/* 505 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(501)
+  __webpack_require__(506)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(503)
+var __vue_script__ = __webpack_require__(508)
 /* template */
-var __vue_template__ = __webpack_require__(504)
+var __vue_template__ = __webpack_require__(509)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -105345,13 +106219,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 501 */
+/* 506 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(502);
+var content = __webpack_require__(507);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -105371,7 +106245,7 @@ if(false) {
 }
 
 /***/ }),
-/* 502 */
+/* 507 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -105385,14 +106259,14 @@ exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom
 
 
 /***/ }),
-/* 503 */
+/* 508 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(12);
 //
 //
@@ -105718,7 +106592,7 @@ var showSnackbar = function showSnackbar(msg) {
 });
 
 /***/ }),
-/* 504 */
+/* 509 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -106315,15 +107189,15 @@ if (false) {
 }
 
 /***/ }),
-/* 505 */
+/* 510 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(506)
+var __vue_script__ = __webpack_require__(511)
 /* template */
-var __vue_template__ = __webpack_require__(507)
+var __vue_template__ = __webpack_require__(512)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -106362,7 +107236,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 506 */
+/* 511 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106385,7 +107259,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 507 */
+/* 512 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -106410,19 +107284,19 @@ if (false) {
 }
 
 /***/ }),
-/* 508 */
+/* 513 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(509)
+  __webpack_require__(514)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(511)
+var __vue_script__ = __webpack_require__(516)
 /* template */
-var __vue_template__ = __webpack_require__(512)
+var __vue_template__ = __webpack_require__(517)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -106461,13 +107335,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 509 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(510);
+var content = __webpack_require__(515);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -106487,7 +107361,7 @@ if(false) {
 }
 
 /***/ }),
-/* 510 */
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -106501,7 +107375,7 @@ exports.push([module.i, "\n.prensa.main-header {\n  margin-bottom:2rem;\n  margi
 
 
 /***/ }),
-/* 511 */
+/* 516 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106554,7 +107428,7 @@ var store_prensa = {
 });
 
 /***/ }),
-/* 512 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -106677,19 +107551,19 @@ if (false) {
 }
 
 /***/ }),
-/* 513 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(514)
+  __webpack_require__(519)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(516)
+var __vue_script__ = __webpack_require__(521)
 /* template */
-var __vue_template__ = __webpack_require__(517)
+var __vue_template__ = __webpack_require__(522)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -106728,13 +107602,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 514 */
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(515);
+var content = __webpack_require__(520);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -106754,7 +107628,7 @@ if(false) {
 }
 
 /***/ }),
-/* 515 */
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -106768,7 +107642,7 @@ exports.push([module.i, "\n.main-header {\n  margin-bottom:2rem;\n  margin-top:-
 
 
 /***/ }),
-/* 516 */
+/* 521 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106954,7 +107828,7 @@ Vue.component('delete-modal', __webpack_require__(31));
 });
 
 /***/ }),
-/* 517 */
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -107377,15 +108251,15 @@ if (false) {
 }
 
 /***/ }),
-/* 518 */
+/* 523 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(519)
+var __vue_script__ = __webpack_require__(524)
 /* template */
-var __vue_template__ = __webpack_require__(520)
+var __vue_template__ = __webpack_require__(525)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -107424,7 +108298,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 519 */
+/* 524 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107478,7 +108352,7 @@ var showSnackbar = function showSnackbar(msg) {
 });
 
 /***/ }),
-/* 520 */
+/* 525 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -107507,15 +108381,15 @@ if (false) {
 }
 
 /***/ }),
-/* 521 */
+/* 526 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(522)
+var __vue_script__ = __webpack_require__(527)
 /* template */
-var __vue_template__ = __webpack_require__(523)
+var __vue_template__ = __webpack_require__(528)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -107554,7 +108428,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 522 */
+/* 527 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107652,7 +108526,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 523 */
+/* 528 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -107828,19 +108702,19 @@ if (false) {
 }
 
 /***/ }),
-/* 524 */
+/* 529 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(525)
+  __webpack_require__(530)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(527)
+var __vue_script__ = __webpack_require__(532)
 /* template */
-var __vue_template__ = __webpack_require__(528)
+var __vue_template__ = __webpack_require__(533)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -107879,13 +108753,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 525 */
+/* 530 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(526);
+var content = __webpack_require__(531);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -107905,7 +108779,7 @@ if(false) {
 }
 
 /***/ }),
-/* 526 */
+/* 531 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -107919,7 +108793,7 @@ exports.push([module.i, "\n.header {\n  background-color:white;\n  border-bottom
 
 
 /***/ }),
-/* 527 */
+/* 532 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108153,7 +109027,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 528 */
+/* 533 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -108477,19 +109351,19 @@ if (false) {
 }
 
 /***/ }),
-/* 529 */
+/* 534 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(530)
+  __webpack_require__(535)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(532)
+var __vue_script__ = __webpack_require__(537)
 /* template */
-var __vue_template__ = __webpack_require__(533)
+var __vue_template__ = __webpack_require__(538)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -108528,13 +109402,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 530 */
+/* 535 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(531);
+var content = __webpack_require__(536);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -108554,7 +109428,7 @@ if(false) {
 }
 
 /***/ }),
-/* 531 */
+/* 536 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -108568,7 +109442,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 532 */
+/* 537 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -108654,7 +109528,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 533 */
+/* 538 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -108746,887 +109620,10 @@ if (false) {
 }
 
 /***/ }),
-/* 534 */
+/* 539 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 535 */,
-/* 536 */,
-/* 537 */,
-/* 538 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(539)
-}
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(541)
-/* template */
-var __vue_template__ = __webpack_require__(542)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/contactos/FestivalFichaContactosComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-79348030", Component.options)
-  } else {
-    hotAPI.reload("data-v-79348030", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 539 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(540);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(6)("73bea266", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-79348030\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaContactosComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-79348030\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaContactosComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 540 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.festival-contactos .card {\n  border-color:#707f8f;\n}\n.festival-contactos label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-contactos input {\n  height:27px;\n}\n.festival-contactos input[type=\"text\"],\n.festival-contactos input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-contactos div[role=\"radiogroup\"] .custom-radio:first-child {\n  margin-right:35px;\n}\n.festival-contactos .botonera {\n  margin-left:0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 541 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
-  data: function data() {
-    return {
-      contactos: {
-        contact_01_name: '',
-        contact_01_desc: '',
-        contact_01_email_1: '',
-        contact_01_email_2: '',
-        contact_01_telephone_1: '',
-        contact_01_telephone_2: '',
-        contact_02_name: '',
-        contact_02_desc: '',
-        contact_02_email_1: '',
-        contact_02_email_2: '',
-        contact_02_telephone_1: '',
-        contact_02_telephone_2: '',
-        observaciones: ''
-      }
-    };
-  },
-
-  created: function created() {
-    var _this = this;
-
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadContactos').then(function (response) {
-      if (response) {
-        _this.contactos = response[0];
-      }
-    });
-  },
-  computed: {
-    _contactos: function _contactos() {
-      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.contactos;
-    }
-  },
-  methods: {
-    onSubmit: function onSubmit() {
-      var _this2 = this;
-
-      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('addContactos', this.contactos).then(function (response) {
-        _this2.showSnackbar("Contactos GUARDADOS");
-      }).catch(function (error) {
-        console.log(error);
-        _this2.showSnackbar("Se ha producido un ERROR al guardar los CONTACTOS");
-      });
-    }
-  }
-});
-
-/***/ }),
-/* 542 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "festival-contactos" },
-    [
-      _c(
-        "b-form",
-        { on: { submit: _vm.onSubmit } },
-        [
-          _c("b-row", [
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-10" }, [
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c("b-row", [
-                      _c("h5", { staticClass: "col-12" }, [
-                        _vm._v("Contacto 1")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: { label: "Nombre", "label-for": "c1_nombre" }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: { id: "c1_nombre", type: "text" },
-                              model: {
-                                value: _vm.contactos.contact_01_name,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_01_name",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_01_name"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-8",
-                            attrs: {
-                              label: "Descripción",
-                              "label-for": "c1_descripcion"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: { id: "c1_descripcion", type: "text" },
-                              model: {
-                                value: _vm.contactos.contact_01_desc,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_01_desc",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_01_desc"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Email 1",
-                              "label-for": "c1_email1"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email1",
-                                type: "email",
-                                maxlength: "50"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_01_email_1,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_01_email_1",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_01_email_1"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Email 2",
-                              "label-for": "c1_email2"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email2",
-                                type: "email",
-                                maxlength: "50"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_01_email_2,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_01_email_2",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_01_email_2"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Teléfono 1",
-                              "label-for": "c1_phone1"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email1",
-                                type: "text",
-                                maxlength: "18"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_01_telephone_1,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_01_telephone_1",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_01_telephone_1"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Teléfono 2",
-                              "label-for": "c1_phone2"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email2",
-                                type: "text",
-                                maxlength: "18"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_01_telephone_2,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_01_telephone_2",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_01_telephone_2"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
-          ]),
-          _vm._v(" "),
-          _c("b-row", [
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-10" }, [
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c("b-row", [
-                      _c("h5", { staticClass: "col-12" }, [
-                        _vm._v("Contacto 2")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: { label: "Nombre", "label-for": "c1_nombre" }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: { id: "c1_nombre", type: "text" },
-                              model: {
-                                value: _vm.contactos.contact_02_name,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_02_name",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_02_name"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-8",
-                            attrs: {
-                              label: "Descripción",
-                              "label-for": "c1_descripcion"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: { id: "c1_descripcion", type: "text" },
-                              model: {
-                                value: _vm.contactos.contact_02_desc,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_02_desc",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_02_desc"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Email 1",
-                              "label-for": "c1_email1"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email1",
-                                type: "email",
-                                maxlength: "50"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_02_email_1,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_02_email_1",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_02_email_1"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Email 2",
-                              "label-for": "c1_email2"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email2",
-                                type: "email",
-                                maxlength: "50"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_02_email_2,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_02_email_2",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_02_email_2"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Teléfono 1",
-                              "label-for": "c1_phone1"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email1",
-                                type: "text",
-                                maxlength: "18"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_02_telephone_1,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_02_telephone_1",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_02_telephone_1"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-form-group",
-                          {
-                            staticClass: "col-md-4",
-                            attrs: {
-                              label: "Teléfono 2",
-                              "label-for": "c1_phone2"
-                            }
-                          },
-                          [
-                            _c("b-form-input", {
-                              attrs: {
-                                id: "c1_email2",
-                                type: "text",
-                                maxlength: "18"
-                              },
-                              model: {
-                                value: _vm.contactos.contact_02_telephone_2,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.contactos,
-                                    "contact_02_telephone_2",
-                                    $$v
-                                  )
-                                },
-                                expression: "contactos.contact_02_telephone_2"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
-          ]),
-          _vm._v(" "),
-          _c(
-            "b-row",
-            [
-              _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
-              _vm._v(" "),
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "col-md-10",
-                  attrs: {
-                    label: "Observaciones:",
-                    "label-for": "observaciones"
-                  }
-                },
-                [
-                  _c("b-form-textarea", {
-                    attrs: { id: "observaciones", rows: 3, "max-rows": 6 },
-                    model: {
-                      value: _vm.contactos.observaciones,
-                      callback: function($$v) {
-                        _vm.$set(_vm.contactos, "observaciones", $$v)
-                      },
-                      expression: "contactos.observaciones"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("b-row", { staticClass: "botonera" }, [
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-10 text-right" },
-              [
-                _c(
-                  "b-button",
-                  {
-                    staticClass: "ml-1",
-                    attrs: { variant: "danger" },
-                    on: { click: _vm.onSubmit }
-                  },
-                  [_vm._v("Guardar")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
-          ])
-        ],
-        1
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-79348030", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
