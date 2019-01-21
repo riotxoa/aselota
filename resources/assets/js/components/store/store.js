@@ -406,7 +406,8 @@ export const store = new Vuex.Store({
         });
     },
     loadHeader({ commit, dispatch }, id, is_gerente) {
-      axios
+      return new Promise( (resolve, reject) => {
+        axios
         .get('/www/festivales/' + id)
         .then( r => r.data )
         .then( header => {
@@ -417,7 +418,12 @@ export const store = new Vuex.Store({
             dispatch('loadFacturacion');
             dispatch('loadContactos');
           }
+          resolve(header);
+        })
+        .catch((error) => {
+          reject(error);
         });
+      });
     },
     clearHeader({ commit }) {
       commit('SET_HEADER', {});

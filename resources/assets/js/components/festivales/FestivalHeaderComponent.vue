@@ -204,7 +204,9 @@
       this.getFestivalEstados();
 
       if (this._edit) {
-        store.dispatch('loadHeader', (this._header.id ? this._header.id : this.$route.params.id), this.isGerente);
+        store.dispatch('loadHeader', (this._header.id ? this._header.id : this.$route.params.id), this.isGerente).then( (response) => {
+          this.onChangeProvincia(response.provincia_id);
+        });
       } else {
         this._header.fecha = this.formatDateEN();
         this._header.hora = "";

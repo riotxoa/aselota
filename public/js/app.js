@@ -7049,16 +7049,21 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       var commit = _ref5.commit,
           dispatch = _ref5.dispatch;
 
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales/' + id).then(function (r) {
-        return r.data;
-      }).then(function (header) {
-        commit('SET_HEADER', header);
-        dispatch('loadPartidos');
-        if (is_gerente) {
-          dispatch('loadCostes');
-          dispatch('loadFacturacion');
-          dispatch('loadContactos');
-        }
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festivales/' + id).then(function (r) {
+          return r.data;
+        }).then(function (header) {
+          commit('SET_HEADER', header);
+          dispatch('loadPartidos');
+          if (is_gerente) {
+            dispatch('loadCostes');
+            dispatch('loadFacturacion');
+            dispatch('loadContactos');
+          }
+          resolve(header);
+        }).catch(function (error) {
+          reject(error);
+        });
       });
     },
     clearHeader: function clearHeader(_ref6) {
@@ -97341,6 +97346,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   created: function created() {
+    var _this = this;
+
     console.log("FestivalHeaderComponent created");
     this.getMunicipios();
     this.getProvincias();
@@ -97348,7 +97355,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.getFestivalEstados();
 
     if (this._edit) {
-      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadHeader', this._header.id ? this._header.id : this.$route.params.id, this.isGerente);
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadHeader', this._header.id ? this._header.id : this.$route.params.id, this.isGerente).then(function (response) {
+        _this.onChangeProvincia(response.provincia_id);
+      });
     } else {
       this._header.fecha = this.formatDateEN();
       this._header.hora = "";
@@ -97432,7 +97441,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     onSubmit: function onSubmit(evt) {
-      var _this = this;
+      var _this2 = this;
 
       evt.preventDefault();
 
@@ -97450,28 +97459,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
 
         this.axios.post(uri + '/' + this._header.id + '/update', data).then(function (response) {
-          _this.showSnackbar("Festival actualizado");
-          if (_this.editdate) {
-            _this.editDate(false);
-          } else if (_this.editdatepresu) {
-            _this.editDatePresu(false);
+          _this2.showSnackbar("Festival actualizado");
+          if (_this2.editdate) {
+            _this2.editDate(false);
+          } else if (_this2.editdatepresu) {
+            _this2.editDatePresu(false);
           } else {
-            if (_this.isGerente) _this.goBack();
+            if (_this2.isGerente) _this2.goBack();
           }
         }).catch(function (error) {
           console.log(error);
-          _this.showSnackbar("Se ha producido un ERROR");
+          _this2.showSnackbar("Se ha producido un ERROR");
         });
       } else {
         this.axios.post(uri, this._header).then(function (response) {
-          _this._header.id = response.data.id;
+          _this2._header.id = response.data.id;
           __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_EDIT', 1);
-          _this.editdate = false;
-          _this.editdatepresu = false;
-          _this.showSnackbar("Festival creado");
+          _this2.editdate = false;
+          _this2.editdatepresu = false;
+          _this2.showSnackbar("Festival creado");
         }).catch(function (error) {
           console.log(error);
-          _this.showSnackbar("Se ha producido un ERROR");
+          _this2.showSnackbar("Se ha producido un ERROR");
         });
       }
     },
