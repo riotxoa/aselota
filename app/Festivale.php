@@ -28,6 +28,6 @@ class Festivale extends Model
   }
 
   public function contactos() {
-    return $this->hasOne('App\FestivalContactos', 'festival_id');
+    return $this->hasOne('App\FestivalContacto', 'festival_id');
   }
 }

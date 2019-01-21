@@ -48,19 +48,32 @@
             <b-button v-if="update && 0 == isGerente" size="sm" variant="primary" @click.stop="onClickEdit_I(row.item.id)" title="Editar">
               <span class="icon voyager-edit"></span>
             </b-button>
-            <b-button v-if="display" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+            <b-button v-if="display && 1 == isGerente" :disabled="!(row.item.contact_01_name || row.item.contact_02_name)" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
               <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
             </b-button>
           </b-button-group>
         </template>
 
         <template v-if="display" slot="row-details" slot-scope="row">
-          <b-card>
-            <b-row>
-              <b-col sm="6">
-              </b-col>
-              <b-col sm="6">
-              </b-col>
+          <b-card v-if="row.item.contact_01_name || row.item.contact_02_name">
+            <b-row v-if="row.item.contact_01_name" class="mb-2">
+              <b-col class="col-sm-12"><strong>Contacto 1:</strong> {{ row.item.contact_01_name }} ({{ row.item.contact_01_desc}})</b-col>
+            </b-row>
+            <b-row v-if="row.item.contact_01_name">
+              <b-col class="col-sm-4"><i class="fa fa-envelope pr-2"></i><a href="mailto:row.item.contact_01_email_1">{{ row.item.contact_01_email_1 }}</a></b-col>
+              <b-col class="col-sm-4"><i class="fa fa-envelope pr-2"></i><a href="mailto:row.item.contact_01_email_2">{{ row.item.contact_01_email_2 }}</a></b-col>
+              <b-col class="col-sm-2"><i class="fa fa-phone pr-2"></i>{{ row.item.contact_01_telephone_1}}</b-col>
+              <b-col class="col-sm-2"><i class="fa fa-phone pr-2"></i>{{ row.item.contact_01_telephone_2 }}</b-col>
+            </b-row>
+            <hr v-if="row.item.contact_01_name && row.item.contact_02_name" />
+            <b-row v-if="row.item.contact_02_name" class="mb-2">
+              <b-col class="col-sm-12"><strong>Contacto 2:</strong> {{ row.item.contact_02_name }} ({{ row.item.contact_02_desc}})</b-col>
+            </b-row>
+            <b-row v-if="row.item.contact_02_name">
+              <b-col class="col-sm-4"><i class="fa fa-envelope pr-2"></i><a href="mailto:row.item.contact_02_email_1">{{ row.item.contact_02_email_1 }}</a></b-col>
+              <b-col class="col-sm-4"><i class="fa fa-envelope pr-2"></i><a href="mailto:row.item.contact_02_email_2">{{ row.item.contact_02_email_2 }}</a></b-col>
+              <b-col class="col-sm-2"><i class="fa fa-phone pr-2"></i>{{ row.item.contact_02_telephone_1}}</b-col>
+              <b-col class="col-sm-2"><i class="fa fa-phone pr-2"></i>{{ row.item.contact_02_telephone_2 }}</b-col>
             </b-row>
           </b-card>
         </template>
@@ -100,7 +113,7 @@
           filter: true,
           remove: true,
           update: true,
-          display: false,
+          display: true,
           sortBy: 'fecha_ini',
           sortDesc: true,
           fields: [

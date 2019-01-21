@@ -9,7 +9,7 @@ use Illuminate\Http\File;
 use App\Festivale;
 use App\FestivalCoste;
 use App\FestivalFacturacion;
-use App\FestivalContactos;
+use App\FestivalContacto;
 use App\User;
 use TCG\Voyager\Models\Role;
 
@@ -29,6 +29,7 @@ class FestivaleController extends Controller
           ->leftJoin('provincias', 'frontones.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'frontones.municipio_id', '=', 'municipios.id')
           ->leftJoin('estado_festivals', 'festivales.estado_id', '=', 'estado_festivals.id')
+          ->leftJoin('festival_contactos', 'festivales.id', '=', 'festival_contactos.festival_id')
           ->select(
               'festivales.*',
               DB::raw('IF(festivales.television, "Sí", "No") AS television_txt'),
@@ -37,7 +38,19 @@ class FestivaleController extends Controller
               'municipios.id as municipio_id',
               'municipios.name as municipio',
               'frontones.name as fronton',
-              'estado_festivals.name as estado'
+              'estado_festivals.name as estado',
+              'festival_contactos.contact_01_name',
+              'festival_contactos.contact_01_desc',
+              'festival_contactos.contact_01_email_1',
+              'festival_contactos.contact_01_email_2',
+              'festival_contactos.contact_01_telephone_1',
+              'festival_contactos.contact_01_telephone_2',
+              'festival_contactos.contact_02_name',
+              'festival_contactos.contact_02_desc',
+              'festival_contactos.contact_02_email_1',
+              'festival_contactos.contact_02_email_2',
+              'festival_contactos.contact_02_telephone_1',
+              'festival_contactos.contact_02_telephone_2'
             );
 
           if( null !== $request->get('filter') ) {
@@ -167,6 +180,7 @@ class FestivaleController extends Controller
         $header = $request->get('header');
         $costes = $request->get('costes');
         $facturacion = $request->get('facturacion');
+        $contactos = $request->get('contactos');
 
         $fest_header = Festivale::find($id);
 
@@ -243,36 +257,36 @@ class FestivaleController extends Controller
         $fest_contactos = $fest_header->contactos();
 
         if( $fest_contactos->first() ) {
-          $fest_contactos = FestivalContactos::find($fest_contactos->first()->id);
+          $fest_contactos = FestivalContacto::find($fest_contactos->first()->id);
 
-          $fest_contactos->contact_01_name = $facturacion['contact_01_name'];
-          $fest_contactos->contact_01_desc = $facturacion['contact_01_desc'];
-          $fest_contactos->contact_01_telephone_1 = $facturacion['contact_01_telephone_1'];
-          $fest_contactos->contact_01_telephone_2 = $facturacion['contact_01_telephone_2'];
-          $fest_contactos->contact_01_email_1 = $facturacion['contact_01_email_1'];
-          $fest_contactos->contact_01_email_2 = $facturacion['contact_01_email_2'];
-          $fest_contactos->contact_02_name = $facturacion['contact_02_name'];
-          $fest_contactos->contact_02_desc = $facturacion['contact_02_desc'];
-          $fest_contactos->contact_02_telephone_1 = $facturacion['contact_02_telephone_1'];
-          $fest_contactos->contact_02_telephone_2 = $facturacion['contact_02_telephone_2'];
-          $fest_contactos->contact_02_email_1 = $facturacion['contact_02_email_1'];
-          $fest_contactos->contact_02_email_2 = $facturacion['contact_02_email_2'];
-          $fest_contactos->observaciones = $facturacion['observaciones'];
+          $fest_contactos->contact_01_name = $contactos['contact_01_name'];
+          $fest_contactos->contact_01_desc = $contactos['contact_01_desc'];
+          $fest_contactos->contact_01_telephone_1 = $contactos['contact_01_telephone_1'];
+          $fest_contactos->contact_01_telephone_2 = $contactos['contact_01_telephone_2'];
+          $fest_contactos->contact_01_email_1 = $contactos['contact_01_email_1'];
+          $fest_contactos->contact_01_email_2 = $contactos['contact_01_email_2'];
+          $fest_contactos->contact_02_name = $contactos['contact_02_name'];
+          $fest_contactos->contact_02_desc = $contactos['contact_02_desc'];
+          $fest_contactos->contact_02_telephone_1 = $contactos['contact_02_telephone_1'];
+          $fest_contactos->contact_02_telephone_2 = $contactos['contact_02_telephone_2'];
+          $fest_contactos->contact_02_email_1 = $contactos['contact_02_email_1'];
+          $fest_contactos->contact_02_email_2 = $contactos['contact_02_email_2'];
+          $fest_contactos->observaciones = $contactos['observaciones'];
         } else {
-          $fest_contactos = new FestivalContactos([
-            'contact_01_name' => $facturacion['contact_01_name'],
-            'contact_01_desc' => $facturacion['contact_01_desc'],
-            'contact_01_telephone_1' => $facturacion['contact_01_telephone_1'],
-            'contact_01_telephone_2' => $facturacion['contact_01_telephone_2'],
-            'contact_01_email_1' => $facturacion['contact_01_email_1'],
-            'contact_01_email_2' => $facturacion['contact_01_email_2'],
-            'contact_02_name' => $facturacion['contact_02_name'],
-            'contact_02_desc' => $facturacion['contact_02_desc'],
-            'contact_02_telephone_1' => $facturacion['contact_02_telephone_1'],
-            'contact_02_telephone_2' => $facturacion['contact_02_telephone_2'],
-            'contact_02_email_1' => $facturacion['contact_02_email_1'],
-            'contact_02_email_2' => $facturacion['contact_02_email_2'],
-            'observaciones' => $facturacion['observaciones'],
+          $fest_contactos = new FestivalContacto([
+            'contact_01_name' => $contactos['contact_01_name'],
+            'contact_01_desc' => $contactos['contact_01_desc'],
+            'contact_01_telephone_1' => $contactos['contact_01_telephone_1'],
+            'contact_01_telephone_2' => $contactos['contact_01_telephone_2'],
+            'contact_01_email_1' => $contactos['contact_01_email_1'],
+            'contact_01_email_2' => $contactos['contact_01_email_2'],
+            'contact_02_name' => $contactos['contact_02_name'],
+            'contact_02_desc' => $contactos['contact_02_desc'],
+            'contact_02_telephone_1' => $contactos['contact_02_telephone_1'],
+            'contact_02_telephone_2' => $contactos['contact_02_telephone_2'],
+            'contact_02_email_1' => $contactos['contact_02_email_1'],
+            'contact_02_email_2' => $contactos['contact_02_email_2'],
+            'observaciones' => $contactos['observaciones'],
           ]);
         }
         $fest_contactos->save();

@@ -245,6 +245,9 @@
       _facturacion() {
         return store.getters.facturacion;
       },
+      _contactos() {
+        return store.getters.contactos;
+      },
     },
     methods: {
       dontDestroyComponent () {
@@ -303,6 +306,7 @@
             header: this._header,
             costes: this._costes,
             facturacion: this._facturacion,
+            contactos: this._contactos[0],
           }
 
           this.axios.post(uri + '/' + this._header.id + '/update', data)

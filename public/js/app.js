@@ -95954,6 +95954,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -95967,7 +95980,7 @@ Vue.component('filtro-festivales', __webpack_require__(426));
       filter: true,
       remove: true,
       update: true,
-      display: false,
+      display: true,
       sortBy: 'fecha_ini',
       sortDesc: true,
       fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" }],
@@ -96780,11 +96793,15 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.display
+                      _vm.display && 1 == _vm.isGerente
                         ? _c(
                             "b-button",
                             {
                               attrs: {
+                                disabled: !(
+                                  row.item.contact_01_name ||
+                                  row.item.contact_02_name
+                                ),
                                 size: "sm",
                                 variant: "secondary",
                                 title: "Mostrar/Ocultar Detalle"
@@ -96818,21 +96835,214 @@ var render = function() {
               fn: function(row) {
                 return _vm.display
                   ? [
-                      _c(
-                        "b-card",
-                        [
-                          _c(
-                            "b-row",
+                      row.item.contact_01_name || row.item.contact_02_name
+                        ? _c(
+                            "b-card",
                             [
-                              _c("b-col", { attrs: { sm: "6" } }),
+                              row.item.contact_01_name
+                                ? _c(
+                                    "b-row",
+                                    { staticClass: "mb-2" },
+                                    [
+                                      _c(
+                                        "b-col",
+                                        { staticClass: "col-sm-12" },
+                                        [
+                                          _c("strong", [_vm._v("Contacto 1:")]),
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(row.item.contact_01_name) +
+                                              " (" +
+                                              _vm._s(row.item.contact_01_desc) +
+                                              ")"
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
                               _vm._v(" "),
-                              _c("b-col", { attrs: { sm: "6" } })
+                              row.item.contact_01_name
+                                ? _c(
+                                    "b-row",
+                                    [
+                                      _c("b-col", { staticClass: "col-sm-4" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-envelope pr-2"
+                                        }),
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href:
+                                                "mailto:row.item.contact_01_email_1"
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                row.item.contact_01_email_1
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-col", { staticClass: "col-sm-4" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-envelope pr-2"
+                                        }),
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href:
+                                                "mailto:row.item.contact_01_email_2"
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                row.item.contact_01_email_2
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-col", { staticClass: "col-sm-2" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-phone pr-2"
+                                        }),
+                                        _vm._v(
+                                          _vm._s(
+                                            row.item.contact_01_telephone_1
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-col", { staticClass: "col-sm-2" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-phone pr-2"
+                                        }),
+                                        _vm._v(
+                                          _vm._s(
+                                            row.item.contact_01_telephone_2
+                                          )
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              row.item.contact_01_name &&
+                              row.item.contact_02_name
+                                ? _c("hr")
+                                : _vm._e(),
+                              _vm._v(" "),
+                              row.item.contact_02_name
+                                ? _c(
+                                    "b-row",
+                                    { staticClass: "mb-2" },
+                                    [
+                                      _c(
+                                        "b-col",
+                                        { staticClass: "col-sm-12" },
+                                        [
+                                          _c("strong", [_vm._v("Contacto 2:")]),
+                                          _vm._v(
+                                            " " +
+                                              _vm._s(row.item.contact_02_name) +
+                                              " (" +
+                                              _vm._s(row.item.contact_02_desc) +
+                                              ")"
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              row.item.contact_02_name
+                                ? _c(
+                                    "b-row",
+                                    [
+                                      _c("b-col", { staticClass: "col-sm-4" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-envelope pr-2"
+                                        }),
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href:
+                                                "mailto:row.item.contact_02_email_1"
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                row.item.contact_02_email_1
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-col", { staticClass: "col-sm-4" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-envelope pr-2"
+                                        }),
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href:
+                                                "mailto:row.item.contact_02_email_2"
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                row.item.contact_02_email_2
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-col", { staticClass: "col-sm-2" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-phone pr-2"
+                                        }),
+                                        _vm._v(
+                                          _vm._s(
+                                            row.item.contact_02_telephone_1
+                                          )
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-col", { staticClass: "col-sm-2" }, [
+                                        _c("i", {
+                                          staticClass: "fa fa-phone pr-2"
+                                        }),
+                                        _vm._v(
+                                          _vm._s(
+                                            row.item.contact_02_telephone_2
+                                          )
+                                        )
+                                      ])
+                                    ],
+                                    1
+                                  )
+                                : _vm._e()
                             ],
                             1
                           )
-                        ],
-                        1
-                      )
+                        : _vm._e()
                     ]
                   : undefined
               }
@@ -97395,6 +97605,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     _facturacion: function _facturacion() {
       return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.facturacion;
+    },
+    _contactos: function _contactos() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.contactos;
     }
   },
   methods: {
@@ -97455,7 +97668,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var data = {
           header: this._header,
           costes: this._costes,
-          facturacion: this._facturacion
+          facturacion: this._facturacion,
+          contactos: this._contactos[0]
         };
 
         this.axios.post(uri + '/' + this._header.id + '/update', data).then(function (response) {
