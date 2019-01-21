@@ -7057,6 +7057,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         if (is_gerente) {
           dispatch('loadCostes');
           dispatch('loadFacturacion');
+          dispatch('loadContactos');
         }
       });
     },

@@ -415,6 +415,7 @@ export const store = new Vuex.Store({
           if( is_gerente ) {
             dispatch('loadCostes');
             dispatch('loadFacturacion');
+            dispatch('loadContactos');
           }
         });
     },
