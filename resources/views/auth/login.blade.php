@@ -4,7 +4,7 @@
 <div class="container login">
     <div class="logo-wrap row justify-content-center">
       <div class="col-md-8">
-        <img class="logo" src="{{ asset('img/Asegarcelogo.png') }}" alt="Asegarce" title="Asegarce"/>
+        <img class="logo" src="{{ asset('img/logo-enpresa-login.png') }}" alt="Asegarce" title="Asegarce"/>
       </div>
     </div>
 
