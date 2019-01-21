@@ -34,6 +34,21 @@ export const store = new Vuex.Store({
       pagado: 0,
       seguimiento: '',
     },
+    contactos: {
+      contact_01_name: '',
+      contact_01_desc: '',
+      contact_01_email_1: '',
+      contact_01_email_2: '',
+      contact_01_telephone_1: '',
+      contact_01_telephone_2: '',
+      contact_02_name: '',
+      contact_02_desc: '',
+      contact_02_email_1: '',
+      contact_02_email_2: '',
+      contact_02_telephone_1: '',
+      contact_02_telephone_2: '',
+      observaciones: '',
+    },
     coste: 0.00,
     edit: false,
     edit_evento: false,
@@ -65,6 +80,7 @@ export const store = new Vuex.Store({
     costes: state => state.costes,
     coste: state => state.coste,
     facturacion: state => state.facturacion,
+    contactos: state => state.contactos,
     edit: state => state.edit,
     edit_evento: state => state.edit_evento,
     calendario: state => state.calendario,
@@ -131,6 +147,21 @@ export const store = new Vuex.Store({
         seguimiento: '',
       };
       state.coste = 0.00;
+      state.contactos = {
+        c1_name: '',
+        c1_desc: '',
+        c1_email1: '',
+        c1_email2: '',
+        c1_phone1: '',
+        c1_phone2: '',
+        c2_name: '',
+        c2_desc: '',
+        c2_email1: '',
+        c2_email2: '',
+        c2_phone1: '',
+        c2_phone2: '',
+        observaciones: '',
+      };
     },
     SET_HEADER (state, header) {
       state.header = header;
@@ -273,6 +304,9 @@ export const store = new Vuex.Store({
       if(facturacion.length) {
         state.facturacion = facturacion[0];
       }
+    },
+    SET_CONTACTOS (state, contactos) {
+      state.contactos = contactos;
     },
     SET_EDIT (state, edit) {
       state.edit = edit;
@@ -614,6 +648,42 @@ export const store = new Vuex.Store({
       return new Promise( (resolve, reject) => {
         axios
           .post(uri, facturacion)
+          .then( r => r.data )
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    loadContactos({ commit }) {
+      let data = {
+        params: {
+          festival_id: this.getters.header.id,
+        }
+      };
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .get('/www/festival-contactos', data)
+          .then( r => r.data )
+          .then( contactos => {
+              commit('SET_CONTACTOS', contactos);
+            resolve(contactos);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    addContactos({ commit }, contactos) {
+      let uri = '/www/festival-contactos';
+      contactos.festival_id = this.getters.header.id;
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, contactos)
           .then( r => r.data )
           .then((response) => {
             resolve(response);

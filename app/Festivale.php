@@ -26,4 +26,8 @@ class Festivale extends Model
   public function facturacion() {
     return $this->hasOne('App\FestivalFacturacion', 'festival_id');
   }
+
+  public function contactos() {
+    return $this->hasOne('App\FestivalContactos', 'festival_id');
+  }
 }

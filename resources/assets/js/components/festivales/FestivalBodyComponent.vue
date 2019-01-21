@@ -11,6 +11,9 @@
         <b-tab title="Facturación">
           <festival-facturacion></festival-facturacion>
         </b-tab>
+        <b-tab title="Contactos">
+          <festival-contactos></festival-contactos>
+        </b-tab>
       </b-tabs>
     </b-card>
   </div>
@@ -23,6 +26,7 @@
   Vue.component('festival-partidos', require('../partidos/FestivalListadoPartidosComponent.vue'));
   Vue.component('festival-costes', require('../costes/FestivalFichaCostesComponent.vue'));
   Vue.component('festival-facturacion', require('../facturacion/FestivalFichaFacturacionComponent.vue'));
+  Vue.component('festival-contactos', require('../contactos/FestivalFichaContactosComponent.vue'));
 
   export default {
     data () {

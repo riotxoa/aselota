@@ -9,6 +9,7 @@ use Illuminate\Http\File;
 use App\Festivale;
 use App\FestivalCoste;
 use App\FestivalFacturacion;
+use App\FestivalContactos;
 use App\User;
 use TCG\Voyager\Models\Role;
 
@@ -238,6 +239,43 @@ class FestivaleController extends Controller
           ]);
         }
         $fest_facturacion->save();
+
+        $fest_contactos = $fest_header->contactos();
+
+        if( $fest_contactos->first() ) {
+          $fest_contactos = FestivalContactos::find($fest_contactos->first()->id);
+
+          $fest_contactos->contact_01_name = $facturacion['contact_01_name'];
+          $fest_contactos->contact_01_desc = $facturacion['contact_01_desc'];
+          $fest_contactos->contact_01_telephone_1 = $facturacion['contact_01_telephone_1'];
+          $fest_contactos->contact_01_telephone_2 = $facturacion['contact_01_telephone_2'];
+          $fest_contactos->contact_01_email_1 = $facturacion['contact_01_email_1'];
+          $fest_contactos->contact_01_email_2 = $facturacion['contact_01_email_2'];
+          $fest_contactos->contact_02_name = $facturacion['contact_02_name'];
+          $fest_contactos->contact_02_desc = $facturacion['contact_02_desc'];
+          $fest_contactos->contact_02_telephone_1 = $facturacion['contact_02_telephone_1'];
+          $fest_contactos->contact_02_telephone_2 = $facturacion['contact_02_telephone_2'];
+          $fest_contactos->contact_02_email_1 = $facturacion['contact_02_email_1'];
+          $fest_contactos->contact_02_email_2 = $facturacion['contact_02_email_2'];
+          $fest_contactos->observaciones = $facturacion['observaciones'];
+        } else {
+          $fest_contactos = new FestivalContactos([
+            'contact_01_name' => $facturacion['contact_01_name'],
+            'contact_01_desc' => $facturacion['contact_01_desc'],
+            'contact_01_telephone_1' => $facturacion['contact_01_telephone_1'],
+            'contact_01_telephone_2' => $facturacion['contact_01_telephone_2'],
+            'contact_01_email_1' => $facturacion['contact_01_email_1'],
+            'contact_01_email_2' => $facturacion['contact_01_email_2'],
+            'contact_02_name' => $facturacion['contact_02_name'],
+            'contact_02_desc' => $facturacion['contact_02_desc'],
+            'contact_02_telephone_1' => $facturacion['contact_02_telephone_1'],
+            'contact_02_telephone_2' => $facturacion['contact_02_telephone_2'],
+            'contact_02_email_1' => $facturacion['contact_02_email_1'],
+            'contact_02_email_2' => $facturacion['contact_02_email_2'],
+            'observaciones' => $facturacion['observaciones'],
+          ]);
+        }
+        $fest_contactos->save();
 
         return response()->json($fest_header, 200);
     }

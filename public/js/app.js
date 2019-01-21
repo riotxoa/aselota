@@ -6607,6 +6607,21 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       pagado: 0,
       seguimiento: ''
     },
+    contactos: {
+      contact_01_name: '',
+      contact_01_desc: '',
+      contact_01_email_1: '',
+      contact_01_email_2: '',
+      contact_01_telephone_1: '',
+      contact_01_telephone_2: '',
+      contact_02_name: '',
+      contact_02_desc: '',
+      contact_02_email_1: '',
+      contact_02_email_2: '',
+      contact_02_telephone_1: '',
+      contact_02_telephone_2: '',
+      observaciones: ''
+    },
     coste: 0.00,
     edit: false,
     edit_evento: false,
@@ -6655,6 +6670,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     facturacion: function facturacion(state) {
       return state.facturacion;
+    },
+    contactos: function contactos(state) {
+      return state.contactos;
     },
     edit: function edit(state) {
       return state.edit;
@@ -6760,6 +6778,21 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         seguimiento: ''
       };
       state.coste = 0.00;
+      state.contactos = {
+        c1_name: '',
+        c1_desc: '',
+        c1_email1: '',
+        c1_email2: '',
+        c1_phone1: '',
+        c1_phone2: '',
+        c2_name: '',
+        c2_desc: '',
+        c2_email1: '',
+        c2_email2: '',
+        c2_phone1: '',
+        c2_phone2: '',
+        observaciones: ''
+      };
     },
     SET_HEADER: function SET_HEADER(state, header) {
       state.header = header;
@@ -6903,6 +6936,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       if (facturacion.length) {
         state.facturacion = facturacion[0];
       }
+    },
+    SET_CONTACTOS: function SET_CONTACTOS(state, contactos) {
+      state.contactos = contactos;
     },
     SET_EDIT: function SET_EDIT(state, edit) {
       state.edit = edit;
@@ -7276,8 +7312,44 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCalendario: function loadCalendario(_ref24, month) {
+    loadContactos: function loadContactos(_ref24) {
       var commit = _ref24.commit;
+
+      var data = {
+        params: {
+          festival_id: this.getters.header.id
+        }
+      };
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-contactos', data).then(function (r) {
+          return r.data;
+        }).then(function (contactos) {
+          commit('SET_CONTACTOS', contactos);
+          resolve(contactos);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    addContactos: function addContactos(_ref25, contactos) {
+      var commit = _ref25.commit;
+
+      var uri = '/www/festival-contactos';
+      contactos.festival_id = this.getters.header.id;
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, contactos).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadCalendario: function loadCalendario(_ref26, month) {
+      var commit = _ref26.commit;
 
       var data = {
         params: {
@@ -7291,9 +7363,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_CALENDARIO', calendario);
       });
     },
-    loadEntrenamientos: function loadEntrenamientos(_ref25) {
-      var commit = _ref25.commit,
-          dispatch = _ref25.dispatch;
+    loadEntrenamientos: function loadEntrenamientos(_ref27) {
+      var commit = _ref27.commit,
+          dispatch = _ref27.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos').then(function (r) {
         return r.data;
@@ -7301,9 +7373,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTRENAMIENTOS', entrenamientos);
       });
     },
-    loadEntrContenidos: function loadEntrContenidos(_ref26) {
-      var commit = _ref26.commit,
-          dispatch = _ref26.dispatch;
+    loadEntrContenidos: function loadEntrContenidos(_ref28) {
+      var commit = _ref28.commit,
+          dispatch = _ref28.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/contenidos').then(function (r) {
         return r.data;
@@ -7314,8 +7386,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_CONTENIDOS', contenidos);
       });
     },
-    loadEntrFrontones: function loadEntrFrontones(_ref27) {
-      var commit = _ref27.commit;
+    loadEntrFrontones: function loadEntrFrontones(_ref29) {
+      var commit = _ref29.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/frontones').then(function (r) {
         return r.data;
@@ -7326,9 +7398,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_FRONTONES', frontones);
       });
     },
-    loadEntrActitudes: function loadEntrActitudes(_ref28) {
-      var commit = _ref28.commit,
-          dispatch = _ref28.dispatch;
+    loadEntrActitudes: function loadEntrActitudes(_ref30) {
+      var commit = _ref30.commit,
+          dispatch = _ref30.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/actitudes').then(function (r) {
         return r.data;
@@ -7339,9 +7411,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_ACTITUDES', actitudes);
       });
     },
-    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref29) {
-      var commit = _ref29.commit,
-          dispatch = _ref29.dispatch;
+    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref31) {
+      var commit = _ref31.commit,
+          dispatch = _ref31.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/aprovechamientos').then(function (r) {
         return r.data;
@@ -7352,9 +7424,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_APROVECHAMIENTOS', aprovechamientos);
       });
     },
-    loadEntrEvoluciones: function loadEntrEvoluciones(_ref30) {
-      var commit = _ref30.commit,
-          dispatch = _ref30.dispatch;
+    loadEntrEvoluciones: function loadEntrEvoluciones(_ref32) {
+      var commit = _ref32.commit,
+          dispatch = _ref32.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/evoluciones').then(function (r) {
         return r.data;
@@ -7365,14 +7437,14 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_EVOLUCIONES', evoluciones);
       });
     },
-    resetEvento: function resetEvento(_ref31) {
-      var commit = _ref31.commit;
+    resetEvento: function resetEvento(_ref33) {
+      var commit = _ref33.commit;
 
       commit('RESET_EVENTO');
     },
-    loadEventos: function loadEventos(_ref32) {
-      var commit = _ref32.commit,
-          dispatch = _ref32.dispatch;
+    loadEventos: function loadEventos(_ref34) {
+      var commit = _ref34.commit,
+          dispatch = _ref34.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/eventos').then(function (r) {
         return r.data;
@@ -7380,9 +7452,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_EVENTOS', eventos);
       });
     },
-    loadEventoMotivos: function loadEventoMotivos(_ref33) {
-      var commit = _ref33.commit,
-          dispatch = _ref33.dispatch;
+    loadEventoMotivos: function loadEventoMotivos(_ref35) {
+      var commit = _ref35.commit,
+          dispatch = _ref35.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/eventos/motivos').then(function (r) {
         return r.data;
@@ -7393,8 +7465,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_EVENTO_MOTIVOS', motivos);
       });
     },
-    addPelotariToEvento: function addPelotariToEvento(_ref34, pelotari) {
-      var commit = _ref34.commit;
+    addPelotariToEvento: function addPelotariToEvento(_ref36, pelotari) {
+      var commit = _ref36.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/add/pelotari';
 
@@ -7409,8 +7481,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePelotariFromEvento: function updatePelotariFromEvento(_ref35, pelotari) {
-      var commit = _ref35.commit;
+    updatePelotariFromEvento: function updatePelotariFromEvento(_ref37, pelotari) {
+      var commit = _ref37.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/update/pelotari';
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, pelotari).then(function (r) {
@@ -7419,8 +7491,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('UPDATE_EVENTO_PELOTARI', response);
       });
     },
-    deletePelotariFromEvento: function deletePelotariFromEvento(_ref36, id) {
-      var commit = _ref36.commit;
+    deletePelotariFromEvento: function deletePelotariFromEvento(_ref38, id) {
+      var commit = _ref38.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/delete/pelotari';
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, { id: id }).then(function (r) {
@@ -7429,8 +7501,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('DEL_EVENTO_PELOTARI', id);
       });
     },
-    loadPelotaris: function loadPelotaris(_ref37, date) {
-      var commit = _ref37.commit;
+    loadPelotaris: function loadPelotaris(_ref39, date) {
+      var commit = _ref39.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris', {
         params: {
@@ -7445,8 +7517,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadProvincias: function loadProvincias(_ref38) {
-      var commit = _ref38.commit;
+    loadProvincias: function loadProvincias(_ref40) {
+      var commit = _ref40.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/provincias').then(function (r) {
         return r.data;
@@ -7457,8 +7529,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PROVINCIAS', provincias);
       });
     },
-    loadMunicipios: function loadMunicipios(_ref39) {
-      var commit = _ref39.commit;
+    loadMunicipios: function loadMunicipios(_ref41) {
+      var commit = _ref41.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/municipios').then(function (r) {
         return r.data;
@@ -7470,8 +7542,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_MUNICIPIOS_FILTERED', municipios);
       });
     },
-    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref40, id) {
-      var commit = _ref40.commit;
+    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref42, id) {
+      var commit = _ref42.commit;
 
       if (null === id) {
         commit('SET_MUNICIPIOS_FILTERED', this.getters.municipios);
@@ -7490,8 +7562,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES_FILTERED', frontones_filtered);
       }
     },
-    loadFrontones: function loadFrontones(_ref41) {
-      var commit = _ref41.commit;
+    loadFrontones: function loadFrontones(_ref43) {
+      var commit = _ref43.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/frontones').then(function (r) {
         return r.data;
@@ -7502,8 +7574,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES', frontones);
       });
     },
-    loadCampeonatos: function loadCampeonatos(_ref42) {
-      var commit = _ref42.commit;
+    loadCampeonatos: function loadCampeonatos(_ref44) {
+      var commit = _ref44.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/campeonatos').then(function (r) {
         return r.data;
@@ -97354,8 +97426,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     onChangeTelevision: function onChangeTelevision(value) {
       if (1 == value && false == this._edit && "" == this._header.television_txt) {
-        this.television_txt = "ETB-1";
-        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_TELEVISION_TXT', 'ETB-1');
+        this.television_txt = "Etb1";
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_TELEVISION_TXT', 'Etb1');
       }
     },
     onSubmit: function onSubmit(evt) {
@@ -98032,6 +98104,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -98039,6 +98114,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Vue.component('festival-partidos', __webpack_require__(443));
 Vue.component('festival-costes', __webpack_require__(474));
 Vue.component('festival-facturacion', __webpack_require__(479));
+Vue.component('festival-contactos', __webpack_require__(538));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -103870,6 +103946,13 @@ var render = function() {
                 { attrs: { title: "Facturación" } },
                 [_c("festival-facturacion")],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-tab",
+                { attrs: { title: "Contactos" } },
+                [_c("festival-contactos")],
+                1
               )
             ],
             1
@@ -108445,6 +108528,883 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 535 */,
+/* 536 */,
+/* 537 */,
+/* 538 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(539)
+}
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(541)
+/* template */
+var __vue_template__ = __webpack_require__(542)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/contactos/FestivalFichaContactosComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-79348030", Component.options)
+  } else {
+    hotAPI.reload("data-v-79348030", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 539 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(540);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("73bea266", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-79348030\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaContactosComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-79348030\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FestivalFichaContactosComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 540 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.festival-contactos .card {\n  border-color:#707f8f;\n}\n.festival-contactos label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-contactos input {\n  height:27px;\n}\n.festival-contactos input[type=\"text\"],\n.festival-contactos input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-contactos div[role=\"radiogroup\"] .custom-radio:first-child {\n  margin-right:35px;\n}\n.festival-contactos .botonera {\n  margin-left:0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 541 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
+  data: function data() {
+    return {
+      contactos: {
+        contact_01_name: '',
+        contact_01_desc: '',
+        contact_01_email_1: '',
+        contact_01_email_2: '',
+        contact_01_telephone_1: '',
+        contact_01_telephone_2: '',
+        contact_02_name: '',
+        contact_02_desc: '',
+        contact_02_email_1: '',
+        contact_02_email_2: '',
+        contact_02_telephone_1: '',
+        contact_02_telephone_2: '',
+        observaciones: ''
+      }
+    };
+  },
+
+  created: function created() {
+    var _this = this;
+
+    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadContactos').then(function (response) {
+      if (response) {
+        _this.contactos = response[0];
+      }
+    });
+  },
+  computed: {
+    _contactos: function _contactos() {
+      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.contactos;
+    }
+  },
+  methods: {
+    onSubmit: function onSubmit() {
+      var _this2 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('addContactos', this.contactos).then(function (response) {
+        _this2.showSnackbar("Contactos GUARDADOS");
+      }).catch(function (error) {
+        console.log(error);
+        _this2.showSnackbar("Se ha producido un ERROR al guardar los CONTACTOS");
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 542 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "festival-contactos" },
+    [
+      _c(
+        "b-form",
+        { on: { submit: _vm.onSubmit } },
+        [
+          _c("b-row", [
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-10" }, [
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c("b-row", [
+                      _c("h5", { staticClass: "col-12" }, [
+                        _vm._v("Contacto 1")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: { label: "Nombre", "label-for": "c1_nombre" }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_nombre", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_01_name,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_name",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_name"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-8",
+                            attrs: {
+                              label: "Descripción",
+                              "label-for": "c1_descripcion"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_descripcion", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_01_desc,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_desc",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_desc"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 1",
+                              "label-for": "c1_email1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_email_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_email_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_email_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 2",
+                              "label-for": "c1_email2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_email_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_email_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_email_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 1",
+                              "label-for": "c1_phone1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_telephone_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_telephone_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_telephone_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 2",
+                              "label-for": "c1_phone2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_01_telephone_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_01_telephone_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_01_telephone_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+          ]),
+          _vm._v(" "),
+          _c("b-row", [
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-10" }, [
+              _c("div", { staticClass: "card mb-3" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  [
+                    _c("b-row", [
+                      _c("h5", { staticClass: "col-12" }, [
+                        _vm._v("Contacto 2")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: { label: "Nombre", "label-for": "c1_nombre" }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_nombre", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_02_name,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_name",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_name"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-8",
+                            attrs: {
+                              label: "Descripción",
+                              "label-for": "c1_descripcion"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: { id: "c1_descripcion", type: "text" },
+                              model: {
+                                value: _vm.contactos.contact_02_desc,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_desc",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_desc"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 1",
+                              "label-for": "c1_email1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_email_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_email_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_email_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Email 2",
+                              "label-for": "c1_email2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "email",
+                                maxlength: "50"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_email_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_email_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_email_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 1",
+                              "label-for": "c1_phone1"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email1",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_telephone_1,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_telephone_1",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_telephone_1"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-md-4",
+                            attrs: {
+                              label: "Teléfono 2",
+                              "label-for": "c1_phone2"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "c1_email2",
+                                type: "text",
+                                maxlength: "18"
+                              },
+                              model: {
+                                value: _vm.contactos.contact_02_telephone_2,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.contactos,
+                                    "contact_02_telephone_2",
+                                    $$v
+                                  )
+                                },
+                                expression: "contactos.contact_02_telephone_2"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-row",
+            [
+              _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+              _vm._v(" "),
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "col-md-10",
+                  attrs: {
+                    label: "Observaciones:",
+                    "label-for": "observaciones"
+                  }
+                },
+                [
+                  _c("b-form-textarea", {
+                    attrs: { id: "observaciones", rows: 3, "max-rows": 6 },
+                    model: {
+                      value: _vm.contactos.observaciones,
+                      callback: function($$v) {
+                        _vm.$set(_vm.contactos, "observaciones", $$v)
+                      },
+                      expression: "contactos.observaciones"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("b-row", { staticClass: "botonera" }, [
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-md-10 text-right" },
+              [
+                _c(
+                  "b-button",
+                  {
+                    staticClass: "ml-1",
+                    attrs: { variant: "danger" },
+                    on: { click: _vm.onSubmit }
+                  },
+                  [_vm._v("Guardar")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-79348030", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
