@@ -48,7 +48,7 @@
             <b-button v-if="update && 0 == isGerente" size="sm" variant="primary" @click.stop="onClickEdit_I(row.item.id)" title="Editar">
               <span class="icon voyager-edit"></span>
             </b-button>
-            <b-button v-if="display && 1 == isGerente" :disabled="!(row.item.contact_01_name || row.item.contact_02_name)" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
+            <b-button v-if="display && 1 == isGerente && (row.item.contact_01_name || row.item.contact_02_name)" size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle">
               <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
             </b-button>
           </b-button-group>
@@ -124,7 +124,7 @@
             { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true },
             { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true },
             { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true },
-            { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" },
+            { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-left" },
           ],
           items: [],
           totalRows: 0,

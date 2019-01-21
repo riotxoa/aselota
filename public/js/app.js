@@ -95983,7 +95983,7 @@ Vue.component('filtro-festivales', __webpack_require__(426));
       display: true,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-center" }],
+      fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-left" }],
       items: [],
       totalRows: 0,
       perPage: 10,
@@ -96793,15 +96793,13 @@ var render = function() {
                           )
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.display && 1 == _vm.isGerente
+                      _vm.display &&
+                      1 == _vm.isGerente &&
+                      (row.item.contact_01_name || row.item.contact_02_name)
                         ? _c(
                             "b-button",
                             {
                               attrs: {
-                                disabled: !(
-                                  row.item.contact_01_name ||
-                                  row.item.contact_02_name
-                                ),
                                 size: "sm",
                                 variant: "secondary",
                                 title: "Mostrar/Ocultar Detalle"
