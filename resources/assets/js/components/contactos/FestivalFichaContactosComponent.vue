@@ -212,7 +212,7 @@
     },
     created: function () {
       store.dispatch('loadContactos').then( response => {
-        if( response ) {
+        if( response[0] ) {
           this.contactos = response[0];
         }
       });

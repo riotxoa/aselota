@@ -104446,7 +104446,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this = this;
 
     __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadContactos').then(function (response) {
-      if (response) {
+      if (response[0]) {
         _this.contactos = response[0];
       }
     });
