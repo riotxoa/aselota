@@ -87173,7 +87173,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  background:lightgreen;\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n", ""]);
+exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n.calendar-wrap tbody td div.asiste {\n  background:lightgreen;\n}\n.calendar-wrap tbody td div.no-asiste {\n  background:lightpink;\n}\n", ""]);
 
 // exports
 
@@ -87360,6 +87360,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                           <strong>Nº Partido:</strong> " + match.orden + " - <strong>Estelar:</strong> " + (match.estelar ? "Sí" : "No") + "<br> \
                           <strong>Modalidad:</strong> " + match.tipo_partido_name + "<br> \
                           <strong>Frontón:</strong> " + match.fronton_name + " (" + match.municipio_name + ")<br> \
+                          <strong>Asiste:</strong> " + (match.asiste ? 'Sí' : 'No') + "<br> \
                        ";
         if (match.campeonato_id) {
           tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)";
@@ -87367,7 +87368,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         tooltip += "</div>";
 
-        return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.municipio_name + "</div>";
+        return "<div class='" + (match.asiste ? 'asiste' : 'no-asiste') + "' data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.municipio_name + "</div>";
       } else {
         return "<span>&nbsp;</span>";
       }

@@ -169,6 +169,7 @@
                             <strong>Nº Partido:</strong> " + match.orden + " - <strong>Estelar:</strong> " + (match.estelar ? "Sí" : "No") + "<br> \
                             <strong>Modalidad:</strong> " + match.tipo_partido_name + "<br> \
                             <strong>Frontón:</strong> " + match.fronton_name + " (" + match.municipio_name + ")<br> \
+                            <strong>Asiste:</strong> " + (match.asiste ? 'Sí' : 'No') + "<br> \
                          ";
           if( match.campeonato_id ) {
             tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)";
@@ -176,7 +177,7 @@
 
           tooltip += "</div>";
 
-          return "<div data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.municipio_name + "</div>";
+          return "<div class='" + (match.asiste ? 'asiste' : 'no-asiste') + "' data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.municipio_name + "</div>";
         } else {
           return "<span>&nbsp;</span>";
         }
@@ -276,8 +277,13 @@
     padding:0;
   }
   .calendar-wrap tbody td div {
-    background:lightgreen;
     height:100%;
     padding:.25rem .5rem 0;
+  }
+  .calendar-wrap tbody td div.asiste {
+    background:lightgreen;
+  }
+  .calendar-wrap tbody td div.no-asiste {
+    background:lightpink;
   }
 </style>
