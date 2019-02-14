@@ -430,7 +430,7 @@ class FestivalPartidoController extends Controller
 
     public function update_pelotari(Request $request, $id)
     {
-      $request->user()->authorizeRoles(['admin', 'intendente']);
+      $request->user()->authorizeRoles(['admin', 'gerente', 'intendente']);
 
       $item = FestivalPartidoPelotari::find($id);
 
