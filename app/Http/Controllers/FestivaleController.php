@@ -60,7 +60,8 @@ class FestivaleController extends Controller
                            ->leftJoin('festival_partidos', 'festivales.id', '=', 'festival_partidos.festival_id')
                            ->leftJoin('festival_partido_pelotaris', 'festival_partidos.id', '=', 'festival_partido_pelotaris.festival_partido_id')
                            ->leftJoin('pelotaris', 'festival_partido_pelotaris.pelotari_id', '=', 'pelotaris.id')
-                           ->groupBy('festivales.id');
+                           ->groupBy('festivales.id')
+                           ->groupBy('festival_contactos.id');
 
             $filters = $request->get('filter');
 
