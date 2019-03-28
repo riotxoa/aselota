@@ -142,7 +142,7 @@
             month = "Agosto";
             break;
           case 8:
-            month = "Septiempre";
+            month = "Septiembre";
             break;
           case 9:
             month = "Octubre";

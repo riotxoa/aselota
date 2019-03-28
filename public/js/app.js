@@ -87333,7 +87333,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           month = "Agosto";
           break;
         case 8:
-          month = "Septiempre";
+          month = "Septiembre";
           break;
         case 9:
           month = "Octubre";
@@ -100042,7 +100042,7 @@ Vue.component('form-pelotari-i', __webpack_require__(466));
           month = "Agosto";
           break;
         case 8:
-          month = "Septiempre";
+          month = "Septiembre";
           break;
         case 9:
           month = "Octubre";
