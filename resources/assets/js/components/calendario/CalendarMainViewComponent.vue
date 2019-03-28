@@ -279,6 +279,7 @@
   }
   .calendar-wrap tbody td div {
     height:100%;
+    max-height:2.8rem;
     padding:.25rem .5rem 0;
   }
   .calendar-wrap tbody td div.asiste {

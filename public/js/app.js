@@ -7366,7 +7366,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/calendario', data).then(function (r) {
         return r.data;
       }).then(function (calendario) {
-        console.log("[loadCalendario] calendario: " + JSON.stringify(calendario));
         commit('SET_CALENDARIO', calendario);
       });
     },
@@ -87174,7 +87173,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  height:100%;\n  padding:.25rem .5rem 0;\n}\n.calendar-wrap tbody td div.asiste {\n  background:lightgreen;\n}\n.calendar-wrap tbody td div.no-asiste {\n  background:lightpink;\n}\n", ""]);
+exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  height:100%;\n  max-height:2.8rem;\n  padding:.25rem .5rem 0;\n}\n.calendar-wrap tbody td div.asiste {\n  background:lightgreen;\n}\n.calendar-wrap tbody td div.no-asiste {\n  background:lightpink;\n}\n", ""]);
 
 // exports
 
