@@ -51,6 +51,7 @@ class Pelotari extends Model
       ->whereColumn('contratos.fecha_ini', '<=', 'festivales.fecha')
       ->whereColumn('contratos.fecha_fin', '>=', 'festivales.fecha')
       ->whereNull('contratos.deleted_at')
+      ->whereNull('festivales.deleted_at')
       ->count();
 
     return $items;
