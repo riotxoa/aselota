@@ -15,6 +15,7 @@ class ContratoCampeonato extends Model
     'campeonato_id',
     'campeon',
     'subcampeon',
+    'final',
     'liga_semifinal',
     'liga_cuartos',
     'semifinal',

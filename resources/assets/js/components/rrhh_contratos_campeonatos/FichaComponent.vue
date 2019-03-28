@@ -62,6 +62,17 @@
                         placeholder="0">
           </b-form-input>
         </b-form-group>
+        <!-- <b-form-group label="Final:"
+                      label-for="finalInput"
+                      class="col-sm-2">
+          <b-form-input id="finalInput"
+                        class="text-right"
+                        type="number"
+                        v-model="tarifa.final"
+                        maxlength="8"
+                        placeholder="0">
+          </b-form-input>
+        </b-form-group> -->
         <b-form-group class="col-sm-2">
         </b-form-group>
         <b-form-group label="Lig.Semifinales:"
@@ -183,6 +194,7 @@
           fecha_fin: null,
           campeon: null,
           subcampeon: null,
+          final: null,
           liga_semifinal: null,
           liga_cuartos: null,
           semifinal: null,
@@ -222,6 +234,7 @@
         this.tarifa.fecha_fin = this.formatDate(rowTarifa.fecha_fin);
         this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
         this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
+        this.tarifa.final = this.formatAmount(rowTarifa.final);
         this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
         this.tarifa.liga_cuartos = this.formatAmount(rowTarifa.liga_cuartos);
         this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
@@ -277,6 +290,7 @@
         this.tarifa.fecha_fin = null;
         this.tarifa.campeon = null;
         this.tarifa.subcampeon = null;
+        this.tarifa.final = null;
         this.tarifa.liga_semifinal = null;
         this.tarifa.liga_cuartos = null;
         this.tarifa.semifinal = null;

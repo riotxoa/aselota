@@ -56,6 +56,8 @@
             <b-col sm="2">{{ formatAmount(row.item.subcampeon) }}&nbsp;&euro;</b-col>
           </b-row>
           <b-row class="mb-2 pb-2 border-bottom border-secondary">
+            <!-- <b-col sm="2" class="font-weight-bold">Final:</b-col>
+            <b-col sm="2">{{ formatAmount(row.item.final) }}&nbsp;&euro;</b-col> -->
             <b-col sm="2" class="font-weight-bold">L. Semifinales:</b-col>
             <b-col sm="2">{{ formatAmount(row.item.liga_semifinal) }}&nbsp;&euro;</b-col>
             <b-col sm="2" class="font-weight-bold">L. Cuartos:</b-col>
@@ -152,6 +154,7 @@
             { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true },
             { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
+            // { key: 'final', label: '<span title="Tarifa Final">Final</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
             { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },

@@ -64,6 +64,7 @@ class ContratoCampeonatoController extends Controller
           'campeonato_id' => $request->get('campeonato_id'),
           'campeon' => $request->get('campeon'),
           'subcampeon' => $request->get('subcampeon'),
+          'final' => $request->get('final'),
           'liga_semifinal' => $request->get('liga_semifinal'),
           'liga_cuartos' => $request->get('liga_cuartos'),
           'semifinal' => $request->get('semifinal'),
@@ -120,6 +121,7 @@ class ContratoCampeonatoController extends Controller
         $item->header_id = $request->get('header_id');
         $item->campeon = $request->get('campeon');
         $item->subcampeon = $request->get('subcampeon');
+        $item->final = $request->get('final');
         $item->liga_semifinal = $request->get('liga_semifinal');
         $item->liga_cuartos = $request->get('liga_cuartos');
         $item->semifinal = $request->get('semifinal');

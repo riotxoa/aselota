@@ -130,8 +130,9 @@ var APIGetters = {
     getFasesCampeonato () {
       this.fases_campeonato = [
         { value: null, text: 'Seleccionar fase'},
-        { value: 'campeon', text: 'Campeón' },
-        { value: 'sucampeon', text: 'Subcampeón' },
+        // { value: 'campeon', text: 'Campeón' },
+        // { value: 'sucampeon', text: 'Subcampeón' },
+        { value: 'final', text: 'Final' },
         { value: 'liga_semifinal', text: 'Liga Semifinales' },
         { value: 'liga_cuartos', text: 'Liga Cuartos' },
         { value: 'semifinal', text: 'Semifinal' },

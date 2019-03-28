@@ -8356,7 +8356,10 @@ var APIGetters = {
 
     /* FASES DE CAMPEONATO */
     getFasesCampeonato: function getFasesCampeonato() {
-      this.fases_campeonato = [{ value: null, text: 'Seleccionar fase' }, { value: 'campeon', text: 'Campeón' }, { value: 'sucampeon', text: 'Subcampeón' }, { value: 'liga_semifinal', text: 'Liga Semifinales' }, { value: 'liga_cuartos', text: 'Liga Cuartos' }, { value: 'semifinal', text: 'Semifinal' }, { value: 'cuartos', text: 'Cuartos' }, { value: 'octavos', text: 'Octavos' }, { value: 'dieciseisavos', text: 'Dieciseisavos' }, { value: 'treintaidosavos', text: 'Treintaidosavos' }];
+      this.fases_campeonato = [{ value: null, text: 'Seleccionar fase' },
+      // { value: 'campeon', text: 'Campeón' },
+      // { value: 'sucampeon', text: 'Subcampeón' },
+      { value: 'final', text: 'Final' }, { value: 'liga_semifinal', text: 'Liga Semifinales' }, { value: 'liga_cuartos', text: 'Liga Cuartos' }, { value: 'semifinal', text: 'Semifinal' }, { value: 'cuartos', text: 'Cuartos' }, { value: 'octavos', text: 'Octavos' }, { value: 'dieciseisavos', text: 'Dieciseisavos' }, { value: 'treintaidosavos', text: 'Treintaidosavos' }];
     },
 
 
@@ -91361,6 +91364,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -91393,7 +91398,9 @@ var showSnackbar = function showSnackbar(msg) {
       filter: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'name', label: '<span title="Contrato">Contrato</span>', sortable: true, variant: 'info' }, { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      fields: [{ key: 'name', label: '<span title="Contrato">Contrato</span>', sortable: true, variant: 'info' }, { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'campeon', label: '<span title="Tarifa Campeón">Campeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'subcampeon', label: '<span title="Tarifa Subcampeón">Subcampeón</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
+      // { key: 'final', label: '<span title="Tarifa Final">Final</span>', formatter: 'formatAmount', class: 'text-right', sortable: false },
+      { key: 'liga_semifinal', label: '<span title="Tarifa Liguilla Semifinales">L.Semifinales</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'semifinal', label: '<span title="Tarifa Semifinal">Semifinal</span>', formatter: 'formatAmount', class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       items: [],
       totalRows: 0,
       perPage: 10,
@@ -91716,6 +91723,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -91747,6 +91765,7 @@ var showSnackbar = function showSnackbar(msg) {
         fecha_fin: null,
         campeon: null,
         subcampeon: null,
+        final: null,
         liga_semifinal: null,
         liga_cuartos: null,
         semifinal: null,
@@ -91787,6 +91806,7 @@ var showSnackbar = function showSnackbar(msg) {
       this.tarifa.fecha_fin = this.formatDate(rowTarifa.fecha_fin);
       this.tarifa.campeon = this.formatAmount(rowTarifa.campeon);
       this.tarifa.subcampeon = this.formatAmount(rowTarifa.subcampeon);
+      this.tarifa.final = this.formatAmount(rowTarifa.final);
       this.tarifa.liga_semifinal = this.formatAmount(rowTarifa.liga_semifinal);
       this.tarifa.liga_cuartos = this.formatAmount(rowTarifa.liga_cuartos);
       this.tarifa.semifinal = this.formatAmount(rowTarifa.semifinal);
@@ -91841,6 +91861,7 @@ var showSnackbar = function showSnackbar(msg) {
       this.tarifa.fecha_fin = null;
       this.tarifa.campeon = null;
       this.tarifa.subcampeon = null;
+      this.tarifa.final = null;
       this.tarifa.liga_semifinal = null;
       this.tarifa.liga_cuartos = null;
       this.tarifa.semifinal = null;
