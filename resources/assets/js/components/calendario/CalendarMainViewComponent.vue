@@ -172,7 +172,8 @@
                             <strong>Asiste:</strong> " + (match.asiste ? 'Sí' : 'No') + "<br> \
                          ";
           if( match.campeonato_id ) {
-            tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)";
+            var fase = (match.fase ? "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)" : "");
+            tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + fase;
           }
 
           tooltip += "</div>";

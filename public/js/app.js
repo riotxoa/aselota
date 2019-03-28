@@ -7366,6 +7366,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/calendario', data).then(function (r) {
         return r.data;
       }).then(function (calendario) {
+        console.log("[loadCalendario] calendario: " + JSON.stringify(calendario));
         commit('SET_CALENDARIO', calendario);
       });
     },
@@ -87363,7 +87364,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                           <strong>Asiste:</strong> " + (match.asiste ? 'Sí' : 'No') + "<br> \
                        ";
         if (match.campeonato_id) {
-          tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)";
+          var fase = match.fase ? "&nbsp;(<span style=\"text-transform:capitalize;\">" + match.fase.replace("_", "&nbsp;") + "</span>)" : "";
+          tooltip += "<hr class=\"my-1\" style=\"border-color:gray;\"><strong>Campeonato:</strong> " + match.campeonato_name + fase;
         }
 
         tooltip += "</div>";

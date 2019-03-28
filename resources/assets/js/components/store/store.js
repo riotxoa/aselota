@@ -711,6 +711,7 @@ export const store = new Vuex.Store({
         .get('/www/calendario', data)
         .then( r => r.data )
         .then( calendario => {
+console.log("[loadCalendario] calendario: " + JSON.stringify(calendario));
           commit('SET_CALENDARIO', calendario);
         });
     },
