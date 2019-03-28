@@ -257,6 +257,7 @@
   .calendar-wrap thead th {
     font-size:.8rem;
     padding:.25rem 1rem;
+    text-align:center;
   }
   .calendar-wrap thead td:not(:first-child),
   .calendar-wrap tbody td:not(:first-child) {
