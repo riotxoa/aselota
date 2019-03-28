@@ -140,7 +140,17 @@
       computed: {
         _items () {
           store.getters.festivales.map( (val, key) => {
-            val.organizador = ( "gugeu" == val.organizador ? "Baiko Pilota" : "Aspe");
+            switch( val.organizador ) {
+              case "gugeu":
+                val.organizador = "Baiko Pilota";
+                break;
+              case "beste":
+                val.organizador = "Aspe";
+                break;
+              case "mixto":
+                val.organizador = "Mixto";
+                break;
+            }
           });
 
           return store.getters.festivales;

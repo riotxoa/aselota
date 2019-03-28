@@ -113,6 +113,7 @@
               { value: null, text: "Seleccionar valor" },
               { value: "gugeu", text: "Baiko Pilota" },
               { value: "beste", text: "Aspe" },
+              { value: 'mixto', text: "Mixto" },
             ];
             break;
           case 'festival_facturacion.pagado':

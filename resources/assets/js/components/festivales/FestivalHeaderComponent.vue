@@ -187,6 +187,7 @@
           { value: null, text: "Seleccionar" },
           { value: 'gugeu', text: "Baiko Pilota" },
           { value: 'beste', text: "Aspe" },
+          { value: 'mixto', text: "Mixto" },
         ],
         television_txt: "",
         loaded: false,

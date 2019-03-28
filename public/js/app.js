@@ -96001,7 +96001,17 @@ Vue.component('filtro-festivales', __webpack_require__(426));
   computed: {
     _items: function _items() {
       __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.festivales.map(function (val, key) {
-        val.organizador = "gugeu" == val.organizador ? "Baiko Pilota" : "Aspe";
+        switch (val.organizador) {
+          case "gugeu":
+            val.organizador = "Baiko Pilota";
+            break;
+          case "beste":
+            val.organizador = "Aspe";
+            break;
+          case "mixto":
+            val.organizador = "Mixto";
+            break;
+        }
       });
 
       return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.festivales;
@@ -96352,7 +96362,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           this.filterValueOptions = this.municipios;
           break;
         case 'festivales.organizador':
-          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: "gugeu", text: "Baiko Pilota" }, { value: "beste", text: "Aspe" }];
+          this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: "gugeu", text: "Baiko Pilota" }, { value: "beste", text: "Aspe" }, { value: 'mixto', text: "Mixto" }];
           break;
         case 'festival_facturacion.pagado':
           this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: 0, text: "No" }, { value: 1, text: "Sí" }];
@@ -97545,7 +97555,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       dia: '',
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
-      organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Baiko Pilota" }, { value: 'beste', text: "Aspe" }],
+      organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Baiko Pilota" }, { value: 'beste', text: "Aspe" }, { value: 'mixto', text: "Mixto" }],
       television_txt: "",
       loaded: false,
       editdate: false,
