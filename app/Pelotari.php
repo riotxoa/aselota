@@ -52,6 +52,7 @@ class Pelotari extends Model
       ->whereColumn('contratos.fecha_fin', '>=', 'festivales.fecha')
       ->whereNull('contratos.deleted_at')
       ->whereNull('festivales.deleted_at')
+      ->where('festivales.estado_id', '=', 3) // Estado = Celebrado
       ->count();
 
     return $items;
