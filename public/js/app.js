@@ -87336,7 +87336,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         tooltip += "</div>";
 
-        return "<div class='" + (match.asiste ? 'asiste' : 'no-asiste') + "' data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + match.municipio_name + "</div>";
+        return "<div class='" + (match.asiste ? 'asiste' : 'no-asiste') + "' data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + (match.estelar ? "<span class='icon voyager-star-two' style='color:green;font-size:.7rem;'></span><br>" : "<br>") + match.municipio_name + "</div>";
       } else {
         return "<span>&nbsp;</span>";
       }
