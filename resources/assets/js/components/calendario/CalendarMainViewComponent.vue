@@ -236,6 +236,7 @@
     height:2.85rem;
     line-height:1;
     padding:.25rem 1rem;
+    padding:0 1rem;
     position:relative;
     vertical-align:middle;
   }
