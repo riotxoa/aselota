@@ -87257,7 +87257,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_getters_js__["a" /* default */]],
   data: function data() {
     return {
-      months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      months: ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sep.', 'Oct.', 'Nov.', 'Dic.'],
       days: [],
       prev_month: '',
       curr_month: '',
@@ -87309,46 +87309,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     formatDateShort: function formatDateShort(date) {
       var short = new Date(date);
       var month = '';
-
-      switch (short.getMonth()) {
-        case 0:
-          month = "Enero";
-          break;
-        case 1:
-          month = "Febrero";
-          break;
-        case 2:
-          month = "Marzo";
-          break;
-        case 3:
-          month = "Abril";
-          break;
-        case 4:
-          month = "Mayo";
-          break;
-        case 5:
-          month = "Junio";
-          break;
-        case 6:
-          month = "Julio";
-          break;
-        case 7:
-          month = "Agosto";
-          break;
-        case 8:
-          month = "Septiembre";
-          break;
-        case 9:
-          month = "Octubre";
-          break;
-        case 10:
-          month = "Noviembre";
-          break;
-        case 11:
-          month = "Diciembre";
-          break;
-      }
-      return short.getDate() + " de " + month;
+      month = this.months[short.getMonth()];
+      // switch ( short.getMonth() ) {
+      //   case 0:
+      //     month = "Ene";
+      //     break;
+      //   case 1:
+      //     month = "Feb";
+      //     break;
+      //   case 2:
+      //     month = "Mar";
+      //     break;
+      //   case 3:
+      //     month = "Abr";
+      //     break;
+      //   case 4:
+      //     month = "May";
+      //     break;
+      //   case 5:
+      //     month = "Jun";
+      //     break;
+      //   case 6:
+      //     month = "Jul";
+      //     break;
+      //   case 7:
+      //     month = "Ago";
+      //     break;
+      //   case 8:
+      //     month = "Sep";
+      //     break;
+      //   case 9:
+      //     month = "Oct";
+      //     break;
+      //   case 10:
+      //     month = "Nov";
+      //     break;
+      //   case 11:
+      //     month = "Dic";
+      //     break;
+      // }
+      return short.getDate() + " " + month;
     },
     showAgenda: function showAgenda(pelotari, day) {
       var date = this.curr_year + "-" + (this.curr_month + 1).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
