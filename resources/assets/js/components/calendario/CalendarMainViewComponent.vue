@@ -115,45 +115,9 @@
       formatDateShort(date) {
         var short = new Date(date);
         var month = '';
+
         month = this.months[short.getMonth()];
-        // switch ( short.getMonth() ) {
-        //   case 0:
-        //     month = "Ene";
-        //     break;
-        //   case 1:
-        //     month = "Feb";
-        //     break;
-        //   case 2:
-        //     month = "Mar";
-        //     break;
-        //   case 3:
-        //     month = "Abr";
-        //     break;
-        //   case 4:
-        //     month = "May";
-        //     break;
-        //   case 5:
-        //     month = "Jun";
-        //     break;
-        //   case 6:
-        //     month = "Jul";
-        //     break;
-        //   case 7:
-        //     month = "Ago";
-        //     break;
-        //   case 8:
-        //     month = "Sep";
-        //     break;
-        //   case 9:
-        //     month = "Oct";
-        //     break;
-        //   case 10:
-        //     month = "Nov";
-        //     break;
-        //   case 11:
-        //     month = "Dic";
-        //     break;
-        // }
+
         return short.getDate() + " " + month;
       },
       showAgenda(pelotari, day) {
