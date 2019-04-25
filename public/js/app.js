@@ -7297,10 +7297,16 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
           festival_id: this.getters.header.id
         }
       };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-facturacion', data).then(function (r) {
-        return r.data;
-      }).then(function (facturacion) {
-        commit('SET_FACTURACION', facturacion);
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-facturacion', data).then(function (r) {
+          return r.data;
+        }).then(function (facturacion) {
+          commit('SET_FACTURACION', facturacion);
+          resolve(facturacion);
+        }).catch(function (error) {
+          reject(error);
+        });
       });
     },
     addFacturacion: function addFacturacion(_ref23, facturacion) {
@@ -103707,9 +103713,10 @@ exports.push([module.i, "\n.festival-facturacion .card {\n  border-color:#707f8f
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(8);
 //
 //
 //
@@ -103804,36 +103811,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
+
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__utils_utils_js__["a" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
   data: function data() {
-    return {};
+    return {
+      facturacion: {
+        fpago_id: null,
+        fecha: null,
+        importe: 0,
+        enviar_id: null,
+        observaciones: '',
+        pagado: 0,
+        seguimiento: ''
+      }
+    };
   },
 
   created: function created() {
+    var _this = this;
+
     console.log("FestivalFichaFacturacionComponent created");
     this.getFormasPago();
     this.getEnvioFacturas();
-    this.$store.dispatch('loadFacturacion');
+    this.$store.dispatch('loadFacturacion').then(function (response) {
+      if (response[0]) {
+        _this.facturacion = response[0];
+      }
+    });
   },
-  computed: Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
+  computed: Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["b" /* mapState */])({
     _facturacion: 'facturacion',
     _costes: 'costes'
   }),
   methods: {
     onSubmit: function onSubmit() {
-      var _this = this;
+      var _this2 = this;
 
-      this.$store.dispatch('addFacturacion', this._facturacion).then(function (response) {
-        _this.showSnackbar("Facturación GUARDADA");
+      this.$store.dispatch('addFacturacion', this.facturacion).then(function (response) {
+        _this2.showSnackbar("Facturación GUARDADA");
       }).catch(function (error) {
         console.log(error);
-        _this.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
+        _this2.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
       });
     },
     onReset: function onReset() {
@@ -103885,11 +103911,11 @@ var render = function() {
                             options: _vm.formas_pago
                           },
                           model: {
-                            value: _vm._facturacion.fpago_id,
+                            value: _vm.facturacion.fpago_id,
                             callback: function($$v) {
-                              _vm.$set(_vm._facturacion, "fpago_id", $$v)
+                              _vm.$set(_vm.facturacion, "fpago_id", $$v)
                             },
-                            expression: "_facturacion.fpago_id"
+                            expression: "facturacion.fpago_id"
                           }
                         })
                       ],
@@ -103907,11 +103933,11 @@ var render = function() {
                           staticClass: "col-md-6 text-right",
                           attrs: { id: "fact_fecha", type: "date" },
                           model: {
-                            value: _vm._facturacion.fecha,
+                            value: _vm.facturacion.fecha,
                             callback: function($$v) {
-                              _vm.$set(_vm._facturacion, "fecha", $$v)
+                              _vm.$set(_vm.facturacion, "fecha", $$v)
                             },
-                            expression: "_facturacion.fecha"
+                            expression: "facturacion.fecha"
                           }
                         })
                       ],
@@ -103942,11 +103968,11 @@ var render = function() {
                             }
                           },
                           model: {
-                            value: _vm._facturacion.importe,
+                            value: _vm.facturacion.importe,
                             callback: function($$v) {
-                              _vm.$set(_vm._facturacion, "importe", $$v)
+                              _vm.$set(_vm.facturacion, "importe", $$v)
                             },
-                            expression: "_facturacion.importe"
+                            expression: "facturacion.importe"
                           }
                         })
                       ],
@@ -103967,11 +103993,11 @@ var render = function() {
                             options: _vm.envio_facturas
                           },
                           model: {
-                            value: _vm._facturacion.enviar_id,
+                            value: _vm.facturacion.enviar_id,
                             callback: function($$v) {
-                              _vm.$set(_vm._facturacion, "enviar_id", $$v)
+                              _vm.$set(_vm.facturacion, "enviar_id", $$v)
                             },
-                            expression: "_facturacion.enviar_id"
+                            expression: "facturacion.enviar_id"
                           }
                         })
                       ],
@@ -103994,11 +104020,11 @@ var render = function() {
                             "max-rows": 6
                           },
                           model: {
-                            value: _vm._facturacion.observaciones,
+                            value: _vm.facturacion.observaciones,
                             callback: function($$v) {
-                              _vm.$set(_vm._facturacion, "observaciones", $$v)
+                              _vm.$set(_vm.facturacion, "observaciones", $$v)
                             },
-                            expression: "_facturacion.observaciones"
+                            expression: "facturacion.observaciones"
                           }
                         })
                       ],
@@ -104036,11 +104062,11 @@ var render = function() {
                               name: "radioInline"
                             },
                             model: {
-                              value: _vm._facturacion.pagado,
+                              value: _vm.facturacion.pagado,
                               callback: function($$v) {
-                                _vm.$set(_vm._facturacion, "pagado", $$v)
+                                _vm.$set(_vm.facturacion, "pagado", $$v)
                               },
-                              expression: "_facturacion.pagado"
+                              expression: "facturacion.pagado"
                             }
                           })
                         ],
@@ -104063,11 +104089,11 @@ var render = function() {
                               "max-rows": 6
                             },
                             model: {
-                              value: _vm._facturacion.seguimiento,
+                              value: _vm.facturacion.seguimiento,
                               callback: function($$v) {
-                                _vm.$set(_vm._facturacion, "seguimiento", $$v)
+                                _vm.$set(_vm.facturacion, "seguimiento", $$v)
                               },
-                              expression: "_facturacion.seguimiento"
+                              expression: "facturacion.seguimiento"
                             }
                           })
                         ],

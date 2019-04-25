@@ -13,7 +13,7 @@
                 <b-form-select id="fact_forma_pago"
                                class="col-md-6"
                                :options="formas_pago"
-                               v-model="_facturacion.fpago_id">
+                               v-model="facturacion.fpago_id">
                 </b-form-select>
               </b-row>
               <b-row>
@@ -21,7 +21,7 @@
                 <b-form-input id="fact_fecha"
                               class="col-md-6 text-right"
                               type="date"
-                              v-model="_facturacion.fecha">
+                              v-model="facturacion.fecha">
                 </b-form-input>
               </b-row>
               <b-row>
@@ -31,7 +31,7 @@
                               type="number"
                               maxlength="8"
                               placeholder="0.00"
-                              v-model="_facturacion.importe"
+                              v-model="facturacion.importe"
                               v-on:focus.native="$event.target.select()"
                               v-on:blur.native="formatCurrency">
                 </b-form-input>
@@ -41,7 +41,7 @@
                 <b-form-select id="fact_enviar_a"
                                class="col-md-6"
                                :options="envio_facturas"
-                               v-model="_facturacion.enviar_id">
+                               v-model="facturacion.enviar_id">
                 </b-form-select>
               </b-row>
               <b-form-group label="Observaciones:"
@@ -49,7 +49,7 @@
                 <b-form-textarea id="fact_observaciones"
                                  :rows="3"
                                  :max-rows="6"
-                                 v-model="_facturacion.observaciones">
+                                 v-model="facturacion.observaciones">
                 </b-form-textarea>
               </b-form-group>
             </div>
@@ -62,7 +62,7 @@
               <b-row>
                 <label class="col-md-6">Pagado:</label>
                 <b-form-radio-group class="col-md-6"
-                                    v-model="_facturacion.pagado"
+                                    v-model="facturacion.pagado"
                                     :options="[{ text: 'No', value: 0}, {text: 'Sí', value: 1}]"
                                     name="radioInline">
                 </b-form-radio-group>
@@ -72,7 +72,7 @@
                 <b-form-textarea id="fact_seguimiento"
                                  :rows="3"
                                  :max-rows="6"
-                                 v-model="_facturacion.seguimiento">
+                                 v-model="facturacion.seguimiento">
                 </b-form-textarea>
               </b-form-group>
             </div>
@@ -93,20 +93,37 @@
 </template>
 
 <script>
+  import { store } from '../store/store';
+
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
+
   import { mapState } from 'vuex';
 
   export default {
     mixins: [APIGetters, Utils],
     data () {
-      return {}
+      return {
+        facturacion: {
+          fpago_id: null,
+          fecha: null,
+          importe: 0,
+          enviar_id: null,
+          observaciones: '',
+          pagado: 0,
+          seguimiento: '',
+        },
+      }
     },
     created: function () {
       console.log("FestivalFichaFacturacionComponent created");
       this.getFormasPago();
       this.getEnvioFacturas();
-      this.$store.dispatch('loadFacturacion');
+      this.$store.dispatch('loadFacturacion').then( response => {
+        if( response[0] ) {
+          this.facturacion = response[0];
+        }
+      });
     },
     computed: mapState({
       _facturacion: 'facturacion',
@@ -114,7 +131,7 @@
     }),
     methods: {
       onSubmit() {
-        this.$store.dispatch('addFacturacion', this._facturacion)
+        this.$store.dispatch('addFacturacion', this.facturacion)
           .then((response) => {
             this.showSnackbar("Facturación GUARDADA");
           })

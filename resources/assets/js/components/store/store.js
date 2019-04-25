@@ -642,12 +642,19 @@ export const store = new Vuex.Store({
           festival_id: this.getters.header.id,
         }
       };
-      axios
-        .get('/www/festival-facturacion', data)
-        .then( r => r.data)
-        .then( facturacion =>  {
-          commit('SET_FACTURACION', facturacion);
-        });
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .get('/www/festival-facturacion', data)
+          .then( r => r.data)
+          .then( facturacion =>  {
+            commit('SET_FACTURACION', facturacion);
+            resolve(facturacion);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     },
     addFacturacion({ commit }, facturacion) {
       let uri = '/www/festival-facturacion';
