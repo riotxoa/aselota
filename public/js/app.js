@@ -8463,7 +8463,7 @@ var APIGetters = {
 
       var uri = '/www/envio-facturas';
       axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/desc/g, "text");
         _this11.envio_facturas = JSON.parse(stringified);
         _this11.envio_facturas.unshift({ value: null, text: "Seleccionar" });
       });

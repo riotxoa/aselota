@@ -223,7 +223,7 @@ var APIGetters = {
     getEnvioFacturas () {
       let uri = '/www/envio-facturas';
       axios.get(uri).then((response) => {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/desc/g, "text");
         this.envio_facturas = JSON.parse(stringified);
         this.envio_facturas.unshift({ value: null, text: "Seleccionar" });
       });
