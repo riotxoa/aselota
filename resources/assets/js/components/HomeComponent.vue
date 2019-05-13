@@ -57,6 +57,15 @@
             name: 'PRENSA',
             params: { userRole: this.userRole },
           })
+          break;
+        case 'cuadro':/* #MODIF4 */
+          this.home = '/cuadro';
+          this.title = "Cuadro de Mando";
+          this.$router.push({
+            name: 'CUADRO',
+            params: { userRole: this.userRole },
+          })
+          break;
         default:
           this.title = "SIN PERMISOS";
           break;

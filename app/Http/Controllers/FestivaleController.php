@@ -204,6 +204,9 @@ class FestivaleController extends Controller
           $fest_costes = FestivalCoste::find($fest_costes->first()->id);
 
           $fest_costes->coste_empresa = (array_key_exists('coste_empresa', $costes) ? $costes['coste_empresa'] : 0);
+          $fest_costes->sanidad = $costes['sanidad'];
+          $fest_costes->num_auxiliares = $costes['num_auxiliares'];
+          $fest_costes->num_taquilleros = $costes['num_taquilleros'];
           $fest_costes->importe_venta = $costes['importe_venta'];
           $fest_costes->aportacion = $costes['aportacion'];
           $fest_costes->num_espectadores = $costes['num_espectadores'];
@@ -216,6 +219,9 @@ class FestivaleController extends Controller
         } else {
           $fest_costes = new FestivalCoste([
             'coste_empresa' => (array_key_exists('coste_empresa', $costes) ? $costes['coste_empresa'] : 0),
+            'sanidad' => $costes['sanidad'],
+            'num_auxiliares' => $costes['num_auxiliares'],
+            'num_taquilleros' => $costes['num_taquilleros'],
             'importe_venta' => $costes['importe_venta'],
             'aportacion' => $costes['aportacion'],
             'num_espectadores' => $costes['num_espectadores'],

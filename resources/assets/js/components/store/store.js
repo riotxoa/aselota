@@ -12,6 +12,9 @@ export const store = new Vuex.Store({
     header: {},
     partidos: [],
     costes: {
+      sanidad: 0,
+      num_auxiliares: 1,
+      num_taquilleros: 0,
       importe_venta: 0,
       cliente_id: null,
       cliente_txt: '',
@@ -49,6 +52,16 @@ export const store = new Vuex.Store({
       contact_02_telephone_2: '',
       observaciones: '',
     },
+    costes_fijos: [],
+    coste_pelotaris: 0.00,
+    coste_jueces: 0.00,
+    coste_cancha: 0.00,
+    coste_material: 0.00,
+    coste_auxiliares: 0.00,
+    coste_taquillera: 0.00,
+    coste_tasa: 0.00,
+    coste_sanidad: 0.00,
+    coste_tv: 0,
     coste: 0.00,
     edit: false,
     edit_evento: false,
@@ -78,6 +91,16 @@ export const store = new Vuex.Store({
     television_txt: state => state.header.television_txt,
     partidos: state => state.partidos,
     costes: state => state.costes,
+    costes_fijos: state => state.costes_fijos,
+    coste_pelotaris: state => state.coste_pelotaris,
+    coste_jueces: state => state.coste_jueces,
+    coste_cancha: state => state.coste_cancha,
+    coste_material: state => state.coste_material,
+    coste_auxiliares: state => state.coste_auxiliares,
+    coste_taquillera: state => state.coste_taquillera,
+    coste_tasa: state => state.coste_tasa,
+    coste_sanidad: state => state.coste_sanidad,
+    coste_tv: state => state.coste_tv,
     coste: state => state.coste,
     facturacion: state => state.facturacion,
     contactos: state => state.contactos,
@@ -124,6 +147,9 @@ export const store = new Vuex.Store({
     RESET_FESTIVAL_BODY (state) {
       state.partidos = [];
       state.costes = {
+        sanidad: 0,
+        num_auxiliares: 1,
+        num_taquilleros: 0,
         importe_venta: 0,
         cliente_id: null,
         cliente_txt: '',
@@ -146,6 +172,16 @@ export const store = new Vuex.Store({
         pagado: 0,
         seguimiento: '',
       };
+      state.costes_fijos = [];
+      state.coste_pelotaris = 0.00;
+      state.coste_jueces = 0.00;
+      state.coste_cancha = 0.00;
+      state.coste_material = 0.00;
+      state.coste_auxiliares = 0.00;
+      state.coste_taquillera = 0.00;
+      state.coste_tasa = 0.00;
+      state.coste_sanidad = 0.00;
+      state.coste_tv = 0;
       state.coste = 0.00;
       state.contactos = {
         c1_name: '',
@@ -165,6 +201,18 @@ export const store = new Vuex.Store({
     },
     SET_HEADER (state, header) {
       state.header = header;
+
+      //cargamos los costes a 0
+      state.coste_pelotaris = 0.00;//en INC_COSTE
+      state.coste_jueces = 0.00;//en INC_COSTE
+      state.coste_cancha = 0.00;
+      state.coste_material = 0.00;
+      state.coste_auxiliares = 0.00;
+      state.coste_taquillera = 0.00;
+      state.coste_tasa = 0.00;
+      state.coste_sanidad = 0.00;
+      state.coste_tv = 0;
+      state.coste = 0.00;
     },
     SET_HEADER_ID (state, id)  {
       state.header.id = id;
@@ -175,17 +223,18 @@ export const store = new Vuex.Store({
     SET_PARTIDOS (state, partidos) {
       state.partidos = partidos;
 
-      state.coste = 0;
-
       partidos.map((val,key) => {
         this.commit('INC_COSTE', val);
       });
+      this.commit('SET_COSTE');
+      this.commit('SUM_COSTE');
     },
     ADD_PARTIDO (state, partido) {
       state.partidos.push(partido);
       state.partidos = _.sortBy(state.partidos, ['orden']);
 
       this.commit('INC_COSTE', partido);
+      this.commit('SUM_COSTE', state);
     },
     SET_COSTES (state, costes) {
       if(costes.length) {
@@ -196,15 +245,93 @@ export const store = new Vuex.Store({
         });
         state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
       }
+
+      //Coste de sanidad
+      this.commit('SET_COSTE_SANIDAD', state.costes.sanidad);
     },
-    SET_COSTE (state, coste) {
-      state.coste = coste;
+    SET_COSTES_FIJOS (state, costes_fijos) {
+      state.costes_fijos = costes_fijos;
+
+      //Coste de material
+      state.coste_material = _.filter(state.costes_fijos, { 'id': 1 })[0].coste;
+
+      //Coste de auxiliares
+      var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+      state.coste_auxiliares = coste_aux*state.costes.num_auxiliares;
+
+      //Coste de taquilleros
+      var coste_taq = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+      state.coste_taquillera = coste_taq*state.costes.num_taquilleros;
+
+      //Coste incremento por televisión
+      if(state.header.television){
+        state.coste_tv = _.filter(state.costes_fijos, { 'id': 5 })[0].coste;
+      }
+    },
+    SET_COSTE_AUXILIARES (state, num_auxiliares){
+      
+      if(state.costes_fijos.length){
+        var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+        state.costes.num_auxiliares = num_auxiliares;
+        state.coste_auxiliares = coste_aux*num_auxiliares;
+        this.commit('SUM_COSTE', state);
+      }
+    },
+    SET_COSTE_TAQUILLEROS (state, num_taquilleros){
+      if(state.costes_fijos.length){
+        var coste_aux = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+        state.costes.num_taquilleros = num_taquilleros;
+        state.coste_taquillera = coste_aux*num_taquilleros;
+        this.commit('SUM_COSTE', state);
+      }
+    },
+    SET_COSTE_SANIDAD (state, sanidad){
+        //Coste de servicio sanitario
+      if(sanidad){
+        state.coste_sanidad = _.filter(state.costes_fijos, { 'id': 4 })[0].coste;
+      }else{
+        state.coste_sanidad = 0;
+      }
+      state.costes.sanidad = sanidad;
+      this.commit('SUM_COSTE', state);
     },
     INC_COSTE (state, partido) {
-      state.coste += (partido.pelotari_1 ? ( 1 === partido.pelotari_1.asiste ? partido.pelotari_1.coste : partido.pelotari_1.sustituto_coste ) : 0);
-      state.coste += (partido.pelotari_2 ? ( 1 === partido.pelotari_2.asiste ? partido.pelotari_2.coste : partido.pelotari_2.sustituto_coste ) : 0);
-      state.coste += (partido.pelotari_3 ? ( 1 === partido.pelotari_3.asiste ? partido.pelotari_3.coste : partido.pelotari_3.sustituto_coste ) : 0);
-      state.coste += (partido.pelotari_4 ? ( 1 === partido.pelotari_4.asiste ? partido.pelotari_4.coste : partido.pelotari_4.sustituto_coste ) : 0);
+      //CAMBIO2
+      //Coste pelotaris
+      state.coste_pelotaris += (partido.pelotari_1 ? ( 1 === partido.pelotari_1.asiste ? partido.pelotari_1.coste : partido.pelotari_1.sustituto_coste ) : 0);
+      state.coste_pelotaris += (partido.pelotari_2 ? ( 1 === partido.pelotari_2.asiste ? partido.pelotari_2.coste : partido.pelotari_2.sustituto_coste ) : 0);
+      state.coste_pelotaris += (partido.pelotari_3 ? ( 1 === partido.pelotari_3.asiste ? partido.pelotari_3.coste : partido.pelotari_3.sustituto_coste ) : 0);
+      state.coste_pelotaris += (partido.pelotari_4 ? ( 1 === partido.pelotari_4.asiste ? partido.pelotari_4.coste : partido.pelotari_4.sustituto_coste ) : 0);
+      
+      //Coste jueces
+      if(partido.campeonato_id!=null){
+        var campeonato = _.filter(state.campeonatos, { 'value': partido.campeonato_id })[0];
+        if(campeonato!=null){
+          if(partido.fase=="finales"){
+            state.coste_jueces += campeonato.coste_jueces_f;
+          }else if(partido.fase=="semifinal"){
+            state.coste_jueces += campeonato.coste_jueces_s;
+          }else{
+            state.coste_jueces += campeonato.coste_jueces_p;
+          }
+        }
+      }
+    },
+    SUM_COSTE (state) {
+
+      //Hacemos la suma de todos los costes
+      state.coste = 0;
+      state.coste += state.coste_pelotaris;
+      state.coste += state.coste_jueces;
+      state.coste += state.coste_cancha;
+      state.coste += state.coste_material;
+      state.coste += state.coste_auxiliares;
+      state.coste += state.coste_taquillera;
+      state.coste += state.coste_tasa;
+      state.coste += state.coste_sanidad;
+
+      //sumamos el porcentaje por televisión
+      state.coste = state.coste+((state.coste*state.coste_tv)/100);
     },
     ADD_ENTRADAS (state, entradas) {
       state.costes.entradas.push(entradas);
@@ -370,6 +497,21 @@ export const store = new Vuex.Store({
     SET_MUNICIPIOS_FILTERED (state, municipios) {
       state.municipios_filtered = municipios;
     },
+    SET_COSTE (state) {
+      //Coste cancha
+      var fronton = _.filter(state.frontones, { 'value': state.header.fronton_id })[0];
+      if(fronton!=null && fronton.coste_alquiler!=null){
+        state.coste_cancha = fronton.coste_alquiler;
+      }
+      
+      //Coste de tasa de juego
+      if(fronton!=null){//ya lo hemos recogido antes
+        var provincia = _.filter(state.provincias, { 'value': fronton.provincia_id })[0];
+        if(provincia!=null){
+          state.coste_tasa = provincia.tasa_juego;
+        }
+      }
+    },
     SET_FRONTONES (state, frontones) {
       state.frontones = frontones;
     },
@@ -412,6 +554,10 @@ export const store = new Vuex.Store({
         .then( r => r.data )
         .then( header => {
           commit('SET_HEADER', header);
+          dispatch('loadCostesFijos');
+          dispatch('loadFrontones');
+          dispatch('loadCampeonatos');
+          dispatch('loadProvincias');
           dispatch('loadPartidos');
           if( is_gerente ) {
             dispatch('loadCostes');
@@ -527,6 +673,15 @@ export const store = new Vuex.Store({
           });
       })
     },
+    loadCostesFijos({ commit }) {
+      let data = {};
+      axios
+        .get('/www/costes-fijos', data)
+        .then( r => r.data )
+        .then( costes_fijos => {
+          commit('SET_COSTES_FIJOS', costes_fijos);
+        });
+    },
     loadCostes({ commit }) {
       let data = {
         params: {
@@ -543,6 +698,17 @@ export const store = new Vuex.Store({
     addCostes({ commit }, costes) {
       let uri = '/www/festival-costes';
       costes.festival_id = this.getters.header.id;
+
+      //costes de la empresa desglosados
+      costes.coste_pelotaris = this.getters.coste_pelotaris;
+      costes.coste_jueces = this.getters.coste_jueces;
+      costes.coste_cancha = this.getters.coste_cancha;
+      costes.coste_material = this.getters.coste_material;
+      costes.coste_auxiliares = this.getters.coste_auxiliares;
+      costes.coste_taquillera = this.getters.coste_taquillera;
+      costes.coste_sanidad = this.getters.coste_sanidad;
+
+      //total coste de empresa
       costes.coste_empresa = this.getters.coste;
       return new Promise( (resolve, reject) => {
         axios
@@ -589,6 +755,15 @@ export const store = new Vuex.Store({
           });
       })
 
+    },
+    updateCosteAuxiliares({ commit }, num_auxiliares) {
+      commit('SET_COSTE_AUXILIARES', num_auxiliares);
+    },
+    updateCosteTaquilleros({ commit }, num_taquilleros) {
+      commit('SET_COSTE_TAQUILLEROS', num_taquilleros);
+    },
+    updateCosteSanidad({ commit}, sanidad) {
+      commit('SET_COSTE_SANIDAD', sanidad);
     },
     deleteCosteEntradas({ commit }, entrada) {
       let uri = '/www/festival-entradas/' + entrada.id;

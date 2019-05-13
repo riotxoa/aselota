@@ -54,10 +54,20 @@ class FestivalCosteController extends Controller
 
         if($costes)
           return $this->update($request, $costes->id);
-
+        
         $costes = new FestivalCoste([
           'festival_id' => $request->get('festival_id'),
+          'coste_pelotaris' => $request->get('coste_pelotaris'),
+          'coste_jueces' => $request->get('coste_jueces'),
+          'coste_cancha' => $request->get('coste_cancha'),
+          'coste_material' => $request->get('coste_material'),
+          'coste_auxiliares' => $request->get('coste_auxiliares'),
+          'coste_taquillera' => $request->get('coste_taquillera'),
+          'coste_sanidad' => $request->get('coste_sanidad'),
           'coste_empresa' => $request->get('coste_empresa'),
+          'sanidad' => $request->get('sanidad'),
+          'num_auxiliares' => $request->get('num_auxiliares'),
+          'num_taquilleros' => $request->get('num_taquilleros'),
           'importe_venta' => $request->get('importe_venta'),
           'aportacion' => $request->get('aportacion'),
           'num_espectadores' => $request->get('num_espectadores'),
@@ -113,7 +123,17 @@ class FestivalCosteController extends Controller
 
         $costes = FestivalCoste::find($id);
 
+        $costes->coste_pelotaris = $request->get('coste_pelotaris');
+        $costes->coste_jueces = $request->get('coste_jueces');
+        $costes->coste_cancha = $request->get('coste_cancha');
+        $costes->coste_material = $request->get('coste_material');
+        $costes->coste_auxiliares = $request->get('coste_auxiliares');
+        $costes->coste_taquillera = $request->get('coste_taquillera');
+        $costes->coste_sanidad = $request->get('coste_sanidad');
         $costes->coste_empresa = $request->get('coste_empresa');
+        $costes->sanidad = $request->get('sanidad');
+        $costes->num_auxiliares = $request->get('num_auxiliares');
+        $costes->num_taquilleros = $request->get('num_taquilleros');
         $costes->importe_venta = $request->get('importe_venta');
         $costes->aportacion = $request->get('aportacion');
         $costes->num_espectadores = $request->get('num_espectadores');

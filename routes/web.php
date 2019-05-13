@@ -37,6 +37,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('partidos', 'FestivalPartidoController');
     Route::resource('clientes', 'ClienteController');
     Route::resource('festival-costes', 'FestivalCosteController');
+    Route::resource('costes-fijos', 'CostesFijosController');
     Route::resource('festival-facturacion', 'FestivalFacturacionController');
     Route::resource('festival-entradas', 'FestivalCosteEntradasController');
     Route::resource('festival-contactos', 'FestivalContactoController');

@@ -112,6 +112,10 @@
         this.comercial.fecha_ini = rowComercial.fecha_ini;
         this.comercial.fecha_fin = rowComercial.fecha_fin;
         this.comercial.coste = this.formatAmount(rowComercial.coste);
+        //this.comercial.coste = this.formatAmount(rowComercial.coste); #CAMBIO1
+        //recogemos aquí los valores para la función.
+        
+
       }
     },
     methods: {

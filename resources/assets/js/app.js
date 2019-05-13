@@ -97,6 +97,14 @@ const CreateEvento = { template: '<ficha-evento form-title="Nuevo Evento de Pren
 const EditEvento = { template: '<ficha-evento form-title="Editar Evento de Prensa" :is-new-evento=0></ficha-evento>' };
 const ViewFestival = { template: '<ficha-festival form-title="Consultar Festival" :is-new-festival=0 :is-gerente=0 :is-prensa=1></ficha-festival>' };
 
+Vue.component('home-cuadro', require('./components/HomeCuadroComponent.vue'));
+Vue.component('listado-cuadro', require('./components/cuadro/ListadoComponent.vue'));
+
+const HomeCuadro = { template: '<home-cuadro></home-cuadro>' };
+const ListCuadro = { template: '<listado-cuadro></listado-cuadro>' };
+
+
+
 const routes = [
   {
     path: '/administrador', component: HomeAdmin,
@@ -185,6 +193,14 @@ const routes = [
       },
     ]
   },
+  {
+    path: '/cuadro', component: HomeCuadro,
+    children: [
+      {
+        path: '', name: 'CUADRO', component: ListCuadro // ListEventos
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

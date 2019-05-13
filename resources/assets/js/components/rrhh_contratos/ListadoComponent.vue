@@ -85,7 +85,7 @@
             </b-row>
 
             <b-table striped hover small responsive
-              :items="contrato.comerciales"
+              :items="contrato.comerciales" 
               :fields="fields_comercial">
               <template slot="actions" slot-scope="row">
                 <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->

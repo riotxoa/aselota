@@ -10,6 +10,9 @@ class FestivalCoste extends Model
   protected $fillable = [
     'festival_id',
     'coste_empresa',
+    'sanidad',
+    'num_auxiliares',
+    'num_taquilleros',
     'importe_venta',
     'aportacion',
     'num_espectadores',

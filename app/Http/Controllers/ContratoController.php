@@ -25,7 +25,17 @@ class ContratoController extends Controller
         foreach($items as $key => $item) {
           $tramo = \App\Contrato::where('header_id', $item->id)->orderBy('fecha_fin', 'desc')->get();
           $comercial = \App\ContratoComercial::where('header_id', $item->id)->orderBy('fecha_fin', 'desc')->get();
-          $item->tramos = $tramo;
+          $item->tramos = $tramo;/*
+            //CAMBIO1
+            //Aquí hacemos el cálculo con la fórmula y los datos del tramo del jugador.
+          foreach($tramo as $key => $t) {
+              //$c->coste = 3;
+              foreach($comercial as $key => $c){
+                if($c->header_id == $t->header_id){
+                    $c->coste = $t->dieta_mes;
+                }
+              }
+          }*/
           $item->comerciales = $comercial;
         }
 
