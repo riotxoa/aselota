@@ -168,9 +168,20 @@
                               placeholder="0.00"
                               v-model="_costes.importe_venta"
                               v-on:focus.native="$event.target.select()"
-                              v-on:blur.native="formatCurrency">
+                              v-on:blur.native="formatCurrency" 
+                              @change="updateImporteVenta">
                 </b-form-input>
               </b-row>
+              <div id="coste_importe_venta_aviso" style="display: none;">
+                <p class="col-md-12 text-right" style="color:gray; font-weight:bold;padding-right:0px;">
+                  El importe de venta debe ser confirmado por el supervisor
+                </p>
+                <div class="col-sm-2 p-0 text-right float-right" style="max-width:165px;margin-bottom:20px;">
+                  <b-btn block @click="solicitarConfirmacion" variant="primary">Solicitar confirmación</b-btn>
+                </div>
+                <div style="clear: both;"></div>
+              </div>
+
               <b-row>
                 <label class="col-md-7">Vendido a:</label>
                 <b-form-select id="coste_vendido_a"
@@ -394,6 +405,7 @@
       _coste_tasa: 'coste_tasa',
       _coste_sanidad: 'coste_sanidad',
       _coste: 'coste',
+      _margen_beneficio: 'margen_beneficio',
     }),
     methods: {
       onSubmit() {
@@ -476,10 +488,23 @@
       updateCosteSanidad() {
         var checked = document.getElementById("check_sanidad").checked;
         if(checked){
-          store.dispatch('updateCosteSanidad', 1)
+          store.dispatch('updateCosteSanidad', 1);
         }else{
-          store.dispatch('updateCosteSanidad', 0)
+          store.dispatch('updateCosteSanidad', 0);
         }
+      },
+      updateImporteVenta() {
+        var value = document.getElementById("coste_importe_venta").value;
+
+        var importeSugerido = parseInt(this._coste)+parseInt(((parseInt(this._coste)*parseInt(this._margen_beneficio))/100));
+        if(value<importeSugerido){
+          document.getElementById("coste_importe_venta_aviso").style.display = "block";
+        }else{
+          document.getElementById("coste_importe_venta_aviso").style.display = "none";
+        }
+      },
+      solicitarConfirmacion() {
+        store.dispatch('envioCorreoConfirmacion');
       },
       formatPrice(value) {
         return parseFloat(value).toFixed(2);

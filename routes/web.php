@@ -82,3 +82,5 @@ Auth::routes();
 Route::get('/', 'HomeController@index');
 
 Route::get('/user', 'UserController@edit');
+
+Route::post('envio-confirmacion-email','MailController@html_email');

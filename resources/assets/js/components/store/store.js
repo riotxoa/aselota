@@ -62,6 +62,8 @@ export const store = new Vuex.Store({
     coste_tasa: 0.00,
     coste_sanidad: 0.00,
     coste_tv: 0,
+    margen_beneficio: 0,
+    correo_aviso_margen: "",
     coste: 0.00,
     edit: false,
     edit_evento: false,
@@ -101,6 +103,8 @@ export const store = new Vuex.Store({
     coste_tasa: state => state.coste_tasa,
     coste_sanidad: state => state.coste_sanidad,
     coste_tv: state => state.coste_tv,
+    margen_beneficio: state => state.margen_beneficio,
+    correo_aviso_margen: state => state.correo_aviso_margen,
     coste: state => state.coste,
     facturacion: state => state.facturacion,
     contactos: state => state.contactos,
@@ -182,6 +186,8 @@ export const store = new Vuex.Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.margen_beneficio = 0;
+      state.correo_aviso_margen = "";
       state.coste = 0.00;
       state.contactos = {
         c1_name: '',
@@ -212,6 +218,8 @@ export const store = new Vuex.Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.margen_beneficio = 0;
+      state.correo_aviso_margen = "";
       state.coste = 0.00;
     },
     SET_HEADER_ID (state, id)  {
@@ -245,9 +253,6 @@ export const store = new Vuex.Store({
         });
         state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
       }
-
-      //Coste de sanidad
-      this.commit('SET_COSTE_SANIDAD', state.costes.sanidad);
     },
     SET_COSTES_FIJOS (state, costes_fijos) {
       state.costes_fijos = costes_fijos;
@@ -263,10 +268,18 @@ export const store = new Vuex.Store({
       var coste_taq = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
       state.coste_taquillera = coste_taq*state.costes.num_taquilleros;
 
+      //Coste de sanidad
+      this.commit('SET_COSTE_SANIDAD', state.costes.sanidad);
+
       //Coste incremento por televisión
       if(state.header.television){
         state.coste_tv = _.filter(state.costes_fijos, { 'id': 5 })[0].coste;
       }
+
+      //Margen de beneficio del festival
+      state.margen_beneficio = _.filter(state.costes_fijos, { 'id': 6 })[0].coste;
+      state.correo_aviso_margen = _.filter(state.costes_fijos, { 'id': 6 })[0].correo;
+
     },
     SET_COSTE_AUXILIARES (state, num_auxiliares){
       
@@ -332,6 +345,9 @@ export const store = new Vuex.Store({
 
       //sumamos el porcentaje por televisión
       state.coste = state.coste+((state.coste*state.coste_tv)/100);
+
+      //Calculamos el importe de venta ideal
+      state.costes.importe_venta = parseInt(state.coste+((state.coste*state.margen_beneficio)/100));
     },
     ADD_ENTRADAS (state, entradas) {
       state.costes.entradas.push(entradas);
@@ -764,6 +780,36 @@ export const store = new Vuex.Store({
     },
     updateCosteSanidad({ commit}, sanidad) {
       commit('SET_COSTE_SANIDAD', sanidad);
+    },
+    envioCorreoConfirmacion({commit}) {
+      let uri = '/envio-confirmacion-email';
+      let importe_sugerido = parseInt(parseInt(this.getters.costes.coste_empresa)+((parseInt(this.getters.costes.coste_empresa)*parseInt(this.getters.margen_beneficio))/100));
+
+      let data = {
+        festival_id: this.getters.header.id,
+        festival_fecha: this.getters.header.fecha,
+        festival_fronton: this.getters.header.fronton,
+        organizador: this.getters.header.organizador,
+        televisado: this.getters.header.television,
+        partidos: this.getters.partidos,
+        coste_empresa: this.getters.coste,
+        importe_ideal: this.getters.costes.importe_venta,
+        importe_sugerido: importe_sugerido,
+        correo_aviso_margen: this.getters.correo_aviso_margen
+      };
+
+      return new Promise( (resolve, reject) => {
+        axios
+          .post(uri, data)
+          .then( r => r.data)
+          .then( response =>  {
+            alert(response);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     },
     deleteCosteEntradas({ commit }, entrada) {
       let uri = '/www/festival-entradas/' + entrada.id;

@@ -6635,6 +6635,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     coste_tasa: 0.00,
     coste_sanidad: 0.00,
     coste_tv: 0,
+    margen_beneficio: 0,
+    correo_aviso_margen: "",
     coste: 0.00,
     edit: false,
     edit_evento: false,
@@ -6707,6 +6709,12 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     coste_tv: function coste_tv(state) {
       return state.coste_tv;
+    },
+    margen_beneficio: function margen_beneficio(state) {
+      return state.margen_beneficio;
+    },
+    correo_aviso_margen: function correo_aviso_margen(state) {
+      return state.correo_aviso_margen;
     },
     coste: function coste(state) {
       return state.coste;
@@ -6833,6 +6841,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.margen_beneficio = 0;
+      state.correo_aviso_margen = "";
       state.coste = 0.00;
       state.contactos = {
         c1_name: '',
@@ -6863,6 +6873,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.margen_beneficio = 0;
+      state.correo_aviso_margen = "";
       state.coste = 0.00;
     },
     SET_HEADER_ID: function SET_HEADER_ID(state, id) {
@@ -6898,9 +6910,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
         state.costes.total = parseFloat(state.costes.ingreso_taquilla) + parseFloat(state.costes.ingreso_ayto) + parseFloat(state.costes.ingreso_otros);
       }
-
-      //Coste de sanidad
-      this.commit('SET_COSTE_SANIDAD', state.costes.sanidad);
     },
     SET_COSTES_FIJOS: function SET_COSTES_FIJOS(state, costes_fijos) {
       state.costes_fijos = costes_fijos;
@@ -6916,10 +6925,17 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       var coste_taq = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
       state.coste_taquillera = coste_taq * state.costes.num_taquilleros;
 
+      //Coste de sanidad
+      this.commit('SET_COSTE_SANIDAD', state.costes.sanidad);
+
       //Coste incremento por televisión
       if (state.header.television) {
         state.coste_tv = _.filter(state.costes_fijos, { 'id': 5 })[0].coste;
       }
+
+      //Margen de beneficio del festival
+      state.margen_beneficio = _.filter(state.costes_fijos, { 'id': 6 })[0].coste;
+      state.correo_aviso_margen = _.filter(state.costes_fijos, { 'id': 6 })[0].correo;
     },
     SET_COSTE_AUXILIARES: function SET_COSTE_AUXILIARES(state, num_auxiliares) {
 
@@ -6985,6 +7001,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
       //sumamos el porcentaje por televisión
       state.coste = state.coste + state.coste * state.coste_tv / 100;
+
+      //Calculamos el importe de venta ideal
+      state.costes.importe_venta = parseInt(state.coste + state.coste * state.margen_beneficio / 100);
     },
     ADD_ENTRADAS: function ADD_ENTRADAS(state, entradas) {
       state.costes.entradas.push(entradas);
@@ -7446,8 +7465,38 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
       commit('SET_COSTE_SANIDAD', sanidad);
     },
-    deleteCosteEntradas: function deleteCosteEntradas(_ref23, entrada) {
+    envioCorreoConfirmacion: function envioCorreoConfirmacion(_ref23) {
       var commit = _ref23.commit;
+
+      var uri = '/envio-confirmacion-email';
+      var importe_sugerido = parseInt(parseInt(this.getters.costes.coste_empresa) + parseInt(this.getters.costes.coste_empresa) * parseInt(this.getters.margen_beneficio) / 100);
+
+      var data = {
+        festival_id: this.getters.header.id,
+        festival_fecha: this.getters.header.fecha,
+        festival_fronton: this.getters.header.fronton,
+        organizador: this.getters.header.organizador,
+        televisado: this.getters.header.television,
+        partidos: this.getters.partidos,
+        coste_empresa: this.getters.coste,
+        importe_ideal: this.getters.costes.importe_venta,
+        importe_sugerido: importe_sugerido,
+        correo_aviso_margen: this.getters.correo_aviso_margen
+      };
+
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, data).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          alert(response);
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    deleteCosteEntradas: function deleteCosteEntradas(_ref24, entrada) {
+      var commit = _ref24.commit;
 
       var uri = '/www/festival-entradas/' + entrada.id;
 
@@ -7462,8 +7511,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    addEntrenamiento: function addEntrenamiento(_ref24, entreno) {
-      var commit = _ref24.commit;
+    addEntrenamiento: function addEntrenamiento(_ref25, entreno) {
+      var commit = _ref25.commit;
 
       var uri = '/www/entrenamientos';
       return new Promise(function (resolve, reject) {
@@ -7477,8 +7526,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updateEntrenamiento: function updateEntrenamiento(_ref25, entreno) {
-      var commit = _ref25.commit;
+    updateEntrenamiento: function updateEntrenamiento(_ref26, entreno) {
+      var commit = _ref26.commit;
 
       var uri = '/www/entrenamientos/' + entreno.id + '/update';
       return new Promise(function (resolve, reject) {
@@ -7492,8 +7541,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadFacturacion: function loadFacturacion(_ref26) {
-      var commit = _ref26.commit;
+    loadFacturacion: function loadFacturacion(_ref27) {
+      var commit = _ref27.commit;
 
       var data = {
         params: {
@@ -7512,8 +7561,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    addFacturacion: function addFacturacion(_ref27, facturacion) {
-      var commit = _ref27.commit;
+    addFacturacion: function addFacturacion(_ref28, facturacion) {
+      var commit = _ref28.commit;
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
@@ -7527,8 +7576,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadContactos: function loadContactos(_ref28) {
-      var commit = _ref28.commit;
+    loadContactos: function loadContactos(_ref29) {
+      var commit = _ref29.commit;
 
       var data = {
         params: {
@@ -7547,8 +7596,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    addContactos: function addContactos(_ref29, contactos) {
-      var commit = _ref29.commit;
+    addContactos: function addContactos(_ref30, contactos) {
+      var commit = _ref30.commit;
 
       var uri = '/www/festival-contactos';
       contactos.festival_id = this.getters.header.id;
@@ -7563,8 +7612,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCalendario: function loadCalendario(_ref30, month) {
-      var commit = _ref30.commit;
+    loadCalendario: function loadCalendario(_ref31, month) {
+      var commit = _ref31.commit;
 
       var data = {
         params: {
@@ -7578,9 +7627,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_CALENDARIO', calendario);
       });
     },
-    loadEntrenamientos: function loadEntrenamientos(_ref31) {
-      var commit = _ref31.commit,
-          dispatch = _ref31.dispatch;
+    loadEntrenamientos: function loadEntrenamientos(_ref32) {
+      var commit = _ref32.commit,
+          dispatch = _ref32.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos').then(function (r) {
         return r.data;
@@ -7588,9 +7637,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTRENAMIENTOS', entrenamientos);
       });
     },
-    loadEntrContenidos: function loadEntrContenidos(_ref32) {
-      var commit = _ref32.commit,
-          dispatch = _ref32.dispatch;
+    loadEntrContenidos: function loadEntrContenidos(_ref33) {
+      var commit = _ref33.commit,
+          dispatch = _ref33.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/contenidos').then(function (r) {
         return r.data;
@@ -7601,8 +7650,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_CONTENIDOS', contenidos);
       });
     },
-    loadEntrFrontones: function loadEntrFrontones(_ref33) {
-      var commit = _ref33.commit;
+    loadEntrFrontones: function loadEntrFrontones(_ref34) {
+      var commit = _ref34.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/frontones').then(function (r) {
         return r.data;
@@ -7613,9 +7662,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_FRONTONES', frontones);
       });
     },
-    loadEntrActitudes: function loadEntrActitudes(_ref34) {
-      var commit = _ref34.commit,
-          dispatch = _ref34.dispatch;
+    loadEntrActitudes: function loadEntrActitudes(_ref35) {
+      var commit = _ref35.commit,
+          dispatch = _ref35.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/actitudes').then(function (r) {
         return r.data;
@@ -7626,9 +7675,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_ACTITUDES', actitudes);
       });
     },
-    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref35) {
-      var commit = _ref35.commit,
-          dispatch = _ref35.dispatch;
+    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref36) {
+      var commit = _ref36.commit,
+          dispatch = _ref36.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/aprovechamientos').then(function (r) {
         return r.data;
@@ -7639,9 +7688,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_APROVECHAMIENTOS', aprovechamientos);
       });
     },
-    loadEntrEvoluciones: function loadEntrEvoluciones(_ref36) {
-      var commit = _ref36.commit,
-          dispatch = _ref36.dispatch;
+    loadEntrEvoluciones: function loadEntrEvoluciones(_ref37) {
+      var commit = _ref37.commit,
+          dispatch = _ref37.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/evoluciones').then(function (r) {
         return r.data;
@@ -7652,14 +7701,14 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_EVOLUCIONES', evoluciones);
       });
     },
-    resetEvento: function resetEvento(_ref37) {
-      var commit = _ref37.commit;
+    resetEvento: function resetEvento(_ref38) {
+      var commit = _ref38.commit;
 
       commit('RESET_EVENTO');
     },
-    loadEventos: function loadEventos(_ref38) {
-      var commit = _ref38.commit,
-          dispatch = _ref38.dispatch;
+    loadEventos: function loadEventos(_ref39) {
+      var commit = _ref39.commit,
+          dispatch = _ref39.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/eventos').then(function (r) {
         return r.data;
@@ -7667,9 +7716,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_EVENTOS', eventos);
       });
     },
-    loadEventoMotivos: function loadEventoMotivos(_ref39) {
-      var commit = _ref39.commit,
-          dispatch = _ref39.dispatch;
+    loadEventoMotivos: function loadEventoMotivos(_ref40) {
+      var commit = _ref40.commit,
+          dispatch = _ref40.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/eventos/motivos').then(function (r) {
         return r.data;
@@ -7680,8 +7729,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_EVENTO_MOTIVOS', motivos);
       });
     },
-    addPelotariToEvento: function addPelotariToEvento(_ref40, pelotari) {
-      var commit = _ref40.commit;
+    addPelotariToEvento: function addPelotariToEvento(_ref41, pelotari) {
+      var commit = _ref41.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/add/pelotari';
 
@@ -7696,8 +7745,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePelotariFromEvento: function updatePelotariFromEvento(_ref41, pelotari) {
-      var commit = _ref41.commit;
+    updatePelotariFromEvento: function updatePelotariFromEvento(_ref42, pelotari) {
+      var commit = _ref42.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/update/pelotari';
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, pelotari).then(function (r) {
@@ -7706,8 +7755,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('UPDATE_EVENTO_PELOTARI', response);
       });
     },
-    deletePelotariFromEvento: function deletePelotariFromEvento(_ref42, id) {
-      var commit = _ref42.commit;
+    deletePelotariFromEvento: function deletePelotariFromEvento(_ref43, id) {
+      var commit = _ref43.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/delete/pelotari';
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, { id: id }).then(function (r) {
@@ -7716,8 +7765,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('DEL_EVENTO_PELOTARI', id);
       });
     },
-    loadPelotaris: function loadPelotaris(_ref43, date) {
-      var commit = _ref43.commit;
+    loadPelotaris: function loadPelotaris(_ref44, date) {
+      var commit = _ref44.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris', {
         params: {
@@ -7732,8 +7781,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadProvincias: function loadProvincias(_ref44) {
-      var commit = _ref44.commit;
+    loadProvincias: function loadProvincias(_ref45) {
+      var commit = _ref45.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/provincias').then(function (r) {
         return r.data;
@@ -7744,8 +7793,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PROVINCIAS', provincias);
       });
     },
-    loadMunicipios: function loadMunicipios(_ref45) {
-      var commit = _ref45.commit;
+    loadMunicipios: function loadMunicipios(_ref46) {
+      var commit = _ref46.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/municipios').then(function (r) {
         return r.data;
@@ -7757,8 +7806,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_MUNICIPIOS_FILTERED', municipios);
       });
     },
-    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref46, id) {
-      var commit = _ref46.commit;
+    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref47, id) {
+      var commit = _ref47.commit;
 
       if (null === id) {
         commit('SET_MUNICIPIOS_FILTERED', this.getters.municipios);
@@ -7777,8 +7826,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES_FILTERED', frontones_filtered);
       }
     },
-    loadFrontones: function loadFrontones(_ref47) {
-      var commit = _ref47.commit;
+    loadFrontones: function loadFrontones(_ref48) {
+      var commit = _ref48.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/frontones').then(function (r) {
         return r.data;
@@ -7789,8 +7838,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES', frontones);
       });
     },
-    loadCampeonatos: function loadCampeonatos(_ref48) {
-      var commit = _ref48.commit;
+    loadCampeonatos: function loadCampeonatos(_ref49) {
+      var commit = _ref49.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/campeonatos').then(function (r) {
         return r.data;
@@ -103145,6 +103194,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -103186,7 +103246,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     _coste_taquillera: 'coste_taquillera',
     _coste_tasa: 'coste_tasa',
     _coste_sanidad: 'coste_sanidad',
-    _coste: 'coste'
+    _coste: 'coste',
+    _margen_beneficio: 'margen_beneficio'
   }),
   methods: {
     onSubmit: function onSubmit() {
@@ -103277,6 +103338,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('updateCosteSanidad', 0);
       }
+    },
+    updateImporteVenta: function updateImporteVenta() {
+      var value = document.getElementById("coste_importe_venta").value;
+
+      var importeSugerido = parseInt(this._coste) + parseInt(parseInt(this._coste) * parseInt(this._margen_beneficio) / 100);
+      if (value < importeSugerido) {
+        document.getElementById("coste_importe_venta_aviso").style.display = "block";
+      } else {
+        document.getElementById("coste_importe_venta_aviso").style.display = "none";
+      }
+    },
+    solicitarConfirmacion: function solicitarConfirmacion() {
+      __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('envioCorreoConfirmacion');
     },
     formatPrice: function formatPrice(value) {
       return parseFloat(value).toFixed(2);
@@ -103722,6 +103796,7 @@ var render = function() {
                             maxlength: "8",
                             placeholder: "0.00"
                           },
+                          on: { change: _vm.updateImporteVenta },
                           nativeOn: {
                             focus: function($event) {
                               $event.target.select()
@@ -103740,6 +103815,56 @@ var render = function() {
                         })
                       ],
                       1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticStyle: { display: "none" },
+                        attrs: { id: "coste_importe_venta_aviso" }
+                      },
+                      [
+                        _c(
+                          "p",
+                          {
+                            staticClass: "col-md-12 text-right",
+                            staticStyle: {
+                              color: "gray",
+                              "font-weight": "bold",
+                              "padding-right": "0px"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                El importe de venta debe ser confirmado por el supervisor\n              "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "col-sm-2 p-0 text-right float-right",
+                            staticStyle: {
+                              "max-width": "165px",
+                              "margin-bottom": "20px"
+                            }
+                          },
+                          [
+                            _c(
+                              "b-btn",
+                              {
+                                attrs: { block: "", variant: "primary" },
+                                on: { click: _vm.solicitarConfirmacion }
+                              },
+                              [_vm._v("Solicitar confirmación")]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticStyle: { clear: "both" } })
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
