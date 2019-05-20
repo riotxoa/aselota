@@ -1,6 +1,21 @@
 <template>
-  <div style="min-height:625px;">
+<div>
+    <div class="main-header pelotaris">
+      <div class="toolbar mb-0 py-1">
+        <div class="container">
+          <b-row>
+            <div class="col-sm-3">&nbsp;</div>
+            <h4 v-if="edit" class="col-sm-6 text-white font-weight-bold">EDITAR FICHA DEL PELOTARI</h4>
+            <h4 v-if="!edit" class="col-sm-6 text-white font-weight-bold">NUEVA FICHA DE PELOTARI</h4>
+            <div class="col-sm-3 text-right home-icon">
+              <b-button v-if="this.$route.params.userRole === 'admin'" size="sm" variant="outline" href="/" class="mt-1"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Admin Menú</b-button>
+            </div>
+          </b-row>
+        </div>
+      </div>
+    </div>
 
+  <div style="min-height:625px;" class="container py-4">
     <b-row class="justify-content-center">
       <div class="col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0">
         <img :src="pelotari.image" class="img-responsive" style="width:100%;">
@@ -199,6 +214,16 @@
                   </b-form-group>
                 </b-row>
                 <b-row>
+                  <label class="col-md-2">Promesa</label>
+                  <b-form-checkbox id="check_promesa"
+                                class="col-md-1 text-right"
+                                style="margin-right:0px !important;"
+                                v-model="pelotari.promesa"
+                                value="1"
+                                unchecked-value="0" >
+                  </b-form-checkbox>
+                </b-row>
+                <b-row>
                   <b-form-group label="Fotografía"
                                 class="col-sm-12">
                     <b-row>
@@ -240,6 +265,7 @@
       </div>
     </b-modal>
   </div>
+</div>
 </template>
 
 <script>
@@ -282,6 +308,7 @@
           telefono_3: '',
           iban: '',
           num_hijos: null,
+          promesa: 0,
           created: null,
           updated: null,
         },
@@ -359,6 +386,7 @@
             this.pelotari.telefono_3 = pelotari.telefono_3;
             this.pelotari.iban = pelotari.iban;
             this.pelotari.num_hijos = pelotari.num_hijos;
+            this.pelotari.promesa = pelotari.promesa;
             this.pelotari.created = pelotari.created_at;
             this.pelotari.updated = pelotari.updated_at;
 
@@ -447,6 +475,7 @@
         this.pelotari.telefono_3 = '';
         this.pelotari.iban = '';
         this.pelotari.num_hijos = null;
+        this.pelotari.promesa = 0;
         /* Trick to reset/clear native browser form validation state */
         this.show = false;
         this.$nextTick(() => { this.show = true });

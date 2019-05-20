@@ -57,6 +57,7 @@ class EntrenamientoController extends Controller
         'aprovechamiento_id' => $request->get('aprovechamiento_id'),
         'evolucion_id' => $request->get('evolucion_id'),
         'comentarios' => $request->get('comentarios'),
+        'promesa' => $request->get('promesa')
       ]);
 
       $item->save();
@@ -86,6 +87,7 @@ class EntrenamientoController extends Controller
       $item->aprovechamiento_id = $request->get('aprovechamiento_id');
       $item->evolucion_id = $request->get('evolucion_id');
       $item->comentarios = $request->get('comentarios');
+      $item->promesa = $request->get('promesa');
 
       $item->save();
 

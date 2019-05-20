@@ -1,24 +1,6 @@
 <template>
-  <div class="container">
-      <div class="row justify-content-center">
-          <div class="col-12">
-              <div class="card">
-                  <div class="card-header bg-primary">
-                    <div class="row">
-                      <div class="col-sm-8 col-md-9 col-lg-10">
-                        <router-link class="text-white" :to="this.home">{{ this.title }}</router-link>
-                      </div>
-                      <div v-if="this.$route.params.userRole == 'admin'" class="home-icon col-sm-4 col-md-3 col-lg-2">
-                        <b-button size="sm" variant="outline" href="/"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Admin Menú</b-button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <router-view></router-view>
-                  </div>
-              </div>
-          </div>
-      </div>
+  <div class="w-100">
+      <router-view></router-view>
       <div id="snackbar"></div>
   </div>
 </template>

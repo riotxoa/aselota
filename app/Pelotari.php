@@ -28,6 +28,7 @@ class Pelotari extends Model
     'telefono_3',
     'iban',
     'num_hijos',
+    'promesa'
   ];
 
   public function contrato() {

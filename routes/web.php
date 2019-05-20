@@ -24,6 +24,8 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('campeonatos', 'CampeonatoController');
     Route::resource('pelotaris', 'PelotariController');
     Route::resource('pelotaris-aspe', 'PelotarisAspeController');
+    Route::resource('pelotaris-profesional', 'PelotarisProfesionalController');
+    Route::resource('pelotaris-promesa', 'PelotarisPromesaController');
     Route::resource('contratos/tramo', 'ContratoController');
     Route::resource('contratos/comercial', 'ContratoComercialController');
     Route::resource('contratos/header', 'ContratoHeaderController');

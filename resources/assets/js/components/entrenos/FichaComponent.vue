@@ -19,9 +19,21 @@
         <div class="container">
 
           <b-row>
+            <b-form-group label="Entrenamiento Promesas"
+                          label-for="check_promesa"
+                          class="col-sm-3 pl-0 pr-2">
+                  <b-form-checkbox id="check_promesa"
+                                class="col-md-1 text-right"
+                                style="margin-right:0px !important;"
+                                v-model="entreno.promesa"
+                                value="1"
+                                unchecked-value="0" 
+                                @change="onChangePromesa">
+                  </b-form-checkbox>
+            </b-form-group>
             <b-form-group label="Fecha:"
                           label-for="fechaInput"
-                          class="col-sm-3 pl-0 pr-2">
+                          class="col-sm-2 pl-0 pr-2">
               <b-form-input id="fechaInput"
                             class="d-inline-block px-1"
                             type="date"
@@ -31,7 +43,7 @@
             </b-form-group>
             <b-form-group label="Hora:"
                           label-for="hourInput"
-                          class="col-sm-2 pl-0 pr-2">
+                          class="col-sm-1 pl-0 pr-2">
               <b-form-input id="hourInput"
                             type="time"
                             required
@@ -50,7 +62,7 @@
             </b-form-group>
             <b-form-group label="Municipio:"
                           label-for="municipioInput"
-                          class="col-sm-4 pl-0 pr-2">
+                          class="col-sm-3 pl-0 pr-2">
               <b-form-select id="municipioInput"
                              :options="_municipios_filtered"
                              @change="onChangeMunicipio"
@@ -259,6 +271,12 @@
         this.edit = true;
         this.entreno = this.$route.query.entrenamiento;
         this.argazkia = this.$route.query.entrenamiento.foto;
+
+        if(this.entreno.promesa){//promesas
+          store.dispatch('loadPelotarisPromesa');
+        }else{
+          store.dispatch('loadPelotarisProfesional');
+        }
       }
 
       this.show = true;
@@ -317,6 +335,21 @@
           }
         }
       },
+      onChangePromesa(evt) {
+        if (null !== evt) {
+          if(evt==1){//promesas
+            store.dispatch('loadPelotarisPromesa');
+            this.entreno.pelotari_id = null;
+            this.pelotari_id = null;
+            this.argazkia = '/storage/avatars/default/default.jpg';
+          }else{
+            store.dispatch('loadPelotarisProfesional');
+            this.entreno.pelotari_id = null;
+            this.pelotari_id = null;
+            this.argazkia = '/storage/avatars/default/default.jpg';
+          }
+        }
+      }
     }
   }
 </script>

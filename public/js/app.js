@@ -7781,8 +7781,40 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadProvincias: function loadProvincias(_ref45) {
+    loadPelotarisProfesional: function loadPelotarisProfesional(_ref45, date) {
       var commit = _ref45.commit;
+
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris-profesional', {
+        params: {
+          fecha: date
+        }
+      }).then(function (r) {
+        return r.data;
+      }).then(function (pelotaris) {
+        var stringified = JSON.stringify(pelotaris).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+        pelotaris = JSON.parse(stringified);
+        pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+        commit('SET_PELOTARIS', pelotaris);
+      });
+    },
+    loadPelotarisPromesa: function loadPelotarisPromesa(_ref46, date) {
+      var commit = _ref46.commit;
+
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris-promesa', {
+        params: {
+          fecha: date
+        }
+      }).then(function (r) {
+        return r.data;
+      }).then(function (pelotaris) {
+        var stringified = JSON.stringify(pelotaris).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+        pelotaris = JSON.parse(stringified);
+        pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+        commit('SET_PELOTARIS', pelotaris);
+      });
+    },
+    loadProvincias: function loadProvincias(_ref47) {
+      var commit = _ref47.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/provincias').then(function (r) {
         return r.data;
@@ -7793,8 +7825,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PROVINCIAS', provincias);
       });
     },
-    loadMunicipios: function loadMunicipios(_ref46) {
-      var commit = _ref46.commit;
+    loadMunicipios: function loadMunicipios(_ref48) {
+      var commit = _ref48.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/municipios').then(function (r) {
         return r.data;
@@ -7806,8 +7838,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_MUNICIPIOS_FILTERED', municipios);
       });
     },
-    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref47, id) {
-      var commit = _ref47.commit;
+    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref49, id) {
+      var commit = _ref49.commit;
 
       if (null === id) {
         commit('SET_MUNICIPIOS_FILTERED', this.getters.municipios);
@@ -7826,8 +7858,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES_FILTERED', frontones_filtered);
       }
     },
-    loadFrontones: function loadFrontones(_ref48) {
-      var commit = _ref48.commit;
+    loadFrontones: function loadFrontones(_ref50) {
+      var commit = _ref50.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/frontones').then(function (r) {
         return r.data;
@@ -7838,8 +7870,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES', frontones);
       });
     },
-    loadCampeonatos: function loadCampeonatos(_ref49) {
-      var commit = _ref49.commit;
+    loadCampeonatos: function loadCampeonatos(_ref51) {
+      var commit = _ref51.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/campeonatos').then(function (r) {
         return r.data;
@@ -8669,8 +8701,60 @@ var APIGetters = {
         });
       });
     },
-    getPelotarisMonth: function getPelotarisMonth(year, month) {
+    /* PELOTARIS PROFESIONAL*/
+    getPelotarisProfesional: function getPelotarisProfesional(date) {
       var _this8 = this;
+
+      return new Promise(function (resolve, reject) {
+        axios.get('/www/pelotaris-profesional', {
+          params: {
+            fecha: date
+          }
+        }).then(function (response) {
+          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          _this8.pelotaris = JSON.parse(stringified);
+          _this8.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+
+          axios.get('/www/pelotaris-aspe', {
+            params: {
+              fecha: date
+            }
+          }).then(function (response) {
+            var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+            _this8.pelotaris_aspe = JSON.parse(stringified);
+            _this8.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });
+          });
+        });
+      });
+    },
+    /* PELOTARIS PROMESA */
+    getPelotarisPromesa: function getPelotarisPromesa(date) {
+      var _this9 = this;
+
+      return new Promise(function (resolve, reject) {
+        axios.get('/www/pelotaris-promesa', {
+          params: {
+            fecha: date
+          }
+        }).then(function (response) {
+          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          _this9.pelotaris = JSON.parse(stringified);
+          _this9.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+
+          axios.get('/www/pelotaris-aspe', {
+            params: {
+              fecha: date
+            }
+          }).then(function (response) {
+            var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+            _this9.pelotaris_aspe = JSON.parse(stringified);
+            _this9.pelotaris_aspe.unshift({ value: null, text: "Seleccionar pelotari" });
+          });
+        });
+      });
+    },
+    getPelotarisMonth: function getPelotarisMonth(year, month) {
+      var _this10 = this;
 
       return new Promise(function (resolve, reject) {
         axios.get('/www/pelotaris', {
@@ -8680,7 +8764,7 @@ var APIGetters = {
           }
         }).then(function (response) {
           var stringified = JSON.stringify(response.data);
-          _this8.pelotaris = JSON.parse(stringified);
+          _this10.pelotaris = JSON.parse(stringified);
         });
       });
     },
@@ -8688,36 +8772,36 @@ var APIGetters = {
 
     /* CLIENTES */
     getClientes: function getClientes() {
-      var _this9 = this;
+      var _this11 = this;
 
       var uri = '/www/clientes';
       axios.get(uri).then(function (response) {
         var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this9.clientes = JSON.parse(stringified);
-        _this9.clientes.unshift({ value: null, text: "Seleccionar cliente" });
+        _this11.clientes = JSON.parse(stringified);
+        _this11.clientes.unshift({ value: null, text: "Seleccionar cliente" });
       });
     },
 
 
     /* FACTURACIÓN */
     getFormasPago: function getFormasPago() {
-      var _this10 = this;
+      var _this12 = this;
 
       var uri = '/www/formas-pago';
       axios.get(uri).then(function (response) {
         var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this10.formas_pago = JSON.parse(stringified);
-        _this10.formas_pago.unshift({ value: null, text: "Seleccionar" });
+        _this12.formas_pago = JSON.parse(stringified);
+        _this12.formas_pago.unshift({ value: null, text: "Seleccionar" });
       });
     },
     getEnvioFacturas: function getEnvioFacturas() {
-      var _this11 = this;
+      var _this13 = this;
 
       var uri = '/www/envio-facturas';
       axios.get(uri).then(function (response) {
         var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/desc/g, "text");
-        _this11.envio_facturas = JSON.parse(stringified);
-        _this11.envio_facturas.unshift({ value: null, text: "Seleccionar" });
+        _this13.envio_facturas = JSON.parse(stringified);
+        _this13.envio_facturas.unshift({ value: null, text: "Seleccionar" });
       });
     }
   }
@@ -50567,11 +50651,15 @@ var HomeAdmin = { template: '<home-admin></home-admin>' };
 var ListModulos = { template: '<listado-modulos></listado-modulos>' };
 
 Vue.component('home-rrhh', __webpack_require__(377));
-Vue.component('listado-pelotaris', __webpack_require__(380));
+Vue.component('rrhh-tabs', __webpack_require__(553));
+Vue.component('listado-pelotaris-profesional', __webpack_require__(558));
+Vue.component('listado-pelotaris-promesa', __webpack_require__(561));
 Vue.component('ficha-pelotari', __webpack_require__(383));
 
 var HomeRRHH = { template: '<home-rrhh></home-rrhh>' };
-var ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> ' };
+var RRHHTabs = { template: '<rrhh-tabs></rrhh-tabs>' };
+var ListPelotarisProfesional = { template: '<listado-pelotaris-profesional></listado-pelotaris-profesional> ' };
+var ListPelotarisPromesa = { template: '<listado-pelotaris-promesa></listado-pelotaris-promesa> ' };
 var CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> ' };
 var EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> ' };
 
@@ -50638,7 +50726,7 @@ var routes = [{
 }, {
   path: '/rrhh', component: HomeRRHH,
   children: [{
-    path: '', name: 'RRHH', component: ListPelotaris
+    path: '', name: 'RRHH', component: RRHHTabs
   }, {
     path: 'pelotari/new', component: CreatePelotari
   }, {
@@ -88437,24 +88525,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -88473,57 +88543,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-12" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header bg-primary" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "div",
-                { staticClass: "col-sm-8 col-md-9 col-lg-10" },
-                [
-                  _c(
-                    "router-link",
-                    { staticClass: "text-white", attrs: { to: this.home } },
-                    [_vm._v(_vm._s(this.title))]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              this.$route.params.userRole == "admin"
-                ? _c(
-                    "div",
-                    { staticClass: "home-icon col-sm-4 col-md-3 col-lg-2" },
-                    [
-                      _c(
-                        "b-button",
-                        {
-                          attrs: { size: "sm", variant: "outline", href: "/" }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-list-alt",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(" Admin Menú")
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                : _vm._e()
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [_c("router-view")], 1)
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { attrs: { id: "snackbar" } })
-  ])
+  return _c(
+    "div",
+    { staticClass: "w-100" },
+    [_c("router-view"), _vm._v(" "), _c("div", { attrs: { id: "snackbar" } })],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -88536,827 +88561,9 @@ if (false) {
 }
 
 /***/ }),
-/* 380 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(381)
-/* template */
-var __vue_template__ = __webpack_require__(382)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\rrhh_pelotaris\\ListadoComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-87a5d5a8", Component.options)
-  } else {
-    hotAPI.reload("data-v-87a5d5a8", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 381 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var showSnackbar = function showSnackbar(msg) {
-  // Get the snackbar DIV
-  var x = document.getElementById("snackbar");
-
-  // Add the "show" class to DIV
-  x.className = "show";
-  x.innerHTML = msg;
-
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function () {
-    x.className = x.className.replace("show", "");
-  }, 3000);
-};
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      sortBy: 'age',
-      sortDesc: false,
-      fields: [{ key: 'alias', label: 'Apodo', sortable: true }, { key: 'posicion', label: 'Posición', sortable: true }, { key: 'provincia', label: 'Provincia', sortable: true }, { key: 'email', label: 'Correo', sortable: true }, { key: 'telefono', label: 'Teléfono', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
-      items: [],
-      defaultPhoto: '/storage/avatars/default/default.jpg',
-      totalRows: 0,
-      perPage: 10,
-      currentPage: 1,
-      pageOptions: [10, 25, 50],
-      filter: null,
-      deleteId: null
-    };
-  },
-  created: function created() {
-    this.fetchPelotaris();
-  },
-
-  methods: {
-    fetchPelotaris: function fetchPelotaris() {
-      var _this = this;
-
-      var uri = '/www/pelotaris';
-      this.axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data);
-        _this.items = JSON.parse(stringified);
-        _this.totalRows = _this.items.length;
-      });
-    },
-    onFiltered: function onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
-    },
-    edit: function edit(id) {
-      this.$router.push('/rrhh/pelotari/' + id + '/edit/');
-    },
-    remove: function remove() {
-      var _this2 = this;
-
-      var uri = '/www/pelotaris/' + this.deleteId;
-      this.axios.delete(uri).then(function (response) {
-        _this2.deleteId = null;
-        _this2.$refs.modalDelete.hide();
-        _this2.fetchPelotaris();
-        showSnackbar("Pelotari BORRADO");
-      }).catch(function (error) {
-        console.log("[remove] error: " + error);
-        _this2.deleteId = null;
-        _this2.$refs.modalDelete.hide();
-        showSnackbar("ERROR al borrar");
-      });
-    },
-    onClickDelete: function onClickDelete(id, name) {
-      this.deleteId = id;
-      jQuery('#deleteAlias').html(name);
-      this.$refs.modalDelete.show();
-    },
-    hideModalDelete: function hideModalDelete() {
-      this.deleteId = null;
-      this.$refs.modalDelete.hide();
-    }
-  }
-});
-
-/***/ }),
-/* 382 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid" },
-    [
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 float-left my-1 mb-3" },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Filtro" }
-                },
-                [
-                  _c(
-                    "b-input-group",
-                    [
-                      _c("b-form-input", {
-                        attrs: { placeholder: "Texto de búsqueda" },
-                        model: {
-                          value: _vm.filter,
-                          callback: function($$v) {
-                            _vm.filter = $$v
-                          },
-                          expression: "filter"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "b-input-group-append",
-                        [
-                          _c(
-                            "b-btn",
-                            {
-                              attrs: {
-                                disabled: !_vm.filter,
-                                title: "Limpiar filtro"
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.filter = ""
-                                }
-                              }
-                            },
-                            [_vm._v("Limpiar")]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "col-sm-6 text-right my-1 mb-3" },
-            [
-              _c(
-                "router-link",
-                {
-                  staticClass: "text-white",
-                  attrs: { to: "/rrhh/pelotari/new" }
-                },
-                [
-                  _c(
-                    "b-btn",
-                    {
-                      staticClass: "mb-0",
-                      attrs: { variant: "danger", title: "Crear Pelotari" }
-                    },
-                    [_vm._v("Nuevo Pelotari")]
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("b-table", {
-        attrs: {
-          striped: "",
-          hover: "",
-          small: "",
-          responsive: "",
-          "sort-by": _vm.sortBy,
-          "sort-desc": _vm.sortDesc,
-          "per-page": _vm.perPage,
-          "current-page": _vm.currentPage,
-          items: _vm.items,
-          fields: _vm.fields,
-          filter: _vm.filter
-        },
-        on: {
-          "update:sortBy": function($event) {
-            _vm.sortBy = $event
-          },
-          "update:sortDesc": function($event) {
-            _vm.sortDesc = $event
-          },
-          filtered: _vm.onFiltered
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "actions",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-button-group",
-                  [
-                    _c(
-                      "b-button",
-                      {
-                        attrs: {
-                          size: "sm",
-                          variant: "danger",
-                          title: "Eliminar"
-                        },
-                        on: {
-                          click: function($event) {
-                            $event.stopPropagation()
-                            _vm.onClickDelete(row.item.id, row.item.alias)
-                          }
-                        }
-                      },
-                      [_c("span", { staticClass: "icon voyager-trash" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-button",
-                      {
-                        attrs: {
-                          size: "sm",
-                          variant: "primary",
-                          title: "Editar"
-                        },
-                        on: {
-                          click: function($event) {
-                            $event.stopPropagation()
-                            _vm.edit(row.item.id)
-                          }
-                        }
-                      },
-                      [_c("span", { staticClass: "icon voyager-edit" })]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-button",
-                      {
-                        attrs: {
-                          size: "sm",
-                          variant: "secondary",
-                          title: "Mostrar/Ocultar Detalle"
-                        },
-                        on: {
-                          click: function($event) {
-                            $event.stopPropagation()
-                            return row.toggleDetails($event)
-                          }
-                        }
-                      },
-                      [
-                        _c("span", {
-                          staticClass: "icon",
-                          class: {
-                            "voyager-x": row.detailsShowing,
-                            "voyager-eye": !row.detailsShowing
-                          }
-                        })
-                      ]
-                    )
-                  ],
-                  1
-                )
-              ]
-            }
-          },
-          {
-            key: "row-details",
-            fn: function(row) {
-              return [
-                _c(
-                  "b-card",
-                  [
-                    _c(
-                      "b-row",
-                      [
-                        _c("b-col", { attrs: { sm: "1" } }, [
-                          _c("img", {
-                            staticClass: "img-responsive",
-                            staticStyle: { width: "100%" },
-                            attrs: {
-                              src: row.item.foto
-                                ? row.item.foto
-                                : _vm.defaultPhoto
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "b-col",
-                          { attrs: { sm: "11" } },
-                          [
-                            _c(
-                              "b-row",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("Nombre:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(
-                                    _vm._s(row.item.nombre) +
-                                      " " +
-                                      _vm._s(row.item.apellidos)
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("F.Nacimiento:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.fecha_nac))
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("DNI:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.DNI))
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("NºSS:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.num_ss))
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("Dirección:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "10" } }, [
-                                  _vm._v(
-                                    _vm._s(row.item.direccion) +
-                                      " - " +
-                                      _vm._s(row.item.cod_postal) +
-                                      " " +
-                                      _vm._s(row.item.municipio) +
-                                      " (" +
-                                      _vm._s(row.item.provincia) +
-                                      ")"
-                                  )
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("E-Mail:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.email))
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("Tel.Fijo:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.telefono))
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("Tel.Móvil:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.telefono_2))
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("Tel.Alternativo:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.telefono_3))
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("NºHijos:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.num_hijos))
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "b-col",
-                                  {
-                                    staticClass: "text-sm-right",
-                                    attrs: { sm: "2" }
-                                  },
-                                  [_c("b", [_vm._v("IBAN:")])]
-                                ),
-                                _vm._v(" "),
-                                _c("b-col", { attrs: { sm: "4" } }, [
-                                  _vm._v(_vm._s(row.item.iban))
-                                ])
-                              ],
-                              1
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ]
-            }
-          }
-        ])
-      }),
-      _vm._v(" "),
-      _c(
-        "b-row",
-        [
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "5" } },
-            [
-              _c("b-pagination", {
-                staticClass: "my-0",
-                attrs: { "total-rows": _vm.totalRows, "per-page": _vm.perPage },
-                model: {
-                  value: _vm.currentPage,
-                  callback: function($$v) {
-                    _vm.currentPage = $$v
-                  },
-                  expression: "currentPage"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1 text-right", attrs: { md: "3" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Total: " }
-                },
-                [
-                  _c("b-form-input", {
-                    attrs: { readonly: "", plaintext: "" },
-                    model: {
-                      value: _vm.totalRows,
-                      callback: function($$v) {
-                        _vm.totalRows = $$v
-                      },
-                      expression: "totalRows"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-col",
-            { staticClass: "my-1", attrs: { md: "4" } },
-            [
-              _c(
-                "b-form-group",
-                {
-                  staticClass: "mb-0",
-                  attrs: { horizontal: "", label: "Mostrar" }
-                },
-                [
-                  _c("b-form-select", {
-                    attrs: { options: _vm.pageOptions },
-                    model: {
-                      value: _vm.perPage,
-                      callback: function($$v) {
-                        _vm.perPage = $$v
-                      },
-                      expression: "perPage"
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "modalDelete",
-          attrs: { title: "BORRAR Pelotari", "hide-footer": "" }
-        },
-        [
-          _c("div", { staticClass: "modal-body" }, [
-            _c("p", [
-              _vm._v("Se va a borrar la ficha completa de "),
-              _c("strong", { attrs: { id: "deleteAlias" } }),
-              _vm._v(". ¿Desea continuar?")
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "modal-footer" },
-            [
-              _c(
-                "b-btn",
-                { attrs: { variant: "danger" }, on: { click: _vm.remove } },
-                [_vm._v("Borrar")]
-              ),
-              _vm._v(" "),
-              _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
-                _vm._v("Cancelar")
-              ])
-            ],
-            1
-          )
-        ]
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-87a5d5a8", module.exports)
-  }
-}
-
-/***/ }),
+/* 380 */,
+/* 381 */,
+/* 382 */,
 /* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -89697,6 +88904,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 Vue.component('listado-contratos', __webpack_require__(387));
 Vue.component('listado-campeonatos', __webpack_require__(392));
@@ -89741,6 +88974,7 @@ var showSnackbar = function showSnackbar(msg) {
         telefono_3: '',
         iban: '',
         num_hijos: null,
+        promesa: 0,
         created: null,
         updated: null
       },
@@ -89819,6 +89053,7 @@ var showSnackbar = function showSnackbar(msg) {
         _this4.pelotari.telefono_3 = pelotari.telefono_3;
         _this4.pelotari.iban = pelotari.iban;
         _this4.pelotari.num_hijos = pelotari.num_hijos;
+        _this4.pelotari.promesa = pelotari.promesa;
         _this4.pelotari.created = pelotari.created_at;
         _this4.pelotari.updated = pelotari.updated_at;
 
@@ -89905,6 +89140,7 @@ var showSnackbar = function showSnackbar(msg) {
       this.pelotari.telefono_3 = '';
       this.pelotari.iban = '';
       this.pelotari.num_hijos = null;
+      this.pelotari.promesa = 0;
       /* Trick to reset/clear native browser form validation state */
       this.show = false;
       this.$nextTick(function () {
@@ -93228,837 +92464,941 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticStyle: { "min-height": "625px" } },
-    [
-      _c("b-row", { staticClass: "justify-content-center" }, [
+  return _c("div", [
+    _c("div", { staticClass: "main-header pelotaris" }, [
+      _c("div", { staticClass: "toolbar mb-0 py-1" }, [
         _c(
           "div",
-          { staticClass: "col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0" },
+          { staticClass: "container" },
           [
-            _c("img", {
-              staticClass: "img-responsive",
-              staticStyle: { width: "100%" },
-              attrs: { src: _vm.pelotari.image }
-            })
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-10 col-md-9 col-lg-10" }, [
-          _c("p", { staticClass: "d-inline-block text-secondary mb-1" }, [
-            _vm._v(_vm._s(_vm.formTitle))
-          ]),
-          _vm._v(" "),
-          _c("h1", { staticClass: "form-title text-secondary" }, [
-            _c("strong", [_vm._v(_vm._s(this.pelotari.alias))]),
-            _vm._v(" - "),
-            _c("small", { staticClass: "text-capitalize" }, [
-              _vm._v(_vm._s(this.pelotari.posicion))
+            _c("b-row", [
+              _c("div", { staticClass: "col-sm-3" }, [_vm._v(" ")]),
+              _vm._v(" "),
+              _vm.edit
+                ? _c(
+                    "h4",
+                    { staticClass: "col-sm-6 text-white font-weight-bold" },
+                    [_vm._v("EDITAR FICHA DEL PELOTARI")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.edit
+                ? _c(
+                    "h4",
+                    { staticClass: "col-sm-6 text-white font-weight-bold" },
+                    [_vm._v("NUEVA FICHA DE PELOTARI")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-sm-3 text-right home-icon" },
+                [
+                  this.$route.params.userRole === "admin"
+                    ? _c(
+                        "b-button",
+                        {
+                          staticClass: "mt-1",
+                          attrs: { size: "sm", variant: "outline", href: "/" }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-list-alt",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" Admin Menú")
+                        ]
+                      )
+                    : _vm._e()
+                ],
+                1
+              )
             ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-2 col-md-1 col-lg-1" },
-          [
-            _vm.edit
-              ? _c(
-                  "b-button",
-                  {
-                    staticClass: "d-inline-block float-right text-right",
-                    staticStyle: { width: "30px" },
-                    attrs: {
-                      size: "sm",
-                      variant: "outline-secondary",
-                      alt: "Borrar Pelotari",
-                      title: "Borrar Pelotari"
-                    },
-                    on: {
-                      click: function($event) {
-                        $event.stopPropagation()
-                        _vm.onClickDelete(_vm.pelotari.id, _vm.pelotari.alias)
-                      }
-                    }
-                  },
-                  [_c("span", { staticClass: "icon voyager-trash" })]
-                )
-              : _vm._e()
           ],
           1
         )
-      ]),
-      _vm._v(" "),
-      _vm.show
-        ? _c(
-            "b-form",
-            { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "container py-4", staticStyle: { "min-height": "625px" } },
+      [
+        _c("b-row", { staticClass: "justify-content-center" }, [
+          _c(
+            "div",
+            { staticClass: "col-6 col-md-2 col-lg-1 pr-0 mb-3 mb-md-0" },
             [
-              _c(
-                "b-card",
-                { staticClass: "my-3", attrs: { "no-body": "" } },
-                [
-                  _c(
-                    "b-tabs",
-                    { attrs: { card: "", pills: "" } },
-                    [
-                      _c(
-                        "b-tab",
-                        { attrs: { title: "Ficha", active: "" } },
-                        [
-                          _c("b-row", [
-                            _c(
-                              "div",
-                              { staticClass: "col-md-12" },
-                              [
-                                _c(
-                                  "b-row",
-                                  [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-3",
-                                        attrs: {
-                                          label: "Nombre deportivo:",
-                                          "label-for": "alias"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "alias",
-                                            type: "text",
-                                            maxlength: "30",
-                                            required: "",
-                                            placeholder: "Nombre deportivo"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.alias,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "alias",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.alias"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-3",
-                                        attrs: {
-                                          label: "Posicion:",
-                                          "label-for": "posicion"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-select", {
-                                          attrs: {
-                                            id: "posicion",
-                                            options: _vm.posiciones,
-                                            required: ""
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.posicion,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "posicion",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.posicion"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-3",
-                                        attrs: {
-                                          label: "DNI:",
-                                          "label-for": "dniInput"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "dniInput",
-                                            type: "text",
-                                            maxlength: "9",
-                                            placeholder: "DNI"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.dni,
-                                            callback: function($$v) {
-                                              _vm.$set(_vm.pelotari, "dni", $$v)
-                                            },
-                                            expression: "pelotari.dni"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-3",
-                                        attrs: {
-                                          label: "NºSeg.Social:",
-                                          "label-for": "ssInput"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "ssInput",
-                                            type: "text",
-                                            maxlength: "12",
-                                            placeholder: "NºSeg.Social"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.num_ss,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "num_ss",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.num_ss"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "b-row",
-                                  [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-md-4 col-lg-3",
-                                        attrs: {
-                                          label: "Nombre:",
-                                          "label-for": "nombre"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "nombre",
-                                            type: "text",
-                                            maxlength: "30",
-                                            placeholder: "Nombre"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.nombre,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "nombre",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.nombre"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-md-4 col-lg-6",
-                                        attrs: {
-                                          label: "Apellidos:",
-                                          "label-for": "apellidos"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "apellidos",
-                                            type: "text",
-                                            maxlength: "60",
-                                            placeholder: "Apellidos"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.apellidos,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "apellidos",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.apellidos"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-md-4 col-lg-3",
-                                        attrs: {
-                                          label: "Fecha nacimiento:",
-                                          "label-for": "fecha_nac"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "fecha_nac",
-                                            type: "date",
-                                            placeholder: "dd/mm/yyyy"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.fecha_nac,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "fecha_nac",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.fecha_nac"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "b-row",
-                                  [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-12",
-                                        attrs: {
-                                          label: "Dirección:",
-                                          "label-for": "direccion"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "direccion",
-                                            type: "text",
-                                            maxlength: "100",
-                                            placeholder: "Dirección completa"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.direccion,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "direccion",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.direccion"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-4",
-                                        attrs: {
-                                          label: "Provincia:",
-                                          "label-for": "provincia"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-select", {
-                                          attrs: {
-                                            id: "provincia",
-                                            options: _vm.provincias
-                                          },
-                                          on: { change: _vm.onChangeProvincia },
-                                          model: {
-                                            value: _vm.pelotari.provincia_id,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "provincia_id",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.provincia_id"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-4",
-                                        attrs: {
-                                          label: "Municipio:",
-                                          "label-for": "municipio"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-select", {
-                                          attrs: {
-                                            id: "municipio",
-                                            options: _vm.municipios_filtered
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.municipio_id,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "municipio_id",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.municipio_id"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-6 col-md-4",
-                                        attrs: {
-                                          label: "Código Postal:",
-                                          "label-for": "cod_postal"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "cod_postal",
-                                            type: "text",
-                                            maxlength: "5",
-                                            required: "",
-                                            placeholder: "Código Postal"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.cod_postal,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "cod_postal",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.cod_postal"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c("div", {
-                                      staticClass: "w-100 d-md-none"
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-lg-4 col-xl-3",
-                                        attrs: {
-                                          label: "Correo electrónico:",
-                                          "label-for": "email"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "email",
-                                            type: "email",
-                                            maxlength: "50",
-                                            placeholder: "example@example.com"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.email,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "email",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.email"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c("div", {
-                                      staticClass:
-                                        "w-100 d-none d-sm-none d-lg-block d-xl-none"
-                                    }),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-lg-4 col-xl-3",
-                                        attrs: {
-                                          label: "Teléfono Fijo:",
-                                          "label-for": "telefono"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "telefono",
-                                            type: "text",
-                                            maxlength: "15",
-                                            placeholder: "Teléfono"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.telefono,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "telefono",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.telefono"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-lg-4 col-xl-3",
-                                        attrs: {
-                                          label: "Teléfono Móvil:",
-                                          "label-for": "telefono_mov"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "telefono_mov",
-                                            type: "text",
-                                            maxlength: "15",
-                                            placeholder: "Teléfono Móvil"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.telefono_2,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "telefono_2",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.telefono_2"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-6 col-lg-4 col-xl-3",
-                                        attrs: {
-                                          label: "Teléfono Alternativo:",
-                                          "label-for": "telefono_alt"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "telefono_alt",
-                                            type: "text",
-                                            maxlength: "15",
-                                            placeholder: "Teléfono Alternativo"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.telefono_3,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "telefono_3",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.telefono_3"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "b-row",
-                                  [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-3 col-lg-4 col-xl-3",
-                                        attrs: {
-                                          label: "NºHijos:",
-                                          "label-for": "num_hijos"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "num_hijos",
-                                            type: "number",
-                                            maxlength: "1",
-                                            placeholder: "NºHijos"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.num_hijos,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "num_hijos",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.num_hijos"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass:
-                                          "col-sm-9 col-lg-8 col-xl-9",
-                                        attrs: {
-                                          label: "Cód.IBAN:",
-                                          "label-for": "iban"
-                                        }
-                                      },
-                                      [
-                                        _c("b-form-input", {
-                                          attrs: {
-                                            id: "iban",
-                                            type: "text",
-                                            maxlength: "28",
-                                            placeholder: "Cód.IBAN"
-                                          },
-                                          model: {
-                                            value: _vm.pelotari.iban,
-                                            callback: function($$v) {
-                                              _vm.$set(
-                                                _vm.pelotari,
-                                                "iban",
-                                                $$v
-                                              )
-                                            },
-                                            expression: "pelotari.iban"
-                                          }
-                                        })
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "b-row",
-                                  [
-                                    _c(
-                                      "b-form-group",
-                                      {
-                                        staticClass: "col-sm-12",
-                                        attrs: { label: "Fotografía" }
-                                      },
-                                      [
-                                        _c(
-                                          "b-row",
-                                          [
-                                            _c("b-form-file", {
-                                              staticClass: "mt-0 col-sm-10",
-                                              attrs: {
-                                                accept: ".jpg",
-                                                plain: ""
-                                              },
-                                              on: { change: _vm.onPhotoChange }
-                                            }),
-                                            _vm._v(" "),
-                                            !_vm.edit
-                                              ? _c(
-                                                  "div",
-                                                  { staticClass: "col-sm-2" },
-                                                  [
-                                                    _c(
-                                                      "b-button",
-                                                      {
-                                                        staticClass:
-                                                          "float-right mr-1",
-                                                        attrs: {
-                                                          type: "reset",
-                                                          variant: "danger",
-                                                          size: "sm"
-                                                        }
-                                                      },
-                                                      [_vm._v("Reset")]
-                                                    )
-                                                  ],
-                                                  1
-                                                )
-                                              : _vm._e()
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
-                          ])
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _vm.edit
-                        ? _c(
-                            "b-tab",
-                            { attrs: { title: "Contratos" } },
-                            [
-                              _c("listado-contratos", {
-                                attrs: {
-                                  "pelotari-id": this.pelotari.id,
-                                  "pelotari-alias": this.pelotari.alias
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.edit
-                        ? _c(
-                            "b-tab",
-                            { attrs: { title: "Campeonatos" } },
-                            [
-                              _c("listado-campeonatos", {
-                                attrs: {
-                                  "pelotari-id": this.pelotari.id,
-                                  "pelotari-alias": this.pelotari.alias
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        : _vm._e()
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Guardar")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { variant: "default" }, on: { click: _vm.onCancel } },
-                [_vm._v("Cancelar")]
-              )
-            ],
-            1
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "modalDelete",
-          attrs: { title: "BORRAR Pelotari", "hide-footer": "" }
-        },
-        [
-          _c("div", { staticClass: "modal-body" }, [
-            _c("p", [
-              _vm._v("Se va a borrar la ficha completa de "),
-              _c("strong", { attrs: { id: "deleteAlias" } }),
-              _vm._v(". ¿Desea continuar?")
+              _c("img", {
+                staticClass: "img-responsive",
+                staticStyle: { width: "100%" },
+                attrs: { src: _vm.pelotari.image }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-10 col-md-9 col-lg-10" }, [
+            _c("p", { staticClass: "d-inline-block text-secondary mb-1" }, [
+              _vm._v(_vm._s(_vm.formTitle))
+            ]),
+            _vm._v(" "),
+            _c("h1", { staticClass: "form-title text-secondary" }, [
+              _c("strong", [_vm._v(_vm._s(this.pelotari.alias))]),
+              _vm._v(" - "),
+              _c("small", { staticClass: "text-capitalize" }, [
+                _vm._v(_vm._s(this.pelotari.posicion))
+              ])
             ])
           ]),
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "modal-footer" },
+            { staticClass: "col-2 col-md-1 col-lg-1" },
             [
-              _c(
-                "b-btn",
-                { attrs: { variant: "danger" }, on: { click: _vm.remove } },
-                [_vm._v("Borrar")]
-              ),
-              _vm._v(" "),
-              _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
-                _vm._v("Cancelar")
-              ])
+              _vm.edit
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "d-inline-block float-right text-right",
+                      staticStyle: { width: "30px" },
+                      attrs: {
+                        size: "sm",
+                        variant: "outline-secondary",
+                        alt: "Borrar Pelotari",
+                        title: "Borrar Pelotari"
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          _vm.onClickDelete(_vm.pelotari.id, _vm.pelotari.alias)
+                        }
+                      }
+                    },
+                    [_c("span", { staticClass: "icon voyager-trash" })]
+                  )
+                : _vm._e()
             ],
             1
           )
-        ]
-      )
-    ],
-    1
-  )
+        ]),
+        _vm._v(" "),
+        _vm.show
+          ? _c(
+              "b-form",
+              { on: { submit: _vm.onSubmit, reset: _vm.onReset } },
+              [
+                _c(
+                  "b-card",
+                  { staticClass: "my-3", attrs: { "no-body": "" } },
+                  [
+                    _c(
+                      "b-tabs",
+                      { attrs: { card: "", pills: "" } },
+                      [
+                        _c(
+                          "b-tab",
+                          { attrs: { title: "Ficha", active: "" } },
+                          [
+                            _c("b-row", [
+                              _c(
+                                "div",
+                                { staticClass: "col-md-12" },
+                                [
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-3",
+                                          attrs: {
+                                            label: "Nombre deportivo:",
+                                            "label-for": "alias"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "alias",
+                                              type: "text",
+                                              maxlength: "30",
+                                              required: "",
+                                              placeholder: "Nombre deportivo"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.alias,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "alias",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.alias"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-3",
+                                          attrs: {
+                                            label: "Posicion:",
+                                            "label-for": "posicion"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-select", {
+                                            attrs: {
+                                              id: "posicion",
+                                              options: _vm.posiciones,
+                                              required: ""
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.posicion,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "posicion",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.posicion"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-3",
+                                          attrs: {
+                                            label: "DNI:",
+                                            "label-for": "dniInput"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "dniInput",
+                                              type: "text",
+                                              maxlength: "9",
+                                              placeholder: "DNI"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.dni,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "dni",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.dni"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-3",
+                                          attrs: {
+                                            label: "NºSeg.Social:",
+                                            "label-for": "ssInput"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "ssInput",
+                                              type: "text",
+                                              maxlength: "12",
+                                              placeholder: "NºSeg.Social"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.num_ss,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "num_ss",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.num_ss"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-md-4 col-lg-3",
+                                          attrs: {
+                                            label: "Nombre:",
+                                            "label-for": "nombre"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "nombre",
+                                              type: "text",
+                                              maxlength: "30",
+                                              placeholder: "Nombre"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.nombre,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "nombre",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.nombre"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-md-4 col-lg-6",
+                                          attrs: {
+                                            label: "Apellidos:",
+                                            "label-for": "apellidos"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "apellidos",
+                                              type: "text",
+                                              maxlength: "60",
+                                              placeholder: "Apellidos"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.apellidos,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "apellidos",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.apellidos"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-md-4 col-lg-3",
+                                          attrs: {
+                                            label: "Fecha nacimiento:",
+                                            "label-for": "fecha_nac"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "fecha_nac",
+                                              type: "date",
+                                              placeholder: "dd/mm/yyyy"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.fecha_nac,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "fecha_nac",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.fecha_nac"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-12",
+                                          attrs: {
+                                            label: "Dirección:",
+                                            "label-for": "direccion"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "direccion",
+                                              type: "text",
+                                              maxlength: "100",
+                                              placeholder: "Dirección completa"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.direccion,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "direccion",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.direccion"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-4",
+                                          attrs: {
+                                            label: "Provincia:",
+                                            "label-for": "provincia"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-select", {
+                                            attrs: {
+                                              id: "provincia",
+                                              options: _vm.provincias
+                                            },
+                                            on: {
+                                              change: _vm.onChangeProvincia
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.provincia_id,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "provincia_id",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "pelotari.provincia_id"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-4",
+                                          attrs: {
+                                            label: "Municipio:",
+                                            "label-for": "municipio"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-select", {
+                                            attrs: {
+                                              id: "municipio",
+                                              options: _vm.municipios_filtered
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.municipio_id,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "municipio_id",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "pelotari.municipio_id"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-6 col-md-4",
+                                          attrs: {
+                                            label: "Código Postal:",
+                                            "label-for": "cod_postal"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "cod_postal",
+                                              type: "text",
+                                              maxlength: "5",
+                                              required: "",
+                                              placeholder: "Código Postal"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.cod_postal,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "cod_postal",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.cod_postal"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass: "w-100 d-md-none"
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-lg-4 col-xl-3",
+                                          attrs: {
+                                            label: "Correo electrónico:",
+                                            "label-for": "email"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "email",
+                                              type: "email",
+                                              maxlength: "50",
+                                              placeholder: "example@example.com"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.email,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "email",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.email"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("div", {
+                                        staticClass:
+                                          "w-100 d-none d-sm-none d-lg-block d-xl-none"
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-lg-4 col-xl-3",
+                                          attrs: {
+                                            label: "Teléfono Fijo:",
+                                            "label-for": "telefono"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "telefono",
+                                              type: "text",
+                                              maxlength: "15",
+                                              placeholder: "Teléfono"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.telefono,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "telefono",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.telefono"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-lg-4 col-xl-3",
+                                          attrs: {
+                                            label: "Teléfono Móvil:",
+                                            "label-for": "telefono_mov"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "telefono_mov",
+                                              type: "text",
+                                              maxlength: "15",
+                                              placeholder: "Teléfono Móvil"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.telefono_2,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "telefono_2",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.telefono_2"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-6 col-lg-4 col-xl-3",
+                                          attrs: {
+                                            label: "Teléfono Alternativo:",
+                                            "label-for": "telefono_alt"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "telefono_alt",
+                                              type: "text",
+                                              maxlength: "15",
+                                              placeholder:
+                                                "Teléfono Alternativo"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.telefono_3,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "telefono_3",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.telefono_3"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-3 col-lg-4 col-xl-3",
+                                          attrs: {
+                                            label: "NºHijos:",
+                                            "label-for": "num_hijos"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "num_hijos",
+                                              type: "number",
+                                              maxlength: "1",
+                                              placeholder: "NºHijos"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.num_hijos,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "num_hijos",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.num_hijos"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass:
+                                            "col-sm-9 col-lg-8 col-xl-9",
+                                          attrs: {
+                                            label: "Cód.IBAN:",
+                                            "label-for": "iban"
+                                          }
+                                        },
+                                        [
+                                          _c("b-form-input", {
+                                            attrs: {
+                                              id: "iban",
+                                              type: "text",
+                                              maxlength: "28",
+                                              placeholder: "Cód.IBAN"
+                                            },
+                                            model: {
+                                              value: _vm.pelotari.iban,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.pelotari,
+                                                  "iban",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "pelotari.iban"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c("label", { staticClass: "col-md-2" }, [
+                                        _vm._v("Promesa")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("b-form-checkbox", {
+                                        staticClass: "col-md-1 text-right",
+                                        staticStyle: {
+                                          "margin-right": "0px !important"
+                                        },
+                                        attrs: {
+                                          id: "check_promesa",
+                                          value: "1",
+                                          "unchecked-value": "0"
+                                        },
+                                        model: {
+                                          value: _vm.pelotari.promesa,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.pelotari,
+                                              "promesa",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "pelotari.promesa"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c(
+                                        "b-form-group",
+                                        {
+                                          staticClass: "col-sm-12",
+                                          attrs: { label: "Fotografía" }
+                                        },
+                                        [
+                                          _c(
+                                            "b-row",
+                                            [
+                                              _c("b-form-file", {
+                                                staticClass: "mt-0 col-sm-10",
+                                                attrs: {
+                                                  accept: ".jpg",
+                                                  plain: ""
+                                                },
+                                                on: {
+                                                  change: _vm.onPhotoChange
+                                                }
+                                              }),
+                                              _vm._v(" "),
+                                              !_vm.edit
+                                                ? _c(
+                                                    "div",
+                                                    { staticClass: "col-sm-2" },
+                                                    [
+                                                      _c(
+                                                        "b-button",
+                                                        {
+                                                          staticClass:
+                                                            "float-right mr-1",
+                                                          attrs: {
+                                                            type: "reset",
+                                                            variant: "danger",
+                                                            size: "sm"
+                                                          }
+                                                        },
+                                                        [_vm._v("Reset")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                : _vm._e()
+                                            ],
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _vm.edit
+                          ? _c(
+                              "b-tab",
+                              { attrs: { title: "Contratos" } },
+                              [
+                                _c("listado-contratos", {
+                                  attrs: {
+                                    "pelotari-id": this.pelotari.id,
+                                    "pelotari-alias": this.pelotari.alias
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.edit
+                          ? _c(
+                              "b-tab",
+                              { attrs: { title: "Campeonatos" } },
+                              [
+                                _c("listado-campeonatos", {
+                                  attrs: {
+                                    "pelotari-id": this.pelotari.id,
+                                    "pelotari-alias": this.pelotari.alias
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  { attrs: { type: "submit", variant: "primary" } },
+                  [_vm._v("Guardar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  {
+                    attrs: { variant: "default" },
+                    on: { click: _vm.onCancel }
+                  },
+                  [_vm._v("Cancelar")]
+                )
+              ],
+              1
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "b-modal",
+          {
+            ref: "modalDelete",
+            attrs: { title: "BORRAR Pelotari", "hide-footer": "" }
+          },
+          [
+            _c("div", { staticClass: "modal-body" }, [
+              _c("p", [
+                _vm._v("Se va a borrar la ficha completa de "),
+                _c("strong", { attrs: { id: "deleteAlias" } }),
+                _vm._v(". ¿Desea continuar?")
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "modal-footer" },
+              [
+                _c(
+                  "b-btn",
+                  { attrs: { variant: "danger" }, on: { click: _vm.remove } },
+                  [_vm._v("Borrar")]
+                ),
+                _vm._v(" "),
+                _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+                  _vm._v("Cancelar")
+                ])
+              ],
+              1
+            )
+          ]
+        )
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -96624,7 +95964,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     this.getCampeonatos();
     this.getFasesCampeonato();
     this.getTiposPartido();
-    this.getPelotaris();
+    this.getPelotarisProfesional();
   },
 
   computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
@@ -99150,7 +98490,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   updated: function updated() {
     if (!this.fecha_festival) {
       this.fecha_festival = this._header.fecha;
-      this.getPelotaris(this.fecha_festival);
+      this.getPelotarisProfesional(this.fecha_festival);
     }
   },
   methods: {
@@ -101248,7 +100588,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     };
   },
   created: function created() {
-    this.getPelotaris(this._header.fecha);
+    this.getPelotarisProfesional(this._header.fecha);
     if (this.isPrensa) {
       this.asiste_options = [{ text: "Asiste", value: 1, disabled: this.pelotari.asiste ? false : true }, { text: "No asiste", value: 0, disabled: this.pelotari.asiste ? true : false }];
     }
@@ -106658,7 +105998,7 @@ Vue.component('delete-modal', __webpack_require__(31));
   var year = myDate.getFullYear();
   var formattedDate = year + '/' + month + '/' + date;
 
-  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotaris', formattedDate);
+  __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotarisProfesional', formattedDate);
   __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadProvincias');
   __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadMunicipios');
   __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEntrActitudes');
@@ -107329,6 +106669,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -107401,6 +106753,13 @@ var showSnackbar = function showSnackbar(msg) {
       this.edit = true;
       this.entreno = this.$route.query.entrenamiento;
       this.argazkia = this.$route.query.entrenamiento.foto;
+
+      if (this.entreno.promesa) {
+        //promesas
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotarisPromesa');
+      } else {
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotarisProfesional');
+      }
     }
 
     this.show = true;
@@ -107454,6 +106813,22 @@ var showSnackbar = function showSnackbar(msg) {
         if (null === this.entreno.provincia_id) {
           this.entreno.provincia_id = _.filter(this._municipios, { 'value': evt })[0].provincia_id;
           this.onChangeProvincia(this.entreno.provincia_id);
+        }
+      }
+    },
+    onChangePromesa: function onChangePromesa(evt) {
+      if (null !== evt) {
+        if (evt == 1) {
+          //promesas
+          __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotarisPromesa');
+          this.entreno.pelotari_id = null;
+          this.pelotari_id = null;
+          this.argazkia = '/storage/avatars/default/default.jpg';
+        } else {
+          __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotarisProfesional');
+          this.entreno.pelotari_id = null;
+          this.pelotari_id = null;
+          this.argazkia = '/storage/avatars/default/default.jpg';
         }
       }
     }
@@ -107529,6 +106904,37 @@ var render = function() {
                         "b-form-group",
                         {
                           staticClass: "col-sm-3 pl-0 pr-2",
+                          attrs: {
+                            label: "Entrenamiento Promesas",
+                            "label-for": "check_promesa"
+                          }
+                        },
+                        [
+                          _c("b-form-checkbox", {
+                            staticClass: "col-md-1 text-right",
+                            staticStyle: { "margin-right": "0px !important" },
+                            attrs: {
+                              id: "check_promesa",
+                              value: "1",
+                              "unchecked-value": "0"
+                            },
+                            on: { change: _vm.onChangePromesa },
+                            model: {
+                              value: _vm.entreno.promesa,
+                              callback: function($$v) {
+                                _vm.$set(_vm.entreno, "promesa", $$v)
+                              },
+                              expression: "entreno.promesa"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-form-group",
+                        {
+                          staticClass: "col-sm-2 pl-0 pr-2",
                           attrs: { label: "Fecha:", "label-for": "fechaInput" }
                         },
                         [
@@ -107554,7 +106960,7 @@ var render = function() {
                       _c(
                         "b-form-group",
                         {
-                          staticClass: "col-sm-2 pl-0 pr-2",
+                          staticClass: "col-sm-1 pl-0 pr-2",
                           attrs: { label: "Hora:", "label-for": "hourInput" }
                         },
                         [
@@ -107608,7 +107014,7 @@ var render = function() {
                       _c(
                         "b-form-group",
                         {
-                          staticClass: "col-sm-4 pl-0 pr-2",
+                          staticClass: "col-sm-3 pl-0 pr-2",
                           attrs: {
                             label: "Municipio:",
                             "label-for": "municipioInput"
@@ -108658,7 +108064,7 @@ Vue.component('delete-modal', __webpack_require__(31));
 
     __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadProvincias');
     __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadMunicipios');
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotaris', year + '-' + month + '-' + day);
+    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPelotarisProfesional', year + '-' + month + '-' + day);
     __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadCampeonatos');
     __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEventoMotivos');
     __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadEventos');
@@ -111428,6 +110834,1918 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 548 */,
+/* 549 */,
+/* 550 */,
+/* 551 */,
+/* 552 */,
+/* 553 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(554)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(556)
+/* template */
+var __vue_template__ = __webpack_require__(557)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\rrhh_pelotaris\\PelotarisHomePageComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48ff73d6", Component.options)
+  } else {
+    hotAPI.reload("data-v-48ff73d6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 554 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(555);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(6)("63bda0a0", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48ff73d6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PelotarisHomePageComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-48ff73d6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./PelotarisHomePageComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 555 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.pelotaris.main-header {\n  margin-bottom:2rem;\n  margin-top:-1.45rem;\n}\n.pelotaris.main-header .toolbar {\n  background-color:slategray;\n  padding:10px 0;\n  text-align:center;\n}\n.pelotaris.main-header h4 {\n  line-height:1.75;\n  margin:0 auto;\n}\n.main-header:not(.pelotaris) {\n  display:none;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 556 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var store_pelotaris = {
+  tabIndex: 0
+};
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      home: '/rrhh',
+      title: 'Gestión de RRHH',
+      tabIndex: store_pelotaris.tabIndex
+    };
+  },
+  updated: function updated() {
+    store_pelotaris.tabIndex = this.tabIndex;
+  }
+});
+
+/***/ }),
+/* 557 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "main-header pelotaris" }, [
+      _c("div", { staticClass: "toolbar mb-0 py-1" }, [
+        _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("b-row", [
+              _c("div", { staticClass: "col-sm-3" }, [_vm._v(" ")]),
+              _vm._v(" "),
+              _c(
+                "h4",
+                { staticClass: "col-sm-6 text-white font-weight-bold" },
+                [_vm._v("MÓDULO DE RRHH")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-sm-3 text-right home-icon" },
+                [
+                  this.$route.params.userRole === "admin"
+                    ? _c(
+                        "b-button",
+                        {
+                          staticClass: "mt-1",
+                          attrs: { size: "sm", variant: "outline", href: "/" }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-list-alt",
+                            attrs: { "aria-hidden": "true" }
+                          }),
+                          _vm._v(" Admin Menú")
+                        ]
+                      )
+                    : _vm._e()
+                ],
+                1
+              )
+            ])
+          ],
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "container" },
+      [
+        _c(
+          "b-card",
+          { attrs: { "no-body": "" } },
+          [
+            _c(
+              "b-tabs",
+              {
+                attrs: { pills: "", card: "" },
+                model: {
+                  value: _vm.tabIndex,
+                  callback: function($$v) {
+                    _vm.tabIndex = $$v
+                  },
+                  expression: "tabIndex"
+                }
+              },
+              [
+                _c(
+                  "b-tab",
+                  {
+                    attrs: {
+                      title: "Profesionales",
+                      "title-item-class": "text-uppercase font-weight-bold"
+                    }
+                  },
+                  [_c("listado-pelotaris-profesional")],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-tab",
+                  {
+                    attrs: {
+                      title: "Promesas",
+                      "title-item-class": "text-uppercase font-weight-bold"
+                    }
+                  },
+                  [_c("listado-pelotaris-promesa")],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-48ff73d6", module.exports)
+  }
+}
+
+/***/ }),
+/* 558 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(559)
+/* template */
+var __vue_template__ = __webpack_require__(560)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\rrhh_pelotaris\\ListadoProfesionalComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b731a99c", Component.options)
+  } else {
+    hotAPI.reload("data-v-b731a99c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 559 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      sortBy: 'age',
+      sortDesc: false,
+      fields: [{ key: 'alias', label: 'Apodo', sortable: true }, { key: 'posicion', label: 'Posición', sortable: true }, { key: 'provincia', label: 'Provincia', sortable: true }, { key: 'email', label: 'Correo', sortable: true }, { key: 'telefono', label: 'Teléfono', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
+      items: [],
+      defaultPhoto: '/storage/avatars/default/default.jpg',
+      totalRows: 0,
+      perPage: 10,
+      currentPage: 1,
+      pageOptions: [10, 25, 50],
+      filter: null,
+      deleteId: null
+    };
+  },
+  created: function created() {
+    this.fetchPelotaris();
+  },
+
+  methods: {
+    fetchPelotaris: function fetchPelotaris() {
+      var _this = this;
+
+      var uri = '/www/pelotaris-profesional';
+      this.axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this.items = JSON.parse(stringified);
+        _this.totalRows = _this.items.length;
+      });
+    },
+    onFiltered: function onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    edit: function edit(id) {
+      this.$router.push('/rrhh/pelotari/' + id + '/edit/');
+    },
+    remove: function remove() {
+      var _this2 = this;
+
+      var uri = '/www/pelotaris-profesional/' + this.deleteId;
+      this.axios.delete(uri).then(function (response) {
+        _this2.deleteId = null;
+        _this2.$refs.modalDelete.hide();
+        _this2.fetchPelotaris();
+        showSnackbar("Pelotari BORRADO");
+      }).catch(function (error) {
+        console.log("[remove] error: " + error);
+        _this2.deleteId = null;
+        _this2.$refs.modalDelete.hide();
+        showSnackbar("ERROR al borrar");
+      });
+    },
+    onClickDelete: function onClickDelete(id, name) {
+      this.deleteId = id;
+      jQuery('#deleteAlias').html(name);
+      this.$refs.modalDelete.show();
+    },
+    hideModalDelete: function hideModalDelete() {
+      this.deleteId = null;
+      this.$refs.modalDelete.hide();
+    }
+  }
+});
+
+/***/ }),
+/* 560 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid" },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 float-left my-1 mb-3" },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Filtro" }
+                },
+                [
+                  _c(
+                    "b-input-group",
+                    [
+                      _c("b-form-input", {
+                        attrs: { placeholder: "Texto de búsqueda" },
+                        model: {
+                          value: _vm.filter,
+                          callback: function($$v) {
+                            _vm.filter = $$v
+                          },
+                          expression: "filter"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "b-input-group-append",
+                        [
+                          _c(
+                            "b-btn",
+                            {
+                              attrs: {
+                                disabled: !_vm.filter,
+                                title: "Limpiar filtro"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.filter = ""
+                                }
+                              }
+                            },
+                            [_vm._v("Limpiar")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 text-right my-1 mb-3" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "text-white",
+                  attrs: { to: "/rrhh/pelotari/new" }
+                },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      staticClass: "mb-0",
+                      attrs: { variant: "danger", title: "Crear Pelotari" }
+                    },
+                    [_vm._v("Nuevo Pelotari")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: {
+          striped: "",
+          hover: "",
+          small: "",
+          responsive: "",
+          "sort-by": _vm.sortBy,
+          "sort-desc": _vm.sortDesc,
+          "per-page": _vm.perPage,
+          "current-page": _vm.currentPage,
+          items: _vm.items,
+          fields: _vm.fields,
+          filter: _vm.filter
+        },
+        on: {
+          "update:sortBy": function($event) {
+            _vm.sortBy = $event
+          },
+          "update:sortDesc": function($event) {
+            _vm.sortDesc = $event
+          },
+          filtered: _vm.onFiltered
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "actions",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button-group",
+                  [
+                    _c(
+                      "b-button",
+                      {
+                        attrs: {
+                          size: "sm",
+                          variant: "danger",
+                          title: "Eliminar"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.onClickDelete(row.item.id, row.item.alias)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "icon voyager-trash" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: {
+                          size: "sm",
+                          variant: "primary",
+                          title: "Editar"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.edit(row.item.id)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "icon voyager-edit" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: {
+                          size: "sm",
+                          variant: "secondary",
+                          title: "Mostrar/Ocultar Detalle"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            return row.toggleDetails($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("span", {
+                          staticClass: "icon",
+                          class: {
+                            "voyager-x": row.detailsShowing,
+                            "voyager-eye": !row.detailsShowing
+                          }
+                        })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]
+            }
+          },
+          {
+            key: "row-details",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-card",
+                  [
+                    _c(
+                      "b-row",
+                      [
+                        _c("b-col", { attrs: { sm: "1" } }, [
+                          _c("img", {
+                            staticClass: "img-responsive",
+                            staticStyle: { width: "100%" },
+                            attrs: {
+                              src: row.item.foto
+                                ? row.item.foto
+                                : _vm.defaultPhoto
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "b-col",
+                          { attrs: { sm: "11" } },
+                          [
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Nombre:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(
+                                    _vm._s(row.item.nombre) +
+                                      " " +
+                                      _vm._s(row.item.apellidos)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("F.Nacimiento:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.fecha_nac))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("DNI:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.DNI))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("NºSS:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.num_ss))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Dirección:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "10" } }, [
+                                  _vm._v(
+                                    _vm._s(row.item.direccion) +
+                                      " - " +
+                                      _vm._s(row.item.cod_postal) +
+                                      " " +
+                                      _vm._s(row.item.municipio) +
+                                      " (" +
+                                      _vm._s(row.item.provincia) +
+                                      ")"
+                                  )
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("E-Mail:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.email))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Fijo:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Móvil:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono_2))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Alternativo:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono_3))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("NºHijos:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.num_hijos))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("IBAN:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.iban))
+                                ])
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "5" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: { "total-rows": _vm.totalRows, "per-page": _vm.perPage },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Total: " }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "", plaintext: "" },
+                    model: {
+                      value: _vm.totalRows,
+                      callback: function($$v) {
+                        _vm.totalRows = $$v
+                      },
+                      expression: "totalRows"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "4" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Mostrar" }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { options: _vm.pageOptions },
+                    model: {
+                      value: _vm.perPage,
+                      callback: function($$v) {
+                        _vm.perPage = $$v
+                      },
+                      expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalDelete",
+          attrs: { title: "BORRAR Pelotari", "hide-footer": "" }
+        },
+        [
+          _c("div", { staticClass: "modal-body" }, [
+            _c("p", [
+              _vm._v("Se va a borrar la ficha completa de "),
+              _c("strong", { attrs: { id: "deleteAlias" } }),
+              _vm._v(". ¿Desea continuar?")
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "modal-footer" },
+            [
+              _c(
+                "b-btn",
+                { attrs: { variant: "danger" }, on: { click: _vm.remove } },
+                [_vm._v("Borrar")]
+              ),
+              _vm._v(" "),
+              _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+                _vm._v("Cancelar")
+              ])
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-b731a99c", module.exports)
+  }
+}
+
+/***/ }),
+/* 561 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(562)
+/* template */
+var __vue_template__ = __webpack_require__(563)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\rrhh_pelotaris\\ListadoPromesaComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ab0b7c6a", Component.options)
+  } else {
+    hotAPI.reload("data-v-ab0b7c6a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 562 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var showSnackbar = function showSnackbar(msg) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerHTML = msg;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    x.className = x.className.replace("show", "");
+  }, 3000);
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      sortBy: 'age',
+      sortDesc: false,
+      fields: [{ key: 'alias', label: 'Apodo', sortable: true }, { key: 'posicion', label: 'Posición', sortable: true }, { key: 'provincia', label: 'Provincia', sortable: true }, { key: 'email', label: 'Correo', sortable: true }, { key: 'telefono', label: 'Teléfono', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
+      items: [],
+      defaultPhoto: '/storage/avatars/default/default.jpg',
+      totalRows: 0,
+      perPage: 10,
+      currentPage: 1,
+      pageOptions: [10, 25, 50],
+      filter: null,
+      deleteId: null
+    };
+  },
+  created: function created() {
+    this.fetchPelotaris();
+  },
+
+  methods: {
+    fetchPelotaris: function fetchPelotaris() {
+      var _this = this;
+
+      var uri = '/www/pelotaris-promesa';
+      this.axios.get(uri).then(function (response) {
+        var stringified = JSON.stringify(response.data);
+        _this.items = JSON.parse(stringified);
+        _this.totalRows = _this.items.length;
+      });
+    },
+    onFiltered: function onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    edit: function edit(id) {
+      this.$router.push('/rrhh/pelotari/' + id + '/edit/');
+    },
+    remove: function remove() {
+      var _this2 = this;
+
+      var uri = '/www/pelotaris-promesa/' + this.deleteId;
+      this.axios.delete(uri).then(function (response) {
+        _this2.deleteId = null;
+        _this2.$refs.modalDelete.hide();
+        _this2.fetchPelotaris();
+        showSnackbar("Pelotari BORRADO");
+      }).catch(function (error) {
+        console.log("[remove] error: " + error);
+        _this2.deleteId = null;
+        _this2.$refs.modalDelete.hide();
+        showSnackbar("ERROR al borrar");
+      });
+    },
+    onClickDelete: function onClickDelete(id, name) {
+      this.deleteId = id;
+      jQuery('#deleteAlias').html(name);
+      this.$refs.modalDelete.show();
+    },
+    hideModalDelete: function hideModalDelete() {
+      this.deleteId = null;
+      this.$refs.modalDelete.hide();
+    }
+  }
+});
+
+/***/ }),
+/* 563 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container-fluid" },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 float-left my-1 mb-3" },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Filtro" }
+                },
+                [
+                  _c(
+                    "b-input-group",
+                    [
+                      _c("b-form-input", {
+                        attrs: { placeholder: "Texto de búsqueda" },
+                        model: {
+                          value: _vm.filter,
+                          callback: function($$v) {
+                            _vm.filter = $$v
+                          },
+                          expression: "filter"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "b-input-group-append",
+                        [
+                          _c(
+                            "b-btn",
+                            {
+                              attrs: {
+                                disabled: !_vm.filter,
+                                title: "Limpiar filtro"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.filter = ""
+                                }
+                              }
+                            },
+                            [_vm._v("Limpiar")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "col-sm-6 text-right my-1 mb-3" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "text-white",
+                  attrs: { to: "/rrhh/pelotari/new" }
+                },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      staticClass: "mb-0",
+                      attrs: { variant: "danger", title: "Crear Pelotari" }
+                    },
+                    [_vm._v("Nuevo Pelotari")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: {
+          striped: "",
+          hover: "",
+          small: "",
+          responsive: "",
+          "sort-by": _vm.sortBy,
+          "sort-desc": _vm.sortDesc,
+          "per-page": _vm.perPage,
+          "current-page": _vm.currentPage,
+          items: _vm.items,
+          fields: _vm.fields,
+          filter: _vm.filter
+        },
+        on: {
+          "update:sortBy": function($event) {
+            _vm.sortBy = $event
+          },
+          "update:sortDesc": function($event) {
+            _vm.sortDesc = $event
+          },
+          filtered: _vm.onFiltered
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "actions",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-button-group",
+                  [
+                    _c(
+                      "b-button",
+                      {
+                        attrs: {
+                          size: "sm",
+                          variant: "danger",
+                          title: "Eliminar"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.onClickDelete(row.item.id, row.item.alias)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "icon voyager-trash" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: {
+                          size: "sm",
+                          variant: "primary",
+                          title: "Editar"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.edit(row.item.id)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "icon voyager-edit" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      {
+                        attrs: {
+                          size: "sm",
+                          variant: "secondary",
+                          title: "Mostrar/Ocultar Detalle"
+                        },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            return row.toggleDetails($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("span", {
+                          staticClass: "icon",
+                          class: {
+                            "voyager-x": row.detailsShowing,
+                            "voyager-eye": !row.detailsShowing
+                          }
+                        })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]
+            }
+          },
+          {
+            key: "row-details",
+            fn: function(row) {
+              return [
+                _c(
+                  "b-card",
+                  [
+                    _c(
+                      "b-row",
+                      [
+                        _c("b-col", { attrs: { sm: "1" } }, [
+                          _c("img", {
+                            staticClass: "img-responsive",
+                            staticStyle: { width: "100%" },
+                            attrs: {
+                              src: row.item.foto
+                                ? row.item.foto
+                                : _vm.defaultPhoto
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "b-col",
+                          { attrs: { sm: "11" } },
+                          [
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Nombre:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(
+                                    _vm._s(row.item.nombre) +
+                                      " " +
+                                      _vm._s(row.item.apellidos)
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("F.Nacimiento:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.fecha_nac))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("DNI:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.DNI))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("NºSS:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.num_ss))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Dirección:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "10" } }, [
+                                  _vm._v(
+                                    _vm._s(row.item.direccion) +
+                                      " - " +
+                                      _vm._s(row.item.cod_postal) +
+                                      " " +
+                                      _vm._s(row.item.municipio) +
+                                      " (" +
+                                      _vm._s(row.item.provincia) +
+                                      ")"
+                                  )
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("E-Mail:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.email))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Fijo:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Móvil:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono_2))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("Tel.Alternativo:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.telefono_3))
+                                ])
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              { staticClass: "mb-2" },
+                              [
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("NºHijos:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.num_hijos))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "b-col",
+                                  {
+                                    staticClass: "text-sm-right",
+                                    attrs: { sm: "2" }
+                                  },
+                                  [_c("b", [_vm._v("IBAN:")])]
+                                ),
+                                _vm._v(" "),
+                                _c("b-col", { attrs: { sm: "4" } }, [
+                                  _vm._v(_vm._s(row.item.iban))
+                                ])
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "5" } },
+            [
+              _c("b-pagination", {
+                staticClass: "my-0",
+                attrs: { "total-rows": _vm.totalRows, "per-page": _vm.perPage },
+                model: {
+                  value: _vm.currentPage,
+                  callback: function($$v) {
+                    _vm.currentPage = $$v
+                  },
+                  expression: "currentPage"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1 text-right", attrs: { md: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Total: " }
+                },
+                [
+                  _c("b-form-input", {
+                    attrs: { readonly: "", plaintext: "" },
+                    model: {
+                      value: _vm.totalRows,
+                      callback: function($$v) {
+                        _vm.totalRows = $$v
+                      },
+                      expression: "totalRows"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "my-1", attrs: { md: "4" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  staticClass: "mb-0",
+                  attrs: { horizontal: "", label: "Mostrar" }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { options: _vm.pageOptions },
+                    model: {
+                      value: _vm.perPage,
+                      callback: function($$v) {
+                        _vm.perPage = $$v
+                      },
+                      expression: "perPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "modalDelete",
+          attrs: { title: "BORRAR Pelotari", "hide-footer": "" }
+        },
+        [
+          _c("div", { staticClass: "modal-body" }, [
+            _c("p", [
+              _vm._v("Se va a borrar la ficha completa de "),
+              _c("strong", { attrs: { id: "deleteAlias" } }),
+              _vm._v(". ¿Desea continuar?")
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "modal-footer" },
+            [
+              _c(
+                "b-btn",
+                { attrs: { variant: "danger" }, on: { click: _vm.remove } },
+                [_vm._v("Borrar")]
+              ),
+              _vm._v(" "),
+              _c("b-btn", { on: { click: _vm.hideModalDelete } }, [
+                _vm._v("Cancelar")
+              ])
+            ],
+            1
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ab0b7c6a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

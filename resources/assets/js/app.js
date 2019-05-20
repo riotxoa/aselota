@@ -44,11 +44,15 @@ const HomeAdmin = { template: '<home-admin></home-admin>' };
 const ListModulos = { template: '<listado-modulos></listado-modulos>' };
 
 Vue.component('home-rrhh', require('./components/HomeRRHHComponent.vue'));
-Vue.component('listado-pelotaris', require('./components/rrhh_pelotaris/ListadoComponent.vue'));
+Vue.component('rrhh-tabs', require('./components/rrhh_pelotaris/PelotarisHomePageComponent.vue'));
+Vue.component('listado-pelotaris-profesional', require('./components/rrhh_pelotaris/ListadoProfesionalComponent.vue'));
+Vue.component('listado-pelotaris-promesa', require('./components/rrhh_pelotaris/ListadoPromesaComponent.vue'));
 Vue.component('ficha-pelotari', require('./components/rrhh_pelotaris/FichaComponent.vue'));
 
 const HomeRRHH = { template: '<home-rrhh></home-rrhh>' };
-const ListPelotaris = { template: '<listado-pelotaris></listado-pelotaris> '};
+const RRHHTabs = { template: '<rrhh-tabs></rrhh-tabs>' };
+const ListPelotarisProfesional = { template: '<listado-pelotaris-profesional></listado-pelotaris-profesional> '};
+const ListPelotarisPromesa = { template: '<listado-pelotaris-promesa></listado-pelotaris-promesa> '};
 const CreatePelotari = { template: '<ficha-pelotari form-title="Nuevo Pelotari"></ficha-pelotari> '};
 const EditPelotari = { template: '<ficha-pelotari form-title="Editar Pelotari"></ficha-pelotari> '};
 
@@ -124,7 +128,7 @@ const routes = [
     path: '/rrhh', component: HomeRRHH,
     children: [
       {
-        path: '', name: 'RRHH', component: ListPelotaris
+        path: '', name: 'RRHH', component: RRHHTabs
       },
       {
         path: 'pelotari/new', component: CreatePelotari

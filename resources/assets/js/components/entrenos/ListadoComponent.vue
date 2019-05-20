@@ -138,7 +138,7 @@
         var year = myDate.getFullYear();
         var formattedDate = year + '/' + month + '/' + date;
 
-        store.dispatch('loadPelotaris', formattedDate);
+        store.dispatch('loadPelotarisProfesional', formattedDate);
         store.dispatch('loadProvincias');
         store.dispatch('loadMunicipios');
         store.dispatch('loadEntrActitudes');

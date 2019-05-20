@@ -144,7 +144,7 @@
 
         store.dispatch('loadProvincias');
         store.dispatch('loadMunicipios');
-        store.dispatch('loadPelotaris', year + '-' + month + '-' + day);
+        store.dispatch('loadPelotarisProfesional', year + '-' + month + '-' + day);
         store.dispatch('loadCampeonatos');
         store.dispatch('loadEventoMotivos');
         store.dispatch('loadEventos');

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use App\Pelotari;
 
-class PelotariController extends Controller
+class PelotarisPromesaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +25,8 @@ class PelotariController extends Controller
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
           ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
-          ->where('pelotaris.deleted_at', null);
+          ->where('pelotaris.deleted_at', null)
+          ->where('pelotaris.promesa', 1);
 
         if($request->get('fecha')) {
           $get_partidos_jugados = true;

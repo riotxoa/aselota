@@ -236,7 +236,7 @@
     updated: function () {
       if(!this.fecha_festival) {
         this.fecha_festival = this._header.fecha;
-        this.getPelotaris(this.fecha_festival);
+        this.getPelotarisProfesional(this.fecha_festival);
       }
     },
     methods: {

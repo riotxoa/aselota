@@ -82,7 +82,7 @@
       this.getCampeonatos();
       this.getFasesCampeonato();
       this.getTiposPartido();
-      this.getPelotaris();
+      this.getPelotarisProfesional();
     },
     computed: {...mapState({
       _filterValues: 'filter_festivales',

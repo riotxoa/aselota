@@ -23,5 +23,6 @@ class Entrenamiento extends Model
     'aprovechamiento_id',
     'evolucion_id',
     'comentarios',
+    'promesa'
   ];
 }

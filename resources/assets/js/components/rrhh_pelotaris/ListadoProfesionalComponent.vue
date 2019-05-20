@@ -161,7 +161,7 @@
       },
       methods: {
         fetchPelotaris() {
-          let uri = '/www/pelotaris';
+          let uri = '/www/pelotaris-profesional';
           this.axios.get(uri).then((response) => {
             var stringified = JSON.stringify(response.data);
             this.items = JSON.parse(stringified);
@@ -177,7 +177,7 @@
           this.$router.push('/rrhh/pelotari/' + id + '/edit/');
         },
         remove () {
-          let uri = '/www/pelotaris/' + this.deleteId;
+          let uri = '/www/pelotaris-profesional/' + this.deleteId;
           this.axios.delete(uri)
             .then((response) => {
               this.deleteId = null;

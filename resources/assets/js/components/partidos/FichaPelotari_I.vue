@@ -106,7 +106,7 @@
       }
     },
     created() {
-      this.getPelotaris(this._header.fecha);
+      this.getPelotarisProfesional(this._header.fecha);
       if( this.isPrensa ) {
         this.asiste_options = [
           { text: "Asiste", value: 1, disabled: (this.pelotari.asiste ? false : true) },

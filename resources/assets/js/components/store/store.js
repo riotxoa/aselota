@@ -1076,6 +1076,36 @@ export const store = new Vuex.Store({
           commit('SET_PELOTARIS', pelotaris)
         });
     },
+    loadPelotarisProfesional({ commit }, date) {
+      axios
+        .get('/www/pelotaris-profesional', {
+            params: {
+              fecha: date
+            }
+        })
+        .then( r => r.data )
+        .then( pelotaris => {
+          var stringified = JSON.stringify(pelotaris).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          pelotaris = JSON.parse(stringified);
+          pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+          commit('SET_PELOTARIS', pelotaris)
+        });
+    },
+    loadPelotarisPromesa({ commit }, date) {
+      axios
+        .get('/www/pelotaris-promesa', {
+            params: {
+              fecha: date
+            }
+        })
+        .then( r => r.data )
+        .then( pelotaris => {
+          var stringified = JSON.stringify(pelotaris).replace(/"id"/g, '"value"').replace(/alias/g, "text");
+          pelotaris = JSON.parse(stringified);
+          pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
+          commit('SET_PELOTARIS', pelotaris)
+        });
+    },
     loadProvincias({ commit }) {
       axios
         .get('/www/provincias')
