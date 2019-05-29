@@ -14,7 +14,7 @@ class AddPromesaToEntrenamientosTable extends Migration
     public function up()
     {
         Schema::table('entrenamientos', function (Blueprint $table) {
-            $table->text('promesa')->after('comentarios')->nullable()->default(0);
+            $table->text('promesa')->after('comentarios')->nullable();
         });
     }
 
