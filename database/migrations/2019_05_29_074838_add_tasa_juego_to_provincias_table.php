@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPromesaToPelotarisTable extends Migration
+class AddTasaJuegoToProvinciasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPromesaToPelotarisTable extends Migration
      */
     public function up()
     {
-        Schema::table('pelotaris', function (Blueprint $table) {
-            $table->integer('promesa')->after('num_hijos')->nullable()->default(0);
+        Schema::table('provincias', function (Blueprint $table) {
+            $table->integer('tasa_juego')->after('name')->nullable()->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddPromesaToPelotarisTable extends Migration
      */
     public function down()
     {
-        Schema::table('pelotaris', function (Blueprint $table) {
-            $table->dropColumn('promesa');
+        Schema::table('provincias', function (Blueprint $table) {
+            $table->dropColumn('tasa_juego');
         });
     }
 }
