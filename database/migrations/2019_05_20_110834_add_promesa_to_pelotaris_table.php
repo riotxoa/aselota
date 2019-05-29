@@ -14,7 +14,7 @@ class AddPromesaToPelotarisTable extends Migration
     public function up()
     {
         Schema::table('pelotaris', function (Blueprint $table) {
-            $table->text('promesa')->after('num_hijos')->nullable()->default(0);
+            $table->text('promesa')->after('num_hijos')->nullable();
         });
     }
 
