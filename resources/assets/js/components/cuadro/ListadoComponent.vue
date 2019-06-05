@@ -97,7 +97,7 @@
                 <b-row class="mb-2">
                   <b-col sm="4" class="text-sm-right"><b>Total entrenamientos:</b></b-col>
                   <b-col sm="4">{{ row.item.num_entrenamientos }} ({{ row.item.no_asiste }} sin asistencia)</b-col>
-                </b-row>
+                </b-row> 
               </b-col>
             </b-row>
           </b-card>
