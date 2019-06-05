@@ -811,6 +811,20 @@ export const store = new Vuex.Store({
           });
       });
     },
+    exportarCuadroMando({ commit }){
+      let uri = '/exportar-cuadro-mando';
+      return new Promise( (resolve, reject) => {
+        axios
+          .get(uri)
+          .then( r => r.data)
+          .then( response =>  {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
     deleteCosteEntradas({ commit }, entrada) {
       let uri = '/www/festival-entradas/' + entrada.id;
 

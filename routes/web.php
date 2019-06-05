@@ -26,6 +26,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('pelotaris-aspe', 'PelotarisAspeController');
     Route::resource('pelotaris-profesional', 'PelotarisProfesionalController');
     Route::resource('pelotaris-promesa', 'PelotarisPromesaController');
+    Route::resource('pelotaris-cuadro', 'PelotarisCuadroController');
     Route::resource('contratos/tramo', 'ContratoController');
     Route::resource('contratos/comercial', 'ContratoComercialController');
     Route::resource('contratos/header', 'ContratoHeaderController');
@@ -86,3 +87,4 @@ Route::get('/', 'HomeController@index');
 Route::get('/user', 'UserController@edit');
 
 Route::post('envio-confirmacion-email','MailController@html_email');
+Route::get('exportar-cuadro-mando','CuadroMandoController@export');

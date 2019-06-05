@@ -18,8 +18,17 @@
       <b-row>
 
         <b-col class="col-sm-6 float-left my-1 mb-3">
+          <b-form-group horizontal label="Fechas" class="mb-0">
+            <b-input-group class="col-sm-6 float-left">
+              <b-form-input @change="actualizaFechaIni()" :min="fecha_min" :max="fecha_max" v-model="fecha_ini" type="date" placeholder="Fecha inicio" />
+            </b-input-group>
+            <b-input-group class="col-sm-6 float-left">
+              <b-form-input @change="actualizaFechaFin()" :min="fecha_min" :max="fecha_max" v-model="fecha_fin" type="date" placeholder="Fecha fin" />
+            </b-input-group>
+          </b-form-group>
+          <br>
           <b-form-group horizontal label="Filtro" class="mb-0">
-            <b-input-group>
+            <b-input-group class="col-sm-12 float-left">
               <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
@@ -29,8 +38,8 @@
         </b-col>
 
         <b-col class="col-sm-6 text-right my-1 mb-3">
-          <router-link to="/cuadro/imprimir" class="text-white"><b-btn variant="outline-link" class="mb-0" title="Imprimir datos">Imprimir</b-btn></router-link>
-          <router-link to="/cuadro/exportar" class="text-white"><b-btn variant="danger" class="mb-0" title="Exportar datos">Exportar</b-btn></router-link>
+          <b-btn @click="imprimirDatos()" variant="outline-link" class="mb-0" title="Imprimir datos">Imprimir</b-btn>
+          <b-btn @click="exportarDatos()" variant="danger" class="mb-0" title="Exportar datos">Exportar</b-btn>
         </b-col>
 
       </b-row>
@@ -62,38 +71,32 @@
               </b-col>
               <b-col sm="11">
                 <b-row class="mb-2">
-                  <b-col sm="2" class="text-sm-right"><b>Nombre:</b></b-col>
-                  <b-col sm="4">{{ row.item.nombre }} {{ row.item.apellidos }}</b-col>
-                  <b-col sm="2" class="text-sm-right"><b>F.Nacimiento:</b></b-col>
-                  <b-col sm="4">{{ row.item.fecha_nac }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Dietas mensuales:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_meses }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Derechos de imagen:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_d_imagen }}</b-col>
                 </b-row>
                 <b-row class="mb-2">
-                  <b-col sm="2" class="text-sm-right"><b>DNI:</b></b-col>
-                  <b-col sm="4">{{ row.item.DNI }}</b-col>
-                  <b-col sm="2" class="text-sm-right"><b>NºSS:</b></b-col>
-                  <b-col sm="4">{{ row.item.num_ss }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Partidos jugados:</b></b-col>
+                  <b-col sm="2">{{ row.item.partidos_jugados }} ({{ row.item.partidos_ganados }} ganados)</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Dieta partidos:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_dieta_partido }}</b-col>
                 </b-row>
                 <b-row class="mb-2">
-                  <b-col sm="2" class="text-sm-right"><b>Dirección:</b></b-col>
-                  <b-col sm="10">{{ row.item.direccion }} - {{ row.item.cod_postal }} {{ row.item.municipio }} ({{ row.item.provincia }})</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Primas partidos:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_prima_partido }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Primas estelar:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_prima_estelar }}</b-col>
                 </b-row>
                 <b-row class="mb-2">
-                  <b-col sm="2" class="text-sm-right"><b>E-Mail:</b></b-col>
-                  <b-col sm="4">{{ row.item.email }}</b-col>
-                  <b-col sm="2" class="text-sm-right"><b>Tel.Fijo:</b></b-col>
-                  <b-col sm="4">{{ row.item.telefono }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Primas Manomanista:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_prima_manomanista }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Primas Manomanista PROMO:</b></b-col>
+                  <b-col sm="2">{{ row.item.retribucion_prima_manomanista_promo }}</b-col>
                 </b-row>
                 <b-row class="mb-2">
-                  <b-col sm="2" class="text-sm-right"><b>Tel.Móvil:</b></b-col>
-                  <b-col sm="4">{{ row.item.telefono_2 }}</b-col>
-                  <b-col sm="2" class="text-sm-right"><b>Tel.Alternativo:</b></b-col>
-                  <b-col sm="4">{{ row.item.telefono_3 }}</b-col>
-                </b-row>
-                <b-row class="mb-2">
-                  <b-col sm="2" class="text-sm-right"><b>NºHijos:</b></b-col>
-                  <b-col sm="4">{{ row.item.num_hijos }}</b-col>
-                  <b-col sm="2" class="text-sm-right"><b>IBAN:</b></b-col>
-                  <b-col sm="4">{{ row.item.iban }}</b-col>
+                  <b-col sm="4" class="text-sm-right"><b>Total entrenamientos:</b></b-col>
+                  <b-col sm="4">{{ row.item.num_entrenamientos }} ({{ row.item.no_asiste }} sin asistencia)</b-col>
                 </b-row>
               </b-col>
             </b-row>
@@ -123,6 +126,24 @@
 </template>
 
 <script>
+  import APIGetters from '../utils/getters.js';
+  import Utils from '../utils/utils.js';
+  import { store } from '../store/store';
+  import { mapState } from 'vuex';
+
+  function formatDate(date) {
+    var day = date.getDate();
+    var month = date.getMonth()+1;
+    var year = date.getFullYear();
+    if(day<10){
+      day = "0" + day;
+    }
+    if(month<10){
+      month = "0" + month;
+    }
+    return year + '-' + month + '-' + day;
+  }
+
   const showSnackbar = (msg) => {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
@@ -141,11 +162,11 @@
           sortDesc: false,
           fields: [
             { key: 'alias', label: 'Apodo', sortable: true },
-            { key: '1', label: 'Retribuciones', sortable: true },
-            { key: '2', label: 'Ratio disponibilidad', sortable: true },
+            { key: 'retribucion', label: 'Retribuciones', sortable: false },
+            { key: 'ratio_disponibilidad', label: 'Ratio disponibilidad', sortable: true },
             { key: '3', label: 'Bajas deportivas', sortable: true },
             { key: '4', label: 'Bajas médicas', sortable: true },
-            { key: '5', label: 'No asistencia', sortable: true },
+            { key: 'no_asiste', label: 'No asistencia', sortable: true },
             { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" },
           ],
           items: [],
@@ -155,6 +176,10 @@
           currentPage: 1,
           pageOptions: [ 10, 25, 50 ],
           filter: null,
+          fecha_min: "1900-01-01",
+          fecha_max: formatDate(new Date()),
+          fecha_ini: new Date().getFullYear() + "-01-01",
+          fecha_fin: formatDate(new Date()),
           deleteId: null,
         }
       },
@@ -163,17 +188,51 @@
       },
       methods: {
         fetchPelotaris() {
-          let uri = '/www/pelotaris';
-          this.axios.get(uri).then((response) => {
+          let uri = '/www/pelotaris-cuadro';
+          
+          this.axios.get(uri, {
+            params: {
+              fecha_ini: this.fecha_ini,
+              fecha_fin: this.fecha_fin,
+            }
+          }).then((response) => {
             var stringified = JSON.stringify(response.data);
             this.items = JSON.parse(stringified);
+            console.log(this.items);
             this.totalRows = this.items.length;
+            
           });
         },
         onFiltered (filteredItems) {
           // Trigger pagination to update the number of buttons/pages due to filtering
           this.totalRows = filteredItems.length;
           this.currentPage = 1;
+        },
+        actualizaFechaIni(){
+          this.fetchPelotaris();
+        },
+        actualizaFechaFin(){
+          this.fetchPelotaris();
+        },
+        imprimirDatos (){
+
+        },
+        exportarDatos (){
+          var redirectWindow = window.open('/exportar-cuadro-mando?fecha_ini=' + this.fecha_ini + '&'+'fecha_fin=' + this.fecha_fin, '_blank');
+          redirectWindow.location;
+          /*
+          let uri = '/exportar-cuadro-mando';
+          
+          this.axios.get(uri, {
+            params: {
+              fecha_ini: ,
+              fecha_fin: this.fecha_fin,
+            }
+          }).then((response) => {
+            alert("hola");
+            console.log(response);
+
+          });*/
         }
       }
   }

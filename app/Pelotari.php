@@ -58,4 +58,42 @@ class Pelotari extends Model
 
     return $items;
   }
+  static function get_partidos_contrato($pelotari_id, $fecha_ini, $fecha_fin, $ini, $fin)
+  {
+    $items = DB::table('festival_partidos as fp')
+      ->leftJoin('festival_partido_pelotaris as fpp', 'fp.id', '=', 'fpp.festival_partido_id')
+      ->leftJoin('festivales', 'festivales.id', '=', 'fp.festival_id')
+      ->leftJoin('contratos', 'contratos.pelotari_id', '=', 'fpp.pelotari_id')
+      ->where('fpp.asegarce', '=', 1)
+      ->where('fpp.pelotari_id', '=', $pelotari_id)
+      ->whereDate('contratos.fecha_ini', '>=', $fecha_ini)
+      ->whereDate('contratos.fecha_fin', '<=', $fecha_fin)
+      ->whereColumn('contratos.fecha_ini', '<=', 'festivales.fecha')
+      ->whereColumn('contratos.fecha_fin', '>=', 'festivales.fecha')
+      ->whereNull('contratos.deleted_at')
+      ->whereNull('festivales.deleted_at')
+      ->where('festivales.estado_id', '=', 3) // Estado = Celebrado
+      ->whereDate('festivales.fecha', '>=', $ini)
+      ->whereDate('festivales.fecha', '<=', $fin)
+      ->get(); 
+
+    return $items;
+  }
+  static function get_entrenamientos($pelotari_id, $fecha_ini, $fecha_fin){
+    $items = DB::table('entrenamientos as en')
+      ->where('en.pelotari_id', '=', $pelotari_id)
+      ->whereDate('en.fecha', '>=', $fecha_ini)
+      ->whereDate('en.fecha', '<=', $fecha_fin)
+      ->get(); 
+
+    return $items;
+  }
+
+  static function cuadro_export($fecha_ini, $fecha_fin)
+  {
+    $items = DB::table('pelotaris')
+    ->get();
+
+    return $items;
+  }
 }
