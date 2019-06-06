@@ -22,18 +22,24 @@ class PelotarisCuadroController extends Controller
         $fecha_ini = $request->get('fecha_ini');
         $fecha_fin = $request->get('fecha_fin');
 
-        if($fecha_ini==null){
+        if($fecha_ini==null && $fecha_fin==null){//Cuando se ha realizado una búsqueda sin filtros mostramos todo
           $fecha_ini = date('1900-01-01');
-        }        
-        if($fecha_fin == null){
           $fecha_fin = date('Y-m-d');
+          $items = $this->getItems($fecha_ini, $fecha_fin, false);
+
+        }else if($fecha_ini!=null && $fecha_fin == null){//Busqueda por CONTRATO. Solo se manda la fecha inicio.
+          $items = $this->getItems($fecha_ini, $fecha_fin, true);
+
+        }else{//Cuando se ha realizado una búsqueda entre fechas.
+          $items = $this->getItems($fecha_ini, $fecha_fin, false);
+
         }
-        $items = $this->getItems($fecha_ini, $fecha_fin);
+        
 
         return response()->json($items, 200);
     }
 
-    static public function getItems($fecha_ini, $fecha_fin){
+    static public function getItems($fecha_ini, $fecha_fin, $byContrato){
       $items = DB::table('pelotaris')
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
@@ -47,8 +53,12 @@ class PelotarisCuadroController extends Controller
 
           $debug_str = "";
 
+          $partidos = array();
           $partidos_all = array();
           $num_partidos = 0;
+
+          $entrenamientos = array();
+
           $num_entrenamientos = 0;
           $entrenamientos_asiste = 0;
 
@@ -66,10 +76,20 @@ class PelotarisCuadroController extends Controller
           //recuperamos los contratos
           $id_pelotari = $item->id;
           
-          $contrats = \App\ContratoHeader::where('pelotari_id', $id_pelotari)
-          ->where('deleted_at', null)
-          ->orderBy('fecha_fin', 'desc')
-          ->get();
+          //SI EL FILTRO ES POR CONTRATO, DEVOLVEMOS SOLO SI EL CONTRATO ESTÁ ENTRE LAS FECHAS
+          if($byContrato){
+            $contrats = \App\ContratoHeader::where('pelotari_id', $id_pelotari)
+            ->where('deleted_at', null)
+            ->whereDate('fecha_ini', '<=', $fecha_ini)
+            ->whereDate('fecha_fin', '>=', $fecha_ini)
+            ->orderBy('fecha_fin', 'desc')
+            ->get();
+          }else{
+            $contrats = \App\ContratoHeader::where('pelotari_id', $id_pelotari)
+            ->where('deleted_at', null)
+            ->orderBy('fecha_fin', 'desc')
+            ->get();
+          }
 
           $last_fecha_min = $fecha_fin;//para que no repita meses de otro tramo mas antiguo en caso de que ya haya llegado al min
           $cierreFechas = false;
@@ -81,11 +101,37 @@ class PelotarisCuadroController extends Controller
             $contrat->tramos = $tramos;
             $contrat->comerciales = $comercial;
 
+            //comparamos las fechas del contrato en caso de que se haya realizado el filtro por contrato
+            if($byContrato){
+              $fecha_fin = date('Y-m-d');//marcamos el límite de la fecha max la actual.
+
+              if(strtotime($fecha_fin)>strtotime($contrat->fecha_fin)){
+                $fecha_fin = $contrat->fecha_fin;
+              }
+              if(strtotime($fecha_ini)>strtotime($contrat->fecha_ini)){
+                $fecha_ini = $contrat->fecha_ini;
+              }
+            }
+
             //RECORREMOS LOS TRAMOS PARA SACAR LOS PARTIDOS QUE SE HAN JUGADO EN CADA TRAMO
             foreach($tramos as $key3 => $tramo) {
+
               //PARTIDOS PELOTARI
-              $partidos = Pelotari::get_partidos_contrato($item->id, $tramo->fecha_ini, $tramo->fecha_fin, $fecha_ini, $fecha_fin);
+              $partidos = Pelotari::get_partidos_by_contrato($id_pelotari, $contrat->id, $fecha_ini, $fecha_fin);
               $num_partidos += sizeOf($partidos);
+
+              //ENTRENAMIENTOS DEL PELOTARI
+              $entrenamientos_arr = Pelotari::get_entrenamientos($id_pelotari, $fecha_ini, $fecha_fin);
+              $num_entrenamientos = sizeof($entrenamientos);
+              
+              foreach($entrenamientos_arr as $key5 => $entreno) {
+                if(!in_array($entreno, $entrenamientos)){
+                  array_push($entrenamientos, $entreno);
+                  if($entreno->asistencia){
+                    $entrenamientos_asiste++;
+                  }
+                }
+              }
 
               //añadimos a la retribución el pago mensual del pelotari
               //teniendo en cuenta los meses del tramo que estén dentro filtro
@@ -188,16 +234,6 @@ class PelotarisCuadroController extends Controller
                 //añadimos el partido al array de partidos global. Esto es para debugear en consola
                 array_push($partidos_all, $partido);
               }
-            }
-          }
-
-          //ENTRENAMIENTOS DEL PELOTARI
-          $entrenamientos = Pelotari::get_entrenamientos($item->id, $fecha_ini, $fecha_fin);
-          $num_entrenamientos = sizeof($entrenamientos);
-          
-          foreach($entrenamientos as $key5 => $entreno) {
-            if($entreno->asistencia){
-              $entrenamientos_asiste++;
             }
           }
 

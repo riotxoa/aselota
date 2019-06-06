@@ -112133,6 +112133,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -112169,7 +112175,7 @@ var showSnackbar = function showSnackbar(msg) {
   data: function data() {
     return {
       filtro_tipo: null,
-      filtro_opciones: [{ value: null, text: 'Seleccionar filtro' }, { value: 'texto', text: 'Texto de búsqueda' }, { value: 'contrato', text: 'Contrato vigente' }, { value: 'fechas', text: 'Rango de fechas' }, { value: 'anio', text: 'Año natural' }],
+      filtro_opciones: [{ value: null, text: 'Seleccionar filtro' }, { value: 'contrato', text: 'Contrato vigente' }, { value: 'fechas', text: 'Rango de fechas' }, { value: 'anio', text: 'Año natural' }],
       filtro_anio: null,
       anios: [{ value: null, text: 'Select. año' }, { value: '2019', text: '2019' }, { value: '2018', text: '2018' }, { value: '2017', text: '2017' }, { value: '2016', text: '2016' }, { value: '2015', text: '2015' }, { value: '2014', text: '2014' }, { value: '2013', text: '2013' }, { value: '2012', text: '2012' }, { value: '2011', text: '2011' }, { value: '2010', text: '2010' }, { value: '2009', text: '2009' }, { value: '2008', text: '2008' }, { value: '2007', text: '2007' }, { value: '2006', text: '2006' }, { value: '2005', text: '2005' }, { value: '2004', text: '2004' }, { value: '2003', text: '2003' }, { value: '2002', text: '2002' }, { value: '2001', text: '2001' }, { value: '2000', text: '2000' }],
       sortBy: 'age',
@@ -112179,6 +112185,7 @@ var showSnackbar = function showSnackbar(msg) {
       defaultPhoto: '/storage/avatars/default/default.jpg',
       totalRows: 0,
       perPage: 10,
+      old_pag: 10,
       currentPage: 1,
       pageOptions: [10, 25, 50],
       filter: null,
@@ -112218,18 +112225,13 @@ var showSnackbar = function showSnackbar(msg) {
     },
     cambiaFiltros: function cambiaFiltros(event) {
       this.filtro_tipo = event;
-      //texto, contrato, fechas, anio
+      //contrato, fechas, anio
       if (this.filtro_tipo == null) {
         this.filter = null; //texto
         this.fecha_ini = null; //fechas, contrato
         this.fecha_fin = null; //fechas
         this.filtro_anio = null; //anio
-      } else if (this.filtro_tipo == "texto") {
-        this.fecha_ini = null; //fechas, contrato
-        this.fecha_fin = null; //fechas
-        this.filtro_anio = null; //anio
       } else if (this.filtro_tipo == "contrato") {
-        this.filter = null; //texto
         this.fecha_ini = formatDate(new Date()); //fechas
         this.fecha_fin = null; //fechas
         this.filtro_anio = null; //anio
@@ -112243,17 +112245,38 @@ var showSnackbar = function showSnackbar(msg) {
         this.fecha_ini = null; //fechas, contrato
         this.fecha_fin = null; //fechas
         this.filtro_anio = new Date().getFullYear(); //anio
+
+        var ini = new Date();
+        ini.setFullYear(this.filtro_anio);
+        ini.setMonth(0);
+        ini.setDate(1);
+
+        var fin = new Date();
+        fin.setFullYear(this.filtro_anio);
+        fin.setMonth(11);
+        fin.setDate(31);
+
+        this.fecha_ini = formatDate(ini); //fechas
+        this.fecha_fin = formatDate(fin); //fechas
+
+        //Para limitar a que calcule solo lo que lleva de año, no todo completo
+        if (this.filtro_anio == new Date().getFullYear()) {
+          this.fecha_fin = new Date();
+        }
       }
 
       this.fetchPelotaris();
     },
     actualizaFechaIni: function actualizaFechaIni() {
+      this.filter = null; //texto
       this.fetchPelotaris();
     },
     actualizaFechaFin: function actualizaFechaFin() {
+      this.filter = null; //texto
       this.fetchPelotaris();
     },
     cambiaAnio: function cambiaAnio(event) {
+      this.filter = null; //texto
       this.filtro_anio = event;
 
       var ini = new Date();
@@ -112269,9 +112292,26 @@ var showSnackbar = function showSnackbar(msg) {
       this.fecha_ini = formatDate(ini); //fechas
       this.fecha_fin = formatDate(fin); //fechas
 
+      //Para limitar a que calcule solo lo que lleva de año, no todo completo
+      if (this.filtro_anio == new Date().getFullYear()) {
+        this.fecha_fin = new Date();
+      }
+
       this.fetchPelotaris();
     },
-    imprimirDatos: function imprimirDatos() {},
+    imprimirDatos: function imprimirDatos() {
+      this.old_pag = this.perPage;
+      this.perPage = 0; //mostramos todos los registros para imprimir
+
+      var page = this;
+      window.onafterprint = function (e) {
+        page.perPage = page.old_pag;
+      };
+
+      setTimeout(function (e) {
+        window.print();
+      }, 500);
+    },
     exportarDatos: function exportarDatos() {
       var redirectWindow = window.open('/exportar-cuadro-mando?fecha_ini=' + this.fecha_ini + '&' + 'fecha_fin=' + this.fecha_fin, '_blank');
       redirectWindow.location;
@@ -112434,48 +112474,6 @@ var render = function() {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.filtro_tipo == "texto"
-                    ? _c(
-                        "b-input-group",
-                        { staticClass: "col-sm-8 float-left" },
-                        [
-                          _c("b-form-input", {
-                            attrs: { placeholder: "Texto de búsqueda" },
-                            model: {
-                              value: _vm.filter,
-                              callback: function($$v) {
-                                _vm.filter = $$v
-                              },
-                              expression: "filter"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-input-group-append",
-                            [
-                              _c(
-                                "b-btn",
-                                {
-                                  attrs: {
-                                    disabled: !_vm.filter,
-                                    title: "Limpiar filtro"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.filter = ""
-                                    }
-                                  }
-                                },
-                                [_vm._v("Limpiar")]
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
                   _vm.filtro_tipo == "anio"
                     ? _c("b-form-select", {
                         staticClass: "col-sm-4 float-left ml-3",
@@ -112494,6 +112492,57 @@ var render = function() {
                         }
                       })
                     : _vm._e()
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "div",
+                { attrs: { horizontal: "" } },
+                [
+                  _c(
+                    "b-input-group",
+                    { staticClass: "col-sm-8 float-left  pl-0 ml-0 mb-3 mt-2" },
+                    [
+                      _c("b-form-input", {
+                        attrs: { placeholder: "Texto de búsqueda" },
+                        model: {
+                          value: _vm.filter,
+                          callback: function($$v) {
+                            _vm.filter = $$v
+                          },
+                          expression: "filter"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "b-input-group-append",
+                        [
+                          _c(
+                            "b-btn",
+                            {
+                              attrs: {
+                                disabled: !_vm.filter,
+                                title: "Limpiar filtro"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.filter = ""
+                                }
+                              }
+                            },
+                            [_vm._v("Limpiar")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
                 ],
                 1
               )
@@ -112539,6 +112588,7 @@ var render = function() {
         _vm._v(" "),
         _c("b-table", {
           attrs: {
+            id: "tabla_cuadro",
             striped: "",
             hover: "",
             small: "",
@@ -112907,7 +112957,17 @@ var render = function() {
         )
       ],
       1
-    )
+    ),
+    _vm._v(" "),
+    _c("iframe", {
+      attrs: {
+        name: "print_frame",
+        width: "0",
+        height: "0",
+        frameborder: "0",
+        src: "about:blank"
+      }
+    })
   ])
 }
 var staticRenderFns = []

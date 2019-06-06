@@ -25,13 +25,18 @@
             <b-input-group v-if="filtro_tipo=='fechas'" class="col-sm-4 float-left">
               <b-form-input @change="actualizaFechaFin()" :min="fecha_min" :max="fecha_max" v-model="fecha_fin" type="date" placeholder="Fecha fin" />
             </b-input-group>
-            <b-input-group v-if="filtro_tipo=='texto'" class="col-sm-8 float-left">
+            <b-form-select v-if="filtro_tipo=='anio'" @change="cambiaAnio($event)" class="col-sm-4 float-left ml-3" v-model="filtro_anio" :options="anios"></b-form-select>
+            
+          </div>
+          <br>
+          <br>
+          <div horizontal>
+            <b-input-group class="col-sm-8 float-left  pl-0 ml-0 mb-3 mt-2">
               <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
               </b-input-group-append>
             </b-input-group>
-            <b-form-select v-if="filtro_tipo=='anio'" @change="cambiaAnio($event)" class="col-sm-4 float-left ml-3" v-model="filtro_anio" :options="anios"></b-form-select>
           </div>
         </b-col>
 
@@ -42,7 +47,7 @@
 
       </b-row>
       
-      <b-table striped hover small responsive
+      <b-table id="tabla_cuadro" striped hover small responsive
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
         :per-page="perPage"
@@ -120,6 +125,7 @@
       </b-row>
 
     </div>
+    <iframe name="print_frame" width="0" height="0" frameborder="0" src="about:blank"></iframe>
   </div>
 </template>
 
@@ -159,7 +165,6 @@
           filtro_tipo: null,
           filtro_opciones: [
             { value: null, text: 'Seleccionar filtro' },
-            { value: 'texto', text: 'Texto de búsqueda' },
             { value: 'contrato', text: 'Contrato vigente' },
             { value: 'fechas', text: 'Rango de fechas' },
             { value: 'anio', text: 'Año natural'}
@@ -203,6 +208,7 @@
           defaultPhoto: '/storage/avatars/default/default.jpg',
           totalRows: 0,
           perPage: 10,
+          old_pag: 10,
           currentPage: 1,
           pageOptions: [ 10, 25, 50 ],
           filter: null,
@@ -240,20 +246,14 @@
         },
         cambiaFiltros(event){
           this.filtro_tipo = event;
-          //texto, contrato, fechas, anio
+          //contrato, fechas, anio
           if(this.filtro_tipo==null){
             this.filter = null; //texto
             this.fecha_ini = null; //fechas, contrato
             this.fecha_fin = null; //fechas
             this.filtro_anio = null; //anio
 
-          }else if(this.filtro_tipo=="texto"){
-            this.fecha_ini =null; //fechas, contrato
-            this.fecha_fin = null; //fechas
-            this.filtro_anio = null; //anio
-
           }else if(this.filtro_tipo=="contrato"){
-            this.filter = null; //texto
             this.fecha_ini = formatDate(new Date()); //fechas
             this.fecha_fin = null; //fechas
             this.filtro_anio = null; //anio
@@ -269,17 +269,38 @@
             this.fecha_ini = null; //fechas, contrato
             this.fecha_fin = null; //fechas
             this.filtro_anio = new Date().getFullYear(); //anio
+
+            var ini = new Date();
+            ini.setFullYear(this.filtro_anio);
+            ini.setMonth(0);
+            ini.setDate(1);
+            
+            var fin = new Date();
+            fin.setFullYear(this.filtro_anio);
+            fin.setMonth(11);
+            fin.setDate(31);
+
+            this.fecha_ini = formatDate(ini); //fechas
+            this.fecha_fin = formatDate(fin); //fechas
+
+            //Para limitar a que calcule solo lo que lleva de año, no todo completo
+            if(this.filtro_anio== new Date().getFullYear()){
+              this.fecha_fin = new Date();
+            }
           }
 
           this.fetchPelotaris();
         },
         actualizaFechaIni(){
+          this.filter = null; //texto
           this.fetchPelotaris();
         },
         actualizaFechaFin(){
+          this.filter = null; //texto
           this.fetchPelotaris();
         },
         cambiaAnio(event){
+          this.filter = null; //texto
           this.filtro_anio = event;
 
           var ini = new Date();
@@ -295,10 +316,23 @@
           this.fecha_ini = formatDate(ini); //fechas
           this.fecha_fin = formatDate(fin); //fechas
 
+          //Para limitar a que calcule solo lo que lleva de año, no todo completo
+          if(this.filtro_anio== new Date().getFullYear()){
+            this.fecha_fin = new Date();
+          }
+
           this.fetchPelotaris();
         },
         imprimirDatos (){
+          this.old_pag = this.perPage;
+          this.perPage = 0;//mostramos todos los registros para imprimir
 
+          var page = this;
+          window.onafterprint = function(e){
+            page.perPage = page.old_pag;
+          };
+
+          setTimeout(function(e){window.print();}, 500);
         },
         exportarDatos (){
           var redirectWindow = window.open('/exportar-cuadro-mando?fecha_ini=' + this.fecha_ini + '&'+'fecha_fin=' + this.fecha_fin, '_blank');
