@@ -4,12 +4,12 @@ namespace App\Exports;
 
 use App\Pelotari;
 use App\Http\Controllers\PelotarisCuadroController;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class CuadroMandoExport implements FromQuery, WithHeadings
+class CuadroMandoExport implements FromArray, WithHeadings
 {
     use Exportable;
     protected $fecha_ini;
@@ -50,12 +50,13 @@ class CuadroMandoExport implements FromQuery, WithHeadings
         ];
     }
 
-    public function query()
+    public function array(): array
     {
         $fecha_ini  = $this->fecha_ini;
         $fecha_fin  = $this->fecha_fin;
         //return Pelotari::cuadro_export($fecha_ini, $fecha_fin);
-        return Pelotari::query();
+
+        return PelotarisCuadroController::getItems($fecha_ini, $fecha_fin);
     }
 
 }   

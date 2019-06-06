@@ -18,10 +18,16 @@ class PelotarisCuadroController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
-
+        
         $fecha_ini = $request->get('fecha_ini');
         $fecha_fin = $request->get('fecha_fin');
-        
+
+        if($fecha_ini==null){
+          $fecha_ini = date('1900-01-01');
+        }        
+        if($fecha_fin == null){
+          $fecha_fin = date('Y-m-d');
+        }
         $items = $this->getItems($fecha_ini, $fecha_fin);
 
         return response()->json($items, 200);

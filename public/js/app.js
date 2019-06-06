@@ -112133,8 +112133,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -112170,6 +112168,10 @@ var showSnackbar = function showSnackbar(msg) {
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      filtro_tipo: null,
+      filtro_opciones: [{ value: null, text: 'Seleccionar filtro' }, { value: 'texto', text: 'Texto de búsqueda' }, { value: 'contrato', text: 'Contrato vigente' }, { value: 'fechas', text: 'Rango de fechas' }, { value: 'anio', text: 'Año natural' }],
+      filtro_anio: null,
+      anios: [{ value: null, text: 'Select. año' }, { value: '2019', text: '2019' }, { value: '2018', text: '2018' }, { value: '2017', text: '2017' }, { value: '2016', text: '2016' }, { value: '2015', text: '2015' }, { value: '2014', text: '2014' }, { value: '2013', text: '2013' }, { value: '2012', text: '2012' }, { value: '2011', text: '2011' }, { value: '2010', text: '2010' }, { value: '2009', text: '2009' }, { value: '2008', text: '2008' }, { value: '2007', text: '2007' }, { value: '2006', text: '2006' }, { value: '2005', text: '2005' }, { value: '2004', text: '2004' }, { value: '2003', text: '2003' }, { value: '2002', text: '2002' }, { value: '2001', text: '2001' }, { value: '2000', text: '2000' }],
       sortBy: 'age',
       sortDesc: false,
       fields: [{ key: 'alias', label: 'Apodo', sortable: true }, { key: 'retribucion', label: 'Retribuciones', sortable: false }, { key: 'ratio_disponibilidad', label: 'Ratio disponibilidad', sortable: true }, { key: '3', label: 'Bajas deportivas', sortable: true }, { key: '4', label: 'Bajas médicas', sortable: true }, { key: 'no_asiste', label: 'No asistencia', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: "text-center" }],
@@ -112180,10 +112182,10 @@ var showSnackbar = function showSnackbar(msg) {
       currentPage: 1,
       pageOptions: [10, 25, 50],
       filter: null,
-      fecha_min: "1900-01-01",
+      fecha_min: null,
       fecha_max: formatDate(new Date()),
-      fecha_ini: new Date().getFullYear() + "-01-01",
-      fecha_fin: formatDate(new Date()),
+      fecha_ini: null,
+      fecha_fin: null,
       deleteId: null
     };
   },
@@ -112214,10 +112216,59 @@ var showSnackbar = function showSnackbar(msg) {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    cambiaFiltros: function cambiaFiltros(event) {
+      this.filtro_tipo = event;
+      //texto, contrato, fechas, anio
+      if (this.filtro_tipo == null) {
+        this.filter = null; //texto
+        this.fecha_ini = null; //fechas, contrato
+        this.fecha_fin = null; //fechas
+        this.filtro_anio = null; //anio
+      } else if (this.filtro_tipo == "texto") {
+        this.fecha_ini = null; //fechas, contrato
+        this.fecha_fin = null; //fechas
+        this.filtro_anio = null; //anio
+      } else if (this.filtro_tipo == "contrato") {
+        this.filter = null; //texto
+        this.fecha_ini = formatDate(new Date()); //fechas
+        this.fecha_fin = null; //fechas
+        this.filtro_anio = null; //anio
+      } else if (this.filtro_tipo == "fechas") {
+        this.filter = null; //texto
+        this.fecha_ini = "1900-01-01"; //fechas, contrato
+        this.fecha_fin = formatDate(new Date()); //fechas
+        this.filtro_anio = null; //anio
+      } else if (this.filtro_tipo == "anio") {
+        this.filter = null; //texto
+        this.fecha_ini = null; //fechas, contrato
+        this.fecha_fin = null; //fechas
+        this.filtro_anio = new Date().getFullYear(); //anio
+      }
+
+      this.fetchPelotaris();
+    },
     actualizaFechaIni: function actualizaFechaIni() {
       this.fetchPelotaris();
     },
     actualizaFechaFin: function actualizaFechaFin() {
+      this.fetchPelotaris();
+    },
+    cambiaAnio: function cambiaAnio(event) {
+      this.filtro_anio = event;
+
+      var ini = new Date();
+      ini.setFullYear(this.filtro_anio);
+      ini.setMonth(0);
+      ini.setDate(1);
+
+      var fin = new Date();
+      fin.setFullYear(this.filtro_anio);
+      fin.setMonth(11);
+      fin.setDate(31);
+
+      this.fecha_ini = formatDate(ini); //fechas
+      this.fecha_fin = formatDate(fin); //fechas
+
       this.fetchPelotaris();
     },
     imprimirDatos: function imprimirDatos() {},
@@ -112301,134 +112352,156 @@ var render = function() {
         _c(
           "b-row",
           [
-            _c(
-              "b-col",
-              { staticClass: "col-sm-6 float-left my-1 mb-3" },
-              [
-                _c(
-                  "b-form-group",
-                  {
-                    staticClass: "mb-0",
-                    attrs: { horizontal: "", label: "Fechas" }
-                  },
-                  [
-                    _c(
-                      "b-input-group",
-                      { staticClass: "col-sm-6 float-left" },
-                      [
-                        _c("b-form-input", {
-                          attrs: {
-                            min: _vm.fecha_min,
-                            max: _vm.fecha_max,
-                            type: "date",
-                            placeholder: "Fecha inicio"
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.actualizaFechaIni()
-                            }
-                          },
-                          model: {
-                            value: _vm.fecha_ini,
-                            callback: function($$v) {
-                              _vm.fecha_ini = $$v
+            _c("b-col", { staticClass: "col-sm-8 float-left" }, [
+              _c(
+                "div",
+                { attrs: { horizontal: "" } },
+                [
+                  _c("b-form-select", {
+                    staticClass: "col-sm-4 float-left",
+                    attrs: { options: _vm.filtro_opciones },
+                    on: {
+                      change: function($event) {
+                        _vm.cambiaFiltros($event)
+                      }
+                    },
+                    model: {
+                      value: _vm.filtro_tipo,
+                      callback: function($$v) {
+                        _vm.filtro_tipo = $$v
+                      },
+                      expression: "filtro_tipo"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.filtro_tipo == "fechas" || _vm.filtro_tipo == "contrato"
+                    ? _c(
+                        "b-input-group",
+                        { staticClass: "col-sm-4 float-left" },
+                        [
+                          _c("b-form-input", {
+                            attrs: {
+                              min: _vm.fecha_min,
+                              max: _vm.fecha_max,
+                              type: "date",
+                              placeholder: "Fecha inicio"
                             },
-                            expression: "fecha_ini"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-input-group",
-                      { staticClass: "col-sm-6 float-left" },
-                      [
-                        _c("b-form-input", {
-                          attrs: {
-                            min: _vm.fecha_min,
-                            max: _vm.fecha_max,
-                            type: "date",
-                            placeholder: "Fecha fin"
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.actualizaFechaFin()
-                            }
-                          },
-                          model: {
-                            value: _vm.fecha_fin,
-                            callback: function($$v) {
-                              _vm.fecha_fin = $$v
+                            on: {
+                              change: function($event) {
+                                _vm.actualizaFechaIni()
+                              }
                             },
-                            expression: "fecha_fin"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("br"),
-                _vm._v(" "),
-                _c(
-                  "b-form-group",
-                  {
-                    staticClass: "mb-0",
-                    attrs: { horizontal: "", label: "Filtro" }
-                  },
-                  [
-                    _c(
-                      "b-input-group",
-                      { staticClass: "col-sm-12 float-left" },
-                      [
-                        _c("b-form-input", {
-                          attrs: { placeholder: "Texto de búsqueda" },
-                          model: {
-                            value: _vm.filter,
-                            callback: function($$v) {
-                              _vm.filter = $$v
-                            },
-                            expression: "filter"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "b-input-group-append",
-                          [
-                            _c(
-                              "b-btn",
-                              {
-                                attrs: {
-                                  disabled: !_vm.filter,
-                                  title: "Limpiar filtro"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    _vm.filter = ""
-                                  }
-                                }
+                            model: {
+                              value: _vm.fecha_ini,
+                              callback: function($$v) {
+                                _vm.fecha_ini = $$v
                               },
-                              [_vm._v("Limpiar")]
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
+                              expression: "fecha_ini"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.filtro_tipo == "fechas"
+                    ? _c(
+                        "b-input-group",
+                        { staticClass: "col-sm-4 float-left" },
+                        [
+                          _c("b-form-input", {
+                            attrs: {
+                              min: _vm.fecha_min,
+                              max: _vm.fecha_max,
+                              type: "date",
+                              placeholder: "Fecha fin"
+                            },
+                            on: {
+                              change: function($event) {
+                                _vm.actualizaFechaFin()
+                              }
+                            },
+                            model: {
+                              value: _vm.fecha_fin,
+                              callback: function($$v) {
+                                _vm.fecha_fin = $$v
+                              },
+                              expression: "fecha_fin"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.filtro_tipo == "texto"
+                    ? _c(
+                        "b-input-group",
+                        { staticClass: "col-sm-8 float-left" },
+                        [
+                          _c("b-form-input", {
+                            attrs: { placeholder: "Texto de búsqueda" },
+                            model: {
+                              value: _vm.filter,
+                              callback: function($$v) {
+                                _vm.filter = $$v
+                              },
+                              expression: "filter"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "b-input-group-append",
+                            [
+                              _c(
+                                "b-btn",
+                                {
+                                  attrs: {
+                                    disabled: !_vm.filter,
+                                    title: "Limpiar filtro"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.filter = ""
+                                    }
+                                  }
+                                },
+                                [_vm._v("Limpiar")]
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.filtro_tipo == "anio"
+                    ? _c("b-form-select", {
+                        staticClass: "col-sm-4 float-left ml-3",
+                        attrs: { options: _vm.anios },
+                        on: {
+                          change: function($event) {
+                            _vm.cambiaAnio($event)
+                          }
+                        },
+                        model: {
+                          value: _vm.filtro_anio,
+                          callback: function($$v) {
+                            _vm.filtro_anio = $$v
+                          },
+                          expression: "filtro_anio"
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            ]),
             _vm._v(" "),
             _c(
               "b-col",
-              { staticClass: "col-sm-6 text-right my-1 mb-3" },
+              { staticClass: "col-sm-4 text-right my-1 mb-3" },
               [
                 _c(
                   "b-btn",

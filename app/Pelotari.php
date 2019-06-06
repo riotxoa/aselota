@@ -91,8 +91,8 @@ class Pelotari extends Model
 
   static function cuadro_export($fecha_ini, $fecha_fin)
   {
-    $items = DB::table('pelotaris')
-    ->get();
+    $items = DB::table('pelotaris as p')
+    ->orderBy('id');
 
     return $items;
   }

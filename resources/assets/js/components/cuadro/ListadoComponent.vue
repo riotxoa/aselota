@@ -16,28 +16,26 @@
 
     <div class="container">
       <b-row>
-
-        <b-col class="col-sm-6 float-left my-1 mb-3">
-          <b-form-group horizontal label="Fechas" class="mb-0">
-            <b-input-group class="col-sm-6 float-left">
+        <b-col class="col-sm-8 float-left">
+          <div horizontal>
+            <b-form-select @change="cambiaFiltros($event)" class="col-sm-4 float-left" v-model="filtro_tipo" :options="filtro_opciones"></b-form-select>
+            <b-input-group v-if="filtro_tipo=='fechas' || filtro_tipo=='contrato'" class="col-sm-4 float-left">
               <b-form-input @change="actualizaFechaIni()" :min="fecha_min" :max="fecha_max" v-model="fecha_ini" type="date" placeholder="Fecha inicio" />
             </b-input-group>
-            <b-input-group class="col-sm-6 float-left">
+            <b-input-group v-if="filtro_tipo=='fechas'" class="col-sm-4 float-left">
               <b-form-input @change="actualizaFechaFin()" :min="fecha_min" :max="fecha_max" v-model="fecha_fin" type="date" placeholder="Fecha fin" />
             </b-input-group>
-          </b-form-group>
-          <br>
-          <b-form-group horizontal label="Filtro" class="mb-0">
-            <b-input-group class="col-sm-12 float-left">
+            <b-input-group v-if="filtro_tipo=='texto'" class="col-sm-8 float-left">
               <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
               <b-input-group-append>
                 <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
               </b-input-group-append>
             </b-input-group>
-          </b-form-group>
+            <b-form-select v-if="filtro_tipo=='anio'" @change="cambiaAnio($event)" class="col-sm-4 float-left ml-3" v-model="filtro_anio" :options="anios"></b-form-select>
+          </div>
         </b-col>
 
-        <b-col class="col-sm-6 text-right my-1 mb-3">
+        <b-col class="col-sm-4 text-right my-1 mb-3">
           <b-btn @click="imprimirDatos()" variant="outline-link" class="mb-0" title="Imprimir datos">Imprimir</b-btn>
           <b-btn @click="exportarDatos()" variant="danger" class="mb-0" title="Exportar datos">Exportar</b-btn>
         </b-col>
@@ -158,6 +156,38 @@
   export default {
       data () {
         return {
+          filtro_tipo: null,
+          filtro_opciones: [
+            { value: null, text: 'Seleccionar filtro' },
+            { value: 'texto', text: 'Texto de búsqueda' },
+            { value: 'contrato', text: 'Contrato vigente' },
+            { value: 'fechas', text: 'Rango de fechas' },
+            { value: 'anio', text: 'Año natural'}
+          ],
+          filtro_anio: null,
+          anios: [
+            { value: null, text: 'Select. año' },
+            { value: '2019', text: '2019' },
+            { value: '2018', text: '2018' },
+            { value: '2017', text: '2017' },
+            { value: '2016', text: '2016' },
+            { value: '2015', text: '2015' },
+            { value: '2014', text: '2014' },
+            { value: '2013', text: '2013' },
+            { value: '2012', text: '2012' },
+            { value: '2011', text: '2011' },
+            { value: '2010', text: '2010' },
+            { value: '2009', text: '2009' },
+            { value: '2008', text: '2008' },
+            { value: '2007', text: '2007' },
+            { value: '2006', text: '2006' },
+            { value: '2005', text: '2005' },
+            { value: '2004', text: '2004' },
+            { value: '2003', text: '2003' },
+            { value: '2002', text: '2002' },
+            { value: '2001', text: '2001' },
+            { value: '2000', text: '2000' },
+          ],
           sortBy: 'age',
           sortDesc: false,
           fields: [
@@ -176,10 +206,10 @@
           currentPage: 1,
           pageOptions: [ 10, 25, 50 ],
           filter: null,
-          fecha_min: "1900-01-01",
+          fecha_min: null,
           fecha_max: formatDate(new Date()),
-          fecha_ini: new Date().getFullYear() + "-01-01",
-          fecha_fin: formatDate(new Date()),
+          fecha_ini: null,
+          fecha_fin: null,
           deleteId: null,
         }
       },
@@ -208,10 +238,63 @@
           this.totalRows = filteredItems.length;
           this.currentPage = 1;
         },
+        cambiaFiltros(event){
+          this.filtro_tipo = event;
+          //texto, contrato, fechas, anio
+          if(this.filtro_tipo==null){
+            this.filter = null; //texto
+            this.fecha_ini = null; //fechas, contrato
+            this.fecha_fin = null; //fechas
+            this.filtro_anio = null; //anio
+
+          }else if(this.filtro_tipo=="texto"){
+            this.fecha_ini =null; //fechas, contrato
+            this.fecha_fin = null; //fechas
+            this.filtro_anio = null; //anio
+
+          }else if(this.filtro_tipo=="contrato"){
+            this.filter = null; //texto
+            this.fecha_ini = formatDate(new Date()); //fechas
+            this.fecha_fin = null; //fechas
+            this.filtro_anio = null; //anio
+
+          }else if(this.filtro_tipo=="fechas"){
+            this.filter = null; //texto
+            this.fecha_ini = "1900-01-01"; //fechas, contrato
+            this.fecha_fin = formatDate(new Date()); //fechas
+            this.filtro_anio = null; //anio
+
+          }else if(this.filtro_tipo=="anio"){
+            this.filter = null; //texto
+            this.fecha_ini = null; //fechas, contrato
+            this.fecha_fin = null; //fechas
+            this.filtro_anio = new Date().getFullYear(); //anio
+          }
+
+          this.fetchPelotaris();
+        },
         actualizaFechaIni(){
           this.fetchPelotaris();
         },
         actualizaFechaFin(){
+          this.fetchPelotaris();
+        },
+        cambiaAnio(event){
+          this.filtro_anio = event;
+
+          var ini = new Date();
+          ini.setFullYear(this.filtro_anio);
+          ini.setMonth(0);
+          ini.setDate(1);
+          
+          var fin = new Date();
+          fin.setFullYear(this.filtro_anio);
+          fin.setMonth(11);
+          fin.setDate(31);
+
+          this.fecha_ini = formatDate(ini); //fechas
+          this.fecha_fin = formatDate(fin); //fechas
+
           this.fetchPelotaris();
         },
         imprimirDatos (){
