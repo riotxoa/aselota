@@ -237,7 +237,12 @@ class PelotarisCuadroController extends Controller
             }
           }
 
-          $items[$key]->entrenamientos = $entrenamientos;
+          //for debug
+          //$items[$key]->debug_str = $debug_str;
+          //$items[$key]->contratos = $contrats;
+          //$items[$key]->entrenamientos = $entrenamientos;
+          //$items[$key]->partidos = $partidos_all;
+
           $items[$key]->num_entrenamientos = $num_entrenamientos;
           $items[$key]->entrenamientos_asiste = $entrenamientos_asiste;
           if($num_entrenamientos!=0){
@@ -247,10 +252,7 @@ class PelotarisCuadroController extends Controller
           }
           $items[$key]->no_asiste = $num_entrenamientos-$entrenamientos_asiste;
 
-          $items[$key]->partidos = $partidos_all;
           $items[$key]->partidos_ganados = $partidos_ganados;
-          $items[$key]->contratos = $contrats;
-
           $items[$key]->partidos_jugados = $num_partidos;
           
           setlocale(LC_MONETARY,"es_ES");
@@ -264,8 +266,6 @@ class PelotarisCuadroController extends Controller
           $items[$key]->retribucion_prima_manomanista = number_format($retribucion_prima_manomanista,2,",",".") . "€";
           $items[$key]->retribucion_prima_manomanista_promo = number_format($retribucion_prima_manomanista_promo,2,",",".") . "€";
 
-          //for debug
-          $items[$key]->debug_str = $debug_str;
         }
         return $items;
     }
