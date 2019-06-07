@@ -16,37 +16,33 @@
 
     <div class="container">
       <b-row>
-        <b-col class="col-sm-8 float-left">
-          <div horizontal>
-            <b-form-select @change="cambiaFiltros($event)" class="col-sm-4 float-left" v-model="filtro_tipo" :options="filtro_opciones"></b-form-select>
-            <b-input-group v-if="filtro_tipo=='fechas' || filtro_tipo=='contrato'" class="col-sm-4 float-left">
-              <b-form-input @change="actualizaFechaIni()" :min="fecha_min" :max="fecha_max" v-model="fecha_ini" type="date" placeholder="Fecha inicio" />
-            </b-input-group>
-            <b-input-group v-if="filtro_tipo=='fechas'" class="col-sm-4 float-left">
-              <b-form-input @change="actualizaFechaFin()" :min="fecha_min" :max="fecha_max" v-model="fecha_fin" type="date" placeholder="Fecha fin" />
-            </b-input-group>
-            <b-form-select v-if="filtro_tipo=='anio'" @change="cambiaAnio($event)" class="col-sm-4 float-left ml-3" v-model="filtro_anio" :options="anios"></b-form-select>
-            
-          </div>
-          <br>
-          <br>
-          <div horizontal>
-            <b-input-group class="col-sm-8 float-left  pl-0 ml-0 mb-3 mt-2">
-              <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
-              <b-input-group-append>
-                <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
-              </b-input-group-append>
-            </b-input-group>
-          </div>
-        </b-col>
+        <div horizontal class="col-lg-8">
+          <b-form-select @change="cambiaFiltros($event)" class="col-sm-8 col-md-4 float-left mb-3" v-model="filtro_tipo" :options="filtro_opciones"></b-form-select>
+          <b-input-group v-if="filtro_tipo=='fechas' || filtro_tipo=='contrato'" class="col-sm-6 col-md-4 float-left pl-0 pl-md-2 mb-3">
+            <b-form-input @change="actualizaFechaIni()" :min="fecha_min" :max="fecha_max" v-model="fecha_ini" type="date" placeholder="Fecha inicio" />
+          </b-input-group>
+          <b-input-group v-if="filtro_tipo=='fechas'" class="col-sm-6 col-md-4 float-left pl-0 pl-md-2 mb-3 pr-0 pr-md-2">
+            <b-form-input @change="actualizaFechaFin()" :min="fecha_min" :max="fecha_max" v-model="fecha_fin" type="date" placeholder="Fecha fin" />
+          </b-input-group>
+          <b-form-select v-if="filtro_tipo=='anio'" @change="cambiaAnio($event)" class="col-sm-6 col-md-4 float-left ml-3 mb-3 text-right" v-model="filtro_anio" :options="anios"></b-form-select>
+        </div>
+        <div horizontal class="col-lg-4">
+          <b-input-group class="float-left pl-0 ml-0 mb-3">
+            <b-form-input v-model="filter" placeholder="Texto de búsqueda" />
+            <b-input-group-append>
+              <b-btn :disabled="!filter" @click="filter = ''" title="Limpiar filtro">Limpiar</b-btn>
+            </b-input-group-append>
+          </b-input-group>
+        </div>
+      </b-row>
 
-        <b-col class="col-sm-4 text-right my-1 mb-3">
-          <b-btn @click="imprimirDatos()" variant="outline-link" class="mb-0" title="Imprimir datos">Imprimir</b-btn>
+      <b-row>
+        <b-col class="col-md-4 offset-md-8 text-right mb-3">
+          <!-- <b-btn @click="imprimirDatos()" variant="outline-link" class="mb-0" title="Imprimir datos">Imprimir</b-btn> -->
           <b-btn @click="exportarDatos()" variant="danger" class="mb-0" title="Exportar datos">Exportar</b-btn>
         </b-col>
-
       </b-row>
-      
+
       <b-table id="tabla_cuadro" striped hover small responsive
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
@@ -100,7 +96,7 @@
                 <b-row class="mb-2">
                   <b-col sm="4" class="text-sm-right"><b>Total entrenamientos:</b></b-col>
                   <b-col sm="4">{{ row.item.num_entrenamientos }} ({{ row.item.no_asiste }} sin asistencia)</b-col>
-                </b-row> 
+                </b-row>
               </b-col>
             </b-row>
           </b-card>
@@ -225,7 +221,7 @@
       methods: {
         fetchPelotaris() {
           let uri = '/www/pelotaris-cuadro';
-          
+
           this.axios.get(uri, {
             params: {
               fecha_ini: this.fecha_ini,
@@ -234,9 +230,9 @@
           }).then((response) => {
             var stringified = JSON.stringify(response.data);
             this.items = JSON.parse(stringified);
-            console.log(this.items);
+            // console.log(this.items);
             this.totalRows = this.items.length;
-            
+
           });
         },
         onFiltered (filteredItems) {
@@ -259,8 +255,9 @@
             this.filtro_anio = null; //anio
 
           }else if(this.filtro_tipo=="fechas"){
+            var year = new Date().getFullYear();
             this.filter = null; //texto
-            this.fecha_ini = "1900-01-01"; //fechas, contrato
+            this.fecha_ini = year + "-01-01"; //fechas, contrato
             this.fecha_fin = formatDate(new Date()); //fechas
             this.filtro_anio = null; //anio
 
@@ -274,7 +271,7 @@
             ini.setFullYear(this.filtro_anio);
             ini.setMonth(0);
             ini.setDate(1);
-            
+
             var fin = new Date();
             fin.setFullYear(this.filtro_anio);
             fin.setMonth(11);
@@ -307,7 +304,7 @@
           ini.setFullYear(this.filtro_anio);
           ini.setMonth(0);
           ini.setDate(1);
-          
+
           var fin = new Date();
           fin.setFullYear(this.filtro_anio);
           fin.setMonth(11);
@@ -339,7 +336,7 @@
           redirectWindow.location;
           /*
           let uri = '/exportar-cuadro-mando';
-          
+
           this.axios.get(uri, {
             params: {
               fecha_ini: ,
