@@ -26,130 +26,57 @@
           </div>
           <div class="card mb-3">
             <div class="card-body">
-            <div class="col-sm-2 p-0 text-right float-right" style="max-width:150px;margin-bottom:20px;">
-              <b-btn block href="#" v-b-toggle="'#acordeonCostes'" variant="secondary"><span class="icon voyager-plus float-left" style="font-size:18px;"></span>Desglose costes</b-btn>
-            </div>
-            <div style="clear: both;"></div>
-              <b-collapse :id="'#acordeonCostes'" accordion="my-accordion" role="tabpanel">
-                <b-row>
-                  <label class="col-md-9">Pelotaris:</label>
-                  <b-form-input id="coste_pelotaris"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_pelotaris.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+              <b-row>
+                <b-col cols="4" class="text-center">
+                  <label>NºAuxiliares:</label>
+                  <b-form-input id="num_auxiliares"
+                              class="text-right w-50 mx-auto"
+                              type="number"
+                              max="20"
+                              min="1"
+                              maxlength="2"
+                              placeholder="1"
+                              :value="_costes.num_auxiliares"
+                              @input="updateCosteAuxiliares()">
                   </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-9">Jueces:</label>
-                  <b-form-input id="coste_jueces"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_jueces.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-9">Cancha:</label>
-                  <b-form-input id="coste_cancha"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_cancha.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-9">Material:</label>
-                  <b-form-input id="coste_material"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_material.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-7">Auxiliares:</label>
-                <b-form-input id="num_auxiliares"
-                                class="col-md-2 text-right"
-                                type="number"
-                                max="20"
-                                min="1"
-                                maxlength="2"
-                                placeholder="1"
-                                :value="_costes.num_auxiliares" 
-                                @input="updateCosteAuxiliares()">
-                  </b-form-input>
-                  <b-form-input id="coste_auxiliares"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_auxiliares.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-7">Taquillera:</label>
+                </b-col>
+
+                <b-col cols="4" class="text-center">
+                  <label>NºTaquilleros:</label>
                   <b-form-input id="num_taquilleros"
-                                class="col-md-2 text-right"
+                                class="text-right w-50 mx-auto"
                                 type="number"
                                 max="3"
                                 min="0"
                                 maxlength="2"
                                 placeholder="0"
-                                :value="_costes.num_taquilleros" 
+                                :value="_costes.num_taquilleros"
                                 @input="updateCosteTaquillera">
                   </b-form-input>
-                  <b-form-input id="coste_taquilleros"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0"
-                                :value="_coste_taquillera.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-9">Tasa de juego:</label>
-                  <b-form-input id="coste_tasa"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_tasa.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-                <b-row>
-                  <label class="col-md-7">Servicio sanitario:</label>
+                </b-col>
+
+                <b-col cols="4" class="text-center">
+                  <label>Serv.Sanitario:</label><br>
                   <b-form-checkbox id="check_sanidad"
-                                class="col-md-2 text-right"
+                                class="text-right"
                                 style="margin-right:0px !important;"
                                 v-model="_costes.sanidad"
                                 value="1"
-                                unchecked-value="0" 
+                                unchecked-value="0"
                                 @change="updateCosteSanidad">
                   </b-form-checkbox>
-                  <b-form-input id="coste_sanitario"
-                                class="col-md-3 text-right"
-                                type="text"
-                                maxlength="8"
-                                readonly
-                                placeholder="0.00"
-                                :value="_coste_sanidad.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
-                  </b-form-input>
-                </b-row>
-              </b-collapse>
+                </b-col>
+              </b-row>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-body">
+
               <b-row>
-                <label class="col-md-7">Coste empresa festival:</label>
+                <label class="col-md-7">
+                  <a class="icon voyager-plus align-middle" href="#" v-b-toggle="'#acordeonCostes'" variant="secondary"></a>
+                  Coste empresa festival:
+                </label>
                 <b-form-input id="coste_empresa"
                               class="col-md-5 text-right"
                               type="text"
@@ -158,7 +85,122 @@
                               readonly
                               :value="_coste.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
                 </b-form-input>
+
+                <div style="clear: both;"></div>
+
+                <b-collapse :id="'#acordeonCostes'" class="ml-5 my-3 pr-3 w-100" accordion="my-accordion" role="tabpanel">
+                  <b-row>
+                    <label class="col-md-9">Pelotaris:</label>
+                    <b-form-input id="coste_pelotaris"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_pelotaris.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-9">Jueces:</label>
+                    <b-form-input id="coste_jueces"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_jueces.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-9">Cancha:</label>
+                    <b-form-input id="coste_cancha"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_cancha.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-9">Material:</label>
+                    <b-form-input id="coste_material"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_material.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-7">Auxiliares:</label>
+                    <b-form-input id="num_auxiliares"
+                                class="col-md-2 text-right"
+                                type="number"
+                                max="20"
+                                min="1"
+                                maxlength="2"
+                                placeholder="1"
+                                readonly
+                                :value="_costes.num_auxiliares">
+                    </b-form-input>
+                    <b-form-input id="coste_auxiliares"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_auxiliares.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-7">Taquillera:</label>
+                    <b-form-input id="num_taquilleros"
+                                  class="col-md-2 text-right"
+                                  type="number"
+                                  max="3"
+                                  min="0"
+                                  maxlength="2"
+                                  readonly
+                                  placeholder="0"
+                                  :value="_costes.num_taquilleros">
+                    </b-form-input>
+                    <b-form-input id="coste_taquilleros"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0"
+                                  :value="_coste_taquillera.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-9">Tasa de juego:</label>
+                    <b-form-input id="coste_tasa"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_tasa.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-9">Servicio sanitario:</label>
+                    <b-form-input id="coste_sanitario"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0.00"
+                                  :value="_coste_sanidad.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
+                </b-collapse>
+
               </b-row>
+
               <b-row>
                 <label class="col-md-7">Importe venta:</label>
                 <b-form-input id="coste_importe_venta"
@@ -168,7 +210,7 @@
                               placeholder="0.00"
                               v-model="_costes.importe_venta"
                               v-on:focus.native="$event.target.select()"
-                              v-on:blur.native="formatCurrency" 
+                              v-on:blur.native="formatCurrency"
                               @change="updateImporteVenta">
                 </b-form-input>
               </b-row>
