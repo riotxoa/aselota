@@ -117,7 +117,7 @@ const routes = [
         path: '', component: ListModulos
       },
       {
-        path: 'pelotari/new', component: CreatePelotari
+        path: 'pelotari/new/:promesa', name: 'admin.pelotari.new', component: CreatePelotari
       },
       {
         path: 'pelotari/:id/edit', component: EditPelotari
@@ -131,7 +131,7 @@ const routes = [
         path: '', name: 'RRHH', component: RRHHTabs
       },
       {
-        path: 'pelotari/new', component: CreatePelotari
+        path: 'pelotari/new/:promesa', name: 'rrhh.pelotari.new', component: CreatePelotari
       },
       {
         path: 'pelotari/:id/edit', component: EditPelotari

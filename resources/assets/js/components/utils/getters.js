@@ -136,10 +136,12 @@ var APIGetters = {
         { value: 'liga_semifinal', text: 'Liga Semifinales' },
         { value: 'liga_cuartos', text: 'Liga Cuartos' },
         { value: 'semifinal', text: 'Semifinal' },
+        { value: 'tercer_y_cuarto', text: 'Tercer y Cuarto puesto'},
         { value: 'cuartos', text: 'Cuartos' },
         { value: 'octavos', text: 'Octavos' },
         { value: 'dieciseisavos', text: 'Dieciseisavos' },
         { value: 'treintaidosavos', text: 'Treintaidosavos' },
+        { value: 'previa', text: 'Previa' }
       ];
     },
 

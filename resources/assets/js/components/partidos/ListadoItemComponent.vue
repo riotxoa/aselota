@@ -12,7 +12,7 @@
         {{ this.data.tipo_partido_name }}
       </div>
       <div v-if="data.fase" class="block fase col-sm-3 col-lg-2 text-center font-weight-bold text-capitalize">
-        {{ this.data.fase }}
+        {{ this.data.fase.replace(_/g, " ") }}
       </div>
       <div class="toolbar col-sm-3 col-lg-2 text-right position-absolute">
         <b-button size="sm" variant="outline-danger" @click.stop="onClickDelete(partido)" title="Eliminar Partido">

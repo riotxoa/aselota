@@ -26,7 +26,7 @@
           {{ this.partido.tipo_partido_name }}
         </div>
         <div v-if="partido.fase" class="block fase col-sm-2 text-center font-weight-bold text-capitalize">
-          {{ this.partido.fase }}
+          {{ this.partido.fase.replace(/_/g, " ") }}
         </div>
 
       </b-row>
