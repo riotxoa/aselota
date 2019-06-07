@@ -33,6 +33,20 @@
 
       <b-card no-body class="my-3">
         <b-tabs card pills>
+
+          <b-col cols="3" offset="9" class="position-absolute fixed-top">
+            <b-row class="pt-3 mt-1">
+              <label class="col-md-10 text-right">Promesa</label>
+              <b-form-checkbox id="check_promesa"
+                            class="col-md-2 text-right"
+                            style="margin-right:0px !important;"
+                            v-model="pelotari.promesa"
+                            value="1"
+                            unchecked-value="0" >
+              </b-form-checkbox>
+            </b-row>
+          </b-col>
+
           <b-tab title="Ficha" active>
             <b-row>
               <div class="col-md-12">
@@ -212,16 +226,6 @@
                                   placeholder="Cód.IBAN">
                     </b-form-input>
                   </b-form-group>
-                </b-row>
-                <b-row>
-                  <label class="col-md-2">Promesa</label>
-                  <b-form-checkbox id="check_promesa"
-                                class="col-md-1 text-right"
-                                style="margin-right:0px !important;"
-                                v-model="pelotari.promesa"
-                                value="1"
-                                unchecked-value="0" >
-                  </b-form-checkbox>
                 </b-row>
                 <b-row>
                   <b-form-group label="Fotografía"
