@@ -343,6 +343,7 @@
         this.edit = true;
         this.fetchPelotari(this.$route.params.id);
       } else {
+        this.pelotari.promesa = this.$route.params.promesa;
         this.edit = false;
         this.show = true;
       }
