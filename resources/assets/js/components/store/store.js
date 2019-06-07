@@ -282,7 +282,7 @@ export const store = new Vuex.Store({
 
     },
     SET_COSTE_AUXILIARES (state, num_auxiliares){
-      
+
       if(state.costes_fijos.length){
         var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
         state.costes.num_auxiliares = num_auxiliares;
@@ -315,7 +315,7 @@ export const store = new Vuex.Store({
       state.coste_pelotaris += (partido.pelotari_2 ? ( 1 === partido.pelotari_2.asiste ? partido.pelotari_2.coste : partido.pelotari_2.sustituto_coste ) : 0);
       state.coste_pelotaris += (partido.pelotari_3 ? ( 1 === partido.pelotari_3.asiste ? partido.pelotari_3.coste : partido.pelotari_3.sustituto_coste ) : 0);
       state.coste_pelotaris += (partido.pelotari_4 ? ( 1 === partido.pelotari_4.asiste ? partido.pelotari_4.coste : partido.pelotari_4.sustituto_coste ) : 0);
-      
+
       //Coste jueces
       if(partido.campeonato_id!=null){
         var campeonato = _.filter(state.campeonatos, { 'value': partido.campeonato_id })[0];
@@ -918,7 +918,7 @@ export const store = new Vuex.Store({
           .get('/www/festival-contactos', data)
           .then( r => r.data )
           .then( contactos => {
-              commit('SET_CONTACTOS', contactos);
+              commit('SET_CONTACTOS', contactos[0]);
             resolve(contactos);
           })
           .catch((error) => {

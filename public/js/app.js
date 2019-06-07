@@ -7317,7 +7317,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-contactos', data).then(function (r) {
           return r.data;
         }).then(function (contactos) {
-          commit('SET_CONTACTOS', contactos);
+          commit('SET_CONTACTOS', contactos[0]);
           resolve(contactos);
         }).catch(function (error) {
           reject(error);
@@ -99245,7 +99245,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           header: this._header,
           costes: this._costes,
           facturacion: this._facturacion,
-          contactos: this._contactos[0]
+          contactos: this._contactos
         };
 
         this.axios.post(uri + '/' + this._header.id + '/update', data).then(function (response) {
@@ -106476,8 +106476,9 @@ exports.push([module.i, "\n.festival-contactos .card {\n  border-color:#707f8f;\
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(12);
 //
 //
 //
@@ -106663,6 +106664,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -106670,7 +106672,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__["a" /* default */]],
   data: function data() {
     return {
       contactos: {
@@ -106700,11 +106702,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     });
   },
-  computed: {
-    _contactos: function _contactos() {
-      return __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].getters.contactos;
-    }
-  },
+  computed: Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
+    _contactos: 'contactos'
+  }),
   methods: {
     onSubmit: function onSubmit() {
       var _this2 = this;

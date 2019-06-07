@@ -185,6 +185,7 @@
 
 <script>
   import { store } from '../store/store';
+  import { mapState } from 'vuex';
 
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
@@ -217,11 +218,9 @@
         }
       });
     },
-    computed: {
-      _contactos () {
-        return store.getters.contactos;
-      }
-    },
+    computed: mapState({
+      _contactos: 'contactos',
+    }),
     methods: {
       onSubmit() {
         store.dispatch('addContactos', this.contactos)
@@ -232,7 +231,7 @@
             console.log(error);
             this.showSnackbar("Se ha producido un ERROR al guardar los CONTACTOS");
           });
-      }
+      },
     }
   }
 </script>

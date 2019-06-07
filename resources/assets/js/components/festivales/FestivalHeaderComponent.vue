@@ -307,7 +307,7 @@
             header: this._header,
             costes: this._costes,
             facturacion: this._facturacion,
-            contactos: this._contactos[0],
+            contactos: this._contactos,
           }
 
           this.axios.post(uri + '/' + this._header.id + '/update', data)
