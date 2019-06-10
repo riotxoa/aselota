@@ -129,6 +129,24 @@ class FestivaleController extends Controller
 
         $item->save();
 
+        // Costes
+        $costes = new FestivalCoste([
+          'festival_id' => $item->id
+        ]);
+        $costes->save();
+
+        // Facturación
+        $facturacion = new FestivalFacturacion([
+          'festival_id' => $item->id
+        ]);
+        $facturacion->save();
+
+        // Contactos
+        $contactos = new FestivalContacto([
+          'festival_id' => $item->id
+        ]);
+        $contactos->save();
+
         return response()->json($item, 200);
     }
 
@@ -202,7 +220,7 @@ class FestivaleController extends Controller
 
         // $fest_costes = FestivalCoste::find($fest_header->costes()->first()->id);
 
-        $fest_costes = $fest_header->costes();
+        $fest_costes = $fest_header->costes;
 
         if( $fest_costes->first() ) {
           $fest_costes = FestivalCoste::find($fest_costes->first()->id);
@@ -222,6 +240,7 @@ class FestivaleController extends Controller
           $fest_costes->porcentaje = $costes['porcentaje'];
         } else {
           $fest_costes = new FestivalCoste([
+            'festival_id' => $id,
             'coste_empresa' => (array_key_exists('coste_empresa', $costes) ? $costes['coste_empresa'] : 0),
             'sanidad' => $costes['sanidad'],
             'num_auxiliares' => $costes['num_auxiliares'],
@@ -240,7 +259,7 @@ class FestivaleController extends Controller
         $fest_costes->save();
 
         // $fest_facturacion = FestivalFacturacion::find($fest_header->facturacion()->first()->id);
-        $fest_facturacion = $fest_header->facturacion();
+        $fest_facturacion = $fest_header->facturacion;
 
         if( $fest_facturacion->first() ) {
           $fest_facturacion = FestivalFacturacion::find($fest_facturacion->first()->id);
@@ -254,6 +273,7 @@ class FestivaleController extends Controller
           $fest_facturacion->seguimiento = $facturacion['seguimiento'];
         } else {
           $fest_facturacion = new FestivalFacturacion([
+            'festival_id' => $id,
             'fpago_id' => $facturacion['fpago_id'],
             'fecha' => $facturacion['fecha'],
             'importe' => $facturacion['importe'],
@@ -265,7 +285,7 @@ class FestivaleController extends Controller
         }
         $fest_facturacion->save();
 
-        $fest_contactos = $fest_header->contactos();
+        $fest_contactos = $fest_header->contactos;
 
         if( $fest_contactos->first() ) {
           $fest_contactos = FestivalContacto::find($fest_contactos->first()->id);
@@ -285,6 +305,7 @@ class FestivaleController extends Controller
           $fest_contactos->observaciones = $contactos['observaciones'];
         } else {
           $fest_contactos = new FestivalContacto([
+            'festival_id' => $id,
             'contact_01_name' => $contactos['contact_01_name'],
             'contact_01_desc' => $contactos['contact_01_desc'],
             'contact_01_telephone_1' => $contactos['contact_01_telephone_1'],
