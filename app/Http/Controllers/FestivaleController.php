@@ -17,8 +17,6 @@ use App\FestivalPartido;
 use App\User;
 use TCG\Voyager\Models\Role;
 
-use Illuminate\Support\Facades\Log;
-
 class FestivaleController extends Controller
 {
     /**
