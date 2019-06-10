@@ -8458,6 +8458,13 @@ var APIGetters = {
         }).then(function (response) {
           var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
           _this7.pelotaris = JSON.parse(stringified);
+
+          _this7.pelotaris.map(function (val) {
+            if (val.fecha_fin_contrato < date) {
+              val.text = "**" + val.text + " (Fin Contrato: " + val.fecha_fin_contrato + ")";
+            }
+          });
+
           _this7.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
 
           axios.get('/www/pelotaris-aspe', {
@@ -8484,6 +8491,13 @@ var APIGetters = {
         }).then(function (response) {
           var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
           _this8.pelotaris = JSON.parse(stringified);
+
+          _this8.pelotaris.map(function (val) {
+            if (val.fecha_fin_contrato < date) {
+              val.text = "**" + val.text + " (Fin Contrato: " + val.fecha_fin_contrato + ")";
+            }
+          });
+
           _this8.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
 
           axios.get('/www/pelotaris-aspe', {
@@ -8510,6 +8524,13 @@ var APIGetters = {
         }).then(function (response) {
           var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/alias/g, "text");
           _this9.pelotaris = JSON.parse(stringified);
+
+          _this9.pelotaris.map(function (val) {
+            if (val.fecha_fin_contrato < date) {
+              val.text = "**" + val.text + " (Fin Contrato: " + val.fecha_fin_contrato + ")";
+            }
+          });
+
           _this9.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
 
           axios.get('/www/pelotaris-aspe', {
