@@ -26,4 +26,16 @@ class FestivalPartido extends Model
   public function festival() {
     return $this->belongsTo('App\Festivale');
   }
+
+  public function marcadores() {
+    return $this->hasMany('App\FestivalPartidoMarcadore', 'festival_partido_id');
+  }
+
+  public function pelotaris() {
+    return $this->hasMany('App\FestivalPartidoPelotari', 'festival_partido_id');
+  }
+
+  public function tanteos() {
+    return $this->hasMany('App\FestivalPartidoTanteo', 'festival_partido_id');
+  }
 }

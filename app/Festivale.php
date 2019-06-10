@@ -19,8 +19,12 @@ class Festivale extends Model
     'fecha_presu',
   ];
 
+  public function partidos() {
+    return $this->hasMany('App\FestivalPartido', 'festival_id');
+  }
+
   public function costes() {
-    return $this->hasOne('App\FestivalCoste', 'festival_id');
+    return $this->hasOne('App\FestivalCoste', 'festival_id', 'id');
   }
 
   public function facturacion() {

@@ -10,8 +10,14 @@ use App\Festivale;
 use App\FestivalCoste;
 use App\FestivalFacturacion;
 use App\FestivalContacto;
+use App\FestivalPartidoMarcadore;
+use App\FestivalPartidoTanteo;
+use App\FestivalPartidoPelotari;
+use App\FestivalPartido;
 use App\User;
 use TCG\Voyager\Models\Role;
+
+use Illuminate\Support\Facades\Log;
 
 class FestivaleController extends Controller
 {
@@ -310,6 +316,53 @@ class FestivaleController extends Controller
     public function destroy(Request $request, $id)
     {
         $request->user()->authorizeRoles(['admin', 'gerente']);
+
+        $festival = Festivale::find($id);
+
+        $fest_costes = $festival->costes;
+        $fest_facturacion = $festival->facturacion;
+        $fest_contactos = $festival->contactos;
+        $fest_partidos = $festival->partidos;
+
+        if( $fest_costes ) {
+          FestivalCoste::destroy($fest_costes->id);
+        }
+        if( $fest_facturacion ) {
+          FestivalFacturacion::destroy($fest_facturacion->id);
+        }
+        if( $fest_contactos ) {
+          FestivalContacto::destroy($fest_contactos->id);
+        }
+
+        if( $fest_partidos ) {
+
+          foreach( $fest_partidos as $partido ) {
+
+            $part_marcadores = $partido->marcadores;
+            $part_tanteos = $partido->tanteos;
+            $part_pelotaris = $partido->pelotaris;
+
+            if( $part_marcadores ) {
+              foreach( $part_marcadores as $marcador ) {
+                FestivalPartidoMarcadore::destroy($marcador->id);
+              }
+            }
+            if( $part_tanteos ) {
+              foreach( $part_tanteos as $tanteo ) {
+                FestivalPartidoTanteo::destroy($tanteo->id);
+              }
+            }
+            if( $part_pelotaris ) {
+              foreach( $part_pelotaris as $pelotari ) {
+                FestivalPartidoPelotari::destroy($pelotari->id);
+              }
+            }
+
+            FestivalPartido::destroy($partido->id);
+
+          }
+
+        }
 
         Festivale::destroy($id);
 
