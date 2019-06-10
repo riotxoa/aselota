@@ -197,6 +197,24 @@
                                   :value="_coste_sanidad.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
                     </b-form-input>
                   </b-row>
+                  <b-row>
+                    <label class="col-md-7">Televisión:</label>
+                    <b-form-input id="coste_tv"
+                                  class="col-md-2 text-right"
+                                  type="text"
+                                  readonly
+                                  placeholder="N/A"
+                                  :value="_coste_tv + '%'">
+                    </b-form-input>
+                    <b-form-input id="importe_tv"
+                                  class="col-md-3 text-right"
+                                  type="text"
+                                  maxlength="8"
+                                  readonly
+                                  placeholder="0"
+                                  :value="_importe_tv.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})">
+                    </b-form-input>
+                  </b-row>
                 </b-collapse>
 
               </b-row>
@@ -210,7 +228,7 @@
                               placeholder="0.00"
                               v-model="_costes.importe_venta"
                               v-on:focus.native="$event.target.select()"
-                              v-on:blur.native="formatCurrency"
+                              :formatter="formatCurrency"
                               @change="updateImporteVenta">
                 </b-form-input>
               </b-row>
@@ -448,6 +466,8 @@
       _coste_sanidad: 'coste_sanidad',
       _coste: 'coste',
       _margen_beneficio: 'margen_beneficio',
+      _coste_tv: 'coste_tv',
+      _importe_tv: 'importe_tv',
     }),
     methods: {
       onSubmit() {
@@ -551,9 +571,8 @@
       formatPrice(value) {
         return parseFloat(value).toFixed(2);
       },
-      formatCurrency(ev) {
-        let value = ev.target.value;
-        ev.target.value = parseFloat(value).toFixed(2);
+      formatCurrency(value) {
+        return parseFloat(value).toFixed(2);
       }
     }
   }

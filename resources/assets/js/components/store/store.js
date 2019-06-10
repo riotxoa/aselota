@@ -62,6 +62,7 @@ export const store = new Vuex.Store({
     coste_tasa: 0.00,
     coste_sanidad: 0.00,
     coste_tv: 0,
+    importe_tv: 0,
     margen_beneficio: 0,
     correo_aviso_margen: "",
     coste: 0.00,
@@ -103,6 +104,7 @@ export const store = new Vuex.Store({
     coste_tasa: state => state.coste_tasa,
     coste_sanidad: state => state.coste_sanidad,
     coste_tv: state => state.coste_tv,
+    importe_tv: state => state.importe_tv,
     margen_beneficio: state => state.margen_beneficio,
     correo_aviso_margen: state => state.correo_aviso_margen,
     coste: state => state.coste,
@@ -186,6 +188,7 @@ export const store = new Vuex.Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.importe_tv = 0;
       state.margen_beneficio = 0;
       state.correo_aviso_margen = "";
       state.coste = 0.00;
@@ -218,6 +221,7 @@ export const store = new Vuex.Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.importe_tv = 0;
       state.margen_beneficio = 0;
       state.correo_aviso_margen = "";
       state.coste = 0.00;
@@ -350,7 +354,8 @@ export const store = new Vuex.Store({
       state.coste += state.coste_sanidad;
 
       //sumamos el porcentaje por televisión
-      state.coste = state.coste+((state.coste*state.coste_tv)/100);
+      state.importe_tv = state.coste * state.coste_tv / 100;
+      state.coste += state.importe_tv;
 
       //Calculamos el importe de venta ideal
       state.costes.importe_venta = parseInt(state.coste+((state.coste*state.margen_beneficio)/100));

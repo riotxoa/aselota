@@ -6349,6 +6349,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     coste_tasa: 0.00,
     coste_sanidad: 0.00,
     coste_tv: 0,
+    importe_tv: 0,
     margen_beneficio: 0,
     correo_aviso_margen: "",
     coste: 0.00,
@@ -6423,6 +6424,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     coste_tv: function coste_tv(state) {
       return state.coste_tv;
+    },
+    importe_tv: function importe_tv(state) {
+      return state.importe_tv;
     },
     margen_beneficio: function margen_beneficio(state) {
       return state.margen_beneficio;
@@ -6555,6 +6559,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.importe_tv = 0;
       state.margen_beneficio = 0;
       state.correo_aviso_margen = "";
       state.coste = 0.00;
@@ -6587,6 +6592,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.coste_tasa = 0.00;
       state.coste_sanidad = 0.00;
       state.coste_tv = 0;
+      state.importe_tv = 0;
       state.margen_beneficio = 0;
       state.correo_aviso_margen = "";
       state.coste = 0.00;
@@ -6720,7 +6726,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.coste += state.coste_sanidad;
 
       //sumamos el porcentaje por televisión
-      state.coste = state.coste + state.coste * state.coste_tv / 100;
+      state.importe_tv = state.coste * state.coste_tv / 100;
+      state.coste += state.importe_tv;
 
       //Calculamos el importe de venta ideal
       state.costes.importe_venta = parseInt(state.coste + state.coste * state.margen_beneficio / 100);
@@ -104562,6 +104569,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -104604,7 +104629,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     _coste_tasa: 'coste_tasa',
     _coste_sanidad: 'coste_sanidad',
     _coste: 'coste',
-    _margen_beneficio: 'margen_beneficio'
+    _margen_beneficio: 'margen_beneficio',
+    _coste_tv: 'coste_tv',
+    _importe_tv: 'importe_tv'
   }),
   methods: {
     onSubmit: function onSubmit() {
@@ -104712,9 +104739,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     formatPrice: function formatPrice(value) {
       return parseFloat(value).toFixed(2);
     },
-    formatCurrency: function formatCurrency(ev) {
-      var value = ev.target.value;
-      ev.target.value = parseFloat(value).toFixed(2);
+    formatCurrency: function formatCurrency(value) {
+      return parseFloat(value).toFixed(2);
     }
   }
 });
@@ -105180,6 +105206,45 @@ var render = function() {
                                 })
                               ],
                               1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-row",
+                              [
+                                _c("label", { staticClass: "col-md-7" }, [
+                                  _vm._v("Televisión:")
+                                ]),
+                                _vm._v(" "),
+                                _c("b-form-input", {
+                                  staticClass: "col-md-2 text-right",
+                                  attrs: {
+                                    id: "coste_tv",
+                                    type: "text",
+                                    readonly: "",
+                                    placeholder: "N/A",
+                                    value: _vm._coste_tv + "%"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("b-form-input", {
+                                  staticClass: "col-md-3 text-right",
+                                  attrs: {
+                                    id: "importe_tv",
+                                    type: "text",
+                                    maxlength: "8",
+                                    readonly: "",
+                                    placeholder: "0",
+                                    value: _vm._importe_tv.toLocaleString(
+                                      "de-DE",
+                                      {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                      }
+                                    )
+                                  }
+                                })
+                              ],
+                              1
                             )
                           ],
                           1
@@ -105201,15 +105266,13 @@ var render = function() {
                             id: "coste_importe_venta",
                             type: "number",
                             maxlength: "8",
-                            placeholder: "0.00"
+                            placeholder: "0.00",
+                            formatter: _vm.formatCurrency
                           },
                           on: { change: _vm.updateImporteVenta },
                           nativeOn: {
                             focus: function($event) {
                               $event.target.select()
-                            },
-                            blur: function($event) {
-                              return _vm.formatCurrency($event)
                             }
                           },
                           model: {
