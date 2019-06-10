@@ -6629,14 +6629,17 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       state.costes_fijos = costes_fijos;
 
       //Coste de material
-      state.coste_material = _.filter(state.costes_fijos, { 'id': 1 })[0].coste;
+      // state.coste_material = _.filter(state.costes_fijos, { 'id': 1 })[0].coste;
+      state.coste_material = _.filter(state.costes_fijos, { 'descripcion': 'Material del festival' })[0].coste;
 
       //Coste de auxiliares
-      var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+      // var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+      var coste_aux = _.filter(state.costes_fijos, { 'descripcion': 'Tarifa para auxiliares' })[0].coste;
       state.coste_auxiliares = coste_aux * state.costes.num_auxiliares;
 
       //Coste de taquilleros
-      var coste_taq = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+      // var coste_taq = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+      var coste_taq = _.filter(state.costes_fijos, { 'descripcion': 'Tarifa para taquillera' })[0].coste;
       state.coste_taquillera = coste_taq * state.costes.num_taquilleros;
 
       //Coste de sanidad
@@ -6644,12 +6647,15 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
       //Coste incremento por televisión
       if (state.header.television) {
-        state.coste_tv = _.filter(state.costes_fijos, { 'id': 5 })[0].coste;
+        // state.coste_tv = _.filter(state.costes_fijos, { 'id': 5 })[0].coste;
+        state.coste_tv = _.filter(state.costes_fijos, { 'descripcion': 'Festival televisado (%)' })[0].coste;
       }
 
       //Margen de beneficio del festival
-      state.margen_beneficio = _.filter(state.costes_fijos, { 'id': 6 })[0].coste;
-      state.correo_aviso_margen = _.filter(state.costes_fijos, { 'id': 6 })[0].correo;
+      // state.margen_beneficio = _.filter(state.costes_fijos, { 'id': 6 })[0].coste;
+      // state.correo_aviso_margen = _.filter(state.costes_fijos, { 'id': 6 })[0].correo;
+      state.margen_beneficio = _.filter(state.costes_fijos, { 'descripcion': 'Margen de beneficio (%)' })[0].coste;
+      state.correo_aviso_margen = _.filter(state.costes_fijos, { 'descripcion': 'Margen de beneficio (%)' })[0].correo;
     },
     SET_COSTE_AUXILIARES: function SET_COSTE_AUXILIARES(state, num_auxiliares) {
 
