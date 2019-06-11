@@ -294,7 +294,8 @@ export const store = new Vuex.Store({
     SET_COSTE_AUXILIARES (state, num_auxiliares){
 
       if(state.costes_fijos.length){
-        var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+        // var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+        var coste_aux = _.filter(state.costes_fijos, { 'descripcion': 'Tarifa para auxiliares' })[0].coste;
         state.costes.num_auxiliares = num_auxiliares;
         state.coste_auxiliares = coste_aux*num_auxiliares;
         this.commit('SUM_COSTE', state);
@@ -302,7 +303,8 @@ export const store = new Vuex.Store({
     },
     SET_COSTE_TAQUILLEROS (state, num_taquilleros){
       if(state.costes_fijos.length){
-        var coste_aux = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+        // var coste_aux = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+        var coste_aux = _.filter(state.costes_fijos, { 'descripcion': 'Tarifa para taquillera' })[0].coste;
         state.costes.num_taquilleros = num_taquilleros;
         state.coste_taquillera = coste_aux*num_taquilleros;
         this.commit('SUM_COSTE', state);
@@ -311,7 +313,8 @@ export const store = new Vuex.Store({
     SET_COSTE_SANIDAD (state, sanidad){
         //Coste de servicio sanitario
       if(sanidad){
-        state.coste_sanidad = _.filter(state.costes_fijos, { 'id': 4 })[0].coste;
+        // state.coste_sanidad = _.filter(state.costes_fijos, { 'id': 4 })[0].coste;
+        state.coste_sanidad = _.filter(state.costes_fijos, { 'descripcion': 'Servicio sanitario' })[0].coste;
       }else{
         state.coste_sanidad = 0;
       }
@@ -530,7 +533,7 @@ export const store = new Vuex.Store({
       if(fronton!=null && fronton.coste_alquiler!=null){
         state.coste_cancha = fronton.coste_alquiler;
       }
-      
+
       //Coste de tasa de juego
       if(fronton!=null){//ya lo hemos recogido antes
         var provincia = _.filter(state.provincias, { 'value': fronton.provincia_id })[0];

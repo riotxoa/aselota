@@ -6666,7 +6666,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     SET_COSTE_AUXILIARES: function SET_COSTE_AUXILIARES(state, num_auxiliares) {
 
       if (state.costes_fijos.length) {
-        var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+        // var coste_aux = _.filter(state.costes_fijos, { 'id': 2 })[0].coste;
+        var coste_aux = _.filter(state.costes_fijos, { 'descripcion': 'Tarifa para auxiliares' })[0].coste;
         state.costes.num_auxiliares = num_auxiliares;
         state.coste_auxiliares = coste_aux * num_auxiliares;
         this.commit('SUM_COSTE', state);
@@ -6674,7 +6675,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     SET_COSTE_TAQUILLEROS: function SET_COSTE_TAQUILLEROS(state, num_taquilleros) {
       if (state.costes_fijos.length) {
-        var coste_aux = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+        // var coste_aux = _.filter(state.costes_fijos, { 'id': 3 })[0].coste;
+        var coste_aux = _.filter(state.costes_fijos, { 'descripcion': 'Tarifa para taquillera' })[0].coste;
         state.costes.num_taquilleros = num_taquilleros;
         state.coste_taquillera = coste_aux * num_taquilleros;
         this.commit('SUM_COSTE', state);
@@ -6683,7 +6685,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     SET_COSTE_SANIDAD: function SET_COSTE_SANIDAD(state, sanidad) {
       //Coste de servicio sanitario
       if (sanidad) {
-        state.coste_sanidad = _.filter(state.costes_fijos, { 'id': 4 })[0].coste;
+        // state.coste_sanidad = _.filter(state.costes_fijos, { 'id': 4 })[0].coste;
+        state.coste_sanidad = _.filter(state.costes_fijos, { 'descripcion': 'Servicio sanitario' })[0].coste;
       } else {
         state.coste_sanidad = 0;
       }
