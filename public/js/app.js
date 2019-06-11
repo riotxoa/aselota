@@ -94569,12 +94569,12 @@ var render = function() {
                               [
                                 _c(
                                   "label",
-                                  { staticClass: "col-md-10 text-right" },
+                                  { staticClass: "col-10 text-right" },
                                   [_vm._v("Promesa")]
                                 ),
                                 _vm._v(" "),
                                 _c("b-form-checkbox", {
-                                  staticClass: "col-md-2 text-right",
+                                  staticClass: "col-2 text-right pr-0",
                                   staticStyle: {
                                     "margin-right": "0px !important"
                                   },

@@ -36,9 +36,9 @@
 
           <b-col cols="3" offset="9" class="position-absolute fixed-top">
             <b-row class="pt-3 mt-1">
-              <label class="col-md-10 text-right">Promesa</label>
+              <label class="col-10 text-right">Promesa</label>
               <b-form-checkbox id="check_promesa"
-                            class="col-md-2 text-right"
+                            class="col-2 text-right pr-0"
                             style="margin-right:0px !important;"
                             v-model="pelotari.promesa"
                             value="1"
