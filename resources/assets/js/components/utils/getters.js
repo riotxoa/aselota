@@ -241,7 +241,7 @@ var APIGetters = {
               val.text = "**" + val.text + " (Fin Contrato: " + val.fecha_fin_contrato + ")";
             }
           });
-          
+
           this.pelotaris.unshift({ value: null, text: "Seleccionar pelotari" });
 
           axios.get('/www/pelotaris-aspe', {

@@ -33,13 +33,14 @@ class PelotarisPromesaController extends Controller
 
           $fecha = $request->get('fecha');
           $today = date('Y-m-d');
+          $three_months_ago = date('Y-m-d', strtotime("-3 Months"));
 
           $items = $items->leftJoin('contratos as c1', 'pelotaris.id', '=', 'c1.pelotari_id')
                          ->leftJoin('contratos_comercial as cc1', 'c1.header_id', '=', 'cc1.header_id')
                          ->whereDate('c1.fecha_ini', '<=', $today)
-                         ->whereDate('c1.fecha_fin', '>=', $today)
+                         ->whereDate('c1.fecha_fin', '>=', $three_months_ago)
                          ->whereDate('cc1.fecha_ini', '<=', $fecha)
-                         ->whereDate('cc1.fecha_fin', '>=', $fecha)
+                         ->whereDate('cc1.fecha_fin', '>=', $three_months_ago)
                          ->whereNull('c1.deleted_at')->addSelect('c1.fecha_ini as fecha_contrato', 'cc1.coste', 'c1.garantia');
         }
 
