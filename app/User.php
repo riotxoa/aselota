@@ -66,4 +66,15 @@ class User extends \TCG\Voyager\Models\User
     {
       return null !== $this->role()->where('name', $role)->first();
     }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new Notifications\CustomResetPasswordNotification($token));
+    }
 }
