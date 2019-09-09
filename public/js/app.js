@@ -87594,7 +87594,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n  text-align:center;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  padding:0 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  height:100%;\n  max-height:2.8rem;\n  padding:.25rem .5rem 0;\n}\n.calendar-wrap tbody td div.asiste {\n  background:lightgreen;\n}\n.calendar-wrap tbody td div.no-asiste {\n  background:lightpink;\n}\n", ""]);
+exports.push([module.i, "\n.calendar-wrap .month-nav {\n  border-radius:0;\n  font-weight:bold;\n  text-transform:uppercase;\n  width:100%;\n}\n.calendar-wrap table {\n  border:1px solid black;\n  padding:.5rem;\n}\n.calendar-wrap thead {\n  font-weight:bold;\n}\n.calendar-wrap thead td,\n.calendar-wrap thead th {\n  font-size:.8rem;\n  padding:.25rem 1rem;\n  text-align:center;\n}\n.calendar-wrap thead td:not(:first-child),\n.calendar-wrap tbody td:not(:first-child) {\n  border-left:1px solid black;\n  text-align:center;\n}\n.calendar-wrap tbody td,\n.calendar-wrap tbody th {\n  border-top:1px solid black;\n  font-size:.8rem;\n  font-weight:bold;\n  height:2.85rem;\n  line-height:1;\n  padding:.25rem 1rem;\n  padding:0 1rem;\n  position:relative;\n  vertical-align:middle;\n}\n.calendar-wrap tbody td {\n  padding:0;\n}\n.calendar-wrap tbody td div {\n  height:100%;\n  max-height:2.8rem;\n  padding:.25rem .5rem 0;\n}\n.calendar-wrap tbody td div.asiste {\n  background:lightgreen;\n}\n.calendar-wrap tbody td div.estelar {\n  background:cadetblue;\n}\n.calendar-wrap tbody td div.no-asiste {\n  background:lightpink;\n}\n", ""]);
 
 // exports
 
@@ -87754,7 +87754,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         tooltip += "</div>";
 
-        return "<div class='" + (match.asiste ? 'asiste' : 'no-asiste') + "' data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + (match.estelar ? "<span class='icon voyager-star-two' style='color:green;font-size:.7rem;'></span><br>" : "<br>") + match.municipio_name + "</div>";
+        return "<div class='" + (match.asiste ? 'asiste' : 'no-asiste') + (match.estelar ? ' estelar' : '') + "' data-toggle='tooltip' data-placement='left' title='" + tooltip + "' data-html='true' style='cursor:pointer;'>" + (match.estelar ? "<span class='icon voyager-star-two' style='color:yellow;font-size:.7rem;'></span><br>" : "<br>") + match.municipio_name + "</div>";
       } else {
         return "<span>&nbsp;</span>";
       }
