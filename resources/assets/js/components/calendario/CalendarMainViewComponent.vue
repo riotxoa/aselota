@@ -100,8 +100,11 @@
       this.prev_month = this.getPrevMonth(this.curr_month);
       this.next_month = this.getNextMonth(this.curr_month);
 
-      this.prev_year = this.getPrevYear(this.curr_year);
-      this.next_year = this.getNextYear(this.next_year);
+      // this.prev_year = this.getPrevYear(this.curr_year);
+      // this.next_year = this.getNextYear(this.next_year);
+
+      this.prev_year = this.getPrevYear(this.curr_month);
+      this.next_year = this.getNextYear(this.curr_month);
 
       this.days = [31, (this.curr_year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
