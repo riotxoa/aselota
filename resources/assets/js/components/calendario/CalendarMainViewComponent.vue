@@ -30,7 +30,8 @@
               <th scope="row">
                 {{ pelotari.alias }}<br/>
                 <small>Jugados: <strong>{{ pelotari.partidos_jugados}}</strong> - Garantía: <strong>{{ pelotari.garantia }}</strong></small><br/>
-                <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small>
+                <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small><br/>
+                <small>Total {{ today.getFullYear() }}: <strong>{{ pelotari.partidos_jugados_this_year }}</strong> - Total {{ today.getFullYear() - 1 }}: <strong>{{ pelotari.partidos_jugados_last_year }}</strong></small>
               </th>
             </tr>
           </tbody>
@@ -236,7 +237,8 @@
     border-top:1px solid black;
     font-size:.8rem;
     font-weight:bold;
-    height:2.85rem;
+    /* height:2.85rem; */
+    height:3.05rem;
     line-height:1;
     padding:.25rem 1rem;
     padding:0 1rem;
@@ -248,7 +250,8 @@
   }
   .calendar-wrap tbody td div {
     height:100%;
-    max-height:2.8rem;
+    /* max-height:2.8rem; */
+    max-height:3rem;
     padding:.25rem .5rem 0;
   }
   .calendar-wrap tbody td div.asiste {

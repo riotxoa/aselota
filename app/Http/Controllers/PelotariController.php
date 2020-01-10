@@ -69,6 +69,8 @@ class PelotariController extends Controller
           $fecha = ( $request->get('fecha') ? $request->get('fecha') : $request->get('fecha_fin'));
           foreach($items as $key => $item) {
             $items[$key]->partidos_jugados = Pelotari::get_partidos_jugados_contrato($item->id, $fecha);
+            $items[$key]->partidos_jugados_last_year = Pelotari::get_partidos_jugados_ano($item->id, date('Y') - 1);
+            $items[$key]->partidos_jugados_this_year = Pelotari::get_partidos_jugados_ano($item->id, date('Y'));
           }
         }
 
