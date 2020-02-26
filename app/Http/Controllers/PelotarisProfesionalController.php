@@ -36,7 +36,13 @@ class PelotarisProfesionalController extends Controller
           $three_months_ago = date('Y-m-d', strtotime("-3 Months"));
 
           $items = $items->leftJoin('contratos as c1', 'pelotaris.id', '=', 'c1.pelotari_id')
-                         ->leftJoin('contratos_comercial as cc1', 'c1.header_id', '=', 'cc1.header_id')
+                         // ->leftJoin('contratos_comercial as cc1', 'c1.header_id', '=', 'cc1.header_id')
+                         ->leftJoin('contratos_comercial as cc1', function ($join) {
+                            $join->on('c1.header_id', '=', 'cc1.header_id')
+                                 ->where('cc1.fecha_fin', '=', DB::raw('(SELECT MAX(fecha_fin) from contratos_comercial as ccx where ccx.pelotari_id = cc1.pelotari_id)'))
+                                 ->on('c1.fecha_ini', '<=', 'cc1.fecha_fin')
+                                 ->on('c1.fecha_fin', '>=', 'cc1.fecha_ini');
+                         })
                          ->whereDate('c1.fecha_ini', '<=', $today)
                          ->whereDate('c1.fecha_fin', '>=', $three_months_ago)
                          ->whereDate('cc1.fecha_ini', '<=', $fecha)
