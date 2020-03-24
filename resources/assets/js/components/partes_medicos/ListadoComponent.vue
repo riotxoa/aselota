@@ -18,7 +18,7 @@
       <b-row>
 
         <b-col class="col-sm-8 float-left my-1 mb-3">
-          <!-- <filtro-festivales></filtro-festivales> -->
+          <filtro-partes></filtro-partes>
         </b-col>
 
         <b-col class="col-sm-4 text-right my-1 mb-3">
@@ -117,6 +117,7 @@
   import { mapState } from 'vuex';
   import Utils from '../utils/utils.js';
 
+  Vue.component('filtro-partes', require('./FiltroPartesComponent.vue'));
   Vue.component('delete-modal', require('../modals/ModalDeleteComponent.vue'));
 
   export default {
@@ -166,7 +167,9 @@
         },
       },
       created() {
-        store.dispatch('loadPartes');
+        store.dispatch('getInfoAuxPartesMedicos').then( () => {
+          store.dispatch('loadPartes');
+        });
       },
       methods: {
         onClickDelete (item) {

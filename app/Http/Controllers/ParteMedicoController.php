@@ -31,9 +31,30 @@ class ParteMedicoController extends Controller
                  ->leftJoin('pelotaris', 'med_partes.pelotari_id', '=', 'pelotaris.id')
                  ->leftJoin('med_diagnosticos', 'med_partes.med_diagnostico_id', '=', 'med_diagnosticos.id')
                  ->leftJoin('med_evoluciones', 'med_partes.med_evolucion_id', '=', 'med_evoluciones.id')
-                 ->leftJoin('med_lesiones', 'med_partes.id', '=', 'med_lesiones.med_parte_id')
-                 ->orderBy('med_partes.fecha_parte', 'desc')
-                 ->get();
+                 ->leftJoin('med_lesiones', 'med_partes.id', '=', 'med_lesiones.med_parte_id');
+
+      if( null !== $request->get('filter') ) {
+        $in_clause = array();
+
+        $filters = $request->get('filter');
+
+        foreach($filters as $filter) {
+          $filter = json_decode($filter);
+          if( 'in' == $filter->operator ) {
+            $in_clause[$filter->column][] = $filter->value;
+          } else {
+            $items = $items->where($filter->column, $filter->operator, $filter->value);
+          }
+        }
+
+        if(count($in_clause)) {
+          foreach($in_clause as $key => $clause) {
+            $items = $items->whereIn($key, $clause);
+          }
+        }
+      }
+
+      $items = $items->orderBy('med_partes.fecha_parte', 'desc')->get();
 
       return response()->json($items, 200);
     }

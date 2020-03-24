@@ -56,7 +56,7 @@
     created: function() {
       console.log("FichaComponent created");
 
-      store.dispatch('getInfoAuxPartesMedicos').then( () => {
+      // store.dispatch('getInfoAuxPartesMedicos').then( () => {
         this.$store.commit('SET_PARTE_EDIT', !this.isNewParte);
         if(!this.isNewParte) {
           let uri = '/www/partes/' + this.$route.params.id + '/get';
@@ -78,7 +78,7 @@
           store.dispatch('resetParte');
           this.show = true;
         }
-      });
+      // });
     },
     methods: {
       ...mapActions([

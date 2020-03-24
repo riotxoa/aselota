@@ -87,6 +87,7 @@ export const store = new Vuex.Store({
     entr_contenido: [],
 
     // Módulo MÉDICO
+    filter_partes: [],
     parte_edit: false,
     partes: [],
     partes_aux: {},
@@ -191,6 +192,8 @@ export const store = new Vuex.Store({
     frontones: state => state.frontones,
     frontones_filtered: state => state.frontones_filtered,
     campeonatos: state => state.campeonatos,
+    /* PARTES MÉDICOS*/
+    filter_partes: state => state.filter_partes,
     parte: state => state.parte,
     parte_delta: state => state.parte_delta,
     parte_lesion: state => state.parte_lesion,
@@ -747,6 +750,17 @@ export const store = new Vuex.Store({
     SET_PARTE_IS_RECAIDA( state, val ) {
       state.parte.is_recaida = val;
     },
+
+    SET_FILTER_PARTES (state, filter) {
+      state.filter_partes = filter;
+    },
+    ADD_FILTER_PARTES (state, value) {
+      state.filter_partes.push(value);
+    },
+    REMOVE_FILTER_PARTES (state, index) {
+      state.filter_partes.splice(index, 1);
+    },
+
     RESET_PARTE (state) {
       state.parte.id = null;
       state.parte.fecha_parte = null;
@@ -1452,6 +1466,27 @@ export const store = new Vuex.Store({
     },
 
     // Módulo MÉDICO
+    addFilterPartes({ commit, dispatch }, value) {
+      commit('ADD_FILTER_PARTES', value);
+      dispatch('filterPartes');
+    },
+    removeFilterPartes({ commit, dispatch }, index) {
+      commit('REMOVE_FILTER_PARTES', index);
+      dispatch('filterPartes');
+    },
+    filterPartes({ commit }) {
+      let data = {
+        params: {
+          filter: this.getters.filter_partes, // filter
+        }
+      };
+      axios
+        .get('/www/partes', data)
+        .then( r => r.data )
+        .then( partes => {
+          commit('SET_PARTES', partes);
+        });
+    },
     getInfoAuxPartesMedicos({ commit }) {
       return new Promise( (resolve, reject) => {
         axios

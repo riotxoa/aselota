@@ -6374,6 +6374,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     entr_contenido: [],
 
     // Módulo MÉDICO
+    filter_partes: [],
     parte_edit: false,
     partes: [],
     partes_aux: {},
@@ -6561,6 +6562,10 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     campeonatos: function campeonatos(state) {
       return state.campeonatos;
+    },
+    /* PARTES MÉDICOS*/
+    filter_partes: function filter_partes(state) {
+      return state.filter_partes;
     },
     parte: function parte(state) {
       return state.parte;
@@ -7127,6 +7132,15 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     },
     SET_PARTE_IS_RECAIDA: function SET_PARTE_IS_RECAIDA(state, val) {
       state.parte.is_recaida = val;
+    },
+    SET_FILTER_PARTES: function SET_FILTER_PARTES(state, filter) {
+      state.filter_partes = filter;
+    },
+    ADD_FILTER_PARTES: function ADD_FILTER_PARTES(state, value) {
+      state.filter_partes.push(value);
+    },
+    REMOVE_FILTER_PARTES: function REMOVE_FILTER_PARTES(state, index) {
+      state.filter_partes.splice(index, 1);
     },
     RESET_PARTE: function RESET_PARTE(state) {
       state.parte.id = null;
@@ -7893,8 +7907,36 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
 
     // Módulo MÉDICO
-    getInfoAuxPartesMedicos: function getInfoAuxPartesMedicos(_ref53) {
-      var commit = _ref53.commit;
+    addFilterPartes: function addFilterPartes(_ref53, value) {
+      var commit = _ref53.commit,
+          dispatch = _ref53.dispatch;
+
+      commit('ADD_FILTER_PARTES', value);
+      dispatch('filterPartes');
+    },
+    removeFilterPartes: function removeFilterPartes(_ref54, index) {
+      var commit = _ref54.commit,
+          dispatch = _ref54.dispatch;
+
+      commit('REMOVE_FILTER_PARTES', index);
+      dispatch('filterPartes');
+    },
+    filterPartes: function filterPartes(_ref55) {
+      var commit = _ref55.commit;
+
+      var data = {
+        params: {
+          filter: this.getters.filter_partes // filter
+        }
+      };
+      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partes', data).then(function (r) {
+        return r.data;
+      }).then(function (partes) {
+        commit('SET_PARTES', partes);
+      });
+    },
+    getInfoAuxPartesMedicos: function getInfoAuxPartesMedicos(_ref56) {
+      var commit = _ref56.commit;
 
       return new Promise(function (resolve, reject) {
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partes-medicos-aux').then(function (r) {
@@ -7909,8 +7951,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadPartes: function loadPartes(_ref54) {
-      var commit = _ref54.commit;
+    loadPartes: function loadPartes(_ref57) {
+      var commit = _ref57.commit;
 
       return new Promise(function (resolve, reject) {
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partes').then(function (r) {
@@ -7923,25 +7965,25 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    resetParte: function resetParte(_ref55) {
-      var commit = _ref55.commit;
+    resetParte: function resetParte(_ref58) {
+      var commit = _ref58.commit;
 
       commit('RESET_PARTE');
       commit('RESET_PARTE_DELTA');
       commit('RESET_PARTE_LESION');
     },
-    resetParteDelta: function resetParteDelta(_ref56) {
-      var commit = _ref56.commit;
+    resetParteDelta: function resetParteDelta(_ref59) {
+      var commit = _ref59.commit;
 
       commit('RESET_PARTE_DELTA');
     },
-    resetParteLesion: function resetParteLesion(_ref57) {
-      var commit = _ref57.commit;
+    resetParteLesion: function resetParteLesion(_ref60) {
+      var commit = _ref60.commit;
 
       commit('RESET_PARTE_LESION');
     },
-    saveParte: function saveParte(_ref58, data) {
-      var commit = _ref58.commit;
+    saveParte: function saveParte(_ref61, data) {
+      var commit = _ref61.commit;
 
       return new Promise(function (resolve, reject) {
         var uri = '/www/partes';
@@ -7953,8 +7995,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updateParte: function updateParte(_ref59, data) {
-      var commit = _ref59.commit;
+    updateParte: function updateParte(_ref62, data) {
+      var commit = _ref62.commit;
 
       return new Promise(function (resolve, reject) {
         var uri = '/www/partes/' + data.header.id + '/update';
@@ -7966,153 +8008,153 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updateLesionParte: function updateLesionParte(_ref60, val) {
-      var commit = _ref60.commit;
+    updateLesionParte: function updateLesionParte(_ref63, val) {
+      var commit = _ref63.commit;
 
       commit('SET_LESION_PARTE_ID', val);
     },
-    updateLesionLesionDesc: function updateLesionLesionDesc(_ref61, val) {
-      var commit = _ref61.commit;
+    updateLesionLesionDesc: function updateLesionLesionDesc(_ref64, val) {
+      var commit = _ref64.commit;
 
       commit('SET_LESION_LESION_DESC_ID', val);
     },
-    updateLesionPartesCuerpo: function updateLesionPartesCuerpo(_ref62, val) {
-      var commit = _ref62.commit;
+    updateLesionPartesCuerpo: function updateLesionPartesCuerpo(_ref65, val) {
+      var commit = _ref65.commit;
 
       commit('SET_LESION_PARTES_CUERPO_ID', val);
     },
-    updateLesionPartesCuerpoTxt: function updateLesionPartesCuerpoTxt(_ref63, val) {
-      var commit = _ref63.commit;
+    updateLesionPartesCuerpoTxt: function updateLesionPartesCuerpoTxt(_ref66, val) {
+      var commit = _ref66.commit;
 
       commit('SET_LESION_PARTES_CUERPO_TXT', val);
     },
-    updateLesionMedico: function updateLesionMedico(_ref64, val) {
-      var commit = _ref64.commit;
+    updateLesionMedico: function updateLesionMedico(_ref67, val) {
+      var commit = _ref67.commit;
 
       commit('SET_LESION_MEDICO_ID', val);
     },
-    updateLesionMedicoTxt: function updateLesionMedicoTxt(_ref65, val) {
-      var commit = _ref65.commit;
+    updateLesionMedicoTxt: function updateLesionMedicoTxt(_ref68, val) {
+      var commit = _ref68.commit;
 
       commit('SET_LESION_MEDICO_TXT', val);
     },
-    updateLesionCausante: function updateLesionCausante(_ref66, val) {
-      var commit = _ref66.commit;
+    updateLesionCausante: function updateLesionCausante(_ref69, val) {
+      var commit = _ref69.commit;
 
       commit('SET_LESION_CAUSANTE_ID', val);
     },
-    updateLesionCausanteTxt: function updateLesionCausanteTxt(_ref67, val) {
-      var commit = _ref67.commit;
+    updateLesionCausanteTxt: function updateLesionCausanteTxt(_ref70, val) {
+      var commit = _ref70.commit;
 
       commit('SET_LESION_CAUSANTE_TXT', val);
     },
-    updateLesionGradoLesion: function updateLesionGradoLesion(_ref68, val) {
-      var commit = _ref68.commit;
+    updateLesionGradoLesion: function updateLesionGradoLesion(_ref71, val) {
+      var commit = _ref71.commit;
 
       commit('SET_LESION_GRADO_LESION_ID', val);
     },
-    updateLesionTipoAtencion: function updateLesionTipoAtencion(_ref69, val) {
-      var commit = _ref69.commit;
+    updateLesionTipoAtencion: function updateLesionTipoAtencion(_ref72, val) {
+      var commit = _ref72.commit;
 
       commit('SET_LESION_TIPO_ATENCION_ID', val);
     },
-    updateLesionDescripcion: function updateLesionDescripcion(_ref70, val) {
-      var commit = _ref70.commit;
+    updateLesionDescripcion: function updateLesionDescripcion(_ref73, val) {
+      var commit = _ref73.commit;
 
       commit('SET_LESION_DESCRIPCION', val);
     },
-    updateLesionObservaciones: function updateLesionObservaciones(_ref71, val) {
-      var commit = _ref71.commit;
+    updateLesionObservaciones: function updateLesionObservaciones(_ref74, val) {
+      var commit = _ref74.commit;
 
       commit('SET_LESION_OBSERVACIONES', val);
     },
-    updateParteFechaParte: function updateParteFechaParte(_ref72, val) {
-      var commit = _ref72.commit;
+    updateParteFechaParte: function updateParteFechaParte(_ref75, val) {
+      var commit = _ref75.commit;
 
       commit('SET_PARTE_FECHA_PARTE', val);
     },
-    updateParteIsBaja: function updateParteIsBaja(_ref73, val) {
-      var commit = _ref73.commit;
+    updateParteIsBaja: function updateParteIsBaja(_ref76, val) {
+      var commit = _ref76.commit;
 
       commit('SET_PARTE_IS_BAJA', val);
     },
-    updateParteFechaAccidente: function updateParteFechaAccidente(_ref74, val) {
-      var commit = _ref74.commit;
+    updateParteFechaAccidente: function updateParteFechaAccidente(_ref77, val) {
+      var commit = _ref77.commit;
 
       commit('SET_PARTE_FECHA_ACCIDENTE', val);
     },
-    updateParteFechaBaja: function updateParteFechaBaja(_ref75, val) {
-      var commit = _ref75.commit;
+    updateParteFechaBaja: function updateParteFechaBaja(_ref78, val) {
+      var commit = _ref78.commit;
 
       commit('SET_PARTE_FECHA_BAJA', val);
     },
-    updateParteFechaAlta: function updateParteFechaAlta(_ref76, val) {
-      var commit = _ref76.commit;
+    updateParteFechaAlta: function updateParteFechaAlta(_ref79, val) {
+      var commit = _ref79.commit;
 
       commit('SET_PARTE_FECHA_ALTA', val);
     },
-    updateParteFechaProximaConsulta: function updateParteFechaProximaConsulta(_ref77, val) {
-      var commit = _ref77.commit;
+    updateParteFechaProximaConsulta: function updateParteFechaProximaConsulta(_ref80, val) {
+      var commit = _ref80.commit;
 
       commit('SET_PARTE_FECHA_PROXIMA_CONSULTA', val);
     },
-    updateParteFechaSiguiente: function updateParteFechaSiguiente(_ref78, val) {
-      var commit = _ref78.commit;
+    updateParteFechaSiguiente: function updateParteFechaSiguiente(_ref81, val) {
+      var commit = _ref81.commit;
 
       commit('SET_PARTE_FECHA_SIGUIENTE', val);
     },
-    updatePartePelotari: function updatePartePelotari(_ref79, val) {
-      var commit = _ref79.commit;
+    updatePartePelotari: function updatePartePelotari(_ref82, val) {
+      var commit = _ref82.commit;
 
       commit('SET_PARTE_PELOTARI', val);
     },
-    updateParteDiagnostico: function updateParteDiagnostico(_ref80, val) {
-      var commit = _ref80.commit;
+    updateParteDiagnostico: function updateParteDiagnostico(_ref83, val) {
+      var commit = _ref83.commit;
 
       commit('SET_PARTE_DIAGNOSTICO', val);
     },
-    updateParteDiagnosticoTxt: function updateParteDiagnosticoTxt(_ref81, val) {
-      var commit = _ref81.commit;
+    updateParteDiagnosticoTxt: function updateParteDiagnosticoTxt(_ref84, val) {
+      var commit = _ref84.commit;
 
       commit('SET_PARTE_DIAGNOSTICO_TXT', val);
     },
-    updateParteCentro: function updateParteCentro(_ref82, val) {
-      var commit = _ref82.commit;
+    updateParteCentro: function updateParteCentro(_ref85, val) {
+      var commit = _ref85.commit;
 
       commit('SET_PARTE_CENTRO', val);
     },
-    updateParteTipoAsistencia: function updateParteTipoAsistencia(_ref83, val) {
-      var commit = _ref83.commit;
+    updateParteTipoAsistencia: function updateParteTipoAsistencia(_ref86, val) {
+      var commit = _ref86.commit;
 
       commit('SET_PARTE_TIPO_ASISTENCIA', val);
     },
-    updateParteMotivoAlta: function updateParteMotivoAlta(_ref84, val) {
-      var commit = _ref84.commit;
+    updateParteMotivoAlta: function updateParteMotivoAlta(_ref87, val) {
+      var commit = _ref87.commit;
 
       commit('SET_PARTE_MOTIVO_ALTA', val);
     },
-    updateParteEvolucion: function updateParteEvolucion(_ref85, val) {
-      var commit = _ref85.commit;
+    updateParteEvolucion: function updateParteEvolucion(_ref88, val) {
+      var commit = _ref88.commit;
 
       commit('SET_PARTE_EVOLUCION', val);
     },
-    updateParteEvolucionTxt: function updateParteEvolucionTxt(_ref86, val) {
-      var commit = _ref86.commit;
+    updateParteEvolucionTxt: function updateParteEvolucionTxt(_ref89, val) {
+      var commit = _ref89.commit;
 
       commit('SET_PARTE_EVOLUCION_TXT', val);
     },
-    updateParteTratamiento: function updateParteTratamiento(_ref87, val) {
-      var commit = _ref87.commit;
+    updateParteTratamiento: function updateParteTratamiento(_ref90, val) {
+      var commit = _ref90.commit;
 
       commit('SET_PARTE_TRATAMIENTO', val);
     },
-    updateParteTratamientoTxt: function updateParteTratamientoTxt(_ref88, val) {
-      var commit = _ref88.commit;
+    updateParteTratamientoTxt: function updateParteTratamientoTxt(_ref91, val) {
+      var commit = _ref91.commit;
 
       commit('SET_PARTE_TRATAMIENTO_TXT', val);
     },
-    updateParteIsRecaida: function updateParteIsRecaida(_ref89, val) {
-      var commit = _ref89.commit;
+    updateParteIsRecaida: function updateParteIsRecaida(_ref92, val) {
+      var commit = _ref92.commit;
 
       commit('SET_PARTE_IS_RECAIDA', val);
     }
@@ -114033,6 +114075,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+Vue.component('filtro-partes', __webpack_require__(585));
 Vue.component('delete-modal', __webpack_require__(31));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -114078,7 +114121,9 @@ Vue.component('delete-modal', __webpack_require__(31));
     }
   },
   created: function created() {
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPartes');
+    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('getInfoAuxPartesMedicos').then(function () {
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('loadPartes');
+    });
   },
 
   methods: {
@@ -114177,7 +114222,12 @@ var render = function() {
           _c(
             "b-row",
             [
-              _c("b-col", { staticClass: "col-sm-8 float-left my-1 mb-3" }),
+              _c(
+                "b-col",
+                { staticClass: "col-sm-8 float-left my-1 mb-3" },
+                [_c("filtro-partes")],
+                1
+              ),
               _vm._v(" "),
               _c(
                 "b-col",
@@ -114768,26 +114818,26 @@ Vue.component('parte-lesion', __webpack_require__(575));
 
     console.log("FichaComponent created");
 
-    __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('getInfoAuxPartesMedicos').then(function () {
-      _this.$store.commit('SET_PARTE_EDIT', !_this.isNewParte);
-      if (!_this.isNewParte) {
-        var uri = '/www/partes/' + _this.$route.params.id + '/get';
-        _this.axios.get(uri).then(function (response) {
-          _this._header = response.data.parte;
-          _this._parte_lesion = response.data.parte_lesion;
-          _this._parte_delta = response.data.parte_delta;
-          _this.$store.commit('SET_PARTE_HEADER_ID', _this.$route.params.id);
-          _this.show = true;
-        }).catch(function (error) {
-          console.log("[remove] error: " + error);
-          _this.showSnackbar("ERROR al editar");
-          _this.show = true;
-        });
-      } else {
-        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('resetParte');
+    // store.dispatch('getInfoAuxPartesMedicos').then( () => {
+    this.$store.commit('SET_PARTE_EDIT', !this.isNewParte);
+    if (!this.isNewParte) {
+      var uri = '/www/partes/' + this.$route.params.id + '/get';
+      this.axios.get(uri).then(function (response) {
+        _this._header = response.data.parte;
+        _this._parte_lesion = response.data.parte_lesion;
+        _this._parte_delta = response.data.parte_delta;
+        _this.$store.commit('SET_PARTE_HEADER_ID', _this.$route.params.id);
         _this.show = true;
-      }
-    });
+      }).catch(function (error) {
+        console.log("[remove] error: " + error);
+        _this.showSnackbar("ERROR al editar");
+        _this.show = true;
+      });
+    } else {
+      __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].dispatch('resetParte');
+      this.show = true;
+    }
+    // });
   },
   methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapActions */])(['saveParte', 'updateParte']), {
     onSaveParte: function onSaveParte() {
@@ -117435,6 +117485,424 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 582 */,
+/* 583 */,
+/* 584 */,
+/* 585 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(586)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(588)
+/* template */
+var __vue_template__ = __webpack_require__(589)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/partes_medicos/FiltroPartesComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-70715008", Component.options)
+  } else {
+    hotAPI.reload("data-v-70715008", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 586 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(587);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("425aafdb", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-70715008\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroPartesComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-70715008\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FiltroPartesComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 587 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(4)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.filter-value-list li {\n  color:#007bff;\n}\n.filter-value-list li .fas {\n  color:#dd3545;\n  cursor:pointer;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 588 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_getters_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(7);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__utils_getters_js__["a" /* default */]],
+  data: function data() {
+    return {
+      selectedFilterType: null,
+      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'med_partes.pelotari_id', text: 'Pelotari' }, { value: 'med_partes.fecha_parte_ini', text: 'Fecha parte desde' }, { value: 'med_partes.fecha_parte_fin', text: 'Fecha parte hasta' }, { value: 'med_partes.fecha_accidente_ini', text: 'Fecha accidente desde' }, { value: 'med_partes.fecha_accidente_fin', text: 'Fecha accidente hasta' }, { value: 'med_partes.med_diagnostico_id', text: 'Diagnóstico' }, { value: 'med_partes.med_evolucion_id', text: 'Evolución' }],
+      selectedFilterValue: null,
+      filterValueOptions: [{ value: null, text: "Seleccionar filtro" }],
+      filterValueDate: null,
+      filterHasValue: false
+    };
+  },
+  created: function created() {
+    console.log("FiltroFestivalComponent created");
+    this.getPelotaris();
+  },
+
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapState */])({
+    _filterValues: 'filter_partes',
+    _partes_aux: 'partes_aux'
+  })),
+  methods: {
+    onChangeFilterType: function onChangeFilterType(ft) {
+      this.selectedFilterValue = null;
+      this.filterHasValue = false;
+      switch (ft) {
+
+        case 'med_partes.pelotari_id':
+          this.filterValueOptions = this.pelotaris;
+          break;
+        case 'med_partes.fecha_parte_ini':
+          break;
+        case 'med_partes.fecha_parte_fin':
+          break;
+        case 'med_partes.fecha_accidente_ini':
+          break;
+        case 'med_partes.fecha_accidente_fin':
+          break;
+        case 'med_partes.med_diagnostico_id':
+          this.filterValueOptions = this._partes_aux.diagnosticos;
+          break;
+        case 'med_partes.med_evolucion_id':
+          this.filterValueOptions = this._partes_aux.evoluciones;
+          break;
+      }
+    },
+    onChangeFilterValue: function onChangeFilterValue(fv) {
+      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
+    },
+    onChangeFilterDate: function onChangeFilterDate(fv) {
+      if (null == fv) this.filterHasValue = false;else this.filterHasValue = true;
+    },
+    addFilterValue: function addFilterValue() {
+      if (this.filterHasValue) {
+
+        var operator = '=';
+        var column = void 0;
+        var value = void 0;
+        var val = void 0;
+        var valTxt = void 0;
+
+        if ('med_partes.fecha_parte_ini' == this.selectedFilterType) {
+          operator = '>=';
+          column = 'med_partes.fecha_parte';
+          val = this.filterValueDate;
+          valTxt = this.filterValueDate;
+        } else if ('med_partes.fecha_parte_fin' == this.selectedFilterType) {
+          operator = '<=';
+          column = 'med_partes.fecha_parte';
+          val = this.filterValueDate;
+          valTxt = this.filterValueDate;
+        } else if ('med_partes.fecha_accidente_ini' == this.selectedFilterType) {
+          operator = '>=';
+          column = 'med_partes.fecha_accidente';
+          val = this.filterValueDate;
+          valTxt = this.filterValueDate;
+        } else if ('med_partes.fecha_accidente_fin' == this.selectedFilterType) {
+          operator = '<=';
+          column = 'med_partes.fecha_accidente';
+          val = this.filterValueDate;
+          valTxt = this.filterValueDate;
+        } else if ('med_partes.pelotari_id' == this.selectedFilterType || 'med_partes.med_diagnostico_id' == this.selectedFilterType || 'med_partes.med_evolucion_id' == this.selectedFilterType) {
+          operator = 'in';
+          column = this.selectedFilterType;
+          val = this.selectedFilterValue;
+          valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text;
+        } else {
+          operator = '=';
+          column = this.selectedFilterType;
+          val = this.selectedFilterValue;
+          valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text;
+        }
+
+        value = {
+          column: column,
+          columnTxt: _.find(this.filterTypeOptions, { value: this.selectedFilterType }).text,
+          operator: operator,
+          value: val,
+          valueTxt: valTxt
+        };
+
+        __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('addFilterPartes', value);
+      }
+
+      this.resetForm();
+    },
+    removeFilterValue: function removeFilterValue(index) {
+      __WEBPACK_IMPORTED_MODULE_1__store_store__["a" /* store */].dispatch('removeFilterPartes', index);
+    },
+    resetForm: function resetForm() {
+      this.filterHasValue = false;
+      this.selectedFilterType = null;
+      this.selectedFilterValue = null;
+      this.filterValueOptions = [{ value: null, text: "Seleccionar filtro" }];
+      this.filterValueDate = null;
+    }
+  }
+});
+
+/***/ }),
+/* 589 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "b-row",
+        { staticClass: "p-0 m-0" },
+        [
+          _c("b-form-select", {
+            staticClass: "col-sm-5 mb-0",
+            attrs: { options: _vm.filterTypeOptions },
+            on: { change: _vm.onChangeFilterType },
+            model: {
+              value: _vm.selectedFilterType,
+              callback: function($$v) {
+                _vm.selectedFilterType = $$v
+              },
+              expression: "selectedFilterType"
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-1" }),
+          _vm._v(" "),
+          "med_partes.fecha_parte_ini" != _vm.selectedFilterType &&
+          "med_partes.fecha_parte_fin" != _vm.selectedFilterType &&
+          "med_partes.fecha_accidente_ini" != _vm.selectedFilterType &&
+          "med_partes.fecha_accidente_fin" != _vm.selectedFilterType
+            ? _c("b-form-select", {
+                staticClass: "col-sm-5 mb-0",
+                attrs: { options: _vm.filterValueOptions },
+                on: { change: _vm.onChangeFilterValue },
+                model: {
+                  value: _vm.selectedFilterValue,
+                  callback: function($$v) {
+                    _vm.selectedFilterValue = $$v
+                  },
+                  expression: "selectedFilterValue"
+                }
+              })
+            : _c("b-form-input", {
+                staticClass: "col-sm-5 mb-0",
+                staticStyle: {
+                  "min-width": "127px",
+                  width: "calc(100% - 25px)"
+                },
+                attrs: { type: "date" },
+                on: { change: _vm.onChangeFilterDate },
+                model: {
+                  value: _vm.filterValueDate,
+                  callback: function($$v) {
+                    _vm.filterValueDate = $$v
+                  },
+                  expression: "filterValueDate"
+                }
+              }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-sm-1" },
+            [
+              _vm.filterHasValue
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-1",
+                      attrs: {
+                        size: "sm",
+                        variant: "danger",
+                        title: "Añadir filtro"
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.addFilterValue($event)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-plus" })]
+                  )
+                : _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-1",
+                      attrs: {
+                        size: "sm",
+                        variant: "default",
+                        title: "Añadir filtro",
+                        disabled: ""
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-plus" })]
+                  )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm._filterValues.length
+        ? _c("b-row", { staticClass: "p-0 mx-0 mb-0 mt-3" }, [
+            _c(
+              "ul",
+              { staticClass: "filter-value-list p-0 m-0" },
+              _vm._l(_vm._filterValues, function(value, index) {
+                return _c("li", { staticClass: "d-inline-block mr-4" }, [
+                  _c("i", {
+                    staticClass: "fas fa-times-circle mr-1",
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation()
+                        _vm.removeFilterValue(index)
+                      }
+                    }
+                  }),
+                  _vm._v(
+                    _vm._s(value.columnTxt) +
+                      ": " +
+                      _vm._s(value.valueTxt) +
+                      "\n      "
+                  )
+                ])
+              })
+            )
+          ])
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-70715008", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
