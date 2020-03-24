@@ -54,6 +54,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('entrenamientos', 'EntrenamientoController');
     Route::resource('eventos/motivos', 'PrensaMotivoController');
     Route::resource('eventos', 'PrensaEventoController');
+    Route::resource('partes', 'ParteMedicoController');
 
     Route::get('calendario', 'FestivaleController@getCalendarMonth');
     Route::get('entrenamiento', 'EntrenamientoController@getEntrenamiento');
@@ -78,6 +79,10 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('eventos/{id}/update/pelotari', 'PrensaEventoController@update_pelotari');
     Route::post('eventos/{id}/delete/pelotari', 'PrensaEventoController@delete_pelotari');
     Route::post('eventos/{id}/update', 'PrensaEventoController@update');
+    Route::get('partes/{id}/get', 'ParteMedicoController@getParte');
+    Route::post('partes/{id}/update', 'ParteMedicoController@update');
+
+    Route::get('partes-medicos-aux', 'ParteMedicoController@getAuxTablesInfo');
 });
 
 Auth::routes();

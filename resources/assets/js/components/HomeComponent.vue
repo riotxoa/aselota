@@ -66,6 +66,14 @@
             params: { userRole: this.userRole },
           })
           break;
+        case 'medico':
+          this.home = '/medico';
+          this.title = "Partes Médicos";
+          this.$router.push({
+            name: 'MÉDICO',
+            params: { userRole: this.userRole },
+          })
+          break;
         default:
           this.title = "SIN PERMISOS";
           break;

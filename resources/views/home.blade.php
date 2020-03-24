@@ -23,21 +23,7 @@
               <home-component user-role="prensa"></home-component>
               @break
             @case ('medico')
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard MÉDICO</div>
-                    <div class="card-body">
-                      @if (session('status'))
-                          <div class="alert alert-success" role="alert">
-                              {{ session('status') }}
-                          </div>
-                      @endif
-
-                      You are logged in! Your role is {{ $role }} !!
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <home-component user-role="medico"></home-component>
               @break
             @default
               <div class="col-md-8">

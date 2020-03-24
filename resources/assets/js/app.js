@@ -107,6 +107,16 @@ Vue.component('listado-cuadro', require('./components/cuadro/ListadoComponent.vu
 const HomeCuadro = { template: '<home-cuadro></home-cuadro>' };
 const ListCuadro = { template: '<listado-cuadro></listado-cuadro>' };
 
+// Módulo MÉDICO
+Vue.component('home-medico', require('./components/HomeMedicoComponent.vue'));
+Vue.component('listado-partes', require('./components/partes_medicos/ListadoComponent.vue'));
+Vue.component('ficha-parte', require('./components/partes_medicos/FichaComponent.vue'));
+
+const HomeMedico = { template: '<home-medico></home-medico>' };
+const ListPartes = { template: '<listado-partes></listado-partes>' };
+const CreateParte = { template: '<ficha-parte form-title="Nuevo Parte Médico" :is-new-parte=1></ficha-parte>' };
+const EditParte = { template: '<ficha-parte form-title="Editar Parte Médico" :is-new-parte=0></ficha-parte>' };
+
 
 
 const routes = [
@@ -204,7 +214,21 @@ const routes = [
         path: '', name: 'CUADRO', component: ListCuadro // ListEventos
       }
     ]
-  }
+  },
+  {
+    path: '/medico', component: HomeMedico,
+    children: [
+      {
+        path: '', name: 'MÉDICO', component: ListPartes
+      },
+      {
+        path: 'parte/new', component: CreateParte
+      },
+      {
+        path: 'parte/:id/edit', component: EditParte
+      },
+    ]
+  },
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

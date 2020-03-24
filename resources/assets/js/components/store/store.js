@@ -85,6 +85,68 @@ export const store = new Vuex.Store({
     frontones_filtered: [],
     campeonatos: [],
     entr_contenido: [],
+
+    // Módulo MÉDICO
+    parte_edit: false,
+    partes: [],
+    partes_aux: {},
+    parte: {
+      id: null,
+      fecha_parte: null,
+      fecha_accidente: null,
+      fecha_baja: null,
+      fecha_alta: null,
+      fecha_proxima_consulta: null,
+      fecha_siguiente: null,
+      pelotari_id: null,
+      med_diagnostico_id: null,
+      med_diagnostico_txt: '',
+      med_centro_id: null,
+      med_tipo_asistencia_id: null,
+      med_motivo_alta_id: null,
+      med_evolucion_id: null,
+      med_evolucion_txt: '',
+      med_tratamiento_id: null,
+      med_tratamiento_txt: '',
+      is_recaida: false,
+      is_baja: false,
+    },
+    parte_delta: {
+      id: null,
+      med_parte_id: null,
+      fecha_recaida: null,
+      fecha_accidente_recaida: null,
+      fronton_id: null,
+      hora_at: null,
+      med_lesion_id: null,
+      med_lesion_txt: '',
+      med_parte_cuerpo_id: null,
+      med_medico_id: null,
+      med_medico_txt: '',
+      med_tiempo_trabajo_id: null,
+      desc_accidente: '',
+      med_causante_id: null,
+      med_causante_txt: '',
+      med_grado_lesion_id: null,
+      med_tipo_atencion_id: null,
+      tiempo_previsto: null,
+      tiempo_previsto_txt: '',
+    },
+    parte_lesion: {
+      id: null,
+      med_parte_id: null,
+      med_lesion_desc_id: null,
+      med_partes_cuerpo_id: null,
+      med_partes_cuerpo_txt: '',
+      med_medico_id: null,
+      med_medico_txt: '',
+      med_causante_id: null,
+      med_causante_txt: '',
+      med_grado_lesion_id: null,
+      med_tipo_atencion_id: null,
+      descripcion: '',
+      observaciones: '',
+    },
   },
   getters: {
     festivales: state => state.festivales,
@@ -129,6 +191,12 @@ export const store = new Vuex.Store({
     frontones: state => state.frontones,
     frontones_filtered: state => state.frontones_filtered,
     campeonatos: state => state.campeonatos,
+    parte: state => state.parte,
+    parte_delta: state => state.parte_delta,
+    parte_lesion: state => state.parte_lesion,
+    partes: state => state.partes,
+    partes_aux: state => state.partes_aux,
+    parte_edit: state => state.parte_edit,
   },
   mutations: {
     SET_FESTIVALES (state, festivales) {
@@ -550,6 +618,191 @@ export const store = new Vuex.Store({
     },
     SET_CAMPEONATOS (state, campeonatos) {
       state.campeonatos = campeonatos;
+    },
+
+    // Módulo MÉDICO
+    SET_PARTES (state, partes) {
+      state.partes = partes;
+    },
+    SET_PARTES_AUX (state, aux) {
+      state.partes_aux.causantes = aux.causantes;
+      state.partes_aux.centros = aux.centros;
+      state.partes_aux.diagnosticos = aux.diagnosticos;
+      state.partes_aux.evoluciones = aux.evoluciones;
+      state.partes_aux.grados_lesion = aux.grados_lesion;
+      state.partes_aux.lesiones_dsc = aux.lesiones_dsc;
+      state.partes_aux.medicos = aux.medicos;
+      state.partes_aux.motivos_alta = aux.motivos_alta;
+      state.partes_aux.partes_cuerpo = aux.partes_cuerpo;
+      state.partes_aux.tiempos_trabajo = aux.tiempos_trabajo;
+      state.partes_aux.tipos_asistencia = aux.tipos_asistencia;
+      state.partes_aux.tipos_atencion = aux.tipos_atencion;
+      state.partes_aux.tratamientos = aux.tratamientos;
+      state.partes_aux.lugares = aux.lugares;
+    },
+    SET_PARTE_HEADER_ID (state, id) {
+      state.parte.id = id;
+    },
+
+    SET_LESION_PARTE_ID( state, val ) {
+      state.parte_lesion.med_parte_id = val;
+    },
+    SET_LESION_LESION_DESC_ID( state, val ) {
+      state.parte_lesion.med_lesion_desc_id = val;
+    },
+    SET_LESION_PARTES_CUERPO_ID( state, val ) {
+      state.parte_lesion.med_partes_cuerpo_id = val;
+    },
+    SET_LESION_PARTES_CUERPO_TXT( state, val ) {
+      state.parte_lesion.med_partes_cuerpo_txt = val;
+    },
+    SET_LESION_MEDICO_ID( state, val ) {
+      state.parte_lesion.med_medico_id = val;
+    },
+    SET_LESION_MEDICO_TXT( state, val ) {
+      state.parte_lesion.med_medico_txt = val;
+    },
+    SET_LESION_CAUSANTE_ID( state, val ) {
+      state.parte_lesion.med_causante_id = val;
+    },
+    SET_LESION_CAUSANTE_TXT( state, val ) {
+      state.parte_lesion.med_causante_txt = val;
+    },
+    SET_LESION_GRADO_LESION_ID( state, val ) {
+      state.parte_lesion.med_grado_lesion_id = val;
+    },
+    SET_LESION_TIPO_ATENCION_ID( state, val ) {
+      state.parte_lesion.med_tipo_atencion_id = val;
+    },
+    SET_LESION_DESCRIPCION( state, val ) {
+      state.parte_lesion.descripcion = val;
+    },
+    SET_LESION_OBSERVACIONES( state, val ) {
+      state.parte_lesion.observaciones = val;
+    },
+
+    SET_PARTE_HEADER( state, header ) {
+      state.parte = header;
+    },
+    SET_PARTE_DELTA( state, parte_delta ) {
+      state.parte_delta = parte_delta;
+    },
+    SET_PARTE_LESION( state, parte_lesion ) {
+      state.parte_lesion = parte_lesion;
+    },
+    SET_PARTE_EDIT( state, val ) {
+      state.parte_edit = val;
+    },
+    SET_PARTE_FECHA_PARTE( state, val ) {
+      state.parte.fecha_parte = val;
+    },
+    SET_PARTE_IS_BAJA( state, val ) {
+      state.parte.is_baja = val;
+    },
+    SET_PARTE_FECHA_ACCIDENTE( state, val ) {
+      state.parte.fecha_accidente = val;
+    },
+    SET_PARTE_FECHA_BAJA( state, val ) {
+      state.parte.fecha_baja = val;
+    },
+    SET_PARTE_FECHA_ALTA( state, val ) {
+      state.parte.fecha_alta = val;
+    },
+    SET_PARTE_FECHA_PROXIMA_CONSULTA( state, val ) {
+      state.parte.fecha_proxima_consulta = val;
+    },
+    SET_PARTE_FECHA_SIGUIENTE( state, val ) {
+      state.parte.fecha_siguiente = val;
+    },
+    SET_PARTE_PELOTARI( state, val ) {
+      state.parte.pelotari_id = val;
+    },
+    SET_PARTE_DIAGNOSTICO( state, val ) {
+      state.parte.med_diagnostico_id = val;
+    },
+    SET_PARTE_DIAGNOSTICO_TXT( state, val ) {
+      state.parte.med_diagnostico_txt = val;
+    },
+    SET_PARTE_CENTRO( state, val ) {
+      state.parte.med_centro_id = val;
+    },
+    SET_PARTE_TIPO_ASISTENCIA( state, val ) {
+      state.parte.med_tipo_asistencia_id = val;
+    },
+    SET_PARTE_MOTIVO_ALTA( state, val ) {
+      state.parte.med_motivo_alta_id = val;
+    },
+    SET_PARTE_EVOLUCION( state, val ) {
+      state.parte.med_evolucion_id = val;
+    },
+    SET_PARTE_EVOLUCION_TXT( state, val ) {
+      state.parte.med_evolucion_txt = val;
+    },
+    SET_PARTE_TRATAMIENTO( state, val ) {
+      state.parte.med_tratamiento_id = val;
+    },
+    SET_PARTE_TRATAMIENTO_TXT( state, val ) {
+      state.parte.med_tratamiento_txt = val;
+    },
+    SET_PARTE_IS_RECAIDA( state, val ) {
+      state.parte.is_recaida = val;
+    },
+    RESET_PARTE (state) {
+      state.parte.id = null;
+      state.parte.fecha_parte = null;
+      state.parte.fecha_accidente = null;
+      state.parte.fecha_baja = null;
+      state.parte.fecha_alta = null;
+      state.parte.fecha_proxima_consulta = null;
+      state.parte.fecha_siguiente = null;
+      state.parte.pelotari_id = null;
+      state.parte.med_diagnostico_id = null;
+      state.parte.med_diagnostico_txt = '';
+      state.parte.med_centro_id = null;
+      state.parte.med_tipo_asistencia_id = null;
+      state.parte.med_motivo_alta_id = null;
+      state.parte.med_evolucion_id = null;
+      state.parte.med_evolucion_txt = '';
+      state.parte.med_tratamiento_id = null;
+      state.parte.med_tratamiento_txt = '';
+      state.parte.is_recaida = false;
+      state.parte.is_baja = false;
+    },
+    RESET_PARTE_DELTA (state) {
+      state.parte_delta.id = null;
+      state.parte_delta.med_parte_id = null;
+      state.parte_delta.fecha_recaida = null;
+      state.parte_delta.fecha_accidente_recaida = null;
+      state.parte_delta.fronton_id = null;
+      state.parte_delta.hora_at = null;
+      state.parte_delta.med_lesion_id = null;
+      state.parte_delta.med_lesion_txt = '';
+      state.parte_delta.med_parte_cuerpo_id = null;
+      state.parte_delta.med_medico_id = null;
+      state.parte_delta.med_medico_txt = '';
+      state.parte_delta.med_tiempo_trabajo_id = null;
+      state.parte_delta.desc_accidente = '';
+      state.parte_delta.med_causante_id = null;
+      state.parte_delta.med_causante_txt = '';
+      state.parte_delta.med_grado_lesion_id = null;
+      state.parte_delta.med_tipo_atencion_id = null;
+      state.parte_delta.tiempo_previsto = null;
+      state.parte_delta.tiempo_previsto_txt = '';
+    },
+    RESET_PARTE_LESION (state) {
+      state.parte_lesion.id = null;
+      state.parte_lesion.med_parte_id = null;
+      state.parte_lesion.med_lesion_desc_id = null;
+      state.parte_lesion.med_partes_cuerpo_id = null;
+      state.parte_lesion.med_partes_cuerpo_txt = '';
+      state.parte_lesion.med_medico_id = null;
+      state.parte_lesion.med_medico_txt = '';
+      state.parte_lesion.med_causante_id = null;
+      state.parte_lesion.med_causante_txt = '';
+      state.parte_lesion.med_grado_lesion_id = null;
+      state.parte_lesion.med_tipo_atencion_id = null;
+      state.parte_lesion.descripcion = '';
+      state.parte_lesion.observaciones = '';
     },
   },
   actions: {
@@ -1196,6 +1449,169 @@ export const store = new Vuex.Store({
           campeonatos.unshift({ value: null, text: "Seleccionar campeonato"});
           commit('SET_CAMPEONATOS', campeonatos);
         })
+    },
+
+    // Módulo MÉDICO
+    getInfoAuxPartesMedicos({ commit }) {
+      return new Promise( (resolve, reject) => {
+        axios
+          .get('/www/partes-medicos-aux')
+          .then( r => r.data )
+          .then( aux => {
+            var stringified = JSON.stringify(aux).replace(/"id"/g, '"value"').replace(/desc/g, "text").replace(/name/g, "text");
+            aux = JSON.parse(stringified);
+            commit( 'SET_PARTES_AUX', aux );
+            resolve(aux);
+          })
+          .catch( err => {
+            reject(err);
+          });
+      });
+
+    },
+    loadPartes({ commit }) {
+      return new Promise( (resolve, reject) => {
+        axios
+          .get('/www/partes')
+          .then( r => r.data )
+          .then( partes => {
+            commit('SET_PARTES', partes);
+            resolve( partes );
+          })
+          .catch( err => {
+            reject( err );
+          });
+      });
+    },
+    resetParte({ commit }) {
+      commit('RESET_PARTE');
+      commit('RESET_PARTE_DELTA');
+      commit('RESET_PARTE_LESION');
+    },
+    resetParteDelta({ commit }) {
+      commit('RESET_PARTE_DELTA');
+    },
+    resetParteLesion({ commit }) {
+      commit('RESET_PARTE_LESION');
+    },
+
+    saveParte({ commit }, data) {
+      return new Promise( (resolve, reject) => {
+        let uri = '/www/partes';
+
+        axios.post(uri, data)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    updateParte({ commit }, data) {
+      return new Promise( (resolve, reject) => {
+        let uri = '/www/partes/' + data.header.id + '/update';
+
+        axios.post(uri, data)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+
+    updateLesionParte({ commit }, val) {
+      commit('SET_LESION_PARTE_ID', val);
+    },
+    updateLesionLesionDesc({ commit }, val) {
+      commit('SET_LESION_LESION_DESC_ID', val);
+    },
+    updateLesionPartesCuerpo({ commit }, val) {
+      commit('SET_LESION_PARTES_CUERPO_ID', val);
+    },
+    updateLesionPartesCuerpoTxt({ commit }, val) {
+      commit('SET_LESION_PARTES_CUERPO_TXT', val);
+    },
+    updateLesionMedico({ commit }, val) {
+      commit('SET_LESION_MEDICO_ID', val);
+    },
+    updateLesionMedicoTxt({ commit }, val) {
+      commit('SET_LESION_MEDICO_TXT', val);
+    },
+    updateLesionCausante({ commit }, val) {
+      commit('SET_LESION_CAUSANTE_ID', val);
+    },
+    updateLesionCausanteTxt({ commit }, val) {
+      commit('SET_LESION_CAUSANTE_TXT', val);
+    },
+    updateLesionGradoLesion({ commit }, val) {
+      commit('SET_LESION_GRADO_LESION_ID', val);
+    },
+    updateLesionTipoAtencion({ commit }, val) {
+      commit('SET_LESION_TIPO_ATENCION_ID', val);
+    },
+    updateLesionDescripcion({ commit }, val) {
+      commit('SET_LESION_DESCRIPCION', val);
+    },
+    updateLesionObservaciones({ commit }, val) {
+      commit('SET_LESION_OBSERVACIONES', val);
+    },
+
+    updateParteFechaParte({ commit }, val) {
+      commit('SET_PARTE_FECHA_PARTE', val);
+    },
+    updateParteIsBaja({ commit }, val) {
+      commit('SET_PARTE_IS_BAJA', val);
+    },
+    updateParteFechaAccidente({ commit }, val) {
+      commit('SET_PARTE_FECHA_ACCIDENTE', val);
+    },
+    updateParteFechaBaja({ commit }, val) {
+      commit('SET_PARTE_FECHA_BAJA', val);
+    },
+    updateParteFechaAlta({ commit }, val) {
+      commit('SET_PARTE_FECHA_ALTA', val);
+    },
+    updateParteFechaProximaConsulta({ commit }, val) {
+      commit('SET_PARTE_FECHA_PROXIMA_CONSULTA', val);
+    },
+    updateParteFechaSiguiente({ commit }, val) {
+      commit('SET_PARTE_FECHA_SIGUIENTE', val);
+    },
+    updatePartePelotari({ commit }, val) {
+      commit('SET_PARTE_PELOTARI', val);
+    },
+    updateParteDiagnostico({ commit }, val) {
+      commit('SET_PARTE_DIAGNOSTICO', val);
+    },
+    updateParteDiagnosticoTxt({ commit }, val) {
+      commit('SET_PARTE_DIAGNOSTICO_TXT', val);
+    },
+    updateParteCentro({ commit }, val) {
+      commit('SET_PARTE_CENTRO', val);
+    },
+    updateParteTipoAsistencia({ commit }, val) {
+      commit('SET_PARTE_TIPO_ASISTENCIA', val);
+    },
+    updateParteMotivoAlta({ commit }, val) {
+      commit('SET_PARTE_MOTIVO_ALTA', val);
+    },
+    updateParteEvolucion({ commit }, val) {
+      commit('SET_PARTE_EVOLUCION', val);
+    },
+    updateParteEvolucionTxt({ commit }, val) {
+      commit('SET_PARTE_EVOLUCION_TXT', val);
+    },
+    updateParteTratamiento({ commit }, val) {
+      commit('SET_PARTE_TRATAMIENTO', val);
+    },
+    updateParteTratamientoTxt({ commit }, val) {
+      commit('SET_PARTE_TRATAMIENTO_TXT', val);
+    },
+    updateParteIsRecaida({ commit }, val) {
+      commit('SET_PARTE_IS_RECAIDA', val);
     },
   }
 });
