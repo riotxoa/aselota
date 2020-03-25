@@ -91810,7 +91810,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n#listado-contratos .b-table th,\n#listado-contratos .b-table td {\n  border-color:#e5e5e5;\n}\n#listado-contratos .b-table th.table-success,\n#listado-contratos .b-table th.table-warning {\n  border-bottom-color:white;\n}\n#listado-contratos .b-table td.table-success,\n#listado-contratos .b-table td.table-warning {\n  border-color:white;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) {\n  background:#28a745;\n  border-color:#28a745;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) .icon.voyager-plus:before {\n  content: \"p\";\n  position:relative;\n  top:4px;\n}\n#listado-contratos .card-header a.btn:focus {\n  -webkit-box-shadow:none;\n  box-shadow:none;\n}\n", ""]);
+exports.push([module.i, "\n.table-custom-ficha-sueldo {\n  background-color:#ffca9b;\n}\n.table-custom-garantia {\n  background-color:#d5e8ff;\n}\n.table-custom-imagen {\n  background-color:#fadde3;\n}\n#listado-contratos .b-table th,\n#listado-contratos .b-table td {\n  border-color:#e5e5e5;\n}\n#listado-contratos .b-table th.table-success,\n#listado-contratos .b-table th.table-warning {\n  border-bottom-color:white;\n}\n#listado-contratos .b-table td.table-success,\n#listado-contratos .b-table td.table-warning {\n  border-color:white;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) {\n  background:#28a745;\n  border-color:#28a745;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) .icon.voyager-plus:before {\n  content: \"p\";\n  position:relative;\n  top:4px;\n}\n#listado-contratos .card-header a.btn:focus {\n  -webkit-box-shadow:none;\n  box-shadow:none;\n}\n", ""]);
 
 // exports
 
@@ -92014,7 +92014,7 @@ var showSnackbar = function showSnackbar(msg) {
       displayComercial: false,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields_tramo: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mes</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false }, { key: 'formacion', label: '<span title="Periodo de Formación">Formación</span>', formatter: this.formatCheckbox, class: 'text-center', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      fields_tramo: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'ficha', label: '<span title="Ficha">Ficha</span>', formatter: this.formatAmount, class: 'text-right', variant: 'custom-ficha-sueldo', sortable: false }, { key: 'sueldo', label: '<span title="Sueldo">Sueldo</span>', formatter: this.formatAmount, class: 'text-right', variant: 'custom-ficha-sueldo', sortable: false }, { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mes</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false }, { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false }, { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', variant: 'custom-imagen', sortable: false }, { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', variant: 'custom-garantia', sortable: false }, { key: 'formacion', label: '<span title="Periodo de Formación">Formación</span>', formatter: this.formatCheckbox, class: 'text-center', sortable: true }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       fields_comercial: [{ key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true }, { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true }, { key: 'coste', label: '<span title="Coste">Coste</span>', formatter: this.formatAmount, class: 'text-right', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       contratos: [],
       totalRows: 0,
@@ -96856,6 +96856,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -96883,6 +96909,8 @@ var showSnackbar = function showSnackbar(msg) {
         pelotari_id: null,
         fecha_ini: null,
         fecha_fin: null,
+        ficha: null,
+        sueldo: null,
         dieta_mes: null,
         dieta_partido: null,
         prima_partido: null,
@@ -96921,6 +96949,8 @@ var showSnackbar = function showSnackbar(msg) {
       this.tramo.id = rowTramo.id;
       this.tramo.fecha_ini = rowTramo.fecha_ini;
       this.tramo.fecha_fin = rowTramo.fecha_fin;
+      this.tramo.ficha = this.formatAmount(rowTramo.ficha);
+      this.tramo.sueldo = this.formatAmount(rowTramo.sueldo);
       this.tramo.dieta_mes = this.formatAmount(rowTramo.dieta_mes);
       this.tramo.dieta_partido = this.formatAmount(rowTramo.dieta_partido);
       this.tramo.prima_partido = this.formatAmount(rowTramo.prima_partido);
@@ -96966,6 +96996,8 @@ var showSnackbar = function showSnackbar(msg) {
       /* Reset our form values */
       this.tramo.fecha_ini = null;
       this.tramo.fecha_fin = null;
+      this.tramo.ficha = null;
+      this.tramo.sueldo = null;
       this.tramo.dieta_mes = null;
       this.tramo.dieta_partido = null;
       this.tramo.prima_partido = null;
@@ -97077,6 +97109,68 @@ var render = function() {
                               _vm.$set(_vm.tramo, "fecha_fin", $$v)
                             },
                             expression: "tramo.fecha_fin"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: { label: "Ficha:", "label-for": "fichaInput" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffca9b" },
+                          attrs: {
+                            id: "fichaInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.ficha,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "ficha", $$v)
+                            },
+                            expression: "tramo.ficha"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-3",
+                        attrs: { label: "Sueldo:", "label-for": "sueldoInput" }
+                      },
+                      [
+                        _c("b-form-input", {
+                          staticClass: "text-right",
+                          staticStyle: { "background-color": "#ffca9b" },
+                          attrs: {
+                            id: "sueldoInput",
+                            type: "number",
+                            maxlength: "8",
+                            placeholder: "0"
+                          },
+                          model: {
+                            value: _vm.tramo.sueldo,
+                            callback: function($$v) {
+                              _vm.$set(_vm.tramo, "sueldo", $$v)
+                            },
+                            expression: "tramo.sueldo"
                           }
                         })
                       ],

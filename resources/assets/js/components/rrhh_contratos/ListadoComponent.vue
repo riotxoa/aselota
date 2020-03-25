@@ -85,7 +85,7 @@
             </b-row>
 
             <b-table striped hover small responsive
-              :items="contrato.comerciales" 
+              :items="contrato.comerciales"
               :fields="fields_comercial">
               <template slot="actions" slot-scope="row">
                 <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
@@ -188,12 +188,14 @@
           fields_tramo: [
             { key: 'fecha_ini', label: '<span title="Fecha de Inicio">F. Inicio</span>', formatter: this.formatDate, sortable: true },
             { key: 'fecha_fin', label: '<span title="Fecha de Finalización">F. Fin</span>', formatter: this.formatDate, sortable: true },
+            { key: 'ficha', label: '<span title="Ficha">Ficha</span>', formatter: this.formatAmount, class: 'text-right', variant: 'custom-ficha-sueldo', sortable: false },
+            { key: 'sueldo', label: '<span title="Sueldo">Sueldo</span>', formatter: this.formatAmount, class: 'text-right', variant: 'custom-ficha-sueldo', sortable: false },
             { key: 'dieta_mes', label: '<span title="Dieta básica mensual">D. Mes</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
             { key: 'dieta_partido', label: '<span title="Dieta por partido jugado">D. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'success', sortable: false },
             { key: 'prima_partido', label: '<span title="Prima por partido jugado">Pr. Partido</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
             { key: 'prima_estelar', label: '<span title="Prima por partido estelar jugado">Pr. Estelar</span>', formatter: this.formatAmount, class: 'text-right', variant: 'warning', sortable: false },
-            { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', sortable: false },
-            { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', sortable: false },
+            { key: 'd_imagen', label: '<span title="Dchos.Imagen">Dchos.Imagen</span>', formatter: this.formatAmount, class: 'text-right', variant: 'custom-imagen', sortable: false },
+            { key: 'garantia', label: '<span title="Partidos garantía">Garantía</span>', class: 'text-right', variant: 'custom-garantia', sortable: false },
             { key: 'formacion', label: '<span title="Periodo de Formación">Formación</span>', formatter: this.formatCheckbox, class: 'text-center', sortable: true },
             { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
           ],
@@ -443,6 +445,15 @@
 </script>
 
 <style>
+  .table-custom-ficha-sueldo {
+    background-color:#ffca9b;
+  }
+  .table-custom-garantia {
+    background-color:#d5e8ff;
+  }
+  .table-custom-imagen {
+    background-color:#fadde3;
+  }
   #listado-contratos .b-table th,
   #listado-contratos .b-table td {
     border-color:#e5e5e5;

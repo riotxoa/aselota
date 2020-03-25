@@ -14,6 +14,8 @@ class Contrato extends Model
     'pelotari_id',
     'fecha_ini',
     'fecha_fin',
+    'ficha',
+    'sueldo',
     'dieta_mes',
     'dieta_partido',
     'prima_partido',

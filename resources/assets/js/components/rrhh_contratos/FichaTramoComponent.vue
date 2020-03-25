@@ -32,6 +32,32 @@
                             placeholder="dd/mm/yyyy">
               </b-form-input>
             </b-form-group>
+          </b-row>
+          <b-row>
+            <b-form-group label="Ficha:"
+                          label-for="fichaInput"
+                          class="col-sm-3">
+              <b-form-input id="fichaInput"
+                            class="text-right"
+                            type="number"
+                            v-model="tramo.ficha"
+                            maxlength="8"
+                            placeholder="0"
+                            style="background-color:#ffca9b">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Sueldo:"
+                          label-for="sueldoInput"
+                          class="col-sm-3">
+              <b-form-input id="sueldoInput"
+                            class="text-right"
+                            type="number"
+                            v-model="tramo.sueldo"
+                            maxlength="8"
+                            placeholder="0"
+                            style="background-color:#ffca9b">
+              </b-form-input>
+            </b-form-group>
             <b-form-group label="Partidos garantía:"
                           label-for="garantiaInput"
                           class="col-sm-3">
@@ -192,6 +218,8 @@
           pelotari_id: null,
           fecha_ini: null,
           fecha_fin: null,
+          ficha: null,
+          sueldo: null,
           dieta_mes: null,
           dieta_partido: null,
           prima_partido: null,
@@ -229,6 +257,8 @@
         this.tramo.id = rowTramo.id;
         this.tramo.fecha_ini = rowTramo.fecha_ini;
         this.tramo.fecha_fin = rowTramo.fecha_fin;
+        this.tramo.ficha = this.formatAmount(rowTramo.ficha);
+        this.tramo.sueldo = this.formatAmount(rowTramo.sueldo);
         this.tramo.dieta_mes = this.formatAmount(rowTramo.dieta_mes);
         this.tramo.dieta_partido = this.formatAmount(rowTramo.dieta_partido);
         this.tramo.prima_partido = this.formatAmount(rowTramo.prima_partido);
@@ -276,6 +306,8 @@
         /* Reset our form values */
         this.tramo.fecha_ini = null;
         this.tramo.fecha_fin = null;
+        this.tramo.ficha = null;
+        this.tramo.sueldo = null;
         this.tramo.dieta_mes = null;
         this.tramo.dieta_partido = null;
         this.tramo.prima_partido = null;

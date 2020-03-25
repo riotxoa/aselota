@@ -67,6 +67,8 @@ class ContratoController extends Controller
           'pelotari_id' => $request->get('pelotari_id'),
           'fecha_ini' => $request->get('fecha_ini'),
           'fecha_fin' => $request->get('fecha_fin'),
+          'ficha' => $request->get('ficha'),
+          'sueldo' => $request->get('sueldo'),
           'dieta_mes' => ($request->get('dieta_mes') ? $request->get('dieta_mes') : 0),
           'dieta_partido' => ($request->get('dieta_partido') ? $request->get('dieta_partido') : 0),
           'prima_partido' => ($request->get('prima_partido') ? $request->get('prima_partido') : 0),
@@ -125,6 +127,8 @@ class ContratoController extends Controller
 
         $item->fecha_ini = $request->get('fecha_ini');
         $item->fecha_fin = $request->get('fecha_fin');
+        $item->ficha = $request->get('ficha');
+        $item->sueldo = $request->get('sueldo');
         $item->dieta_mes = $request->get('dieta_mes');
         $item->dieta_partido = $request->get('dieta_partido');
         $item->prima_partido = $request->get('prima_partido');
