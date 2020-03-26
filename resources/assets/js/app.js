@@ -117,7 +117,14 @@ const ListPartes = { template: '<listado-partes></listado-partes>' };
 const CreateParte = { template: '<ficha-parte form-title="Nuevo Parte Médico" :is-new-parte=1></ficha-parte>' };
 const EditParte = { template: '<ficha-parte form-title="Editar Parte Médico" :is-new-parte=0></ficha-parte>' };
 
+// PLEN: PLANIFICACIÓN DE ENTRENAMIENTOS
+Vue.component('plen-home', require('./components/HomePLENComponent.vue'));
+Vue.component('plen-gestor-dashboard', require('./components/PLEN/gestor/00_DashboardComponent.vue'));
+Vue.component('plen-entrenador-dashboard', require('./components/PLEN/entrenador/00_DashboardComponent.vue'));
 
+const PLEN_Home = { template: '<plen-home></plen-home>' };
+const PLEN_GESTOR_Dashboard = { template: '<plen-gestor-dashboard></plen-gestor-dashboard>' };
+const PLEN_ENTRENADOR_Dashboard = { template: '<plen-entrenador-dashboard></plen-entrenador-dashboard>' };
 
 const routes = [
   {
@@ -229,6 +236,17 @@ const routes = [
       },
     ]
   },
+  {
+    path: '/PLEN', component: PLEN_Home,
+    children: [
+      {
+        path: '', name: 'PLEN_GESTOR', component: PLEN_GESTOR_Dashboard
+      },
+      {
+        path: '', name: 'PLEN_ENTRENADOR', component: PLEN_ENTRENADOR_Dashboard
+      },
+    ]
+  }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});
