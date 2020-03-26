@@ -15,15 +15,7 @@
       }
     },
     created() {
-      switch( this.$route.params.userRole ) {
-        case 'plen_gestor':
-          this.$route.push({ name: 'PLEN_GESTOR' });
-          break;
-        default: // 'plen_entrenador'
-          this.$route.push({ name: 'PLEN_ENTRENADOR' });
-          break;
-      }
-      console.log("[CREATED] 1. this.userRole: " + this.$route.params.userRole);
+
     }
   }
 </script>
