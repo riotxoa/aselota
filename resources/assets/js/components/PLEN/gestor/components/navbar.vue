@@ -5,7 +5,7 @@
 
       <b-navbar toggleable type="dark" variant="dark">
         <b-container class="p-0 px-md-3">
-          <b-navbar-brand href="#"><b-icon-home class="mr-2"></b-icon-home>Inicio</b-navbar-brand>
+          <b-navbar-brand :to="{ name: 'PLEN_GESTOR_Inicio' }"><b-icon-home class="mr-2"></b-icon-home>Inicio</b-navbar-brand>
 
           <b-navbar-toggle target="navbar-toggle-collapse" @click="() => { expanded = !expanded }" style="border-color:#cfcfcf; border-radius:0; color:#ffffff;">
             <b-icon-arrow-up v-if="expanded"></b-icon-arrow-up>
@@ -14,14 +14,14 @@
 
           <b-collapse id="navbar-toggle-collapse" is-nav>
             <b-navbar-nav class="m-0">
-              <b-nav-item href="#">Mesociclos</b-nav-item>
-              <b-nav-item href="#">Sesiones</b-nav-item>
+              <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }">Mesociclos</b-nav-item>
+              <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }">Sesiones</b-nav-item>
               <b-nav-item-dropdown text="Auxiliares" right>
-                <b-dropdown-item href="#">Tipos de Mesociclo</b-dropdown-item>
-                <b-dropdown-item href="#">Tipos de Microciclo</b-dropdown-item>
-                <b-dropdown-item href="#">Tipos de Ejercicio</b-dropdown-item>
-                <b-dropdown-item href="#">Sub-Tipos de Ejercicio</b-dropdown-item>
-                <b-dropdown-item href="#">Fases de Sesión</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMeso' }">Tipos de Mesociclo</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMicro' }">Tipos de Microciclo</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposEjercicio' }">Tipos de Ejercicio</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'PLEN_GESTOR_SubtiposEjercicio' }">Sub-Tipos de Ejercicio</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'PLEN_GESTOR_Fases' }">Fases de Sesión</b-dropdown-item>
               </b-nav-item-dropdown>
             </b-navbar-nav>
           </b-collapse>
@@ -33,16 +33,16 @@
     <!-- Menu for bigger devices (big tablets and desktop) -->
     <b-col class="d-none d-xl-inline">
       <b-nav class="plen-side-nav" vertical>
-        <b-nav-item href="#"><b-icon-home class="mr-2"></b-icon-home>Inicio</b-nav-item>
-        <b-nav-item href="#"><b-icon-macro class="mr-2"></b-icon-macro>Mesociclos</b-nav-item>
-        <b-nav-item href="#"><b-icon-sesion class="mr-2"></b-icon-sesion>Sesiones</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Inicio' }"><b-icon-home class="mr-2"></b-icon-home>Inicio</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }"><b-icon-macro class="mr-2"></b-icon-macro>Mesociclos</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }"><b-icon-sesion class="mr-2"></b-icon-sesion>Sesiones</b-nav-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-nav-item-dropdown id="dropdownmenu" :html="auxiliares_label" toggle-class="nav-link-custom" menu-class="plen-drop-menu" left>
-          <b-dropdown-item href="#"><b-icon-tipomeso class="mr-2"></b-icon-tipomeso>Tipos de Mesociclo</b-dropdown-item>
-          <b-dropdown-item href="#"><b-icon-tipomicro class="mr-2"></b-icon-tipomicro>Tipos de Microciclo</b-dropdown-item>
-          <b-dropdown-item href="#"><b-icon-tipoejercicio class="mr-2"></b-icon-tipoejercicio>Tipos de Ejercicio</b-dropdown-item>
-          <b-dropdown-item href="#"><b-icon-subtipoejercicio class="mr-2"></b-icon-subtipoejercicio>Sub-Tipos de Ejercicio</b-dropdown-item>
-          <b-dropdown-item href="#"><b-icon-fases class="mr-2"></b-icon-fases>Fases de Sesión</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMeso' }"><b-icon-tipomeso class="mr-2"></b-icon-tipomeso>Tipos de Mesociclo</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMicro' }"><b-icon-tipomicro class="mr-2"></b-icon-tipomicro>Tipos de Microciclo</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposEjercicio' }"><b-icon-tipoejercicio class="mr-2"></b-icon-tipoejercicio>Tipos de Ejercicio</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_SubtiposEjercicio' }"><b-icon-subtipoejercicio class="mr-2"></b-icon-subtipoejercicio>Sub-Tipos de Ejercicio</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_Fases' }"><b-icon-fases class="mr-2"></b-icon-fases>Fases de Sesión</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-nav>
     </b-col>
@@ -100,11 +100,12 @@
     /* left:-7.5px!important; */
   }
 
-  #plennavbar li.nav-item:hover > a {
+  #plennavbar .d-none li.nav-item:hover > a {
     background-color:#efefef;
   }
-  #plennavbar a {
+  #plennavbar .d-none a {
     color:#333333;
+    text-decoration:none;
 
     -webkit-transition:all .15s ease-in-out;
     -moz-transition:all .15s ease-in-out;

@@ -13,7 +13,7 @@
           <b-icon-double-right v-else></b-icon-double-right>
         </a>
         <div class="p-xl-3">
-          <h1>KAIXO MUNDUA!! Gestor</h1>
+          <router-view></router-view>
         </div>
       </b-col>
     </b-row>
@@ -30,6 +30,9 @@
       return {
         showMenu: true,
       }
+    },
+    created() {
+      this.$router.push({ name: 'PLEN_GESTOR_Inicio' });
     },
     methods: {
       toggleMenu() {

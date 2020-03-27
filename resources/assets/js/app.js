@@ -119,11 +119,30 @@ const EditParte = { template: '<ficha-parte form-title="Editar Parte Médico" :i
 
 // PLEN: PLANIFICACIÓN DE ENTRENAMIENTOS
 Vue.component('plen-home', require('./components/HomePLENComponent.vue'));
+
 Vue.component('plen-gestor-dashboard', require('./components/PLEN/gestor/00_DashboardComponent.vue'));
+Vue.component('plen-gestor-inicio', require('./components/PLEN/gestor/10_InicioComponent.vue'));
+Vue.component('plen-gestor-mesociclos', require('./components/PLEN/gestor/20_MesociclosComponent.vue'));
+Vue.component('plen-gestor-sesiones', require('./components/PLEN/gestor/30_SesionesComponent.vue'));
+Vue.component('plen-gestor-tipos-meso', require('./components/PLEN/gestor/410_TiposMesocicloComponent.vue'));
+Vue.component('plen-gestor-tipos-micro', require('./components/PLEN/gestor/420_TiposMicrocicloComponent.vue'));
+Vue.component('plen-gestor-tipos-ejercicio', require('./components/PLEN/gestor/430_TiposEjercicioComponent.vue'));
+Vue.component('plen-gestor-subtipos-ejercicio', require('./components/PLEN/gestor/440_SubtiposEjercicioComponent.vue'));
+Vue.component('plen-gestor-fases', require('./components/PLEN/gestor/450_FasesSesionComponent.vue'));
+
 Vue.component('plen-entrenador-dashboard', require('./components/PLEN/entrenador/00_DashboardComponent.vue'));
 
 const PLEN_Home = { template: '<plen-home></plen-home>' };
 const PLEN_GESTOR_Dashboard = { template: '<plen-gestor-dashboard></plen-gestor-dashboard>' };
+const PLEN_GESTOR_Inicio = { template: '<plen-gestor-inicio></plen-gestor-inicio>' };
+const PLEN_GESTOR_Mesociclos = { template: '<plen-gestor-mesociclos></plen-gestor-mesociclos>' };
+const PLEN_GESTOR_Sesiones = { template: '<plen-gestor-sesiones></plen-gestor-sesiones>' };
+const PLEN_GESTOR_TiposMeso = { template: '<plen-gestor-tipos-meso></plen-gestor-tipos-meso>' };
+const PLEN_GESTOR_TiposMicro = { template: '<plen-gestor-tipos-micro></plen-gestor-tipos-micro>' };
+const PLEN_GESTOR_TiposEjercicio = { template: '<plen-gestor-tipos-ejercicio></plen-gestor-tipos-ejercicio>' };
+const PLEN_GESTOR_SubtiposEjercicio = { template: '<plen-gestor-subtipos-ejercicio></plen-gestor-subtipos-ejercicio>' };
+const PLEN_GESTOR_Fases = { template: '<plen-gestor-fases></plen-gestor-fases>' };
+
 const PLEN_ENTRENADOR_Dashboard = { template: '<plen-entrenador-dashboard></plen-entrenador-dashboard>' };
 
 const routes = [
@@ -237,10 +256,34 @@ const routes = [
     ]
   },
   {
-    path: '/PLEN', component: PLEN_Home,
+    path: '/PLEN', component: PLEN_GESTOR_Dashboard,
     children: [
       {
         path: '', name: 'PLEN_GESTOR', component: PLEN_GESTOR_Dashboard
+      },
+      {
+        path: 'inicio', name: 'PLEN_GESTOR_Inicio', component: PLEN_GESTOR_Inicio
+      },
+      {
+        path: 'mesociclos', name: 'PLEN_GESTOR_Mesociclos', component: PLEN_GESTOR_Mesociclos
+      },
+      {
+        path: 'sesiones', name: 'PLEN_GESTOR_Sesiones', component: PLEN_GESTOR_Sesiones
+      },
+      {
+        path: 'tipos-mesociclo', name: 'PLEN_GESTOR_TiposMeso', component: PLEN_GESTOR_TiposMeso
+      },
+      {
+        path: 'tipos-microciclo', name: 'PLEN_GESTOR_TiposMicro', component: PLEN_GESTOR_TiposMicro
+      },
+      {
+        path: 'tipos-ejercicio', name: 'PLEN_GESTOR_TiposEjercicio', component: PLEN_GESTOR_TiposEjercicio
+      },
+      {
+        path: 'subtipos-ejercicio', name: 'PLEN_GESTOR_SubtiposEjercicio', component: PLEN_GESTOR_SubtiposEjercicio
+      },
+      {
+        path: 'fases', name: 'PLEN_GESTOR_Fases', component: PLEN_GESTOR_Fases
       },
       {
         path: '', name: 'PLEN_ENTRENADOR', component: PLEN_ENTRENADOR_Dashboard
