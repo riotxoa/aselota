@@ -5,11 +5,11 @@
 
       <b-navbar toggleable type="dark" variant="dark">
         <b-container class="p-0 px-md-3">
-          <b-navbar-brand :to="{ name: 'PLEN_GESTOR_Inicio' }"><b-icon-home class="mr-2"></b-icon-home>Inicio</b-navbar-brand>
+          <b-navbar-brand :to="{ name: 'PLEN_GESTOR_Inicio' }"><i class="fa fa-home mr-2"></i>Inicio</b-navbar-brand>
 
           <b-navbar-toggle target="navbar-toggle-collapse" @click="() => { expanded = !expanded }" style="border-color:#cfcfcf; border-radius:0; color:#ffffff;">
-            <b-icon-arrow-up v-if="expanded"></b-icon-arrow-up>
-            <b-icon-arrow-down v-else></b-icon-arrow-down>
+            <i v-if="expanded" class="fa fa-caret-up" aria-hidden="true"></i>
+            <i v-else class="fa fa-caret-down" aria-hidden="true"></i>
           </b-navbar-toggle>
 
           <b-collapse id="navbar-toggle-collapse" is-nav>
@@ -33,17 +33,20 @@
     <!-- Menu for bigger devices (big tablets and desktop) -->
     <b-col class="d-none d-xl-inline">
       <b-nav class="plen-side-nav" vertical>
-        <b-nav-item :to="{ name: 'PLEN_GESTOR_Inicio' }"><b-icon-home class="mr-2"></b-icon-home>Inicio</b-nav-item>
-        <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }"><b-icon-macro class="mr-2"></b-icon-macro>Mesociclos</b-nav-item>
-        <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }"><b-icon-sesion class="mr-2"></b-icon-sesion>Sesiones</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Inicio' }"><i class="fa fa-home mr-2"></i>Inicio</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }"><i class="fa fa-arrows-alt-h mr-2"></i>Mesociclos</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }"><i class="fas fa-stopwatch mr-2"></i>Sesiones</b-nav-item>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-nav-item-dropdown id="dropdownmenu" :html="auxiliares_label" toggle-class="nav-link-custom" menu-class="plen-drop-menu" left>
-          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMeso' }"><b-icon-tipomeso class="mr-2"></b-icon-tipomeso>Tipos de Mesociclo</b-dropdown-item>
-          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMicro' }"><b-icon-tipomicro class="mr-2"></b-icon-tipomicro>Tipos de Microciclo</b-dropdown-item>
-          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposEjercicio' }"><b-icon-tipoejercicio class="mr-2"></b-icon-tipoejercicio>Tipos de Ejercicio</b-dropdown-item>
-          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_SubtiposEjercicio' }"><b-icon-subtipoejercicio class="mr-2"></b-icon-subtipoejercicio>Sub-Tipos de Ejercicio</b-dropdown-item>
-          <b-dropdown-item :to="{ name: 'PLEN_GESTOR_Fases' }"><b-icon-fases class="mr-2"></b-icon-fases>Fases de Sesión</b-dropdown-item>
-        </b-nav-item-dropdown>
+        <b-nav-item class="dropdown position-relative">
+          <a class="nav-link dropdown-toggle p-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class='fas fa-table mr-2'></i>Auxiliares</a>
+          <div id="dropdownmenu" class="dropdown-menu plen-drop-menu">
+            <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_TiposMeso' }"><i class="far fa-calendar mr-2"></i>Tipos de Mesociclo</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_TiposMicro' }"><i class="far fa-calendar-alt mr-2"></i>Tipos de Microciclo</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_TiposEjercicio' }"><i class="fas fa-bars mr-2"></i>Tipos de Ejercicio</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_SubtiposEjercicio' }"><i class="fas fa-stream mr-2"></i>Sub-Tipos de Ejercicio</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_Fases' }"><i class="fas fa-sort-amount-down mr-2"></i>Fases de Sesión</router-link>
+          </div>
+        </b-nav-item>
       </b-nav>
     </b-col>
     <!-- /Menu for bigger devices (big tablets and desktop) -->
@@ -51,29 +54,11 @@
 </template>
 
 <script>
-  import { BIcon, BIconBraces, BIconCardList, BIconChevronBarUp, BIconChevronBarDown, BIconHouse, BIconLayers, BIconList, BIconListNested, BIconSoundwave, BIconTable, BIconViewList, BIconWatch } from 'bootstrap-vue'
-
   export default {
     data () {
       return {
-        auxiliares_label: '<svg class="bi bi-table mr-2" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M15 4H1V3h14v1z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M5 15.5v-14h1v14H5zm5 0v-14h1v14h-1z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M15 8H1V7h14v1zm0 4H1v-1h14v1z" clip-rule="evenodd"/><path d="M0 2a2 2 0 012-2h12a2 2 0 012 2v2H0V2z"/></svg>Auxiliares',
         expanded: false,
       }
-    },
-    components: {
-      'b-icon': BIcon,
-      'b-icon-arrow-up': BIconChevronBarUp,
-      'b-icon-arrow-down': BIconChevronBarDown,
-      'b-icon-card': BIconCardList,
-      'b-icon-fases': BIconLayers,
-      'b-icon-home': BIconHouse,
-      'b-icon-macro': BIconViewList,
-      'b-icon-sesion': BIconWatch,
-      'b-icon-subtipoejercicio': BIconListNested,
-      'b-icon-tabla': BIconTable,
-      'b-icon-tipoejercicio': BIconList,
-      'b-icon-tipomeso': BIconSoundwave,
-      'b-icon-tipomicro': BIconBraces,
     },
   }
 </script>
@@ -94,10 +79,11 @@
 </style>
 
 <style>
-  #dropdownmenu .plen-drop-menu {
+  #dropdownmenu.plen-drop-menu {
     background:transparent;
     border:none;
-    /* left:-7.5px!important; */
+    left:-1.25rem!important;
+    top:.25rem!important;
   }
 
   #plennavbar .d-none li.nav-item:hover > a {

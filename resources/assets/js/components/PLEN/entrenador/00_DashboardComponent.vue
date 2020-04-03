@@ -9,8 +9,8 @@
 
       <b-col :xl="showMenu ? 10 : 12" class="position-relative">
         <a id="toggleButton" class="position-absolute" :title="showMenu ? 'Ocultar menú' : 'Mostrar menú'" @click="toggleMenu()">
-          <b-icon-double-left v-if="showMenu"></b-icon-double-left>
-          <b-icon-double-right v-else></b-icon-double-right>
+          <i v-if="showMenu" class="fas fa-angle-double-left"></i>
+          <i v-else class="fas fa-angle-double-right"></i>
         </a>
         <div class="p-xl-3">
           <h1>KAIXO MUNDUA!! Entrenador</h1>
@@ -21,7 +21,6 @@
 </template>
 
 <script>
-  import { BIconChevronDoubleLeft, BIconChevronDoubleRight } from 'bootstrap-vue';
   import PlenNavbar from './components/navbar.vue';
   import $ from 'jquery';
 
@@ -37,8 +36,6 @@
       }
     },
     components: {
-      'b-icon-double-left': BIconChevronDoubleLeft,
-      'b-icon-double-right': BIconChevronDoubleRight,
       'plen-navbar': PlenNavbar,
     },
   }
