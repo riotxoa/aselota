@@ -12098,222 +12098,6 @@ function pluckProps(keysToPluck, objToPluck) {
 
 /***/ }),
 /* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = observeDOM;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(11);
-
-
-
-/**
- * Observe a DOM element changes, falls back to eventListener mode
- * @param {Element} el The DOM element to observe
- * @param {Function} callback callback to be called on change
- * @param {object} [opts={childList: true, subtree: true}] observe options
- * @see http://stackoverflow.com/questions/3219758
- */
-function observeDOM(el, callback, opts) {
-  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-  var eventListenerSupported = window.addEventListener;
-
-  // Handle case where we might be passed a vue instance
-  el = el ? el.$el || el : null;
-  /* istanbul ignore next: dificult to test in JSDOM */
-  if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["l" /* isElement */])(el)) {
-    // We can't observe somthing that isn't an element
-    return null;
-  }
-
-  var obs = null;
-
-  /* istanbul ignore next: dificult to test in JSDOM */
-  if (MutationObserver) {
-    // Define a new observer
-    obs = new MutationObserver(function (mutations) {
-      var changed = false;
-      // A Mutation can contain several change records, so we loop through them to see what has changed.
-      // We break out of the loop early if any "significant" change has been detected
-      for (var i = 0; i < mutations.length && !changed; i++) {
-        // The muttion record
-        var mutation = mutations[i];
-        // Mutation Type
-        var type = mutation.type;
-        // DOM Node (could be any DOM Node type - HTMLElement, Text, comment, etc)
-        var target = mutation.target;
-        if (type === 'characterData' && target.nodeType === Node.TEXT_NODE) {
-          // We ignore nodes that are not TEXt (i.e. comments, etc) as they don't change layout
-          changed = true;
-        } else if (type === 'attributes') {
-          changed = true;
-        } else if (type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)) {
-          // This includes HTMLElement and Text Nodes being added/removed/re-arranged
-          changed = true;
-        }
-      }
-      if (changed) {
-        // We only call the callback if a change that could affect layout/size truely happened.
-        callback();
-      }
-    });
-
-    // Have the observer observe foo for changes in children, etc
-    obs.observe(el, Object(__WEBPACK_IMPORTED_MODULE_0__object__["a" /* assign */])({ childList: true, subtree: true }, opts));
-  } else if (eventListenerSupported) {
-    // Legacy interface. most likely not used in modern browsers
-    el.addEventListener('DOMNodeInserted', callback, false);
-    el.addEventListener('DOMNodeRemoved', callback, false);
-  }
-
-  // We return a reference to the observer so that obs.disconnect() can be called if necessary
-  // To reduce overhead when the root element is hiiden
-  return obs;
-}
-
-/***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_array__ = __webpack_require__(8);
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-
-/**
- * Issue #569: collapse::toggle::state triggered too many times
- * @link https://github.com/bootstrap-vue/bootstrap-vue/issues/569
- */
-
-var BVRL = '__BV_root_listeners__';
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  methods: {
-    /**
-         * Safely register event listeners on the root Vue node.
-         * While Vue automatically removes listeners for individual components,
-         * when a component registers a listener on root and is destroyed,
-         * this orphans a callback because the node is gone,
-         * but the root does not clear the callback.
-         *
-         * This adds a non-reactive prop to a vm on the fly
-         * in order to avoid object observation and its performance costs
-         * to something that needs no reactivity.
-         * It should be highly unlikely there are any naming collisions.
-         * @param {string} event
-         * @param {function} callback
-         * @chainable
-         */
-    listenOnRoot: function listenOnRoot(event, callback) {
-      if (!this[BVRL] || !Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
-        this[BVRL] = [];
-      }
-      this[BVRL].push({ event: event, callback: callback });
-      this.$root.$on(event, callback);
-      return this;
-    },
-
-
-    /**
-         * Convenience method for calling vm.$emit on vm.$root.
-         * @param {string} event
-         * @param {*} args
-         * @chainable
-         */
-    emitOnRoot: function emitOnRoot(event) {
-      var _$root;
-
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      (_$root = this.$root).$emit.apply(_$root, [event].concat(_toConsumableArray(args)));
-      return this;
-    }
-  },
-
-  beforeDestroy: function beforeDestroy() {
-    if (this[BVRL] && Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
-      while (this[BVRL].length > 0) {
-        // shift to process in order
-        var _BVRL$shift = this[BVRL].shift(),
-            event = _BVRL$shift.event,
-            callback = _BVRL$shift.callback;
-
-        this.$root.$off(event, callback);
-      }
-    }
-  }
-});
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  computed: {
-    custom: function custom() {
-      return !this.plain;
-    }
-  },
-  props: {
-    plain: {
-      type: Boolean,
-      default: false
-    }
-  }
-});
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(436)
-/* template */
-var __vue_template__ = __webpack_require__(437)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/modals/ModalDeleteComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5f74ff07", Component.options)
-  } else {
-    hotAPI.reload("data-v-5f74ff07", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -22915,6 +22699,222 @@ if ( !noGlobal ) {
 
 return jQuery;
 } );
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = observeDOM;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__object__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(11);
+
+
+
+/**
+ * Observe a DOM element changes, falls back to eventListener mode
+ * @param {Element} el The DOM element to observe
+ * @param {Function} callback callback to be called on change
+ * @param {object} [opts={childList: true, subtree: true}] observe options
+ * @see http://stackoverflow.com/questions/3219758
+ */
+function observeDOM(el, callback, opts) {
+  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+  var eventListenerSupported = window.addEventListener;
+
+  // Handle case where we might be passed a vue instance
+  el = el ? el.$el || el : null;
+  /* istanbul ignore next: dificult to test in JSDOM */
+  if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["l" /* isElement */])(el)) {
+    // We can't observe somthing that isn't an element
+    return null;
+  }
+
+  var obs = null;
+
+  /* istanbul ignore next: dificult to test in JSDOM */
+  if (MutationObserver) {
+    // Define a new observer
+    obs = new MutationObserver(function (mutations) {
+      var changed = false;
+      // A Mutation can contain several change records, so we loop through them to see what has changed.
+      // We break out of the loop early if any "significant" change has been detected
+      for (var i = 0; i < mutations.length && !changed; i++) {
+        // The muttion record
+        var mutation = mutations[i];
+        // Mutation Type
+        var type = mutation.type;
+        // DOM Node (could be any DOM Node type - HTMLElement, Text, comment, etc)
+        var target = mutation.target;
+        if (type === 'characterData' && target.nodeType === Node.TEXT_NODE) {
+          // We ignore nodes that are not TEXt (i.e. comments, etc) as they don't change layout
+          changed = true;
+        } else if (type === 'attributes') {
+          changed = true;
+        } else if (type === 'childList' && (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)) {
+          // This includes HTMLElement and Text Nodes being added/removed/re-arranged
+          changed = true;
+        }
+      }
+      if (changed) {
+        // We only call the callback if a change that could affect layout/size truely happened.
+        callback();
+      }
+    });
+
+    // Have the observer observe foo for changes in children, etc
+    obs.observe(el, Object(__WEBPACK_IMPORTED_MODULE_0__object__["a" /* assign */])({ childList: true, subtree: true }, opts));
+  } else if (eventListenerSupported) {
+    // Legacy interface. most likely not used in modern browsers
+    el.addEventListener('DOMNodeInserted', callback, false);
+    el.addEventListener('DOMNodeRemoved', callback, false);
+  }
+
+  // We return a reference to the observer so that obs.disconnect() can be called if necessary
+  // To reduce overhead when the root element is hiiden
+  return obs;
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_array__ = __webpack_require__(8);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+
+/**
+ * Issue #569: collapse::toggle::state triggered too many times
+ * @link https://github.com/bootstrap-vue/bootstrap-vue/issues/569
+ */
+
+var BVRL = '__BV_root_listeners__';
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  methods: {
+    /**
+         * Safely register event listeners on the root Vue node.
+         * While Vue automatically removes listeners for individual components,
+         * when a component registers a listener on root and is destroyed,
+         * this orphans a callback because the node is gone,
+         * but the root does not clear the callback.
+         *
+         * This adds a non-reactive prop to a vm on the fly
+         * in order to avoid object observation and its performance costs
+         * to something that needs no reactivity.
+         * It should be highly unlikely there are any naming collisions.
+         * @param {string} event
+         * @param {function} callback
+         * @chainable
+         */
+    listenOnRoot: function listenOnRoot(event, callback) {
+      if (!this[BVRL] || !Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
+        this[BVRL] = [];
+      }
+      this[BVRL].push({ event: event, callback: callback });
+      this.$root.$on(event, callback);
+      return this;
+    },
+
+
+    /**
+         * Convenience method for calling vm.$emit on vm.$root.
+         * @param {string} event
+         * @param {*} args
+         * @chainable
+         */
+    emitOnRoot: function emitOnRoot(event) {
+      var _$root;
+
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      (_$root = this.$root).$emit.apply(_$root, [event].concat(_toConsumableArray(args)));
+      return this;
+    }
+  },
+
+  beforeDestroy: function beforeDestroy() {
+    if (this[BVRL] && Object(__WEBPACK_IMPORTED_MODULE_0__utils_array__["d" /* isArray */])(this[BVRL])) {
+      while (this[BVRL].length > 0) {
+        // shift to process in order
+        var _BVRL$shift = this[BVRL].shift(),
+            event = _BVRL$shift.event,
+            callback = _BVRL$shift.callback;
+
+        this.$root.$off(event, callback);
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  computed: {
+    custom: function custom() {
+      return !this.plain;
+    }
+  },
+  props: {
+    plain: {
+      type: Boolean,
+      default: false
+    }
+  }
+});
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(436)
+/* template */
+var __vue_template__ = __webpack_require__(437)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/modals/ModalDeleteComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f74ff07", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f74ff07", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
 
 
 /***/ }),
@@ -37269,7 +37269,7 @@ var unbindTargets = function unbindTargets(vnode, binding, listenTypes) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__clickout__ = __webpack_require__(269);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listen_on_root__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listen_on_root__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_array__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_object__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_key_codes__ = __webpack_require__(20);
@@ -37886,7 +37886,7 @@ var props = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_loose_equal__ = __webpack_require__(43);
 
@@ -39001,7 +39001,7 @@ var PopOver = function (_ToolTip) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_object__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_dom__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_ssr__ = __webpack_require__(326);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(25);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*
@@ -51677,7 +51677,7 @@ window.Popper = __webpack_require__(21).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(28);
+  window.$ = window.jQuery = __webpack_require__(24);
 
   __webpack_require__(214);
 } catch (e) {}
@@ -68853,7 +68853,7 @@ if (token) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(28), __webpack_require__(21)) :
+   true ? factory(exports, __webpack_require__(24), __webpack_require__(21)) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
   (global = global || self, factory(global.bootstrap = {}, global.jQuery, global.Popper));
 }(this, (function (exports, $, Popper) { 'use strict';
@@ -75712,7 +75712,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_observe_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_observe_dom__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_key_codes__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_dom__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_id__ = __webpack_require__(12);
@@ -76579,7 +76579,7 @@ function suffixPropName(suffix, str) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_dom__ = __webpack_require__(11);
 
 
@@ -77672,7 +77672,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_options__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_checkbox__ = __webpack_require__(74);
 
 
@@ -77821,7 +77821,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_radio__ = __webpack_require__(76);
 
 
@@ -78377,7 +78377,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_id__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form_state__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_custom__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_custom__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_array__ = __webpack_require__(8);
 
 
@@ -78662,7 +78662,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_form__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_form_size__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_form_state__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_form_custom__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_array__ = __webpack_require__(8);
 
 
@@ -79398,8 +79398,8 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__button_button__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__button_button_close__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_id__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_listen_on_root__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_listen_on_root__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_observe_dom__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warn__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_key_codes__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_bv_event_class__ = __webpack_require__(42);
@@ -80605,7 +80605,7 @@ var props = Object(__WEBPACK_IMPORTED_MODULE_3__utils_object__["a" /* assign */]
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_listen_on_root__ = __webpack_require__(26);
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -81111,7 +81111,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_object__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_array__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__mixins_id__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixins_listen_on_root__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixins_listen_on_root__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__table_css__ = __webpack_require__(334);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__table_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__table_css__);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -83684,7 +83684,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_key_codes__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_id__ = __webpack_require__(12);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -84430,7 +84430,7 @@ function removeBVSS(el) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_object__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_observe_dom__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warn__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_dom__ = __webpack_require__(11);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -99256,7 +99256,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-Vue.component('delete-modal', __webpack_require__(27));
+Vue.component('delete-modal', __webpack_require__(28));
 Vue.component('filtro-festivales', __webpack_require__(438));
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_utils_js__["a" /* default */]],
@@ -102955,7 +102955,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 
 Vue.component('partido-i', __webpack_require__(469));
-Vue.component('delete-modal', __webpack_require__(27));
+Vue.component('delete-modal', __webpack_require__(28));
 
 
 
@@ -109769,7 +109769,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-Vue.component('delete-modal', __webpack_require__(27));
+Vue.component('delete-modal', __webpack_require__(28));
 
 /* harmony default export */ __webpack_exports__["default"] = (_mixins$data$computed = {
   mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
@@ -111835,7 +111835,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-Vue.component('delete-modal', __webpack_require__(27));
+Vue.component('delete-modal', __webpack_require__(28));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_utils_js__["a" /* default */]],
@@ -115176,7 +115176,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 Vue.component('filtro-partes', __webpack_require__(566));
-Vue.component('delete-modal', __webpack_require__(27));
+Vue.component('delete-modal', __webpack_require__(28));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
@@ -119232,7 +119232,7 @@ exports.push([module.i, "\n.module-title {\n  background-color:#94c11f;\n  color
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_navbar_vue__ = __webpack_require__(599);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_navbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 //
 //
@@ -120817,7 +120817,7 @@ exports.push([module.i, "\n.plen-table {\n  background-color:#ffffff;\n}\n", ""]
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -121493,7 +121493,7 @@ exports.push([module.i, "\n.module-title {\n  background-color:#94c11f;\n  color
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_navbar_vue__ = __webpack_require__(653);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_navbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_navbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 //
 //
