@@ -83,6 +83,14 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('partes/{id}/update', 'ParteMedicoController@update');
 
     Route::get('partes-medicos-aux', 'ParteMedicoController@getAuxTablesInfo');
+
+    Route::group(['prefix' => 'PLEN'], function () {
+      Route::resource('fases-sesion', 'PLEN_FaseSesionController');
+      Route::resource('tipos-ejercicio', 'PLEN_TipoEjercicioController');
+      Route::resource('tipos-mesociclo', 'PLEN_TipoMesocicloController');
+      Route::resource('tipos-microciclo', 'PLEN_TipoMicrocicloController');
+      Route::resource('subtipos-ejercicio', 'PLEN_SubtipoEjercicioController');
+    });
 });
 
 Auth::routes();
