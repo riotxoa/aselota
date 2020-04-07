@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+import plen from '../PLEN/store';
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -1648,5 +1650,8 @@ export const store = new Vuex.Store({
     updateParteIsRecaida({ commit }, val) {
       commit('SET_PARTE_IS_RECAIDA', val);
     },
-  }
+  },
+  modules: {
+    plen: plen
+  },
 });
