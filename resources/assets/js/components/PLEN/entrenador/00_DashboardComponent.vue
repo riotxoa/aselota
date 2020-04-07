@@ -17,6 +17,7 @@
         </div>
       </b-col>
     </b-row>
+    <div id="snackbar"></div>
   </b-container>
 </template>
 
