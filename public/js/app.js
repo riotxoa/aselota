@@ -98279,7 +98279,7 @@ Vue.component('filtro-festivales', __webpack_require__(434));
       display: true,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'id', label: '<span title="ID">ID</span>', sortable: true }, { key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-left" }],
+      fields: [{ key: 'id', label: '<span title="ID">ID</span>', sortable: true }, { key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'tipo_festival', label: '<span title="Tipo de Festival">Tipo</span>', sortable: true }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">TV</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-left" }],
       items: [],
       totalRows: 0,
       perPage: 10,
@@ -99850,6 +99850,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -99864,6 +99876,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       dia: '',
       television: [{ value: 0, text: "No" }, { value: 1, text: "Sí" }],
+      tipos_festival: [{ value: null, text: "Seleccionar" }, { value: 'CAMPEONATO', text: "Campeonato" }, { value: 'TORNEO', text: "Torneo" }, { value: 'EMPRESA', text: "Empresa" }],
       organizador: [{ value: null, text: "Seleccionar" }, { value: 'gugeu', text: "Baiko Pilota" }, { value: 'beste', text: "Aspe" }, { value: 'mixto', text: "Mixto" }],
       television_txt: "",
       loaded: false,
@@ -99898,6 +99911,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this._header.organizador = null;
       this._header.estado_id = 1;
       this._header.fecha_presu = this.formatDateEN();
+      this._header.tipo_festival = null;
     }
   },
   updated: function updated() {
@@ -99968,8 +99982,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     onChangeTelevision: function onChangeTelevision(value) {
       if (1 == value && false == this._edit && "" == this._header.television_txt) {
-        this.television_txt = "Etb1";
-        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_TELEVISION_TXT', 'Etb1');
+        // this.television_txt = "Etb1";
+        // store.commit('SET_TELEVISION_TXT', 'Etb1');
+        this.television_txt = "";
+        __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_TELEVISION_TXT', '');
       }
     },
     onSubmit: function onSubmit(evt) {
@@ -100325,6 +100341,103 @@ var render = function() {
                       {
                         staticClass: "col-sm-2",
                         attrs: {
+                          label: "Televisión:",
+                          "label-for": "televisionInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "televisionInput",
+                            readonly: _vm.editdate || _vm.editdatepresu,
+                            disabled: !_vm.isGerente,
+                            options: _vm.television,
+                            required: ""
+                          },
+                          on: { change: _vm.onChangeTelevision },
+                          model: {
+                            value: _vm._header.television,
+                            callback: function($$v) {
+                              _vm.$set(_vm._header, "television", $$v)
+                            },
+                            expression: "_header.television"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    false
+                      ? _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-2 mt-1",
+                            attrs: {
+                              label: " ",
+                              "label-for": "televisionTxtInput"
+                            }
+                          },
+                          [
+                            _c("b-form-input", {
+                              attrs: {
+                                id: "televisionTxtInput",
+                                readonly: _vm.editdate || _vm.editdatepresu,
+                                disabled: !_vm.isGerente
+                              },
+                              model: {
+                                value: _vm.television_txt,
+                                callback: function($$v) {
+                                  _vm.television_txt = $$v
+                                },
+                                expression: "television_txt"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: {
+                          label: "Organizador",
+                          "label-for": "organizadorInput"
+                        }
+                      },
+                      [
+                        _c("b-form-select", {
+                          attrs: {
+                            id: "organizadorInput",
+                            readonly: _vm.editdate || _vm.editdatepresu,
+                            disabled: !_vm.isGerente,
+                            options: _vm.organizador,
+                            required: ""
+                          },
+                          model: {
+                            value: _vm._header.organizador,
+                            callback: function($$v) {
+                              _vm.$set(_vm._header, "organizador", $$v)
+                            },
+                            expression: "_header.organizador"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-row",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        staticClass: "col-sm-2",
+                        attrs: {
                           label: "Provincia:",
                           "label-for": "provinciaInput"
                         }
@@ -100353,7 +100466,7 @@ var render = function() {
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-3",
+                        staticClass: "col-sm-2",
                         attrs: {
                           label: "Municipio:",
                           "label-for": "municipioInput"
@@ -100378,18 +100491,12 @@ var render = function() {
                         })
                       ],
                       1
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-row",
-                  [
+                    ),
+                    _vm._v(" "),
                     _c(
                       "b-form-group",
                       {
-                        staticClass: "col-sm-3",
+                        staticClass: "col-sm-2",
                         attrs: {
                           label: "Frontón:",
                           "label-for": "frontonInput"
@@ -100422,81 +100529,25 @@ var render = function() {
                       {
                         staticClass: "col-sm-2",
                         attrs: {
-                          label: "Televisión:",
-                          "label-for": "televisionInput"
+                          label: "Tipo de Festival:",
+                          "label-for": "tipoFestivalInput"
                         }
                       },
                       [
                         _c("b-form-select", {
                           attrs: {
-                            id: "televisionInput",
+                            id: "tipoFestivalInput",
                             readonly: _vm.editdate || _vm.editdatepresu,
                             disabled: !_vm.isGerente,
-                            options: _vm.television,
-                            required: ""
-                          },
-                          on: { change: _vm.onChangeTelevision },
-                          model: {
-                            value: _vm._header.television,
-                            callback: function($$v) {
-                              _vm.$set(_vm._header, "television", $$v)
-                            },
-                            expression: "_header.television"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-form-group",
-                      {
-                        staticClass: "col-sm-2 mt-1",
-                        attrs: { label: " ", "label-for": "televisionTxtInput" }
-                      },
-                      [
-                        _c("b-form-input", {
-                          attrs: {
-                            id: "televisionTxtInput",
-                            readonly: _vm.editdate || _vm.editdatepresu,
-                            disabled: !_vm.isGerente
-                          },
-                          model: {
-                            value: _vm.television_txt,
-                            callback: function($$v) {
-                              _vm.television_txt = $$v
-                            },
-                            expression: "television_txt"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-form-group",
-                      {
-                        staticClass: "col-sm-2",
-                        attrs: {
-                          label: "Organizador",
-                          "label-for": "organizadorInput"
-                        }
-                      },
-                      [
-                        _c("b-form-select", {
-                          attrs: {
-                            id: "organizadorInput",
-                            readonly: _vm.editdate || _vm.editdatepresu,
-                            disabled: !_vm.isGerente,
-                            options: _vm.organizador,
+                            options: _vm.tipos_festival,
                             required: ""
                           },
                           model: {
-                            value: _vm._header.organizador,
+                            value: _vm._header.tipo_festival,
                             callback: function($$v) {
-                              _vm.$set(_vm._header, "organizador", $$v)
+                              _vm.$set(_vm._header, "tipo_festival", $$v)
                             },
-                            expression: "_header.organizador"
+                            expression: "_header.tipo_festival"
                           }
                         })
                       ],

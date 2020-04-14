@@ -125,6 +125,7 @@ class FestivaleController extends Controller
           'organizador' => $request->get('organizador'),
           'estado_id' => $request->get('estado_id'),
           'fecha_presu' => $request->get('fecha_presu'),
+          'tipo_festival' => $request->get('tipo_festival'),
         ]);
 
         $item->save();
@@ -215,6 +216,7 @@ class FestivaleController extends Controller
         $fest_header->organizador = $header['organizador'];
         $fest_header->estado_id = $header['estado_id'];
         $fest_header->fecha_presu = $header['fecha_presu'];
+        $fest_header->tipo_festival = $header['tipo_festival'];
 
         $fest_header->save();
 
@@ -424,7 +426,8 @@ class FestivaleController extends Controller
             'festivales.fronton_id',
             'frontones.name as fronton_name',
             'municipios.name as municipio_name',
-            'festivales.television'
+            'festivales.television',
+            'festivales.tipo_festival'
           );
 
       if( $month ) {

@@ -81,42 +81,6 @@
                             v-model="_header.hora">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="Provincia:"
-                          label-for="provinciaInput"
-                          class="col-sm-2">
-              <b-form-select id="provinciaInput"
-                             :readonly="editdate || editdatepresu"
-                             :disabled="!isGerente"
-                             :options="provincias"
-                             @change="onChangeProvincia"
-                             v-model="_header.provincia_id">
-              </b-form-select>
-            </b-form-group>
-            <b-form-group label="Municipio:"
-                          label-for="municipioInput"
-                          class="col-sm-3">
-              <b-form-select id="municipioInput"
-                             :readonly="editdate || editdatepresu"
-                             :disabled="!isGerente"
-                             :options="municipios_filtered"
-                             @change="onChangeMunicipio"
-                             v-model="_header.municipio_id">
-              </b-form-select>
-            </b-form-group>
-          </b-row>
-          <b-row>
-            <b-form-group label="Frontón:"
-                          label-for="frontonInput"
-                          class="col-sm-3">
-              <b-form-select id="frontonInput"
-                             :readonly="editdate || editdatepresu"
-                             :disabled="!isGerente"
-                             :options="frontones_filtered"
-                             @change="onChangeFronton"
-                             required
-                             v-model="_header.fronton_id">
-              </b-form-select>
-            </b-form-group>
             <b-form-group label="Televisión:"
                           label-for="televisionInput"
                           class="col-sm-2">
@@ -129,7 +93,8 @@
                             v-model="_header.television">
               </b-form-select>
             </b-form-group>
-            <b-form-group label=" "
+            <b-form-group v-if="false"
+                          label=" "
                           label-for="televisionTxtInput"
                           class="col-sm-2 mt-1">
               <b-form-input id="televisionTxtInput"
@@ -147,6 +112,53 @@
                 :options="organizador"
                 required
                 v-model="_header.organizador">
+              </b-form-select>
+            </b-form-group>
+          </b-row>
+          <b-row>
+            <b-form-group label="Provincia:"
+                          label-for="provinciaInput"
+                          class="col-sm-2">
+              <b-form-select id="provinciaInput"
+                             :readonly="editdate || editdatepresu"
+                             :disabled="!isGerente"
+                             :options="provincias"
+                             @change="onChangeProvincia"
+                             v-model="_header.provincia_id">
+              </b-form-select>
+            </b-form-group>
+            <b-form-group label="Municipio:"
+                          label-for="municipioInput"
+                          class="col-sm-2">
+              <b-form-select id="municipioInput"
+                             :readonly="editdate || editdatepresu"
+                             :disabled="!isGerente"
+                             :options="municipios_filtered"
+                             @change="onChangeMunicipio"
+                             v-model="_header.municipio_id">
+              </b-form-select>
+            </b-form-group>
+            <b-form-group label="Frontón:"
+                          label-for="frontonInput"
+                          class="col-sm-2">
+              <b-form-select id="frontonInput"
+                             :readonly="editdate || editdatepresu"
+                             :disabled="!isGerente"
+                             :options="frontones_filtered"
+                             @change="onChangeFronton"
+                             required
+                             v-model="_header.fronton_id">
+              </b-form-select>
+            </b-form-group>
+            <b-form-group label="Tipo de Festival:"
+                          label-for="tipoFestivalInput"
+                          class="col-sm-2">
+              <b-form-select id="tipoFestivalInput"
+                             :readonly="editdate || editdatepresu"
+                             :disabled="!isGerente"
+                             :options="tipos_festival"
+                             required
+                             v-model="_header.tipo_festival">
               </b-form-select>
             </b-form-group>
             <b-form-group label="Estado festival:"
@@ -184,6 +196,12 @@
           { value: 0, text: "No" },
           { value: 1, text: "Sí" },
         ],
+        tipos_festival: [
+          { value: null, text: "Seleccionar" },
+          { value: 'CAMPEONATO', text: "Campeonato" },
+          { value: 'TORNEO', text: "Torneo" },
+          { value: 'EMPRESA', text: "Empresa" },
+        ],
         organizador: [
           { value: null, text: "Seleccionar" },
           { value: 'gugeu', text: "Baiko Pilota" },
@@ -220,6 +238,7 @@
         this._header.organizador = null;
         this._header.estado_id = 1;
         this._header.fecha_presu = this.formatDateEN();
+        this._header.tipo_festival = null;
       }
     },
     updated: function () {
@@ -290,8 +309,10 @@
       },
       onChangeTelevision (value) {
         if( 1 == value && false == this._edit && "" == this._header.television_txt ) {
-          this.television_txt = "Etb1";
-          store.commit('SET_TELEVISION_TXT', 'Etb1');
+          // this.television_txt = "Etb1";
+          // store.commit('SET_TELEVISION_TXT', 'Etb1');
+          this.television_txt = "";
+          store.commit('SET_TELEVISION_TXT', '');
         }
       },
       onSubmit (evt) {

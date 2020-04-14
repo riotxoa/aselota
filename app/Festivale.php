@@ -17,6 +17,7 @@ class Festivale extends Model
     'television_txt',
     'estado_id',
     'fecha_presu',
+    'tipo_festival',
   ];
 
   public function partidos() {
