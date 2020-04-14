@@ -21,6 +21,7 @@
         <div class="toolbar lightgray py-1 mb-2">
           <div class="container">
             <b-row>
+              <div v-if="_header.id" class="font-weight-bold ml-3 pt-1 px-3" style="background:rgba(255,255,255,.65);border:1px solid black;color:steelblue;">{{ formatFestivalID(_header.id, _header.fecha) }}</div>
               <div style="margin:0 auto;">
                 <label for="fechaPresuInput">Fecha Presupuesto:</label>
                 <b-form-input id="fechaPresuInput"

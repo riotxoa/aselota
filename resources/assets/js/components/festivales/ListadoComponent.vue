@@ -36,6 +36,10 @@
         :items="_items"
         :fields="fields">
 
+        <template slot="id" slot-scope="row">
+          {{ formatFestivalID(row.item.id, row.item.fecha) }}
+        </template>
+
         <template slot="actions" slot-scope="row">
           <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
           <b-button-group>
@@ -117,6 +121,7 @@
           sortBy: 'fecha_ini',
           sortDesc: true,
           fields: [
+            { key: 'id', label: '<span title="ID">ID</span>', sortable: true },
             { key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true },
             { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false },
             { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true },

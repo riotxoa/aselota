@@ -19,6 +19,12 @@ var Utils = {
         return moment().format('YYYY-MM-DD');
     },
 
+    formatFestivalID (id, date) {
+      var str_id = String(id);
+      while (str_id.length < (4 || 2)) {str_id = "0" + str_id;}
+      return 'F' + date.substr(2,2) + '-' + str_id; // 'FXX-YYYY'
+    },
+
     showPreloader($) {
       jQuery("body").addClass("preloader");
     },

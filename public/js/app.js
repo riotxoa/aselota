@@ -8181,6 +8181,13 @@ var Utils = {
     formatDateEN: function formatDateEN(date) {
       if (date) return __WEBPACK_IMPORTED_MODULE_0_moment___default()(String(date)).format('YYYY-MM-DD');else return __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD');
     },
+    formatFestivalID: function formatFestivalID(id, date) {
+      var str_id = String(id);
+      while (str_id.length < (4 || 2)) {
+        str_id = "0" + str_id;
+      }
+      return 'F' + date.substr(2, 2) + '-' + str_id; // 'FXX-YYYY'
+    },
     showPreloader: function showPreloader($) {
       jQuery("body").addClass("preloader");
     },
@@ -98252,6 +98259,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -98268,7 +98279,7 @@ Vue.component('filtro-festivales', __webpack_require__(434));
       display: true,
       sortBy: 'fecha_ini',
       sortDesc: true,
-      fields: [{ key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-left" }],
+      fields: [{ key: 'id', label: '<span title="ID">ID</span>', sortable: true }, { key: 'fecha', label: '<span title="Fecha">Fecha</span>', formatter: 'formatDateES', sortable: true }, { key: 'hora', label: '<span title="Hora">Hora</span>', sortable: false }, { key: 'fronton', label: '<span title="Frontón">Frontón</span>', sortable: true }, { key: 'municipio', label: '<span title="Municipio">Municipio</span>', sortable: true }, { key: 'organizador', label: '<span title="Organizador">Organizador</span>', sortable: true }, { key: 'television_txt', label: '<span title="Televisión">Televisión</span>', sortable: true }, { key: 'estado', label: '<span title="Estado del Festival">Estado</span>', sortable: true }, { key: 'actions', label: '<span title="Acciones">Acciones</span>', sortable: false, class: "text-left" }],
       items: [],
       totalRows: 0,
       perPage: 10,
@@ -99021,6 +99032,20 @@ var render = function() {
             }
           },
           scopedSlots: _vm._u([
+            {
+              key: "id",
+              fn: function(row) {
+                return [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(
+                        _vm.formatFestivalID(row.item.id, row.item.fecha)
+                      ) +
+                      "\n      "
+                  )
+                ]
+              }
+            },
             {
               key: "actions",
               fn: function(row) {
@@ -99824,6 +99849,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -100098,6 +100124,30 @@ var render = function() {
                 { staticClass: "container" },
                 [
                   _c("b-row", [
+                    _vm._header.id
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "font-weight-bold ml-3 pt-1 px-3",
+                            staticStyle: {
+                              background: "rgba(255,255,255,.65)",
+                              border: "1px solid black",
+                              color: "steelblue"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.formatFestivalID(
+                                  _vm._header.id,
+                                  _vm._header.fecha
+                                )
+                              )
+                            )
+                          ]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     _c(
                       "div",
                       { staticStyle: { margin: "0 auto" } },
