@@ -63,6 +63,7 @@
           { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' },
           { value: 'frontones.provincia_id', text: 'Provincia' },
           { value: 'festivales.television', text: 'Televisión' },
+          { value: 'festivales.tipo_festival', text: 'Tipo de Festival' },
           { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' },
         ],
         selectedFilterValue: null,
@@ -92,6 +93,14 @@
         this.selectedFilterValue = null;
         this.filterHasValue = false;
         switch(ft) {
+          case 'festivales.tipo_festival':
+            this.filterValueOptions = [
+              { value: null, text: "Seleccionar valor" },
+              { value: "CAMPEONATO", text: "Campeonato" },
+              { value: "TORNEO", text: "Torneo" },
+              { value: "EMPRESA", text: "Empresa" },
+            ];
+            break;
           case 'festival_partidos.campeonato_id':
             this.filterValueOptions = this.campeonatos;
             break;
@@ -179,6 +188,7 @@
             column = this.selectedFilterType;
             val = this.selectedFilterValue;
             valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue}).text;
+
           } else {
             operator = '=';
             column = this.selectedFilterType;
