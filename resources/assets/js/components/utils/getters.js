@@ -105,11 +105,19 @@ var APIGetters = {
 
     /* CAMPEONATOS */
     getCampeonatos () {
-      let uri = '/www/campeonatos';
-      axios.get(uri).then((response) => {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        this.campeonatos = JSON.parse(stringified);
-        this.campeonatos.unshift({ value: null, text: "Seleccionar campeonato" });
+      return new Promise( (resolve, reject) => {
+        let uri = '/www/campeonatos';
+        axios.get(uri)
+        .then((response) => {
+          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          this.campeonatos = JSON.parse(stringified);
+          this.campeonatos.unshift({ value: null, text: "Seleccionar campeonato" });
+
+          resolve(this.campeonatos);
+        })
+        .catch((err) => {
+          reject(err);
+        });
       });
     },
 

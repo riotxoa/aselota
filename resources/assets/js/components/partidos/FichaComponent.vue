@@ -20,11 +20,22 @@
                        v-model="estelar">
         </b-form-select>
       </b-form-group>
-      <b-form-group label="Campeonato:"
+      <b-form-group v-if="isCampeonato()"
+                    label="Campeonato:"
                     label-for="campeonatoInput"
                     class="col-sm-3 font-weight-bold px-1">
         <b-form-select id="campeonatoInput"
-                       :options="campeonatos"
+                       :options="_campeonatos"
+                       @change="onChangeCampeonato"
+                       v-model="campeonato_id">
+        </b-form-select>
+      </b-form-group>
+      <b-form-group v-if="isTorneo()"
+                    label="Torneo:"
+                    label-for="torneoInput"
+                    class="col-sm-3 font-weight-bold px-1">
+        <b-form-select id="torneoInput"
+                       :options="_torneos"
                        @change="onChangeCampeonato"
                        v-model="campeonato_id">
         </b-form-select>
@@ -33,7 +44,7 @@
                     label-for="tipoInput"
                     class="col-sm-2 font-weight-bold px-1">
         <b-form-select id="tipoInput"
-                       :options="tipos_partido_filtered"
+                       :options="(isEmpresa() ? tipos_partido : tipos_partido_filtered)"
                        @change="onChangeTiposPartido"
                        required
                        v-model="tipo_partido_id">
@@ -42,7 +53,7 @@
       <b-form-group label="Fase:"
                     label-for="faseInput"
                     class="col-sm-3 font-weight-bold px-1"
-                    v-if="campeonato_id">
+                    v-if="campeonato_id && !isEmpresa()">
         <b-form-select id="faseInput"
                        :options="fases_campeonato"
                        v-model="fase">
@@ -177,6 +188,7 @@
   import { mapState } from 'vuex';
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
+  import _ from 'lodash';
 
   export default {
     mixins: [APIGetters, Utils],
@@ -202,12 +214,17 @@
         pelotari_4: null,
         pelotari_4_asegarce: 1,
         is_partido_parejas: true,
+        _campeonatos: [],
+        _torneos: [],
       }
     },
     created: function () {
       console.log("FestivalNuevoPartidoComponent created");
 
-      this.getCampeonatos();
+      this.getCampeonatos().then( () => {
+        this._campeonatos = _.filter(this.campeonatos, { 'is_torneo' : 0 });
+        this._torneos = _.filter(this.campeonatos, { 'is_torneo' : 1 });
+      });
       this.getTiposPartido();
       this.getFasesCampeonato();
 
@@ -330,11 +347,11 @@
           fecha: this._header.fecha,
           orden: this.orden,
           estelar: this.estelar,
-          campeonato_id: this.campeonato_id,
-          campeonato_name: _.filter(this.campeonatos, { value: this.campeonato_id })[0].text,
+          campeonato_id: ('EMPRESA' == this._header.tipo_festival ? null : this.campeonato_id),
+          campeonato_name: ('EMPRESA' == this._header.tipo_festival ? null : _.filter(this.campeonatos, { value: this.campeonato_id })[0].text),
           tipo_partido_id: this.tipo_partido_id,
           tipo_partido_name: (this.campeonato_id ? null : _.filter(this.tipos_partido, {value: this.tipo_partido_id})[0].text),
-          fase: (this.campeonato_id ? this.fase : null),
+          fase: (this.campeonato_id && 'EMPRESA' != this._header.tipo_festival ? this.fase : null),
           pelotari_1: p1,
           pelotari_1_asegarce: parseInt(this.pelotari_1_asegarce),
           pelotari_2: p2,
@@ -374,7 +391,16 @@
       },
       onClickCancelar() {
         this.closeModal();
-      }
+      },
+      isCampeonato() {
+        return "CAMPEONATO" === this._header.tipo_festival;
+      },
+      isEmpresa() {
+        return "EMPRESA" === this._header.tipo_festival;
+      },
+      isTorneo() {
+        return "TORNEO" === this._header.tipo_festival;
+      },
     }
   }
 </script>

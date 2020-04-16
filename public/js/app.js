@@ -8623,11 +8623,17 @@ var APIGetters = {
     getCampeonatos: function getCampeonatos() {
       var _this5 = this;
 
-      var uri = '/www/campeonatos';
-      axios.get(uri).then(function (response) {
-        var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
-        _this5.campeonatos = JSON.parse(stringified);
-        _this5.campeonatos.unshift({ value: null, text: "Seleccionar campeonato" });
+      return new Promise(function (resolve, reject) {
+        var uri = '/www/campeonatos';
+        axios.get(uri).then(function (response) {
+          var stringified = JSON.stringify(response.data).replace(/"id"/g, '"value"').replace(/name/g, "text");
+          _this5.campeonatos = JSON.parse(stringified);
+          _this5.campeonatos.unshift({ value: null, text: "Seleccionar campeonato" });
+
+          resolve(_this5.campeonatos);
+        }).catch(function (err) {
+          reject(err);
+        });
       });
     },
     onChangeCampeonato: function onChangeCampeonato(evt) {
@@ -101008,6 +101014,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 //
 //
 //
@@ -101183,6 +101191,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -101211,14 +101231,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       pelotari_3_asegarce: 1,
       pelotari_4: null,
       pelotari_4_asegarce: 1,
-      is_partido_parejas: true
+      is_partido_parejas: true,
+      _campeonatos: [],
+      _torneos: []
     };
   },
 
   created: function created() {
+    var _this = this;
+
     console.log("FestivalNuevoPartidoComponent created");
 
-    this.getCampeonatos();
+    this.getCampeonatos().then(function () {
+      _this._campeonatos = __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(_this.campeonatos, { 'is_torneo': 0 });
+      _this._torneos = __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(_this.campeonatos, { 'is_torneo': 1 });
+    });
     this.getTiposPartido();
     this.getFasesCampeonato();
 
@@ -101300,28 +101327,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$root.$emit('bv::hide::modal', this.modalId);
     },
     onSubmit: function onSubmit(evt) {
-      var _this = this;
+      var _this2 = this;
 
       evt.preventDefault();
       var p1, p2, p3, p4;
 
       if (this.pelotari_1) {
-        if (1 == this.pelotari_1_asegarce) p1 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p1 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+        if (1 == this.pelotari_1_asegarce) p1 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p1 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris_aspe, { value: this.pelotari_1 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
       } else {
         p1 = null;
       }
       if (this.pelotari_2 && this.is_partido_parejas) {
-        if (1 == this.pelotari_2_asegarce) p2 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p2 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+        if (1 == this.pelotari_2_asegarce) p2 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p2 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris_aspe, { value: this.pelotari_2 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
       } else {
         p2 = null;
       }
       if (this.pelotari_3) {
-        if (1 == this.pelotari_3_asegarce) p3 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p3 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+        if (1 == this.pelotari_3_asegarce) p3 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p3 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris_aspe, { value: this.pelotari_3 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
       } else {
         p3 = null;
       }
       if (this.pelotari_4 && this.is_partido_parejas) {
-        if (1 == this.pelotari_4_asegarce) p4 = JSON.parse(JSON.stringify(_.filter(this.pelotaris, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p4 = JSON.parse(JSON.stringify(_.filter(this.pelotaris_aspe, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
+        if (1 == this.pelotari_4_asegarce) p4 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));else p4 = JSON.parse(JSON.stringify(__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.pelotaris_aspe, { value: this.pelotari_4 })[0]).replace(/value/g, "id").replace(/text/g, "alias"));
       } else {
         p4 = null;
       }
@@ -101331,11 +101358,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fecha: this._header.fecha,
         orden: this.orden,
         estelar: this.estelar,
-        campeonato_id: this.campeonato_id,
-        campeonato_name: _.filter(this.campeonatos, { value: this.campeonato_id })[0].text,
+        campeonato_id: 'EMPRESA' == this._header.tipo_festival ? null : this.campeonato_id,
+        campeonato_name: 'EMPRESA' == this._header.tipo_festival ? null : __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.campeonatos, { value: this.campeonato_id })[0].text,
         tipo_partido_id: this.tipo_partido_id,
-        tipo_partido_name: this.campeonato_id ? null : _.filter(this.tipos_partido, { value: this.tipo_partido_id })[0].text,
-        fase: this.campeonato_id ? this.fase : null,
+        tipo_partido_name: this.campeonato_id ? null : __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.filter(this.tipos_partido, { value: this.tipo_partido_id })[0].text,
+        fase: this.campeonato_id && 'EMPRESA' != this._header.tipo_festival ? this.fase : null,
         pelotari_1: p1,
         pelotari_1_asegarce: parseInt(this.pelotari_1_asegarce),
         pelotari_2: p2,
@@ -101350,27 +101377,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.edit) {
         data.id = this.partido.id;
         this.$store.dispatch('updatePartido', data).then(function (response) {
-          _this.showSnackbar("Partido actualizado");
-          _this.$emit('update-partido', response);
-          _this.closeModal();
+          _this2.showSnackbar("Partido actualizado");
+          _this2.$emit('update-partido', response);
+          _this2.closeModal();
         }).catch(function (error) {
           console.log(error);
-          _this.showSnackbar("Se ha producido un ERROR");
-          _this.closeModal();
+          _this2.showSnackbar("Se ha producido un ERROR");
+          _this2.closeModal();
         });
       } else {
         this.$store.dispatch('addPartido', data).then(function (response) {
-          _this.showSnackbar("Partido creado");
-          _this.$emit('new-partido', response);
-          _this.resetForm();
+          _this2.showSnackbar("Partido creado");
+          _this2.$emit('new-partido', response);
+          _this2.resetForm();
         }).catch(function (error) {
           console.log(error);
-          _this.showSnackbar("Se ha producido un ERROR");
+          _this2.showSnackbar("Se ha producido un ERROR");
         });
       }
     },
     onClickCancelar: function onClickCancelar() {
       this.closeModal();
+    },
+    isCampeonato: function isCampeonato() {
+      return "CAMPEONATO" === this._header.tipo_festival;
+    },
+    isEmpresa: function isEmpresa() {
+      return "EMPRESA" === this._header.tipo_festival;
+    },
+    isTorneo: function isTorneo() {
+      return "TORNEO" === this._header.tipo_festival;
     }
   }
 });
@@ -101445,27 +101481,56 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c(
-            "b-form-group",
-            {
-              staticClass: "col-sm-3 font-weight-bold px-1",
-              attrs: { label: "Campeonato:", "label-for": "campeonatoInput" }
-            },
-            [
-              _c("b-form-select", {
-                attrs: { id: "campeonatoInput", options: _vm.campeonatos },
-                on: { change: _vm.onChangeCampeonato },
-                model: {
-                  value: _vm.campeonato_id,
-                  callback: function($$v) {
-                    _vm.campeonato_id = $$v
-                  },
-                  expression: "campeonato_id"
-                }
-              })
-            ],
-            1
-          ),
+          _vm.isCampeonato()
+            ? _c(
+                "b-form-group",
+                {
+                  staticClass: "col-sm-3 font-weight-bold px-1",
+                  attrs: {
+                    label: "Campeonato:",
+                    "label-for": "campeonatoInput"
+                  }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { id: "campeonatoInput", options: _vm._campeonatos },
+                    on: { change: _vm.onChangeCampeonato },
+                    model: {
+                      value: _vm.campeonato_id,
+                      callback: function($$v) {
+                        _vm.campeonato_id = $$v
+                      },
+                      expression: "campeonato_id"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.isTorneo()
+            ? _c(
+                "b-form-group",
+                {
+                  staticClass: "col-sm-3 font-weight-bold px-1",
+                  attrs: { label: "Torneo:", "label-for": "torneoInput" }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { id: "torneoInput", options: _vm._torneos },
+                    on: { change: _vm.onChangeCampeonato },
+                    model: {
+                      value: _vm.campeonato_id,
+                      callback: function($$v) {
+                        _vm.campeonato_id = $$v
+                      },
+                      expression: "campeonato_id"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "b-form-group",
@@ -101477,7 +101542,9 @@ var render = function() {
               _c("b-form-select", {
                 attrs: {
                   id: "tipoInput",
-                  options: _vm.tipos_partido_filtered,
+                  options: _vm.isEmpresa()
+                    ? _vm.tipos_partido
+                    : _vm.tipos_partido_filtered,
                   required: ""
                 },
                 on: { change: _vm.onChangeTiposPartido },
@@ -101493,7 +101560,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.campeonato_id
+          _vm.campeonato_id && !_vm.isEmpresa()
             ? _c(
                 "b-form-group",
                 {
