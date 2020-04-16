@@ -105480,9 +105480,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   created: function created() {
+    var _this2 = this;
+
     console.log("FestivalFichaCostesComponent created");
     this.getClientes();
-    this.$store.dispatch('loadCostes');
+    this.$store.dispatch('loadCostes').then(function () {
+      _this2.updateTotal();
+    });
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["c" /* mapState */])({
     _costes: 'costes',
@@ -105501,13 +105505,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   }),
   methods: {
     onSubmit: function onSubmit() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$store.dispatch('addCostes', this._costes).then(function (response) {
-        _this2.showSnackbar("Costes GUARDADOS");
+        _this3.showSnackbar("Costes GUARDADOS");
       }).catch(function (error) {
         console.log(error);
-        _this2.showSnackbar("Se ha producido un ERROR al guardar los COSTES");
+        _this3.showSnackbar("Se ha producido un ERROR al guardar los COSTES");
       });
     },
     onReset: function onReset() {
@@ -105536,30 +105540,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$refs.focusThis.focus();
     },
     saveCosteEntradasForm: function saveCosteEntradasForm(entrada) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.isNewCosteEntradas) {
         __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('addCosteEntradas', entrada).then(function () {
-          _this3.showSnackbar("Precio de entradas añadido");
-          _this3.updatePrecioTotal();
-          _this3.$refs.costeEntradasModal.hide();
+          _this4.showSnackbar("Precio de entradas añadido");
+          _this4.updatePrecioTotal();
+          _this4.$refs.costeEntradasModal.hide();
         });
       } else {
         __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('updateCosteEntradas', entrada).then(function () {
-          _this3.showSnackbar("Precio de entradas actualizado");
-          _this3.updatePrecioTotal();
-          _this3.$refs.costeEntradasModal.hide();
+          _this4.showSnackbar("Precio de entradas actualizado");
+          _this4.updatePrecioTotal();
+          _this4.$refs.costeEntradasModal.hide();
         });
       }
     },
     deleteCosteEntradas: function deleteCosteEntradas(entrada) {
-      var _this4 = this;
+      var _this5 = this;
 
       __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('deleteCosteEntradas', this.delCosteEntradas).then(function () {
-        _this4.delCosteEntradas = null;
-        _this4.showSnackbar("Precio de entradas eliminado");
-        _this4.updatePrecioTotal();
-        _this4.$refs.delEntradasModal.hide();
+        _this5.delCosteEntradas = null;
+        _this5.showSnackbar("Precio de entradas eliminado");
+        _this5.updatePrecioTotal();
+        _this5.$refs.delEntradasModal.hide();
       });
     },
     updatePrecioTotal: function updatePrecioTotal() {
@@ -105571,7 +105575,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.precio_total = total.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     },
     updateTotal: function updateTotal() {
-      this._costes.total = parseFloat(this._costes.ingreso_taquilla) + parseFloat(this._costes.ingreso_ayto) + parseFloat(this._costes.ingreso_otros);
+      var ingreso_taquilla = this._costes.ingreso_taquilla ? parseFloat(this._costes.ingreso_taquilla) : 0;
+      var ingreso_ayto = this._costes.ingreso_ayto ? parseFloat(this._costes.ingreso_ayto) : 0;
+      var ingreso_otros = this._costes.ingreso_otros ? parseFloat(this._costes.ingreso_otros) : 0;
+      this._costes.total = ingreso_taquilla + ingreso_ayto + ingreso_otros;
     },
     updateCosteAuxiliares: function updateCosteAuxiliares() {
       var value = document.getElementById("num_auxiliares").value;
@@ -106605,7 +106612,7 @@ var render = function() {
                           attrs: { label: "Total:", "label-for": "coste_total" }
                         },
                         [
-                          _vm._costes.total
+                          _vm._costes.total >= 0
                             ? _c("b-form-input", {
                                 staticClass: "text-center",
                                 attrs: {

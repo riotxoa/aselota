@@ -377,7 +377,7 @@
                 <b-form-input id="coste_total"
                               class="text-center"
                               type="text"
-                              v-if="_costes.total"
+                              v-if="_costes.total >= 0"
                               :value="_costes.total.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})"
                               readonly
                               tabindex="-1">
@@ -452,7 +452,9 @@
     created: function () {
       console.log("FestivalFichaCostesComponent created");
       this.getClientes();
-      this.$store.dispatch('loadCostes');
+      this.$store.dispatch('loadCostes').then( () => {
+        this.updateTotal();
+      });
     },
     computed: mapState({
       _costes: 'costes',
@@ -537,7 +539,10 @@
         this.precio_total = total.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2});
       },
       updateTotal() {
-        this._costes.total = parseFloat(this._costes.ingreso_taquilla) + parseFloat(this._costes.ingreso_ayto) + parseFloat(this._costes.ingreso_otros);
+        var ingreso_taquilla = (this._costes.ingreso_taquilla ? parseFloat(this._costes.ingreso_taquilla) : 0);
+        var ingreso_ayto = (this._costes.ingreso_ayto ? parseFloat(this._costes.ingreso_ayto) : 0);
+        var ingreso_otros = (this._costes.ingreso_otros ? parseFloat(this._costes.ingreso_otros) : 0);
+        this._costes.total = ingreso_taquilla + ingreso_ayto + ingreso_otros;
       },
       updateCosteAuxiliares() {
         var value = document.getElementById("num_auxiliares").value;
