@@ -100055,10 +100055,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
       } else {
         this.axios.post(uri, this._header).then(function (response) {
-          _this2._header.id = response.data.id;
-          __WEBPACK_IMPORTED_MODULE_0__store_store__["a" /* store */].commit('SET_EDIT', 1);
-          _this2.editdate = false;
-          _this2.editdatepresu = false;
+          _this2.$router.replace('/gerente/festival/' + response.data.id + '/edit/');
           _this2.showSnackbar("Festival creado");
         }).catch(function (error) {
           console.log(error);
@@ -105478,6 +105475,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     return {
       fields: [{ key: 'id', label: '', class: 'sr-only' }, { key: 'name', label: 'Entradas', sortable: true, class: 'text-left' }, { key: 'amount', label: 'Cant.', sortable: true, class: 'text-right' }, { key: 'price', label: 'Precio', sortable: true, class: 'text-right', formatter: 'formatPrice' }, { key: 'actions', label: 'Acciones', class: 'text-right' }],
+      porcentaje: null,
       precio_total: 0,
       isNewCosteEntradas: false,
       editCosteEntradas: null,
@@ -105498,17 +105496,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     console.log("FestivalFichaCostesComponent created");
     this.getClientes();
     this.$store.dispatch('loadCostes').then(function () {
-      if (_this2._costes.porcentaje == null) {
-        switch (_this2._header.tipo_festival) {
-          case 'CAMPEONATO':
-          case 'TORNEO':
-            _this2._costes.porcentaje = 50;
-            break;
-          case 'EMPRESA':
-            _this2._costes.porcentaje = 100;
-            break;
-        }
-      }
+      _this2.porcentaje = _this2._costes.porcentaje;
       _this2.updateTotal();
       _this2.show = true;
     });
@@ -105530,9 +105518,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     _importe_tv: 'importe_tv'
   }),
   methods: {
+    calcularPorcentaje: function calcularPorcentaje() {
+      var porcentaje = this._costes.porcentaje;
+
+      if (porcentaje == null) {
+
+        switch (this._header.tipo_festival) {
+          case 'EMPRESA':
+            porcentaje = 100;
+            break;
+          case 'CAMPEONATO':
+          case 'TORNEO':
+          default:
+            porcentaje = 50;
+            break;
+        }
+      }
+      this.porcentaje = porcentaje;
+      return porcentaje;
+    },
     onSubmit: function onSubmit() {
       var _this3 = this;
 
+      this._costes.porcentaje = this.porcentaje;
       this.$store.dispatch('addCostes', this._costes).then(function (response) {
         _this3.showSnackbar("Costes GUARDADOS");
       }).catch(function (error) {
@@ -105674,10 +105682,11 @@ var render = function() {
                           _c("label", { staticClass: "ml-0 mr-2" }, [
                             _vm._v("Porcentaje Baiko:")
                           ]),
-                          _vm._v(" "),
-                          _c("div", {}, [
-                            _vm._v(_vm._s(_vm._costes.porcentaje) + " %")
-                          ])
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.calcularPorcentaje()) +
+                              "%\n            "
+                          )
                         ]),
                         _vm._v(" "),
                         _c(
@@ -105694,11 +105703,11 @@ var render = function() {
                                 step: "5"
                               },
                               model: {
-                                value: _vm._costes.porcentaje,
+                                value: _vm.porcentaje,
                                 callback: function($$v) {
-                                  _vm.$set(_vm._costes, "porcentaje", $$v)
+                                  _vm.porcentaje = $$v
                                 },
-                                expression: "_costes.porcentaje"
+                                expression: "porcentaje"
                               }
                             })
                           ],

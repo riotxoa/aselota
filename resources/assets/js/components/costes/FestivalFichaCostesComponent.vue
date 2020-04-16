@@ -10,7 +10,7 @@
             <div class="card-body p-2">
               <b-row class="m-0 p-0">
                 <label class="ml-0 mr-2">Porcentaje Baiko:</label>
-                <div class="">{{ _costes.porcentaje }}&nbsp;%</div>
+                {{ calcularPorcentaje() }}%
               </b-row>
               <b-row class="px-3">
                 <b-form-input id="coste_porcentaje"
@@ -19,7 +19,7 @@
                               min="0"
                               max="100"
                               step="5"
-                              v-model="_costes.porcentaje">
+                              v-model="porcentaje">
                 </b-form-input>
               </b-row>
             </div>
@@ -441,6 +441,7 @@
           { key: 'price', label: 'Precio', sortable: true, class: 'text-right', formatter: 'formatPrice' },
           { key: 'actions', label: 'Acciones', class: 'text-right' },
         ],
+        porcentaje: null,
         precio_total: 0,
         isNewCosteEntradas: false,
         editCosteEntradas: null,
@@ -454,17 +455,7 @@
       console.log("FestivalFichaCostesComponent created");
       this.getClientes();
       this.$store.dispatch('loadCostes').then( () => {
-        if( this._costes.porcentaje == null ) {
-          switch( this._header.tipo_festival ) {
-            case 'CAMPEONATO':
-            case 'TORNEO':
-              this._costes.porcentaje = 50;
-              break;
-            case 'EMPRESA':
-              this._costes.porcentaje = 100;
-              break;
-          }
-        }
+        this.porcentaje = this._costes.porcentaje;
         this.updateTotal();
         this.show = true;
       });
@@ -486,7 +477,28 @@
       _importe_tv: 'importe_tv',
     }),
     methods: {
+      calcularPorcentaje() {
+        var porcentaje = this._costes.porcentaje;
+
+        if( porcentaje == null ) {
+
+          switch( this._header.tipo_festival ) {
+            case 'EMPRESA':
+              porcentaje = 100;
+              break;
+            case 'CAMPEONATO':
+            case 'TORNEO':
+            default:
+              porcentaje = 50;
+              break;
+          }
+
+        }
+        this.porcentaje = porcentaje;
+        return porcentaje;
+      },
       onSubmit() {
+        this._costes.porcentaje = this.porcentaje;
         this.$store.dispatch('addCostes', this._costes)
           .then((response) => {
             this.showSnackbar("Costes GUARDADOS");

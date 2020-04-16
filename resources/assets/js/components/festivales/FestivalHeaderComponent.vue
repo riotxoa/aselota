@@ -351,10 +351,7 @@
         } else {
           this.axios.post(uri, this._header)
             .then((response) => {
-              this._header.id = response.data.id;
-              store.commit('SET_EDIT', 1);
-              this.editdate = false;
-              this.editdatepresu = false;
+              this.$router.replace('/gerente/festival/' + response.data.id + '/edit/');
               this.showSnackbar("Festival creado");
             })
             .catch((error) => {
