@@ -98618,7 +98618,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   data: function data() {
     return {
       selectedFilterType: null,
-      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festivales.organizador', text: 'Organizador' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festivales.tipo_festival', text: 'Tipo de Festival' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }],
+      filterTypeOptions: [{ value: null, text: 'Seleccionar filtro' }, { value: 'festival_partidos.campeonato_id', text: 'Campeonato' }, { value: 'festivales.estado_id', text: 'Estado' }, { value: 'festivales.fecha_ini', text: 'Fecha desde' }, { value: 'festivales.fecha_fin', text: 'Fecha hasta' }, { value: 'festivales.fronton_id', text: 'Frontón' }, { value: 'frontones.municipio_id', text: 'Municipio' }, { value: 'festivales.organizador', text: 'Organizador' }, { value: 'festival_facturacion.pagado', text: 'Pagado' }, { value: 'festival_partido_pelotaris.pelotari_id', text: 'Pelotari' }, { value: 'frontones.provincia_id', text: 'Provincia' }, { value: 'festivales.television', text: 'Televisión' }, { value: 'festivales.tipo_festival', text: 'Tipo de Festival' }, { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' }, { value: 'festival_partidos.torneo_id', text: 'Torneo' }],
       selectedFilterValue: null,
       filterValueOptions: [{ value: null, text: "Seleccionar filtro" }],
       filterValueDate: null,
@@ -98649,7 +98649,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
           this.filterValueOptions = [{ value: null, text: "Seleccionar valor" }, { value: "CAMPEONATO", text: "Campeonato" }, { value: "TORNEO", text: "Torneo" }, { value: "EMPRESA", text: "Empresa" }];
           break;
         case 'festival_partidos.campeonato_id':
-          this.filterValueOptions = this.campeonatos;
+          var campeonatos = _.filter(this.campeonatos, { 'is_torneo': 0 });
+          campeonatos.splice(0, 0, { value: null, text: "Seleccionar campeonato" });
+          this.filterValueOptions = campeonatos;
+          break;
+        case 'festival_partidos.torneo_id':
+          var torneos = _.filter(this.campeonatos, { 'is_torneo': 1 });
+          torneos.splice(0, 0, { value: null, text: "Seleccionar torneo" });
+          this.filterValueOptions = torneos;
           break;
         case 'festivales.estado_id':
           this.filterValueOptions = this.festivalEstados;
@@ -98712,6 +98719,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         } else if ('festival_partidos.campeonato_id' == this.selectedFilterType || 'festival_partido_pelotaris.pelotari_id' == this.selectedFilterType || 'festival_partidos.tipo_partido_id' == this.selectedFilterType) {
           operator = 'in';
           column = this.selectedFilterType;
+          val = this.selectedFilterValue;
+          valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text;
+        } else if ('festival_partidos.torneo_id' == this.selectedFilterType) {
+          operator = 'in';
+          column = 'festival_partidos.campeonato_id';
           val = this.selectedFilterValue;
           valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue }).text;
         } else {

@@ -65,6 +65,7 @@
           { value: 'festivales.television', text: 'Televisión' },
           { value: 'festivales.tipo_festival', text: 'Tipo de Festival' },
           { value: 'festival_partidos.tipo_partido_id', text: 'Tipo de Partido' },
+          { value: 'festival_partidos.torneo_id', text: 'Torneo' },
         ],
         selectedFilterValue: null,
         filterValueOptions: [
@@ -102,7 +103,14 @@
             ];
             break;
           case 'festival_partidos.campeonato_id':
-            this.filterValueOptions = this.campeonatos;
+            var campeonatos = _.filter( this.campeonatos, { 'is_torneo': 0 } );
+            campeonatos.splice( 0, 0, { value: null, text: "Seleccionar campeonato" } );
+            this.filterValueOptions = campeonatos;
+            break;
+          case 'festival_partidos.torneo_id':
+            var torneos = _.filter( this.campeonatos, { 'is_torneo': 1 } );
+            torneos.splice( 0, 0, { value: null, text: "Seleccionar torneo" } );
+            this.filterValueOptions = torneos;
             break;
           case 'festivales.estado_id':
             this.filterValueOptions = this.festivalEstados;
@@ -188,7 +196,11 @@
             column = this.selectedFilterType;
             val = this.selectedFilterValue;
             valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue}).text;
-
+          } else if( 'festival_partidos.torneo_id' == this.selectedFilterType ) {
+            operator = 'in';
+            column = 'festival_partidos.campeonato_id';
+            val = this.selectedFilterValue;
+            valTxt = _.find(this.filterValueOptions, { value: this.selectedFilterValue}).text;
           } else {
             operator = '=';
             column = this.selectedFilterType;
