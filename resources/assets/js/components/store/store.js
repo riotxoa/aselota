@@ -971,26 +971,38 @@ export const store = new Vuex.Store({
       })
     },
     loadCostesFijos({ commit }) {
-      let data = {};
-      axios
-        .get('/www/costes-fijos', data)
-        .then( r => r.data )
-        .then( costes_fijos => {
-          commit('SET_COSTES_FIJOS', costes_fijos);
-        });
+      return new Promise( (resolve, reject) => {
+        let data = {};
+        axios
+          .get('/www/costes-fijos', data)
+          .then( r => r.data )
+          .then( costes_fijos => {
+            commit('SET_COSTES_FIJOS', costes_fijos);
+            resolve( costes_fijos );
+          })
+          .catch( error => {
+            reject( error );
+          });
+      });
     },
     loadCostes({ commit }) {
-      let data = {
-        params: {
-          festival_id: this.getters.header.id,
-        }
-      };
-      axios
-        .get('/www/festival-costes', data)
-        .then( r => r.data )
-        .then( costes => {
-          commit('SET_COSTES', costes);
-        });
+      return new Promise( (resolve, reject) => {
+        let data = {
+          params: {
+            festival_id: this.getters.header.id,
+          }
+        };
+        axios
+          .get('/www/festival-costes', data)
+          .then( r => r.data )
+          .then( costes => {
+            commit('SET_COSTES', costes);
+            resolve(costes);
+          })
+          .catch( err => {
+            reject(err);
+          });
+      });
     },
     addCostes({ commit }, costes) {
       let uri = '/www/festival-costes';

@@ -7377,25 +7377,37 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
     loadCostesFijos: function loadCostesFijos(_ref15) {
       var commit = _ref15.commit;
 
-      var data = {};
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/costes-fijos', data).then(function (r) {
-        return r.data;
-      }).then(function (costes_fijos) {
-        commit('SET_COSTES_FIJOS', costes_fijos);
+      return new Promise(function (resolve, reject) {
+        var data = {};
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/costes-fijos', data).then(function (r) {
+          return r.data;
+        }).then(function (costes_fijos) {
+          commit('SET_COSTES_FIJOS', costes_fijos);
+          resolve(costes_fijos);
+        }).catch(function (error) {
+          reject(error);
+        });
       });
     },
     loadCostes: function loadCostes(_ref16) {
+      var _this3 = this;
+
       var commit = _ref16.commit;
 
-      var data = {
-        params: {
-          festival_id: this.getters.header.id
-        }
-      };
-      __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-costes', data).then(function (r) {
-        return r.data;
-      }).then(function (costes) {
-        commit('SET_COSTES', costes);
+      return new Promise(function (resolve, reject) {
+        var data = {
+          params: {
+            festival_id: _this3.getters.header.id
+          }
+        };
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/festival-costes', data).then(function (r) {
+          return r.data;
+        }).then(function (costes) {
+          commit('SET_COSTES', costes);
+          resolve(costes);
+        }).catch(function (err) {
+          reject(err);
+        });
       });
     },
     addCostes: function addCostes(_ref17, costes) {
@@ -105475,7 +105487,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       },
       submitCosteEntradasForm: function submitCosteEntradasForm(entradas) {
         _this.saveCosteEntradasForm(entradas);
-      }
+      },
+      show: false
     };
   },
 
@@ -105485,7 +105498,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     console.log("FestivalFichaCostesComponent created");
     this.getClientes();
     this.$store.dispatch('loadCostes').then(function () {
+      if (_this2._costes.porcentaje == null) {
+        switch (_this2._header.tipo_festival) {
+          case 'CAMPEONATO':
+          case 'TORNEO':
+            _this2._costes.porcentaje = 50;
+            break;
+          case 'EMPRESA':
+            _this2._costes.porcentaje = 100;
+            break;
+        }
+      }
       _this2.updateTotal();
+      _this2.show = true;
     });
   },
   computed: Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["c" /* mapState */])({
@@ -105499,6 +105524,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     _coste_tasa: 'coste_tasa',
     _coste_sanidad: 'coste_sanidad',
     _coste: 'coste',
+    _header: 'header',
     _margen_beneficio: 'margen_beneficio',
     _coste_tv: 'coste_tv',
     _importe_tv: 'importe_tv'
@@ -105626,142 +105652,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "festival-costes" },
-    [
-      _c(
-        "b-form",
-        { on: { submit: _vm.onSubmit } },
+  return _vm.show
+    ? _c(
+        "div",
+        { staticClass: "festival-costes" },
         [
-          _c("b-row", [
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-5" }, [
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body p-2" },
-                  [
-                    _c("b-row", { staticClass: "m-0 p-0" }, [
-                      _c("label", { staticClass: "ml-0 mr-2" }, [
-                        _vm._v("Porcentaje Baiko:")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", {}, [
-                        _vm._v(_vm._s(_vm._costes.porcentaje) + " %")
-                      ])
-                    ]),
-                    _vm._v(" "),
+          _c(
+            "b-form",
+            { on: { submit: _vm.onSubmit } },
+            [
+              _c("b-row", [
+                _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-5" }, [
+                  _c("div", { staticClass: "card mb-3" }, [
                     _c(
-                      "b-row",
-                      { staticClass: "px-3" },
+                      "div",
+                      { staticClass: "card-body p-2" },
                       [
-                        _c("b-form-input", {
-                          staticClass: "col-12 px-0",
-                          attrs: {
-                            id: "coste_porcentaje",
-                            type: "range",
-                            min: "0",
-                            max: "100",
-                            step: "5"
-                          },
-                          model: {
-                            value: _vm._costes.porcentaje,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "porcentaje", $$v)
-                            },
-                            expression: "_costes.porcentaje"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c(
-                      "b-row",
-                      [
-                        _c(
-                          "b-col",
-                          { staticClass: "text-center", attrs: { cols: "4" } },
-                          [
-                            _c("label", [_vm._v("NºAuxiliares:")]),
-                            _vm._v(" "),
-                            _c("b-form-input", {
-                              staticClass: "text-right w-50 mx-auto",
-                              attrs: {
-                                id: "num_auxiliares",
-                                type: "number",
-                                max: "20",
-                                min: "1",
-                                maxlength: "2",
-                                placeholder: "1",
-                                value: _vm._costes.num_auxiliares
-                              },
-                              on: {
-                                input: function($event) {
-                                  _vm.updateCosteAuxiliares()
-                                }
-                              }
-                            })
-                          ],
-                          1
-                        ),
+                        _c("b-row", { staticClass: "m-0 p-0" }, [
+                          _c("label", { staticClass: "ml-0 mr-2" }, [
+                            _vm._v("Porcentaje Baiko:")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", {}, [
+                            _vm._v(_vm._s(_vm._costes.porcentaje) + " %")
+                          ])
+                        ]),
                         _vm._v(" "),
                         _c(
-                          "b-col",
-                          { staticClass: "text-center", attrs: { cols: "4" } },
+                          "b-row",
+                          { staticClass: "px-3" },
                           [
-                            _c("label", [_vm._v("NºTaquilleros:")]),
-                            _vm._v(" "),
                             _c("b-form-input", {
-                              staticClass: "text-right w-50 mx-auto",
+                              staticClass: "col-12 px-0",
                               attrs: {
-                                id: "num_taquilleros",
-                                type: "number",
-                                max: "3",
+                                id: "coste_porcentaje",
+                                type: "range",
                                 min: "0",
-                                maxlength: "2",
-                                placeholder: "0",
-                                value: _vm._costes.num_taquilleros
+                                max: "100",
+                                step: "5"
                               },
-                              on: { input: _vm.updateCosteTaquillera }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-col",
-                          { staticClass: "text-center", attrs: { cols: "4" } },
-                          [
-                            _c("label", [_vm._v("Serv.Sanitario:")]),
-                            _c("br"),
-                            _vm._v(" "),
-                            _c("b-form-checkbox", {
-                              staticClass: "text-right",
-                              staticStyle: { "margin-right": "0px !important" },
-                              attrs: {
-                                id: "check_sanidad",
-                                value: "1",
-                                "unchecked-value": "0"
-                              },
-                              on: { change: _vm.updateCosteSanidad },
                               model: {
-                                value: _vm._costes.sanidad,
+                                value: _vm._costes.porcentaje,
                                 callback: function($$v) {
-                                  _vm.$set(_vm._costes, "sanidad", $$v)
+                                  _vm.$set(_vm._costes, "porcentaje", $$v)
                                 },
-                                expression: "_costes.sanidad"
+                                expression: "_costes.porcentaje"
                               }
                             })
                           ],
@@ -105770,186 +105707,27 @@ var render = function() {
                       ],
                       1
                     )
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card mb-3" }, [
                     _c(
-                      "b-row",
+                      "div",
+                      { staticClass: "card-body" },
                       [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _c("a", {
-                            directives: [
-                              {
-                                name: "b-toggle",
-                                rawName: "v-b-toggle",
-                                value: "#acordeonCostes",
-                                expression: "'#acordeonCostes'"
-                              }
-                            ],
-                            staticClass: "icon voyager-plus align-middle",
-                            attrs: { href: "#", variant: "secondary" }
-                          }),
-                          _vm._v(
-                            "\n                Coste empresa festival:\n              "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-5 text-right",
-                          attrs: {
-                            id: "coste_empresa",
-                            type: "text",
-                            maxlength: "8",
-                            placeholder: "0.00",
-                            readonly: "",
-                            value: _vm._coste.toLocaleString("de-DE", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2
-                            })
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticStyle: { clear: "both" } }),
-                        _vm._v(" "),
                         _c(
-                          "b-collapse",
-                          {
-                            staticClass: "ml-5 my-3 pr-3 w-100",
-                            attrs: {
-                              id: "#acordeonCostes",
-                              accordion: "my-accordion",
-                              role: "tabpanel"
-                            }
-                          },
+                          "b-row",
                           [
                             _c(
-                              "b-row",
+                              "b-col",
+                              {
+                                staticClass: "text-center",
+                                attrs: { cols: "4" }
+                              },
                               [
-                                _c("label", { staticClass: "col-md-9" }, [
-                                  _vm._v("Pelotaris:")
-                                ]),
+                                _c("label", [_vm._v("NºAuxiliares:")]),
                                 _vm._v(" "),
                                 _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_pelotaris",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_pelotaris.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              [
-                                _c("label", { staticClass: "col-md-9" }, [
-                                  _vm._v("Jueces:")
-                                ]),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_jueces",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_jueces.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              [
-                                _c("label", { staticClass: "col-md-9" }, [
-                                  _vm._v("Cancha:")
-                                ]),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_cancha",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_cancha.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              [
-                                _c("label", { staticClass: "col-md-9" }, [
-                                  _vm._v("Material:")
-                                ]),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_material",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_material.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              [
-                                _c("label", { staticClass: "col-md-7" }, [
-                                  _vm._v("Auxiliares:")
-                                ]),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-2 text-right",
+                                  staticClass: "text-right w-50 mx-auto",
                                   attrs: {
                                     id: "num_auxiliares",
                                     type: "number",
@@ -105957,26 +105735,12 @@ var render = function() {
                                     min: "1",
                                     maxlength: "2",
                                     placeholder: "1",
-                                    readonly: "",
                                     value: _vm._costes.num_auxiliares
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_auxiliares",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_auxiliares.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      _vm.updateCosteAuxiliares()
+                                    }
                                   }
                                 })
                               ],
@@ -105984,136 +105748,58 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c(
-                              "b-row",
+                              "b-col",
+                              {
+                                staticClass: "text-center",
+                                attrs: { cols: "4" }
+                              },
                               [
-                                _c("label", { staticClass: "col-md-7" }, [
-                                  _vm._v("Taquillera:")
-                                ]),
+                                _c("label", [_vm._v("NºTaquilleros:")]),
                                 _vm._v(" "),
                                 _c("b-form-input", {
-                                  staticClass: "col-md-2 text-right",
+                                  staticClass: "text-right w-50 mx-auto",
                                   attrs: {
                                     id: "num_taquilleros",
                                     type: "number",
                                     max: "3",
                                     min: "0",
                                     maxlength: "2",
-                                    readonly: "",
                                     placeholder: "0",
                                     value: _vm._costes.num_taquilleros
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_taquilleros",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0",
-                                    value: _vm._coste_taquillera.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
+                                  },
+                                  on: { input: _vm.updateCosteTaquillera }
                                 })
                               ],
                               1
                             ),
                             _vm._v(" "),
                             _c(
-                              "b-row",
+                              "b-col",
+                              {
+                                staticClass: "text-center",
+                                attrs: { cols: "4" }
+                              },
                               [
-                                _c("label", { staticClass: "col-md-9" }, [
-                                  _vm._v("Tasa de juego:")
-                                ]),
+                                _c("label", [_vm._v("Serv.Sanitario:")]),
+                                _c("br"),
                                 _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
+                                _c("b-form-checkbox", {
+                                  staticClass: "text-right",
+                                  staticStyle: {
+                                    "margin-right": "0px !important"
+                                  },
                                   attrs: {
-                                    id: "coste_tasa",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_tasa.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              [
-                                _c("label", { staticClass: "col-md-9" }, [
-                                  _vm._v("Servicio sanitario:")
-                                ]),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "coste_sanitario",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0.00",
-                                    value: _vm._coste_sanidad.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
-                                  }
-                                })
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "b-row",
-                              [
-                                _c("label", { staticClass: "col-md-7" }, [
-                                  _vm._v("Televisión:")
-                                ]),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-2 text-right",
-                                  attrs: {
-                                    id: "coste_tv",
-                                    type: "text",
-                                    readonly: "",
-                                    placeholder: "N/A",
-                                    value: _vm._coste_tv + "%"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("b-form-input", {
-                                  staticClass: "col-md-3 text-right",
-                                  attrs: {
-                                    id: "importe_tv",
-                                    type: "text",
-                                    maxlength: "8",
-                                    readonly: "",
-                                    placeholder: "0",
-                                    value: _vm._importe_tv.toLocaleString(
-                                      "de-DE",
-                                      {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                      }
-                                    )
+                                    id: "check_sanidad",
+                                    value: "1",
+                                    "unchecked-value": "0"
+                                  },
+                                  on: { change: _vm.updateCosteSanidad },
+                                  model: {
+                                    value: _vm._costes.sanidad,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm._costes, "sanidad", $$v)
+                                    },
+                                    expression: "_costes.sanidad"
                                   }
                                 })
                               ],
@@ -106124,150 +105810,10 @@ var render = function() {
                         )
                       ],
                       1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _vm._v("Importe venta:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-5 text-right",
-                          attrs: {
-                            id: "coste_importe_venta",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0.00",
-                            formatter: _vm.formatCurrency
-                          },
-                          on: { change: _vm.updateImporteVenta },
-                          nativeOn: {
-                            focus: function($event) {
-                              $event.target.select()
-                            }
-                          },
-                          model: {
-                            value: _vm._costes.importe_venta,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "importe_venta", $$v)
-                            },
-                            expression: "_costes.importe_venta"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticStyle: { display: "none" },
-                        attrs: { id: "coste_importe_venta_aviso" }
-                      },
-                      [
-                        _c(
-                          "p",
-                          {
-                            staticClass: "col-md-12 text-right",
-                            staticStyle: {
-                              color: "gray",
-                              "font-weight": "bold",
-                              "padding-right": "0px"
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                El importe de venta debe ser confirmado por el supervisor\n              "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "col-sm-2 p-0 text-right float-right",
-                            staticStyle: {
-                              "max-width": "165px",
-                              "margin-bottom": "20px"
-                            }
-                          },
-                          [
-                            _c(
-                              "b-btn",
-                              {
-                                attrs: { block: "", variant: "primary" },
-                                on: { click: _vm.solicitarConfirmacion }
-                              },
-                              [_vm._v("Solicitar confirmación")]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticStyle: { clear: "both" } })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-7" }, [
-                          _vm._v("Vendido a:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-select", {
-                          staticClass: "col-md-5",
-                          attrs: {
-                            id: "coste_vendido_a",
-                            options: _vm.clientes
-                          },
-                          model: {
-                            value: _vm._costes.cliente_id,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "cliente_id", $$v)
-                            },
-                            expression: "_costes.cliente_id"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-form-group",
-                      {
-                        attrs: {
-                          label: "Observaciones:",
-                          "label-for": "coste_texto_libre"
-                        }
-                      },
-                      [
-                        _c("b-form-textarea", {
-                          attrs: {
-                            id: "coste_texto_libre",
-                            rows: 3,
-                            "max-rows": 6
-                          },
-                          model: {
-                            value: _vm._costes.cliente_txt,
-                            callback: function($$v) {
-                              _vm.$set(_vm._costes, "cliente_txt", $$v)
-                            },
-                            expression: "_costes.cliente_txt"
-                          }
-                        })
-                      ],
-                      1
                     )
-                  ],
-                  1
-                )
-              ]),
-              _vm._v(" "),
-              false
-                ? _c("div", { staticClass: "card mb-3" }, [
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card mb-3" }, [
                     _c(
                       "div",
                       { staticClass: "card-body" },
@@ -106276,514 +105822,1025 @@ var render = function() {
                           "b-row",
                           [
                             _c("label", { staticClass: "col-md-7" }, [
-                              _vm._v("Aportación:")
+                              _c("a", {
+                                directives: [
+                                  {
+                                    name: "b-toggle",
+                                    rawName: "v-b-toggle",
+                                    value: "#acordeonCostes",
+                                    expression: "'#acordeonCostes'"
+                                  }
+                                ],
+                                staticClass: "icon voyager-plus align-middle",
+                                attrs: { href: "#", variant: "secondary" }
+                              }),
+                              _vm._v(
+                                "\n                Coste empresa festival:\n              "
+                              )
                             ]),
                             _vm._v(" "),
                             _c("b-form-input", {
                               staticClass: "col-md-5 text-right",
                               attrs: {
-                                id: "coste_aportacion",
+                                id: "coste_empresa",
+                                type: "text",
+                                maxlength: "8",
+                                placeholder: "0.00",
+                                readonly: "",
+                                value: _vm._coste.toLocaleString("de-DE", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                })
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("div", { staticStyle: { clear: "both" } }),
+                            _vm._v(" "),
+                            _c(
+                              "b-collapse",
+                              {
+                                staticClass: "ml-5 my-3 pr-3 w-100",
+                                attrs: {
+                                  id: "#acordeonCostes",
+                                  accordion: "my-accordion",
+                                  role: "tabpanel"
+                                }
+                              },
+                              [
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-9" }, [
+                                      _vm._v("Pelotaris:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_pelotaris",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_pelotaris.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-9" }, [
+                                      _vm._v("Jueces:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_jueces",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_jueces.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-9" }, [
+                                      _vm._v("Cancha:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_cancha",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_cancha.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-9" }, [
+                                      _vm._v("Material:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_material",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_material.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-7" }, [
+                                      _vm._v("Auxiliares:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-2 text-right",
+                                      attrs: {
+                                        id: "num_auxiliares",
+                                        type: "number",
+                                        max: "20",
+                                        min: "1",
+                                        maxlength: "2",
+                                        placeholder: "1",
+                                        readonly: "",
+                                        value: _vm._costes.num_auxiliares
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_auxiliares",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_auxiliares.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-7" }, [
+                                      _vm._v("Taquillera:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-2 text-right",
+                                      attrs: {
+                                        id: "num_taquilleros",
+                                        type: "number",
+                                        max: "3",
+                                        min: "0",
+                                        maxlength: "2",
+                                        readonly: "",
+                                        placeholder: "0",
+                                        value: _vm._costes.num_taquilleros
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_taquilleros",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0",
+                                        value: _vm._coste_taquillera.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-9" }, [
+                                      _vm._v("Tasa de juego:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_tasa",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_tasa.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-9" }, [
+                                      _vm._v("Servicio sanitario:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "coste_sanitario",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0.00",
+                                        value: _vm._coste_sanidad.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-row",
+                                  [
+                                    _c("label", { staticClass: "col-md-7" }, [
+                                      _vm._v("Televisión:")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-2 text-right",
+                                      attrs: {
+                                        id: "coste_tv",
+                                        type: "text",
+                                        readonly: "",
+                                        placeholder: "N/A",
+                                        value: _vm._coste_tv + "%"
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("b-form-input", {
+                                      staticClass: "col-md-3 text-right",
+                                      attrs: {
+                                        id: "importe_tv",
+                                        type: "text",
+                                        maxlength: "8",
+                                        readonly: "",
+                                        placeholder: "0",
+                                        value: _vm._importe_tv.toLocaleString(
+                                          "de-DE",
+                                          {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                          }
+                                        )
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          [
+                            _c("label", { staticClass: "col-md-7" }, [
+                              _vm._v("Importe venta:")
+                            ]),
+                            _vm._v(" "),
+                            _c("b-form-input", {
+                              staticClass: "col-md-5 text-right",
+                              attrs: {
+                                id: "coste_importe_venta",
                                 type: "number",
                                 maxlength: "8",
-                                placeholder: "0.00"
+                                placeholder: "0.00",
+                                formatter: _vm.formatCurrency
                               },
-                              on: { input: _vm.updatePrecioTotal },
+                              on: { change: _vm.updateImporteVenta },
                               nativeOn: {
                                 focus: function($event) {
                                   $event.target.select()
-                                },
-                                blur: function($event) {
-                                  return _vm.formatCurrency($event)
                                 }
                               },
                               model: {
-                                value: _vm._costes.aportacion,
+                                value: _vm._costes.importe_venta,
                                 callback: function($$v) {
-                                  _vm.$set(_vm._costes, "aportacion", $$v)
+                                  _vm.$set(_vm._costes, "importe_venta", $$v)
                                 },
-                                expression: "_costes.aportacion"
+                                expression: "_costes.importe_venta"
                               }
                             })
                           ],
                           1
                         ),
                         _vm._v(" "),
-                        _c("b-row", { staticClass: "mt-4" }, [
-                          _c(
-                            "div",
-                            { staticClass: "col-12" },
-                            [
-                              _c("b-table", {
-                                attrs: {
-                                  striped: "",
-                                  hover: "",
-                                  small: "",
-                                  items: _vm._costes.entradas,
-                                  fields: _vm.fields
-                                },
-                                scopedSlots: _vm._u([
+                        _c(
+                          "div",
+                          {
+                            staticStyle: { display: "none" },
+                            attrs: { id: "coste_importe_venta_aviso" }
+                          },
+                          [
+                            _c(
+                              "p",
+                              {
+                                staticClass: "col-md-12 text-right",
+                                staticStyle: {
+                                  color: "gray",
+                                  "font-weight": "bold",
+                                  "padding-right": "0px"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                El importe de venta debe ser confirmado por el supervisor\n              "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "col-sm-2 p-0 text-right float-right",
+                                staticStyle: {
+                                  "max-width": "165px",
+                                  "margin-bottom": "20px"
+                                }
+                              },
+                              [
+                                _c(
+                                  "b-btn",
                                   {
-                                    key: "actions",
-                                    fn: function(row) {
-                                      return [
-                                        _c(
-                                          "b-button",
-                                          {
-                                            attrs: {
-                                              size: "sm",
-                                              variant: "danger",
-                                              title: "Borrar Entradas"
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                $event.stopPropagation()
-                                                _vm.onClickDeleteEntradas(
-                                                  row.item
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c("span", {
-                                              staticClass: "icon voyager-trash"
-                                            })
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "b-button",
-                                          {
-                                            attrs: {
-                                              size: "sm",
-                                              variant: "primary",
-                                              title: "Editar Entradas"
-                                            },
-                                            on: {
-                                              click: function($event) {
-                                                $event.stopPropagation()
-                                                _vm.onClickEditEntradas(
-                                                  row.item
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c("span", {
-                                              staticClass: "icon voyager-edit"
-                                            })
-                                          ]
-                                        )
-                                      ]
-                                    }
-                                  }
-                                ])
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-7" }, [_vm._v(" ")]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "col-md-5 text-right" },
-                            [
-                              _c(
-                                "b-btn",
-                                {
-                                  attrs: { size: "sm" },
-                                  on: { click: _vm.onClickAddEntradas }
-                                },
-                                [_vm._v("Añadir Entradas")]
-                              )
-                            ],
-                            1
-                          )
-                        ])
-                      ],
-                      1
-                    )
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              false
-                ? _c("div", { staticClass: "card mb-3" }, [
-                    _c(
-                      "div",
-                      { staticClass: "card-body" },
-                      [
+                                    attrs: { block: "", variant: "primary" },
+                                    on: { click: _vm.solicitarConfirmacion }
+                                  },
+                                  [_vm._v("Solicitar confirmación")]
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticStyle: { clear: "both" } })
+                          ]
+                        ),
+                        _vm._v(" "),
                         _c(
                           "b-row",
                           [
                             _c("label", { staticClass: "col-md-7" }, [
-                              _vm._v("Precio total:")
+                              _vm._v("Vendido a:")
                             ]),
                             _vm._v(" "),
-                            _vm._costes.precio_total
-                              ? _c("b-form-input", {
-                                  staticClass: "col-md-5 text-right",
-                                  attrs: {
-                                    id: "coste_precio_total",
-                                    type: "text",
-                                    tabindex: "-1",
-                                    readonly: ""
-                                  },
-                                  model: {
-                                    value: _vm.precio_total,
-                                    callback: function($$v) {
-                                      _vm.precio_total = $$v
-                                    },
-                                    expression: "precio_total"
-                                  }
-                                })
-                              : _vm._e()
+                            _c("b-form-select", {
+                              staticClass: "col-md-5",
+                              attrs: {
+                                id: "coste_vendido_a",
+                                options: _vm.clientes
+                              },
+                              model: {
+                                value: _vm._costes.cliente_id,
+                                callback: function($$v) {
+                                  _vm.$set(_vm._costes, "cliente_id", $$v)
+                                },
+                                expression: "_costes.cliente_id"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: {
+                              label: "Observaciones:",
+                              "label-for": "coste_texto_libre"
+                            }
+                          },
+                          [
+                            _c("b-form-textarea", {
+                              attrs: {
+                                id: "coste_texto_libre",
+                                rows: 3,
+                                "max-rows": 6
+                              },
+                              model: {
+                                value: _vm._costes.cliente_txt,
+                                callback: function($$v) {
+                                  _vm.$set(_vm._costes, "cliente_txt", $$v)
+                                },
+                                expression: "_costes.cliente_txt"
+                              }
+                            })
                           ],
                           1
                         )
                       ],
                       1
                     )
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-5 position-relative" },
-              [
-                _c("div", { staticClass: "card mb-3 background-gray" }, [
-                  _c(
-                    "div",
-                    { staticClass: "card-body" },
-                    [
-                      _c(
-                        "b-row",
-                        [
-                          _c("label", { staticClass: "col-md-8" }, [
-                            _vm._v("Nº espectadores:")
-                          ]),
-                          _vm._v(" "),
-                          _c("b-form-input", {
-                            staticClass: "col-md-4 text-right",
-                            attrs: {
-                              id: "coste_num_espectadores",
-                              type: "number",
-                              maxlength: "8",
-                              placeholder: "0.00"
-                            },
-                            on: { input: _vm.updateTotal },
-                            nativeOn: {
-                              focus: function($event) {
-                                $event.target.select()
-                              }
-                            },
-                            model: {
-                              value: _vm._costes.num_espectadores,
-                              callback: function($$v) {
-                                _vm.$set(_vm._costes, "num_espectadores", $$v)
-                              },
-                              expression: "_costes.num_espectadores"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-row",
-                        [
-                          _c("label", { staticClass: "col-md-8" }, [
-                            _vm._v("Ingreso en taquilla:")
-                          ]),
-                          _vm._v(" "),
-                          _c("b-form-input", {
-                            staticClass: "col-md-4 text-right",
-                            attrs: {
-                              id: "coste_ingreso_taquilla",
-                              type: "number",
-                              maxlength: "8",
-                              placeholder: "0.00"
-                            },
-                            on: { input: _vm.updateTotal },
-                            nativeOn: {
-                              focus: function($event) {
-                                $event.target.select()
-                              },
-                              blur: function($event) {
-                                return _vm.formatCurrency($event)
-                              }
-                            },
-                            model: {
-                              value: _vm._costes.ingreso_taquilla,
-                              callback: function($$v) {
-                                _vm.$set(_vm._costes, "ingreso_taquilla", $$v)
-                              },
-                              expression: "_costes.ingreso_taquilla"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-row",
-                        [
-                          _c("label", { staticClass: "col-md-8" }, [
-                            _vm._v("Ingreso por ayto.:")
-                          ]),
-                          _vm._v(" "),
-                          _c("b-form-input", {
-                            staticClass: "col-md-4 text-right",
-                            attrs: {
-                              id: "coste_ingreso_ayuntamiento",
-                              type: "number",
-                              maxlength: "8",
-                              placeholder: "0.00"
-                            },
-                            on: { input: _vm.updateTotal },
-                            nativeOn: {
-                              focus: function($event) {
-                                $event.target.select()
-                              },
-                              blur: function($event) {
-                                return _vm.formatCurrency($event)
-                              }
-                            },
-                            model: {
-                              value: _vm._costes.ingreso_ayto,
-                              callback: function($$v) {
-                                _vm.$set(_vm._costes, "ingreso_ayto", $$v)
-                              },
-                              expression: "_costes.ingreso_ayto"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-row",
-                        [
-                          _c("label", { staticClass: "col-md-8" }, [
-                            _vm._v("Otros:")
-                          ]),
-                          _vm._v(" "),
-                          _c("b-form-input", {
-                            staticClass: "col-md-4 text-right",
-                            attrs: {
-                              id: "coste_otros",
-                              type: "number",
-                              maxlength: "8",
-                              placeholder: "0.00"
-                            },
-                            on: { input: _vm.updateTotal },
-                            nativeOn: {
-                              focus: function($event) {
-                                $event.target.select()
-                              },
-                              blur: function($event) {
-                                return _vm.formatCurrency($event)
-                              }
-                            },
-                            model: {
-                              value: _vm._costes.ingreso_otros,
-                              callback: function($$v) {
-                                _vm.$set(_vm._costes, "ingreso_otros", $$v)
-                              },
-                              expression: "_costes.ingreso_otros"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card mb-3 background-red" }, [
-                  _c(
-                    "div",
-                    { staticClass: "card-body" },
-                    [
-                      _c(
-                        "b-form-group",
-                        {
-                          attrs: { label: "Total:", "label-for": "coste_total" }
-                        },
-                        [
-                          _vm._costes.total >= 0
-                            ? _c("b-form-input", {
-                                staticClass: "text-center",
-                                attrs: {
-                                  id: "coste_total",
-                                  type: "text",
-                                  value: _vm._costes.total.toLocaleString(
-                                    "de-DE",
-                                    {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2
+                  ]),
+                  _vm._v(" "),
+                  false
+                    ? _c("div", { staticClass: "card mb-3" }, [
+                        _c(
+                          "div",
+                          { staticClass: "card-body" },
+                          [
+                            _c(
+                              "b-row",
+                              [
+                                _c("label", { staticClass: "col-md-7" }, [
+                                  _vm._v("Aportación:")
+                                ]),
+                                _vm._v(" "),
+                                _c("b-form-input", {
+                                  staticClass: "col-md-5 text-right",
+                                  attrs: {
+                                    id: "coste_aportacion",
+                                    type: "number",
+                                    maxlength: "8",
+                                    placeholder: "0.00"
+                                  },
+                                  on: { input: _vm.updatePrecioTotal },
+                                  nativeOn: {
+                                    focus: function($event) {
+                                      $event.target.select()
+                                    },
+                                    blur: function($event) {
+                                      return _vm.formatCurrency($event)
                                     }
-                                  ),
-                                  readonly: "",
-                                  tabindex: "-1"
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
+                                  },
+                                  model: {
+                                    value: _vm._costes.aportacion,
+                                    callback: function($$v) {
+                                      _vm.$set(_vm._costes, "aportacion", $$v)
+                                    },
+                                    expression: "_costes.aportacion"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("b-row", { staticClass: "mt-4" }, [
+                              _c(
+                                "div",
+                                { staticClass: "col-12" },
+                                [
+                                  _c("b-table", {
+                                    attrs: {
+                                      striped: "",
+                                      hover: "",
+                                      small: "",
+                                      items: _vm._costes.entradas,
+                                      fields: _vm.fields
+                                    },
+                                    scopedSlots: _vm._u([
+                                      {
+                                        key: "actions",
+                                        fn: function(row) {
+                                          return [
+                                            _c(
+                                              "b-button",
+                                              {
+                                                attrs: {
+                                                  size: "sm",
+                                                  variant: "danger",
+                                                  title: "Borrar Entradas"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.stopPropagation()
+                                                    _vm.onClickDeleteEntradas(
+                                                      row.item
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("span", {
+                                                  staticClass:
+                                                    "icon voyager-trash"
+                                                })
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "b-button",
+                                              {
+                                                attrs: {
+                                                  size: "sm",
+                                                  variant: "primary",
+                                                  title: "Editar Entradas"
+                                                },
+                                                on: {
+                                                  click: function($event) {
+                                                    $event.stopPropagation()
+                                                    _vm.onClickEditEntradas(
+                                                      row.item
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [
+                                                _c("span", {
+                                                  staticClass:
+                                                    "icon voyager-edit"
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        }
+                                      }
+                                    ])
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-7" }, [
+                                _vm._v(" ")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "col-md-5 text-right" },
+                                [
+                                  _c(
+                                    "b-btn",
+                                    {
+                                      attrs: { size: "sm" },
+                                      on: { click: _vm.onClickAddEntradas }
+                                    },
+                                    [_vm._v("Añadir Entradas")]
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  false
+                    ? _c("div", { staticClass: "card mb-3" }, [
+                        _c(
+                          "div",
+                          { staticClass: "card-body" },
+                          [
+                            _c(
+                              "b-row",
+                              [
+                                _c("label", { staticClass: "col-md-7" }, [
+                                  _vm._v("Precio total:")
+                                ]),
+                                _vm._v(" "),
+                                _vm._costes.precio_total
+                                  ? _c("b-form-input", {
+                                      staticClass: "col-md-5 text-right",
+                                      attrs: {
+                                        id: "coste_precio_total",
+                                        type: "text",
+                                        tabindex: "-1",
+                                        readonly: ""
+                                      },
+                                      model: {
+                                        value: _vm.precio_total,
+                                        callback: function($$v) {
+                                          _vm.precio_total = $$v
+                                        },
+                                        expression: "precio_total"
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c(
-                  "b-row",
-                  { staticClass: "botonera" },
+                  "div",
+                  { staticClass: "col-md-5 position-relative" },
                   [
-                    _c(
-                      "b-button",
-                      {
-                        attrs: { variant: "default" },
-                        on: { click: _vm.onReset }
-                      },
-                      [_vm._v("Restablecer")]
-                    ),
+                    _c("div", { staticClass: "card mb-3 background-gray" }, [
+                      _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-8" }, [
+                                _vm._v("Nº espectadores:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-input", {
+                                staticClass: "col-md-4 text-right",
+                                attrs: {
+                                  id: "coste_num_espectadores",
+                                  type: "number",
+                                  maxlength: "8",
+                                  placeholder: "0.00"
+                                },
+                                on: { input: _vm.updateTotal },
+                                nativeOn: {
+                                  focus: function($event) {
+                                    $event.target.select()
+                                  }
+                                },
+                                model: {
+                                  value: _vm._costes.num_espectadores,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm._costes,
+                                      "num_espectadores",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "_costes.num_espectadores"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-8" }, [
+                                _vm._v("Ingreso en taquilla:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-input", {
+                                staticClass: "col-md-4 text-right",
+                                attrs: {
+                                  id: "coste_ingreso_taquilla",
+                                  type: "number",
+                                  maxlength: "8",
+                                  placeholder: "0.00"
+                                },
+                                on: { input: _vm.updateTotal },
+                                nativeOn: {
+                                  focus: function($event) {
+                                    $event.target.select()
+                                  },
+                                  blur: function($event) {
+                                    return _vm.formatCurrency($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm._costes.ingreso_taquilla,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm._costes,
+                                      "ingreso_taquilla",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "_costes.ingreso_taquilla"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-8" }, [
+                                _vm._v("Ingreso por ayto.:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-input", {
+                                staticClass: "col-md-4 text-right",
+                                attrs: {
+                                  id: "coste_ingreso_ayuntamiento",
+                                  type: "number",
+                                  maxlength: "8",
+                                  placeholder: "0.00"
+                                },
+                                on: { input: _vm.updateTotal },
+                                nativeOn: {
+                                  focus: function($event) {
+                                    $event.target.select()
+                                  },
+                                  blur: function($event) {
+                                    return _vm.formatCurrency($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm._costes.ingreso_ayto,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm._costes, "ingreso_ayto", $$v)
+                                  },
+                                  expression: "_costes.ingreso_ayto"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-8" }, [
+                                _vm._v("Otros:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-input", {
+                                staticClass: "col-md-4 text-right",
+                                attrs: {
+                                  id: "coste_otros",
+                                  type: "number",
+                                  maxlength: "8",
+                                  placeholder: "0.00"
+                                },
+                                on: { input: _vm.updateTotal },
+                                nativeOn: {
+                                  focus: function($event) {
+                                    $event.target.select()
+                                  },
+                                  blur: function($event) {
+                                    return _vm.formatCurrency($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm._costes.ingreso_otros,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm._costes, "ingreso_otros", $$v)
+                                  },
+                                  expression: "_costes.ingreso_otros"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card mb-3 background-red" }, [
+                      _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _c(
+                            "b-form-group",
+                            {
+                              attrs: {
+                                label: "Total:",
+                                "label-for": "coste_total"
+                              }
+                            },
+                            [
+                              _vm._costes.total >= 0
+                                ? _c("b-form-input", {
+                                    staticClass: "text-center",
+                                    attrs: {
+                                      id: "coste_total",
+                                      type: "text",
+                                      value: _vm._costes.total.toLocaleString(
+                                        "de-DE",
+                                        {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2
+                                        }
+                                      ),
+                                      readonly: "",
+                                      tabindex: "-1"
+                                    }
+                                  })
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ]),
                     _vm._v(" "),
                     _c(
-                      "b-button",
-                      {
-                        staticClass: "ml-1",
-                        attrs: { variant: "danger" },
-                        on: { click: _vm.onSubmit }
-                      },
-                      [_vm._v("Guardar")]
+                      "b-row",
+                      { staticClass: "botonera" },
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { variant: "default" },
+                            on: { click: _vm.onReset }
+                          },
+                          [_vm._v("Restablecer")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-button",
+                          {
+                            staticClass: "ml-1",
+                            attrs: { variant: "danger" },
+                            on: { click: _vm.onSubmit }
+                          },
+                          [_vm._v("Guardar")]
+                        )
+                      ],
+                      1
                     )
                   ],
                   1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "costeEntradasModal",
-          attrs: {
-            id: "costeEntradasForm",
-            title: "Coste Entradas",
-            size: "sm",
-            "hide-footer": "",
-            lazy: ""
-          }
-        },
-        [
-          _c("ficha-coste-entradas", {
-            attrs: {
-              "festival-id": _vm._costes.festival_id,
-              "on-cancel": _vm.cancelCosteEntradasForm,
-              "on-submit": _vm.submitCosteEntradasForm,
-              "is-new-coste": _vm.isNewCosteEntradas,
-              data: _vm.editCosteEntradas
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-modal",
-        {
-          ref: "delEntradasModal",
-          attrs: {
-            id: "delEntradas",
-            title: "Eliminar Coste Entradas",
-            size: "md",
-            "hide-footer": "",
-            lazy: ""
-          },
-          on: { shown: _vm.focusModal }
-        },
-        [
-          _c("b-row", { staticClass: "mx-0" }, [
-            _vm._v(
-              "\n        Se van a eliminar las siguientes entradas:\n      "
-            )
-          ]),
-          _vm._v(" "),
-          _c("b-row", { staticClass: "mx-0" }, [
-            _vm.delCosteEntradas
-              ? _c("ul", { staticClass: "mt-2" }, [
-                  _c("li", [
-                    _c("strong", [_vm._v("Entradas:")]),
-                    _vm._v(" " + _vm._s(this.delCosteEntradas.name))
-                  ]),
-                  _vm._v(" "),
-                  _c("li", [
-                    _c("strong", [_vm._v("Cantidad:")]),
-                    _vm._v(" " + _vm._s(this.delCosteEntradas.amount))
-                  ]),
-                  _vm._v(" "),
-                  _c("li", [
-                    _c("strong", [_vm._v("Precio:")]),
-                    _vm._v(
-                      " " +
-                        _vm._s(
-                          parseFloat(this.delCosteEntradas.price).toFixed(2)
-                        ) +
-                        " €"
-                    )
-                  ])
-                ])
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c("b-row", { staticClass: "mx-0" }, [
-            _vm._v("\n        ¿Está seguro?\n      ")
-          ]),
-          _vm._v(" "),
-          _c("hr"),
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
+              ])
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
-            "b-row",
-            { staticClass: "mx-0 float-right" },
+            "b-modal",
+            {
+              ref: "costeEntradasModal",
+              attrs: {
+                id: "costeEntradasForm",
+                title: "Coste Entradas",
+                size: "sm",
+                "hide-footer": "",
+                lazy: ""
+              }
+            },
             [
-              _c(
-                "b-btn",
-                {
-                  staticClass: "mr-3",
-                  attrs: { variant: "primary" },
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      return _vm.deleteCosteEntradas($event)
-                    }
-                  }
-                },
-                [_vm._v("Borrar")]
-              ),
+              _c("ficha-coste-entradas", {
+                attrs: {
+                  "festival-id": _vm._costes.festival_id,
+                  "on-cancel": _vm.cancelCosteEntradasForm,
+                  "on-submit": _vm.submitCosteEntradasForm,
+                  "is-new-coste": _vm.isNewCosteEntradas,
+                  data: _vm.editCosteEntradas
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-modal",
+            {
+              ref: "delEntradasModal",
+              attrs: {
+                id: "delEntradas",
+                title: "Eliminar Coste Entradas",
+                size: "md",
+                "hide-footer": "",
+                lazy: ""
+              },
+              on: { shown: _vm.focusModal }
+            },
+            [
+              _c("b-row", { staticClass: "mx-0" }, [
+                _vm._v(
+                  "\n        Se van a eliminar las siguientes entradas:\n      "
+                )
+              ]),
+              _vm._v(" "),
+              _c("b-row", { staticClass: "mx-0" }, [
+                _vm.delCosteEntradas
+                  ? _c("ul", { staticClass: "mt-2" }, [
+                      _c("li", [
+                        _c("strong", [_vm._v("Entradas:")]),
+                        _vm._v(" " + _vm._s(this.delCosteEntradas.name))
+                      ]),
+                      _vm._v(" "),
+                      _c("li", [
+                        _c("strong", [_vm._v("Cantidad:")]),
+                        _vm._v(" " + _vm._s(this.delCosteEntradas.amount))
+                      ]),
+                      _vm._v(" "),
+                      _c("li", [
+                        _c("strong", [_vm._v("Precio:")]),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              parseFloat(this.delCosteEntradas.price).toFixed(2)
+                            ) +
+                            " €"
+                        )
+                      ])
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("b-row", { staticClass: "mx-0" }, [
+                _vm._v("\n        ¿Está seguro?\n      ")
+              ]),
+              _vm._v(" "),
+              _c("hr"),
               _vm._v(" "),
               _c(
-                "b-btn",
-                {
-                  ref: "focusThis",
-                  attrs: { variant: "default" },
-                  on: {
-                    click: function($event) {
-                      $event.stopPropagation()
-                      return _vm.hideDeleteEntradasModal($event)
-                    }
-                  }
-                },
-                [_vm._v("Cancelar")]
+                "b-row",
+                { staticClass: "mx-0 float-right" },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      staticClass: "mr-3",
+                      attrs: { variant: "primary" },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.deleteCosteEntradas($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Borrar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-btn",
+                    {
+                      ref: "focusThis",
+                      attrs: { variant: "default" },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.hideDeleteEntradasModal($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Cancelar")]
+                  )
+                ],
+                1
               )
             ],
             1
@@ -106791,9 +106848,7 @@ var render = function() {
         ],
         1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true

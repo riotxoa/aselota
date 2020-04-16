@@ -1,5 +1,5 @@
 <template>
-  <div class="festival-costes">
+  <div v-if="show" class="festival-costes">
     <b-form @submit="onSubmit">
       <b-row>
 
@@ -447,13 +447,26 @@
         delCosteEntradas: null,
         cancelCosteEntradasForm: () => { this.hideCosteEntradasForm(); },
         submitCosteEntradasForm: (entradas) => { this.saveCosteEntradasForm(entradas); },
+        show: false,
       }
     },
     created: function () {
       console.log("FestivalFichaCostesComponent created");
       this.getClientes();
       this.$store.dispatch('loadCostes').then( () => {
+        if( this._costes.porcentaje == null ) {
+          switch( this._header.tipo_festival ) {
+            case 'CAMPEONATO':
+            case 'TORNEO':
+              this._costes.porcentaje = 50;
+              break;
+            case 'EMPRESA':
+              this._costes.porcentaje = 100;
+              break;
+          }
+        }
         this.updateTotal();
+        this.show = true;
       });
     },
     computed: mapState({
@@ -467,6 +480,7 @@
       _coste_tasa: 'coste_tasa',
       _coste_sanidad: 'coste_sanidad',
       _coste: 'coste',
+      _header: 'header',
       _margen_beneficio: 'margen_beneficio',
       _coste_tv: 'coste_tv',
       _importe_tv: 'importe_tv',
