@@ -242,7 +242,7 @@
                 </div>
                 <div style="clear: both;"></div>
               </div>
-
+              <!--
               <b-row>
                 <label class="col-md-7">Vendido a:</label>
                 <b-form-select id="coste_vendido_a"
@@ -251,6 +251,7 @@
                                v-model="_costes.cliente_id">
                 </b-form-select>
               </b-row>
+               -->
               <b-form-group label="Observaciones:"
                             label-for="coste_texto_libre">
                 <b-form-textarea id="coste_texto_libre"
@@ -454,7 +455,7 @@
     },
     created: function () {
       console.log("FestivalFichaCostesComponent created");
-      this.getClientes();
+      // this.getClientes();
       this.$store.dispatch('loadCostes').then( () => {
         this.porcentaje = this._costes.porcentaje;
         this.calcularPorcentaje();

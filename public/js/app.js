@@ -105500,6 +105500,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -105532,7 +105533,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this2 = this;
 
     console.log("FestivalFichaCostesComponent created");
-    this.getClientes();
+    // this.getClientes();
     this.$store.dispatch('loadCostes').then(function () {
       _this2.porcentaje = _this2._costes.porcentaje;
       _this2.calcularPorcentaje();
@@ -106296,31 +106297,6 @@ var render = function() {
                             _vm._v(" "),
                             _c("div", { staticStyle: { clear: "both" } })
                           ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          [
-                            _c("label", { staticClass: "col-md-7" }, [
-                              _vm._v("Vendido a:")
-                            ]),
-                            _vm._v(" "),
-                            _c("b-form-select", {
-                              staticClass: "col-md-5",
-                              attrs: {
-                                id: "coste_vendido_a",
-                                options: _vm.clientes
-                              },
-                              model: {
-                                value: _vm._costes.cliente_id,
-                                callback: function($$v) {
-                                  _vm.$set(_vm._costes, "cliente_id", $$v)
-                                },
-                                expression: "_costes.cliente_id"
-                              }
-                            })
-                          ],
-                          1
                         ),
                         _vm._v(" "),
                         _c(
