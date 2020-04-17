@@ -44,6 +44,11 @@ class FestivalFacturacionController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'gerente']);
 
+        $facturacion = FestivalFacturacion::find($request->get('id'));
+        if( $facturacion ) {
+          return $this->update($request, $facturacion->id);
+        }
+
         $facturacion = FestivalFacturacion::where('festival_id', $request->get('festival_id'))->first();
 
         $facturacion = new FestivalFacturacion([
