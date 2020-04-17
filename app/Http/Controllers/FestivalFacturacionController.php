@@ -19,7 +19,7 @@ class FestivalFacturacionController extends Controller
 
         $id = $request->get('festival_id');
 
-        $costes = FestivalFacturacion::where('festival_id', $id)->get();
+        $costes = FestivalFacturacion::where('festival_id', $id)->orderBy('id', 'desc')->get();
 
         return response()->json($costes, 200);
     }
@@ -45,9 +45,6 @@ class FestivalFacturacionController extends Controller
         $request->user()->authorizeRoles(['admin', 'gerente']);
 
         $facturacion = FestivalFacturacion::where('festival_id', $request->get('festival_id'))->first();
-
-        if($facturacion)
-          return $this->update($request, $facturacion->id);
 
         $facturacion = new FestivalFacturacion([
           'festival_id' => $request->get('festival_id'),

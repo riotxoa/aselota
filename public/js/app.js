@@ -7610,8 +7610,24 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadContactos: function loadContactos(_ref30) {
+    delFacturacion: function delFacturacion(_ref30, id) {
       var commit = _ref30.commit;
+
+      return new Promise(function (resolve, reject) {
+
+        var uri = '/www/festival-facturacion/' + id;
+
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete(uri).then(function (r) {
+          return r.data;
+        }).then(function (response) {
+          resolve(response);
+        }).catch(function (error) {
+          reject(error);
+        });
+      });
+    },
+    loadContactos: function loadContactos(_ref31) {
+      var commit = _ref31.commit;
 
       var data = {
         params: {
@@ -7630,8 +7646,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    addContactos: function addContactos(_ref31, contactos) {
-      var commit = _ref31.commit;
+    addContactos: function addContactos(_ref32, contactos) {
+      var commit = _ref32.commit;
 
       var uri = '/www/festival-contactos';
       contactos.festival_id = this.getters.header.id;
@@ -7646,8 +7662,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadCalendario: function loadCalendario(_ref32, month) {
-      var commit = _ref32.commit;
+    loadCalendario: function loadCalendario(_ref33, month) {
+      var commit = _ref33.commit;
 
       var data = {
         params: {
@@ -7661,9 +7677,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_CALENDARIO', calendario);
       });
     },
-    loadEntrenamientos: function loadEntrenamientos(_ref33) {
-      var commit = _ref33.commit,
-          dispatch = _ref33.dispatch;
+    loadEntrenamientos: function loadEntrenamientos(_ref34) {
+      var commit = _ref34.commit,
+          dispatch = _ref34.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos').then(function (r) {
         return r.data;
@@ -7671,9 +7687,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTRENAMIENTOS', entrenamientos);
       });
     },
-    loadEntrContenidos: function loadEntrContenidos(_ref34) {
-      var commit = _ref34.commit,
-          dispatch = _ref34.dispatch;
+    loadEntrContenidos: function loadEntrContenidos(_ref35) {
+      var commit = _ref35.commit,
+          dispatch = _ref35.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/contenidos').then(function (r) {
         return r.data;
@@ -7684,8 +7700,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_CONTENIDOS', contenidos);
       });
     },
-    loadEntrFrontones: function loadEntrFrontones(_ref35) {
-      var commit = _ref35.commit;
+    loadEntrFrontones: function loadEntrFrontones(_ref36) {
+      var commit = _ref36.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/frontones').then(function (r) {
         return r.data;
@@ -7696,9 +7712,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_FRONTONES', frontones);
       });
     },
-    loadEntrActitudes: function loadEntrActitudes(_ref36) {
-      var commit = _ref36.commit,
-          dispatch = _ref36.dispatch;
+    loadEntrActitudes: function loadEntrActitudes(_ref37) {
+      var commit = _ref37.commit,
+          dispatch = _ref37.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/actitudes').then(function (r) {
         return r.data;
@@ -7709,9 +7725,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_ACTITUDES', actitudes);
       });
     },
-    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref37) {
-      var commit = _ref37.commit,
-          dispatch = _ref37.dispatch;
+    loadEntrAprovechamientos: function loadEntrAprovechamientos(_ref38) {
+      var commit = _ref38.commit,
+          dispatch = _ref38.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/aprovechamientos').then(function (r) {
         return r.data;
@@ -7722,9 +7738,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_APROVECHAMIENTOS', aprovechamientos);
       });
     },
-    loadEntrEvoluciones: function loadEntrEvoluciones(_ref38) {
-      var commit = _ref38.commit,
-          dispatch = _ref38.dispatch;
+    loadEntrEvoluciones: function loadEntrEvoluciones(_ref39) {
+      var commit = _ref39.commit,
+          dispatch = _ref39.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/entrenamientos/evoluciones').then(function (r) {
         return r.data;
@@ -7735,14 +7751,14 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_ENTR_EVOLUCIONES', evoluciones);
       });
     },
-    resetEvento: function resetEvento(_ref39) {
-      var commit = _ref39.commit;
+    resetEvento: function resetEvento(_ref40) {
+      var commit = _ref40.commit;
 
       commit('RESET_EVENTO');
     },
-    loadEventos: function loadEventos(_ref40) {
-      var commit = _ref40.commit,
-          dispatch = _ref40.dispatch;
+    loadEventos: function loadEventos(_ref41) {
+      var commit = _ref41.commit,
+          dispatch = _ref41.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/eventos').then(function (r) {
         return r.data;
@@ -7750,9 +7766,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_EVENTOS', eventos);
       });
     },
-    loadEventoMotivos: function loadEventoMotivos(_ref41) {
-      var commit = _ref41.commit,
-          dispatch = _ref41.dispatch;
+    loadEventoMotivos: function loadEventoMotivos(_ref42) {
+      var commit = _ref42.commit,
+          dispatch = _ref42.dispatch;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/eventos/motivos').then(function (r) {
         return r.data;
@@ -7763,8 +7779,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_EVENTO_MOTIVOS', motivos);
       });
     },
-    addPelotariToEvento: function addPelotariToEvento(_ref42, pelotari) {
-      var commit = _ref42.commit;
+    addPelotariToEvento: function addPelotariToEvento(_ref43, pelotari) {
+      var commit = _ref43.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/add/pelotari';
 
@@ -7779,8 +7795,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updatePelotariFromEvento: function updatePelotariFromEvento(_ref43, pelotari) {
-      var commit = _ref43.commit;
+    updatePelotariFromEvento: function updatePelotariFromEvento(_ref44, pelotari) {
+      var commit = _ref44.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/update/pelotari';
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, pelotari).then(function (r) {
@@ -7789,8 +7805,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('UPDATE_EVENTO_PELOTARI', response);
       });
     },
-    deletePelotariFromEvento: function deletePelotariFromEvento(_ref44, id) {
-      var commit = _ref44.commit;
+    deletePelotariFromEvento: function deletePelotariFromEvento(_ref45, id) {
+      var commit = _ref45.commit;
 
       var uri = '/www/eventos/' + this.getters.evento.id + '/delete/pelotari';
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, { id: id }).then(function (r) {
@@ -7799,8 +7815,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('DEL_EVENTO_PELOTARI', id);
       });
     },
-    loadPelotaris: function loadPelotaris(_ref45, date) {
-      var commit = _ref45.commit;
+    loadPelotaris: function loadPelotaris(_ref46, date) {
+      var commit = _ref46.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris', {
         params: {
@@ -7815,8 +7831,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadPelotarisProfesional: function loadPelotarisProfesional(_ref46, date) {
-      var commit = _ref46.commit;
+    loadPelotarisProfesional: function loadPelotarisProfesional(_ref47, date) {
+      var commit = _ref47.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris-profesional', {
         params: {
@@ -7831,8 +7847,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadPelotarisPromesa: function loadPelotarisPromesa(_ref47, date) {
-      var commit = _ref47.commit;
+    loadPelotarisPromesa: function loadPelotarisPromesa(_ref48, date) {
+      var commit = _ref48.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/pelotaris-promesa', {
         params: {
@@ -7847,8 +7863,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PELOTARIS', pelotaris);
       });
     },
-    loadProvincias: function loadProvincias(_ref48) {
-      var commit = _ref48.commit;
+    loadProvincias: function loadProvincias(_ref49) {
+      var commit = _ref49.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/provincias').then(function (r) {
         return r.data;
@@ -7859,8 +7875,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PROVINCIAS', provincias);
       });
     },
-    loadMunicipios: function loadMunicipios(_ref49) {
-      var commit = _ref49.commit;
+    loadMunicipios: function loadMunicipios(_ref50) {
+      var commit = _ref50.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/municipios').then(function (r) {
         return r.data;
@@ -7872,8 +7888,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_MUNICIPIOS_FILTERED', municipios);
       });
     },
-    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref50, id) {
-      var commit = _ref50.commit;
+    filterMunicipiosByProvincia: function filterMunicipiosByProvincia(_ref51, id) {
+      var commit = _ref51.commit;
 
       if (null === id) {
         commit('SET_MUNICIPIOS_FILTERED', this.getters.municipios);
@@ -7892,8 +7908,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES_FILTERED', frontones_filtered);
       }
     },
-    loadFrontones: function loadFrontones(_ref51) {
-      var commit = _ref51.commit;
+    loadFrontones: function loadFrontones(_ref52) {
+      var commit = _ref52.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/frontones').then(function (r) {
         return r.data;
@@ -7904,8 +7920,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_FRONTONES', frontones);
       });
     },
-    loadCampeonatos: function loadCampeonatos(_ref52) {
-      var commit = _ref52.commit;
+    loadCampeonatos: function loadCampeonatos(_ref53) {
+      var commit = _ref53.commit;
 
       __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/campeonatos').then(function (r) {
         return r.data;
@@ -7919,22 +7935,22 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
 
     // Módulo MÉDICO
-    addFilterPartes: function addFilterPartes(_ref53, value) {
-      var commit = _ref53.commit,
-          dispatch = _ref53.dispatch;
+    addFilterPartes: function addFilterPartes(_ref54, value) {
+      var commit = _ref54.commit,
+          dispatch = _ref54.dispatch;
 
       commit('ADD_FILTER_PARTES', value);
       dispatch('filterPartes');
     },
-    removeFilterPartes: function removeFilterPartes(_ref54, index) {
-      var commit = _ref54.commit,
-          dispatch = _ref54.dispatch;
+    removeFilterPartes: function removeFilterPartes(_ref55, index) {
+      var commit = _ref55.commit,
+          dispatch = _ref55.dispatch;
 
       commit('REMOVE_FILTER_PARTES', index);
       dispatch('filterPartes');
     },
-    filterPartes: function filterPartes(_ref55) {
-      var commit = _ref55.commit;
+    filterPartes: function filterPartes(_ref56) {
+      var commit = _ref56.commit;
 
       var data = {
         params: {
@@ -7947,8 +7963,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         commit('SET_PARTES', partes);
       });
     },
-    getInfoAuxPartesMedicos: function getInfoAuxPartesMedicos(_ref56) {
-      var commit = _ref56.commit;
+    getInfoAuxPartesMedicos: function getInfoAuxPartesMedicos(_ref57) {
+      var commit = _ref57.commit;
 
       return new Promise(function (resolve, reject) {
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partes-medicos-aux').then(function (r) {
@@ -7963,8 +7979,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    loadPartes: function loadPartes(_ref57) {
-      var commit = _ref57.commit;
+    loadPartes: function loadPartes(_ref58) {
+      var commit = _ref58.commit;
 
       return new Promise(function (resolve, reject) {
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/www/partes').then(function (r) {
@@ -7977,25 +7993,25 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    resetParte: function resetParte(_ref58) {
-      var commit = _ref58.commit;
+    resetParte: function resetParte(_ref59) {
+      var commit = _ref59.commit;
 
       commit('RESET_PARTE');
       commit('RESET_PARTE_DELTA');
       commit('RESET_PARTE_LESION');
     },
-    resetParteDelta: function resetParteDelta(_ref59) {
-      var commit = _ref59.commit;
+    resetParteDelta: function resetParteDelta(_ref60) {
+      var commit = _ref60.commit;
 
       commit('RESET_PARTE_DELTA');
     },
-    resetParteLesion: function resetParteLesion(_ref60) {
-      var commit = _ref60.commit;
+    resetParteLesion: function resetParteLesion(_ref61) {
+      var commit = _ref61.commit;
 
       commit('RESET_PARTE_LESION');
     },
-    saveParte: function saveParte(_ref61, data) {
-      var commit = _ref61.commit;
+    saveParte: function saveParte(_ref62, data) {
+      var commit = _ref62.commit;
 
       return new Promise(function (resolve, reject) {
         var uri = '/www/partes';
@@ -8007,8 +8023,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updateParte: function updateParte(_ref62, data) {
-      var commit = _ref62.commit;
+    updateParte: function updateParte(_ref63, data) {
+      var commit = _ref63.commit;
 
       return new Promise(function (resolve, reject) {
         var uri = '/www/partes/' + data.header.id + '/update';
@@ -8020,153 +8036,153 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         });
       });
     },
-    updateLesionParte: function updateLesionParte(_ref63, val) {
-      var commit = _ref63.commit;
+    updateLesionParte: function updateLesionParte(_ref64, val) {
+      var commit = _ref64.commit;
 
       commit('SET_LESION_PARTE_ID', val);
     },
-    updateLesionLesionDesc: function updateLesionLesionDesc(_ref64, val) {
-      var commit = _ref64.commit;
+    updateLesionLesionDesc: function updateLesionLesionDesc(_ref65, val) {
+      var commit = _ref65.commit;
 
       commit('SET_LESION_LESION_DESC_ID', val);
     },
-    updateLesionPartesCuerpo: function updateLesionPartesCuerpo(_ref65, val) {
-      var commit = _ref65.commit;
+    updateLesionPartesCuerpo: function updateLesionPartesCuerpo(_ref66, val) {
+      var commit = _ref66.commit;
 
       commit('SET_LESION_PARTES_CUERPO_ID', val);
     },
-    updateLesionPartesCuerpoTxt: function updateLesionPartesCuerpoTxt(_ref66, val) {
-      var commit = _ref66.commit;
+    updateLesionPartesCuerpoTxt: function updateLesionPartesCuerpoTxt(_ref67, val) {
+      var commit = _ref67.commit;
 
       commit('SET_LESION_PARTES_CUERPO_TXT', val);
     },
-    updateLesionMedico: function updateLesionMedico(_ref67, val) {
-      var commit = _ref67.commit;
+    updateLesionMedico: function updateLesionMedico(_ref68, val) {
+      var commit = _ref68.commit;
 
       commit('SET_LESION_MEDICO_ID', val);
     },
-    updateLesionMedicoTxt: function updateLesionMedicoTxt(_ref68, val) {
-      var commit = _ref68.commit;
+    updateLesionMedicoTxt: function updateLesionMedicoTxt(_ref69, val) {
+      var commit = _ref69.commit;
 
       commit('SET_LESION_MEDICO_TXT', val);
     },
-    updateLesionCausante: function updateLesionCausante(_ref69, val) {
-      var commit = _ref69.commit;
+    updateLesionCausante: function updateLesionCausante(_ref70, val) {
+      var commit = _ref70.commit;
 
       commit('SET_LESION_CAUSANTE_ID', val);
     },
-    updateLesionCausanteTxt: function updateLesionCausanteTxt(_ref70, val) {
-      var commit = _ref70.commit;
+    updateLesionCausanteTxt: function updateLesionCausanteTxt(_ref71, val) {
+      var commit = _ref71.commit;
 
       commit('SET_LESION_CAUSANTE_TXT', val);
     },
-    updateLesionGradoLesion: function updateLesionGradoLesion(_ref71, val) {
-      var commit = _ref71.commit;
+    updateLesionGradoLesion: function updateLesionGradoLesion(_ref72, val) {
+      var commit = _ref72.commit;
 
       commit('SET_LESION_GRADO_LESION_ID', val);
     },
-    updateLesionTipoAtencion: function updateLesionTipoAtencion(_ref72, val) {
-      var commit = _ref72.commit;
+    updateLesionTipoAtencion: function updateLesionTipoAtencion(_ref73, val) {
+      var commit = _ref73.commit;
 
       commit('SET_LESION_TIPO_ATENCION_ID', val);
     },
-    updateLesionDescripcion: function updateLesionDescripcion(_ref73, val) {
-      var commit = _ref73.commit;
+    updateLesionDescripcion: function updateLesionDescripcion(_ref74, val) {
+      var commit = _ref74.commit;
 
       commit('SET_LESION_DESCRIPCION', val);
     },
-    updateLesionObservaciones: function updateLesionObservaciones(_ref74, val) {
-      var commit = _ref74.commit;
+    updateLesionObservaciones: function updateLesionObservaciones(_ref75, val) {
+      var commit = _ref75.commit;
 
       commit('SET_LESION_OBSERVACIONES', val);
     },
-    updateParteFechaParte: function updateParteFechaParte(_ref75, val) {
-      var commit = _ref75.commit;
+    updateParteFechaParte: function updateParteFechaParte(_ref76, val) {
+      var commit = _ref76.commit;
 
       commit('SET_PARTE_FECHA_PARTE', val);
     },
-    updateParteIsBaja: function updateParteIsBaja(_ref76, val) {
-      var commit = _ref76.commit;
+    updateParteIsBaja: function updateParteIsBaja(_ref77, val) {
+      var commit = _ref77.commit;
 
       commit('SET_PARTE_IS_BAJA', val);
     },
-    updateParteFechaAccidente: function updateParteFechaAccidente(_ref77, val) {
-      var commit = _ref77.commit;
+    updateParteFechaAccidente: function updateParteFechaAccidente(_ref78, val) {
+      var commit = _ref78.commit;
 
       commit('SET_PARTE_FECHA_ACCIDENTE', val);
     },
-    updateParteFechaBaja: function updateParteFechaBaja(_ref78, val) {
-      var commit = _ref78.commit;
+    updateParteFechaBaja: function updateParteFechaBaja(_ref79, val) {
+      var commit = _ref79.commit;
 
       commit('SET_PARTE_FECHA_BAJA', val);
     },
-    updateParteFechaAlta: function updateParteFechaAlta(_ref79, val) {
-      var commit = _ref79.commit;
+    updateParteFechaAlta: function updateParteFechaAlta(_ref80, val) {
+      var commit = _ref80.commit;
 
       commit('SET_PARTE_FECHA_ALTA', val);
     },
-    updateParteFechaProximaConsulta: function updateParteFechaProximaConsulta(_ref80, val) {
-      var commit = _ref80.commit;
+    updateParteFechaProximaConsulta: function updateParteFechaProximaConsulta(_ref81, val) {
+      var commit = _ref81.commit;
 
       commit('SET_PARTE_FECHA_PROXIMA_CONSULTA', val);
     },
-    updateParteFechaSiguiente: function updateParteFechaSiguiente(_ref81, val) {
-      var commit = _ref81.commit;
+    updateParteFechaSiguiente: function updateParteFechaSiguiente(_ref82, val) {
+      var commit = _ref82.commit;
 
       commit('SET_PARTE_FECHA_SIGUIENTE', val);
     },
-    updatePartePelotari: function updatePartePelotari(_ref82, val) {
-      var commit = _ref82.commit;
+    updatePartePelotari: function updatePartePelotari(_ref83, val) {
+      var commit = _ref83.commit;
 
       commit('SET_PARTE_PELOTARI', val);
     },
-    updateParteDiagnostico: function updateParteDiagnostico(_ref83, val) {
-      var commit = _ref83.commit;
+    updateParteDiagnostico: function updateParteDiagnostico(_ref84, val) {
+      var commit = _ref84.commit;
 
       commit('SET_PARTE_DIAGNOSTICO', val);
     },
-    updateParteDiagnosticoTxt: function updateParteDiagnosticoTxt(_ref84, val) {
-      var commit = _ref84.commit;
+    updateParteDiagnosticoTxt: function updateParteDiagnosticoTxt(_ref85, val) {
+      var commit = _ref85.commit;
 
       commit('SET_PARTE_DIAGNOSTICO_TXT', val);
     },
-    updateParteCentro: function updateParteCentro(_ref85, val) {
-      var commit = _ref85.commit;
+    updateParteCentro: function updateParteCentro(_ref86, val) {
+      var commit = _ref86.commit;
 
       commit('SET_PARTE_CENTRO', val);
     },
-    updateParteTipoAsistencia: function updateParteTipoAsistencia(_ref86, val) {
-      var commit = _ref86.commit;
+    updateParteTipoAsistencia: function updateParteTipoAsistencia(_ref87, val) {
+      var commit = _ref87.commit;
 
       commit('SET_PARTE_TIPO_ASISTENCIA', val);
     },
-    updateParteMotivoAlta: function updateParteMotivoAlta(_ref87, val) {
-      var commit = _ref87.commit;
+    updateParteMotivoAlta: function updateParteMotivoAlta(_ref88, val) {
+      var commit = _ref88.commit;
 
       commit('SET_PARTE_MOTIVO_ALTA', val);
     },
-    updateParteEvolucion: function updateParteEvolucion(_ref88, val) {
-      var commit = _ref88.commit;
+    updateParteEvolucion: function updateParteEvolucion(_ref89, val) {
+      var commit = _ref89.commit;
 
       commit('SET_PARTE_EVOLUCION', val);
     },
-    updateParteEvolucionTxt: function updateParteEvolucionTxt(_ref89, val) {
-      var commit = _ref89.commit;
+    updateParteEvolucionTxt: function updateParteEvolucionTxt(_ref90, val) {
+      var commit = _ref90.commit;
 
       commit('SET_PARTE_EVOLUCION_TXT', val);
     },
-    updateParteTratamiento: function updateParteTratamiento(_ref90, val) {
-      var commit = _ref90.commit;
+    updateParteTratamiento: function updateParteTratamiento(_ref91, val) {
+      var commit = _ref91.commit;
 
       commit('SET_PARTE_TRATAMIENTO', val);
     },
-    updateParteTratamientoTxt: function updateParteTratamientoTxt(_ref91, val) {
-      var commit = _ref91.commit;
+    updateParteTratamientoTxt: function updateParteTratamientoTxt(_ref92, val) {
+      var commit = _ref92.commit;
 
       commit('SET_PARTE_TRATAMIENTO_TXT', val);
     },
-    updateParteIsRecaida: function updateParteIsRecaida(_ref92, val) {
-      var commit = _ref92.commit;
+    updateParteIsRecaida: function updateParteIsRecaida(_ref93, val) {
+      var commit = _ref93.commit;
 
       commit('SET_PARTE_IS_RECAIDA', val);
     }
@@ -106985,7 +107001,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 //
 //
 //
@@ -107082,8 +107099,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -107094,6 +107148,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
   data: function data() {
     return {
+      edit: false,
+      edit_index: null,
       facturacion: {
         fpago_id: null,
         fecha: null,
@@ -107102,43 +107158,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         observaciones: '',
         pagado: 0,
         seguimiento: ''
-      }
+      },
+      facturaciones: [],
+      fields: [{ key: 'fecha', label: '<span title="Fecha de Factura">Fecha</span>', sortable: true }, { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true }, { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true },
+      // { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
+      // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
+      { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }]
     };
   },
 
   created: function created() {
-    var _this = this;
-
     console.log("FestivalFichaFacturacionComponent created");
-    // this.getFormasPago();
     this.getEnvioFacturas();
-    this.$store.dispatch('loadFacturacion').then(function (response) {
-      if (response[0]) {
-        _this.facturacion = response[0];
-      }
-    });
+    this.loadFacturas();
   },
-  computed: Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["c" /* mapState */])({
-    _facturacion: 'facturacion',
-    _costes: 'costes'
-  }),
   methods: {
-    onSubmit: function onSubmit() {
-      var _this2 = this;
-
-      this.$store.dispatch('addFacturacion', this.facturacion).then(function (response) {
-        _this2.showSnackbar("Facturación GUARDADA");
-      }).catch(function (error) {
-        console.log(error);
-        _this2.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
-      });
+    cancelEdit: function cancelEdit(row) {
+      this.edit = false;
+      this.edit_index = null;
+      row.toggleDetails();
     },
-    onReset: function onReset() {
-      this.$store.dispatch('loadFacturacion');
+    deleteFactura: function deleteFactura(id) {
+      var _this = this;
+
+      this.$store.dispatch('delFacturacion', id).then(function () {
+        _this.loadFacturas();
+        _this.showSnackbar("Facturación ELIMINADA");
+      });
     },
     formatCurrency: function formatCurrency(ev) {
       var value = ev.target.value;
       ev.target.value = parseFloat(value).toFixed(2);
+    },
+    loadFacturas: function loadFacturas() {
+      var _this2 = this;
+
+      this.$store.dispatch('loadFacturacion').then(function (facturaciones) {
+        _this2.facturaciones = facturaciones;
+      });
+    },
+    onClickAddFactura: function onClickAddFactura() {
+      this.resetFacturacion();
+      this.facturaciones.splice(0, 0, this.facturacion);
+      this.edit = true;
+      this.edit_index = 0;
+      this.facturaciones[0]._showDetails = true;
+    },
+    onClickCancelEdit: function onClickCancelEdit(row) {
+      this.cancelEdit(row);
+    },
+    onClickDeleteFactura: function onClickDeleteFactura(id) {
+      if (confirm("Va a proceder al borrado de una Factura. ¿Desea continuar?")) {
+        this.deleteFactura(id);
+      }
+    },
+    onClickEditFactura: function onClickEditFactura(row) {
+      this.edit = true;
+      this.edit_index = row.index;
+      row.toggleDetails();
+    },
+    onClickSaveEdit: function onClickSaveEdit(row) {
+      var _this3 = this;
+
+      this.$store.dispatch('addFacturacion', this.facturaciones[row.index]).then(function (response) {
+        _this3.cancelEdit(row);
+        _this3.loadFacturas();
+        _this3.showSnackbar("Facturación GUARDADA");
+      }).catch(function (error) {
+        console.log(error);
+        _this3.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
+      });
+    },
+    resetFacturacion: function resetFacturacion() {
+      this.facturacion = {
+        fpago_id: null,
+        fecha: null,
+        importe: 0,
+        enviar_id: null,
+        observaciones: '',
+        pagado: 0,
+        seguimiento: ''
+      };
     }
   }
 });
@@ -107156,234 +107256,448 @@ var render = function() {
     { staticClass: "festival-facturacion" },
     [
       _c(
-        "b-form",
-        { on: { submit: _vm.onSubmit } },
-        [
-          _c("b-row", [
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-5" }, [
-              _c("div", { staticClass: "card mb-3" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-body" },
-                  [
-                    _c(
-                      "b-row",
+        "b-button",
+        {
+          attrs: {
+            size: "sm",
+            variant: "danger",
+            title: "Nueva Factura",
+            disabled: _vm.edit
+          },
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+              _vm.onClickAddFactura()
+            }
+          }
+        },
+        [_vm._v("\n    Nueva Factura\n  ")]
+      ),
+      _vm._v(" "),
+      _c("b-table", {
+        staticClass: "mt-3",
+        attrs: {
+          striped: "",
+          hover: "",
+          small: "",
+          responsive: "",
+          items: _vm.facturaciones,
+          fields: _vm.fields
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "fecha",
+            fn: function(row) {
+              return [
+                row.item.fecha
+                  ? _c("div", [
+                      _vm._v(_vm._s(_vm.formatDateES(row.item.fecha)))
+                    ])
+                  : _vm._e()
+              ]
+            }
+          },
+          {
+            key: "importe",
+            fn: function(row) {
+              return [
+                _vm._v(
+                  "\n      " +
+                    _vm._s(parseFloat(row.item.importe).toFixed(2)) +
+                    "\n    "
+                )
+              ]
+            }
+          },
+          {
+            key: "pagado",
+            fn: function(row) {
+              return [
+                row.item.pagado
+                  ? _c("i", {
+                      staticClass: "far fa-check-circle",
+                      staticStyle: { color: "green", "font-size": "18px" },
+                      attrs: { title: "PAGADA" }
+                    })
+                  : _c("i", {
+                      staticClass: "fas fa-times-circle",
+                      staticStyle: { color: "red", "font-size": "18px" },
+                      attrs: { title: "NO PAGADA" }
+                    })
+              ]
+            }
+          },
+          {
+            key: "explotacion_id",
+            fn: function(row) {
+              return [
+                _vm._v("\n      " + _vm._s(row.item.explotacion_id) + "\n    ")
+              ]
+            }
+          },
+          {
+            key: "documento",
+            fn: function(row) {
+              return [
+                _vm._v("\n      " + _vm._s(row.item.documento) + "\n    ")
+              ]
+            }
+          },
+          {
+            key: "actions",
+            fn: function(row) {
+              return [
+                _vm.edit && _vm.edit_index == row.index
+                  ? _c(
+                      "b-button-group",
                       [
-                        _c("label", { staticClass: "col-md-6" }, [
-                          _vm._v("Fecha:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-6 text-right",
-                          attrs: { id: "fact_fecha", type: "date" },
-                          model: {
-                            value: _vm.facturacion.fecha,
-                            callback: function($$v) {
-                              _vm.$set(_vm.facturacion, "fecha", $$v)
+                        _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "success",
+                              title: "Guardar"
                             },
-                            expression: "facturacion.fecha"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-6" }, [
-                          _vm._v("Importe:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-input", {
-                          staticClass: "col-md-6 text-right",
-                          attrs: {
-                            id: "fact_importe",
-                            type: "number",
-                            maxlength: "8",
-                            placeholder: "0.00"
-                          },
-                          nativeOn: {
-                            focus: function($event) {
-                              $event.target.select()
-                            },
-                            blur: function($event) {
-                              return _vm.formatCurrency($event)
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickSaveEdit(row)
+                              }
                             }
                           },
-                          model: {
-                            value: _vm.facturacion.importe,
-                            callback: function($$v) {
-                              _vm.$set(_vm.facturacion, "importe", $$v)
-                            },
-                            expression: "facturacion.importe"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-6" }, [
-                          _vm._v("Enviar factura a:")
-                        ]),
+                          [_c("i", { staticClass: "far fa-save" })]
+                        ),
                         _vm._v(" "),
-                        _c("b-form-select", {
-                          staticClass: "col-md-6",
-                          attrs: {
-                            id: "fact_enviar_a",
-                            options: _vm.envio_facturas
-                          },
-                          model: {
-                            value: _vm.facturacion.enviar_id,
-                            callback: function($$v) {
-                              _vm.$set(_vm.facturacion, "enviar_id", $$v)
+                        _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "secondary",
+                              title: "Cancelar"
                             },
-                            expression: "facturacion.enviar_id"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-form-group",
-                      {
-                        attrs: {
-                          label: "Observaciones:",
-                          "label-for": "fact_observaciones"
-                        }
-                      },
-                      [
-                        _c("b-form-textarea", {
-                          attrs: {
-                            id: "fact_observaciones",
-                            rows: 3,
-                            "max-rows": 6
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickCancelEdit(row)
+                              }
+                            }
                           },
-                          model: {
-                            value: _vm.facturacion.observaciones,
-                            callback: function($$v) {
-                              _vm.$set(_vm.facturacion, "observaciones", $$v)
-                            },
-                            expression: "facturacion.observaciones"
-                          }
-                        })
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        )
                       ],
                       1
                     )
-                  ],
-                  1
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-md-5 position-relative" },
-              [
-                _c("div", { staticClass: "card mb-3" }, [
-                  _c(
-                    "div",
-                    { staticClass: "card-body" },
-                    [
+                  : _c(
+                      "b-button-group",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "danger",
+                              title: "Eliminar",
+                              disabled: _vm.edit
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickDeleteFactura(row.item.id)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-trash" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "primary",
+                              title: "Editar",
+                              disabled: _vm.edit
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                _vm.onClickEditFactura(row)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "icon voyager-edit" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-button",
+                          {
+                            attrs: {
+                              size: "sm",
+                              variant: "secondary",
+                              title: "Mostrar/Ocultar Detalle",
+                              disabled: _vm.edit
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.stopPropagation()
+                                return row.toggleDetails($event)
+                              }
+                            }
+                          },
+                          [
+                            _c("span", {
+                              staticClass: "icon",
+                              class: {
+                                "voyager-x": row.detailsShowing,
+                                "voyager-eye": !row.detailsShowing
+                              }
+                            })
+                          ]
+                        )
+                      ],
+                      1
+                    )
+              ]
+            }
+          },
+          {
+            key: "row-details",
+            fn: function(row) {
+              return [
+                _c("b-row", { staticClass: "mx-0 px-0 py-3" }, [
+                  _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-5" }, [
+                    _c("div", { staticClass: "card mb-3" }, [
                       _c(
-                        "b-row",
+                        "div",
+                        { staticClass: "card-body" },
                         [
-                          _c("label", { staticClass: "col-md-6" }, [
-                            _vm._v("Pagado:")
-                          ]),
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-6" }, [
+                                _vm._v("Fecha:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-input", {
+                                staticClass: "col-md-6 text-right",
+                                attrs: {
+                                  id: "fact_fecha",
+                                  disabled: !_vm.edit,
+                                  type: "date"
+                                },
+                                model: {
+                                  value: _vm.facturaciones[row.index].fecha,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.facturaciones[row.index],
+                                      "fecha",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "facturaciones[row.index].fecha"
+                                }
+                              })
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
-                          _c("b-form-radio-group", {
-                            staticClass: "col-md-6",
-                            attrs: {
-                              options: [
-                                { text: "No", value: 0 },
-                                { text: "Sí", value: 1 }
-                              ],
-                              name: "radioInline"
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-6" }, [
+                                _vm._v("Importe:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-input", {
+                                staticClass: "col-md-6 text-right",
+                                attrs: {
+                                  id: "fact_importe",
+                                  disabled: !_vm.edit,
+                                  type: "number",
+                                  maxlength: "8",
+                                  placeholder: "0.00"
+                                },
+                                nativeOn: {
+                                  focus: function($event) {
+                                    $event.target.select()
+                                  },
+                                  blur: function($event) {
+                                    return _vm.formatCurrency($event)
+                                  }
+                                },
+                                model: {
+                                  value: _vm.facturaciones[row.index].importe,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.facturaciones[row.index],
+                                      "importe",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "facturaciones[row.index].importe"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-6" }, [
+                                _vm._v("Enviar factura a:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-select", {
+                                staticClass: "col-md-6",
+                                attrs: {
+                                  id: "fact_enviar_a",
+                                  disabled: !_vm.edit,
+                                  options: _vm.envio_facturas
+                                },
+                                model: {
+                                  value: _vm.facturaciones[row.index].enviar_id,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.facturaciones[row.index],
+                                      "enviar_id",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "facturaciones[row.index].enviar_id"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-form-group",
+                            {
+                              attrs: {
+                                label: "Observaciones:",
+                                "label-for": "fact_observaciones"
+                              }
                             },
-                            model: {
-                              value: _vm.facturacion.pagado,
-                              callback: function($$v) {
-                                _vm.$set(_vm.facturacion, "pagado", $$v)
-                              },
-                              expression: "facturacion.pagado"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "b-form-group",
-                        {
-                          attrs: {
-                            label: "Seguimiento:",
-                            "label-for": "fact_seguimiento"
-                          }
-                        },
-                        [
-                          _c("b-form-textarea", {
-                            attrs: {
-                              id: "fact_seguimiento",
-                              rows: 3,
-                              "max-rows": 6
-                            },
-                            model: {
-                              value: _vm.facturacion.seguimiento,
-                              callback: function($$v) {
-                                _vm.$set(_vm.facturacion, "seguimiento", $$v)
-                              },
-                              expression: "facturacion.seguimiento"
-                            }
-                          })
+                            [
+                              _c("b-form-textarea", {
+                                attrs: {
+                                  id: "fact_observaciones",
+                                  disabled: !_vm.edit,
+                                  rows: 3,
+                                  "max-rows": 6
+                                },
+                                model: {
+                                  value:
+                                    _vm.facturaciones[row.index].observaciones,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.facturaciones[row.index],
+                                      "observaciones",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "facturaciones[row.index].observaciones"
+                                }
+                              })
+                            ],
+                            1
+                          )
                         ],
                         1
                       )
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "b-row",
-                  { staticClass: "botonera" },
-                  [
-                    _c(
-                      "b-button",
-                      {
-                        attrs: { variant: "default" },
-                        on: { click: _vm.onReset }
-                      },
-                      [_vm._v("Restablecer")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-button",
-                      {
-                        staticClass: "ml-1",
-                        attrs: { variant: "danger" },
-                        on: { click: _vm.onSubmit }
-                      },
-                      [_vm._v("Guardar")]
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [_vm._v(" ")])
-          ])
-        ],
-        1
-      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-5 position-relative" }, [
+                    _c("div", { staticClass: "card mb-3" }, [
+                      _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _c(
+                            "b-row",
+                            [
+                              _c("label", { staticClass: "col-md-6" }, [
+                                _vm._v("Pagado:")
+                              ]),
+                              _vm._v(" "),
+                              _c("b-form-radio-group", {
+                                staticClass: "col-md-6",
+                                attrs: {
+                                  disabled: !_vm.edit,
+                                  options: [
+                                    { text: "No", value: 0 },
+                                    { text: "Sí", value: 1 }
+                                  ],
+                                  name: "radioInline"
+                                },
+                                model: {
+                                  value: _vm.facturaciones[row.index].pagado,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.facturaciones[row.index],
+                                      "pagado",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "facturaciones[row.index].pagado"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "b-form-group",
+                            {
+                              attrs: {
+                                label: "Seguimiento:",
+                                "label-for": "fact_seguimiento"
+                              }
+                            },
+                            [
+                              _c("b-form-textarea", {
+                                attrs: {
+                                  id: "fact_seguimiento",
+                                  disabled: !_vm.edit,
+                                  rows: 3,
+                                  "max-rows": 6
+                                },
+                                model: {
+                                  value:
+                                    _vm.facturaciones[row.index].seguimiento,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.facturaciones[row.index],
+                                      "seguimiento",
+                                      $$v
+                                    )
+                                  },
+                                  expression:
+                                    "facturaciones[row.index].seguimiento"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            }
+          }
+        ])
+      })
     ],
     1
   )

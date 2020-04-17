@@ -1,111 +1,150 @@
 <template>
   <div class="festival-facturacion">
-    <b-form @submit="onSubmit">
-      <b-row>
+    <b-button size="sm" variant="danger" @click.stop="onClickAddFactura()" title="Nueva Factura" :disabled="edit">
+      Nueva Factura
+    </b-button>
+    <b-table striped hover small responsive
+      class="mt-3"
+      :items="facturaciones"
+      :fields="fields">
 
-        <div class="col-md-1">&nbsp;</div>
+      <template slot="fecha" slot-scope="row">
+        <div v-if="row.item.fecha">{{ formatDateES(row.item.fecha) }}</div>
+      </template>
+      <template slot="importe" slot-scope="row">
+        {{ parseFloat(row.item.importe).toFixed(2) }}
+      </template>
+      <template slot="pagado" slot-scope="row">
+        <i v-if="row.item.pagado" class="far fa-check-circle" style="color:green;font-size:18px;" title="PAGADA"></i>
+        <i v-else class="fas fa-times-circle" style="color:red;font-size:18px;" title="NO PAGADA"></i>
+      </template>
+      <template slot="explotacion_id" slot-scope="row">
+        {{ row.item.explotacion_id }}
+      </template>
+      <template slot="documento" slot-scope="row">
+        {{ row.item.documento }}
+      </template>
 
-        <div class="col-md-5">
-          <div class="card mb-3">
-            <div class="card-body">
-              <!--
-              <b-row>
-                <label class="col-md-6">Forma de pago:</label>
-                <b-form-select id="fact_forma_pago"
-                               class="col-md-6"
-                               :options="formas_pago"
-                               v-model="facturacion.fpago_id">
-                </b-form-select>
-              </b-row>
-               -->
-              <b-row>
-                <label class="col-md-6">Fecha:</label>
-                <b-form-input id="fact_fecha"
-                              class="col-md-6 text-right"
-                              type="date"
-                              v-model="facturacion.fecha">
-                </b-form-input>
-              </b-row>
-              <b-row>
-                <label class="col-md-6">Importe:</label>
-                <b-form-input id="fact_importe"
-                              class="col-md-6 text-right"
-                              type="number"
-                              maxlength="8"
-                              placeholder="0.00"
-                              v-model="facturacion.importe"
-                              v-on:focus.native="$event.target.select()"
-                              v-on:blur.native="formatCurrency">
-                </b-form-input>
-              </b-row>
-              <b-row>
-                <label class="col-md-6">Enviar factura a:</label>
-                <b-form-select id="fact_enviar_a"
-                               class="col-md-6"
-                               :options="envio_facturas"
-                               v-model="facturacion.enviar_id">
-                </b-form-select>
-              </b-row>
-              <b-form-group label="Observaciones:"
-                            label-for="fact_observaciones">
-                <b-form-textarea id="fact_observaciones"
-                                 :rows="3"
-                                 :max-rows="6"
-                                 v-model="facturacion.observaciones">
-                </b-form-textarea>
-              </b-form-group>
+
+      <template slot="actions" slot-scope="row">
+        <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
+        <b-button-group v-if="edit && edit_index == row.index">
+          <b-button size="sm" variant="success" @click.stop="onClickSaveEdit(row)" title="Guardar">
+            <i class="far fa-save"></i>
+          </b-button>
+          <b-button size="sm" variant="secondary" @click.stop="onClickCancelEdit(row)" title="Cancelar">
+            <i class="fas fa-times"></i>
+          </b-button>
+        </b-button-group>
+        <b-button-group v-else>
+          <b-button size="sm" variant="danger" @click.stop="onClickDeleteFactura(row.item.id)" title="Eliminar" :disabled="edit">
+            <span class="icon voyager-trash"></span>
+          </b-button>
+          <b-button size="sm" variant="primary" @click.stop="onClickEditFactura(row)" title="Editar" :disabled="edit">
+            <span class="icon voyager-edit"></span>
+          </b-button>
+          <b-button size="sm" variant="secondary" @click.stop="row.toggleDetails" title="Mostrar/Ocultar Detalle" :disabled="edit">
+            <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+          </b-button>
+        </b-button-group>
+      </template>
+
+      <template slot="row-details" slot-scope="row">
+          <b-row class="mx-0 px-0 py-3">
+
+            <div class="col-md-1">&nbsp;</div>
+
+            <div class="col-md-5">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <b-row>
+                    <label class="col-md-6">Fecha:</label>
+                    <b-form-input id="fact_fecha"
+                                        :disabled="!edit"
+                                  class="col-md-6 text-right"
+                                  type="date"
+                                  v-model="facturaciones[row.index].fecha">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-6">Importe:</label>
+                    <b-form-input id="fact_importe"
+                                        :disabled="!edit"
+                                  class="col-md-6 text-right"
+                                  type="number"
+                                  maxlength="8"
+                                  placeholder="0.00"
+                                  v-model="facturaciones[row.index].importe"
+                                  v-on:focus.native="$event.target.select()"
+                                  v-on:blur.native="formatCurrency">
+                    </b-form-input>
+                  </b-row>
+                  <b-row>
+                    <label class="col-md-6">Enviar factura a:</label>
+                    <b-form-select id="fact_enviar_a"
+                                        :disabled="!edit"
+                                   class="col-md-6"
+                                   :options="envio_facturas"
+                                   v-model="facturaciones[row.index].enviar_id">
+                    </b-form-select>
+                  </b-row>
+                  <b-form-group label="Observaciones:"
+                                label-for="fact_observaciones">
+                    <b-form-textarea id="fact_observaciones"
+                                        :disabled="!edit"
+                                     :rows="3"
+                                     :max-rows="6"
+                                     v-model="facturaciones[row.index].observaciones">
+                    </b-form-textarea>
+                  </b-form-group>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="col-md-5 position-relative">
-          <div class="card mb-3">
-            <div class="card-body">
-              <b-row>
-                <label class="col-md-6">Pagado:</label>
-                <b-form-radio-group class="col-md-6"
-                                    v-model="facturacion.pagado"
-                                    :options="[{ text: 'No', value: 0}, {text: 'Sí', value: 1}]"
-                                    name="radioInline">
-                </b-form-radio-group>
-              </b-row>
-              <b-form-group label="Seguimiento:"
-                            label-for="fact_seguimiento">
-                <b-form-textarea id="fact_seguimiento"
-                                 :rows="3"
-                                 :max-rows="6"
-                                 v-model="facturacion.seguimiento">
-                </b-form-textarea>
-              </b-form-group>
+            <div class="col-md-5 position-relative">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <b-row>
+                    <label class="col-md-6">Pagado:</label>
+                    <b-form-radio-group class="col-md-6"
+                                        :disabled="!edit"
+                                        v-model="facturaciones[row.index].pagado"
+                                        :options="[{ text: 'No', value: 0}, {text: 'Sí', value: 1}]"
+                                        name="radioInline">
+                    </b-form-radio-group>
+                  </b-row>
+                  <b-form-group label="Seguimiento:"
+                                label-for="fact_seguimiento">
+                    <b-form-textarea id="fact_seguimiento"
+                                        :disabled="!edit"
+                                     :rows="3"
+                                     :max-rows="6"
+                                     v-model="facturaciones[row.index].seguimiento">
+                    </b-form-textarea>
+                  </b-form-group>
+                </div>
+              </div>
+
             </div>
-          </div>
-
-          <b-row class="botonera">
-            <b-button variant="default" @click="onReset">Restablecer</b-button>
-            <b-button variant="danger" @click="onSubmit" class="ml-1">Guardar</b-button>
           </b-row>
 
-        </div>
-
-        <div class="col-md-1">&nbsp;</div>
-
-      </b-row>
-    </b-form>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
   import { store } from '../store/store';
-
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
-
-  import { mapState } from 'vuex';
+  import _ from 'lodash';
 
   export default {
     mixins: [APIGetters, Utils],
     data () {
       return {
+        edit: false,
+        edit_index: null,
         facturacion: {
           fpago_id: null,
           fecha: null,
@@ -115,26 +154,68 @@
           pagado: 0,
           seguimiento: '',
         },
+        facturaciones: [],
+        fields: [
+          { key: 'fecha', label: '<span title="Fecha de Factura">Fecha</span>', sortable: true },
+          { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true },
+          { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true },
+          // { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
+          // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
+          { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
+        ],
       }
     },
     created: function () {
       console.log("FestivalFichaFacturacionComponent created");
-      // this.getFormasPago();
       this.getEnvioFacturas();
-      this.$store.dispatch('loadFacturacion').then( response => {
-        if( response[0] ) {
-          this.facturacion = response[0];
-        }
-      });
+      this.loadFacturas();
     },
-    computed: mapState({
-      _facturacion: 'facturacion',
-      _costes: 'costes',
-    }),
     methods: {
-      onSubmit() {
-        this.$store.dispatch('addFacturacion', this.facturacion)
+      cancelEdit(row) {
+        this.edit = false;
+        this.edit_index = null;
+        row.toggleDetails();
+      },
+      deleteFactura(id) {
+        this.$store.dispatch('delFacturacion', id).then( () => {
+          this.loadFacturas();
+          this.showSnackbar("Facturación ELIMINADA");
+        })
+      },
+      formatCurrency(ev) {
+        let value = ev.target.value;
+        ev.target.value = parseFloat(value).toFixed(2);
+      },
+      loadFacturas() {
+        this.$store.dispatch('loadFacturacion').then( facturaciones => {
+            this.facturaciones = facturaciones;
+        });
+      },
+      onClickAddFactura() {
+        this.resetFacturacion();
+        this.facturaciones.splice(0,0,this.facturacion);
+        this.edit = true;
+        this.edit_index = 0;
+        this.facturaciones[0]._showDetails = true;
+      },
+      onClickCancelEdit(row) {
+        this.cancelEdit(row);
+      },
+      onClickDeleteFactura( id ) {
+        if( confirm("Va a proceder al borrado de una Factura. ¿Desea continuar?") ) {
+          this.deleteFactura(id);
+        }
+      },
+      onClickEditFactura( row ) {
+        this.edit = true;
+        this.edit_index = row.index;
+        row.toggleDetails();
+      },
+      onClickSaveEdit(row) {
+        this.$store.dispatch('addFacturacion', this.facturaciones[row.index])
           .then((response) => {
+            this.cancelEdit(row);
+            this.loadFacturas();
             this.showSnackbar("Facturación GUARDADA");
           })
           .catch((error) => {
@@ -142,13 +223,17 @@
             this.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
           });
       },
-      onReset() {
-        this.$store.dispatch('loadFacturacion');
+      resetFacturacion() {
+        this.facturacion = {
+          fpago_id: null,
+          fecha: null,
+          importe: 0,
+          enviar_id: null,
+          observaciones: '',
+          pagado: 0,
+          seguimiento: '',
+        }
       },
-      formatCurrency(ev) {
-        let value = ev.target.value;
-        ev.target.value = parseFloat(value).toFixed(2);
-      }
     }
   }
 </script>

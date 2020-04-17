@@ -1199,6 +1199,23 @@ export const store = new Vuex.Store({
           });
       });
     },
+    delFacturacion({ commit }, id) {
+      return new Promise( (resolve, reject) => {
+
+        let uri = '/www/festival-facturacion/' + id;
+
+        axios
+          .delete(uri)
+          .then( r => r.data )
+          .then(( response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+
+      });
+    },
     loadContactos({ commit }) {
       let data = {
         params: {
