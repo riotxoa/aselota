@@ -137,10 +137,10 @@ class FestivaleController extends Controller
         $costes->save();
 
         // Facturación
-        $facturacion = new FestivalFacturacion([
-          'festival_id' => $item->id
-        ]);
-        $facturacion->save();
+        // $facturacion = new FestivalFacturacion([
+        //   'festival_id' => $item->id
+        // ]);
+        // $facturacion->save();
 
         // Contactos
         $contactos = new FestivalContacto([
@@ -260,32 +260,31 @@ class FestivaleController extends Controller
         }
         $fest_costes->save();
 
-        // $fest_facturacion = FestivalFacturacion::find($fest_header->facturacion()->first()->id);
-        $fest_facturacion = $fest_header->facturacion;
-
-        if( $fest_facturacion ) {
-          $fest_facturacion = FestivalFacturacion::where('festival_id', $id)->first();
-
-          $fest_facturacion->fpago_id = $facturacion['fpago_id'];
-          $fest_facturacion->fecha = $facturacion['fecha'];
-          $fest_facturacion->importe = $facturacion['importe'];
-          $fest_facturacion->enviar_id = $facturacion['enviar_id'];
-          $fest_facturacion->observaciones = $facturacion['observaciones'];
-          $fest_facturacion->pagado = $facturacion['pagado'];
-          $fest_facturacion->seguimiento = $facturacion['seguimiento'];
-        } else {
-          $fest_facturacion = new FestivalFacturacion([
-            'festival_id' => $id,
-            'fpago_id' => $facturacion['fpago_id'],
-            'fecha' => $facturacion['fecha'],
-            'importe' => $facturacion['importe'],
-            'enviar_id' => $facturacion['enviar_id'],
-            'observaciones' => $facturacion['observaciones'],
-            'pagado' => $facturacion['pagado'],
-            'seguimiento' => $facturacion['seguimiento'],
-          ]);
-        }
-        $fest_facturacion->save();
+        // $fest_facturacion = $fest_header->facturacion;
+        //
+        // if( $fest_facturacion ) {
+        //   $fest_facturacion = FestivalFacturacion::where('festival_id', $id)->first();
+        //
+        //   $fest_facturacion->fpago_id = $facturacion['fpago_id'];
+        //   $fest_facturacion->fecha = $facturacion['fecha'];
+        //   $fest_facturacion->importe = $facturacion['importe'];
+        //   $fest_facturacion->enviar_id = $facturacion['enviar_id'];
+        //   $fest_facturacion->observaciones = $facturacion['observaciones'];
+        //   $fest_facturacion->pagado = $facturacion['pagado'];
+        //   $fest_facturacion->seguimiento = $facturacion['seguimiento'];
+        // } else {
+        //   $fest_facturacion = new FestivalFacturacion([
+        //     'festival_id' => $id,
+        //     'fpago_id' => $facturacion['fpago_id'],
+        //     'fecha' => $facturacion['fecha'],
+        //     'importe' => $facturacion['importe'],
+        //     'enviar_id' => $facturacion['enviar_id'],
+        //     'observaciones' => $facturacion['observaciones'],
+        //     'pagado' => $facturacion['pagado'],
+        //     'seguimiento' => $facturacion['seguimiento'],
+        //   ]);
+        // }
+        // $fest_facturacion->save();
 
         $fest_contactos = $fest_header->contactos;
 

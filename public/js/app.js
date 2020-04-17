@@ -100052,7 +100052,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var data = {
           header: this._header,
           costes: this._costes,
-          facturacion: this._facturacion,
+          // facturacion: this._facturacion,
           contactos: this._contactos
         };
 
