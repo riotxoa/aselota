@@ -8,6 +8,7 @@
         <div class="col-md-5">
           <div class="card mb-3">
             <div class="card-body">
+              <!--
               <b-row>
                 <label class="col-md-6">Forma de pago:</label>
                 <b-form-select id="fact_forma_pago"
@@ -16,6 +17,7 @@
                                v-model="facturacion.fpago_id">
                 </b-form-select>
               </b-row>
+               -->
               <b-row>
                 <label class="col-md-6">Fecha:</label>
                 <b-form-input id="fact_fecha"
@@ -117,7 +119,7 @@
     },
     created: function () {
       console.log("FestivalFichaFacturacionComponent created");
-      this.getFormasPago();
+      // this.getFormasPago();
       this.getEnvioFacturas();
       this.$store.dispatch('loadFacturacion').then( response => {
         if( response[0] ) {

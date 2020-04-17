@@ -107080,6 +107080,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -107108,7 +107110,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this = this;
 
     console.log("FestivalFichaFacturacionComponent created");
-    this.getFormasPago();
+    // this.getFormasPago();
     this.getEnvioFacturas();
     this.$store.dispatch('loadFacturacion').then(function (response) {
       if (response[0]) {
@@ -107166,31 +107168,6 @@ var render = function() {
                   "div",
                   { staticClass: "card-body" },
                   [
-                    _c(
-                      "b-row",
-                      [
-                        _c("label", { staticClass: "col-md-6" }, [
-                          _vm._v("Forma de pago:")
-                        ]),
-                        _vm._v(" "),
-                        _c("b-form-select", {
-                          staticClass: "col-md-6",
-                          attrs: {
-                            id: "fact_forma_pago",
-                            options: _vm.formas_pago
-                          },
-                          model: {
-                            value: _vm.facturacion.fpago_id,
-                            callback: function($$v) {
-                              _vm.$set(_vm.facturacion, "fpago_id", $$v)
-                            },
-                            expression: "facturacion.fpago_id"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
                     _c(
                       "b-row",
                       [
