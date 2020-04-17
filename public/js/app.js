@@ -106998,11 +106998,12 @@ exports.push([module.i, "\n.festival-facturacion .card {\n  border-color:#707f8f
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store_store__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_getters_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(213);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__store_store__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_getters_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
 //
 //
 //
@@ -107138,6 +107139,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -107145,7 +107156,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__utils_utils_js__["a" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_2__utils_getters_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__["a" /* default */]],
   data: function data() {
     return {
       edit: false,
@@ -107163,10 +107174,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       fields: [{ key: 'fecha', label: '<span title="Fecha de Factura">Fecha</span>', sortable: true }, { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true }, { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true },
       // { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
       // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
-      { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }]
+      { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      total_facturaciones: 0
     };
   },
 
+  computed: Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["c" /* mapState */])({
+    _costes: 'costes'
+  }),
   created: function created() {
     console.log("FestivalFichaFacturacionComponent created");
     this.getEnvioFacturas();
@@ -107193,8 +107208,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     loadFacturas: function loadFacturas() {
       var _this2 = this;
 
+      this.total_facturaciones = 0;
       this.$store.dispatch('loadFacturacion').then(function (facturaciones) {
         _this2.facturaciones = facturaciones;
+        _this2.facturaciones.map(function (val) {
+          _this2.total_facturaciones += parseFloat(val.importe);
+        });
       });
     },
     onClickAddFactura: function onClickAddFactura() {
@@ -107256,22 +107275,107 @@ var render = function() {
     { staticClass: "festival-facturacion" },
     [
       _c(
-        "b-button",
-        {
-          attrs: {
-            size: "sm",
-            variant: "danger",
-            title: "Nueva Factura",
-            disabled: _vm.edit
-          },
-          on: {
-            click: function($event) {
-              $event.stopPropagation()
-              _vm.onClickAddFactura()
-            }
-          }
-        },
-        [_vm._v("\n    Nueva Factura\n  ")]
+        "b-row",
+        { staticClass: "align-items-end" },
+        [
+          _c("b-col", { attrs: { cols: "12", md: "8" } }, [
+            _c(
+              "strong",
+              {
+                staticClass: "d-inline-block",
+                staticStyle: { width: "120px" }
+              },
+              [_vm._v("Total facturas:")]
+            ),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.total_facturaciones.toFixed(2),
+                  expression: "total_facturaciones.toFixed(2)"
+                }
+              ],
+              staticClass: "ml-2 text-right",
+              attrs: { type: "number", disabled: "" },
+              domProps: { value: _vm.total_facturaciones.toFixed(2) },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.total_facturaciones,
+                    "toFixed(2)",
+                    $event.target.value
+                  )
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "strong",
+              {
+                staticClass: "d-inline-block",
+                staticStyle: { width: "120px" }
+              },
+              [_vm._v("Total a facturar:")]
+            ),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm._costes.importe_venta,
+                  expression: "_costes.importe_venta"
+                }
+              ],
+              staticClass: "ml-2 text-right",
+              attrs: { type: "number", disabled: "" },
+              domProps: { value: _vm._costes.importe_venta },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm._costes, "importe_venta", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            {
+              staticClass: "text-center text-md-right",
+              attrs: { cols: "12", md: "4" }
+            },
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    size: "sm",
+                    variant: "danger",
+                    title: "Nueva Factura",
+                    disabled: _vm.edit
+                  },
+                  on: {
+                    click: function($event) {
+                      $event.stopPropagation()
+                      _vm.onClickAddFactura()
+                    }
+                  }
+                },
+                [_vm._v("\n        Nueva Factura\n      ")]
+              )
+            ],
+            1
+          )
+        ],
+        1
       ),
       _vm._v(" "),
       _c("b-table", {

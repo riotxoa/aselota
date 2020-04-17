@@ -1,8 +1,17 @@
 <template>
   <div class="festival-facturacion">
-    <b-button size="sm" variant="danger" @click.stop="onClickAddFactura()" title="Nueva Factura" :disabled="edit">
-      Nueva Factura
-    </b-button>
+    <b-row class="align-items-end">
+      <b-col cols="12" md="8">
+        <strong class="d-inline-block" style="width:120px;">Total facturas:</strong><input class="ml-2 text-right" type="number" v-model="total_facturaciones.toFixed(2)" disabled />
+        <br>
+        <strong class="d-inline-block" style="width:120px;">Total a facturar:</strong><input class="ml-2 text-right" type="number" v-model="_costes.importe_venta" disabled />
+      </b-col>
+      <b-col cols="12" md="4" class="text-center text-md-right">
+        <b-button size="sm" variant="danger" @click.stop="onClickAddFactura()" title="Nueva Factura" :disabled="edit">
+          Nueva Factura
+        </b-button>
+      </b-col>
+    </b-row>
     <b-table striped hover small responsive
       class="mt-3"
       :items="facturaciones"
@@ -134,6 +143,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import { store } from '../store/store';
   import APIGetters from '../utils/getters.js';
   import Utils from '../utils/utils.js';
@@ -163,8 +173,12 @@
           // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
           { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
         ],
+        total_facturaciones: 0,
       }
     },
+    computed: mapState({
+      _costes: 'costes',
+    }),
     created: function () {
       console.log("FestivalFichaFacturacionComponent created");
       this.getEnvioFacturas();
@@ -187,8 +201,12 @@
         ev.target.value = parseFloat(value).toFixed(2);
       },
       loadFacturas() {
+        this.total_facturaciones = 0;
         this.$store.dispatch('loadFacturacion').then( facturaciones => {
             this.facturaciones = facturaciones;
+            this.facturaciones.map( (val) => {
+              this.total_facturaciones += parseFloat(val.importe);
+            })
         });
       },
       onClickAddFactura() {
