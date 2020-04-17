@@ -101223,6 +101223,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -101501,6 +101511,33 @@ var render = function() {
             ],
             1
           ),
+          _vm._v(" "),
+          null == _vm._header.tipo_festival
+            ? _c(
+                "b-form-group",
+                {
+                  staticClass: "col-sm-3 font-weight-bold px-1",
+                  attrs: {
+                    label: "Campeonato:",
+                    "label-for": "campeonatoInput"
+                  }
+                },
+                [
+                  _c("b-form-select", {
+                    attrs: { id: "campeonatoInput", options: _vm.campeonatos },
+                    on: { change: _vm.onChangeCampeonato },
+                    model: {
+                      value: _vm.campeonato_id,
+                      callback: function($$v) {
+                        _vm.campeonato_id = $$v
+                      },
+                      expression: "campeonato_id"
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
           _vm._v(" "),
           _vm.isCampeonato()
             ? _c(

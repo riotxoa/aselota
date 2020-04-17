@@ -20,6 +20,16 @@
                        v-model="estelar">
         </b-form-select>
       </b-form-group>
+      <b-form-group v-if="null == _header.tipo_festival"
+            label="Campeonato:"
+            label-for="campeonatoInput"
+            class="col-sm-3 font-weight-bold px-1">
+        <b-form-select id="campeonatoInput"
+                 :options="campeonatos"
+                 @change="onChangeCampeonato"
+                 v-model="campeonato_id">
+        </b-form-select>
+      </b-form-group>
       <b-form-group v-if="isCampeonato()"
                     label="Campeonato:"
                     label-for="campeonatoInput"
