@@ -10,7 +10,7 @@
             <div class="card-body p-2">
               <b-row class="m-0 p-0">
                 <label class="ml-0 mr-2">Porcentaje Baiko:</label>
-                {{ calcularPorcentaje() }}%
+                <div v-if="_header.tipo_festival || true">{{ calcularPorcentaje() }}%</div>
               </b-row>
               <b-row class="px-3">
                 <b-form-input id="coste_porcentaje"
@@ -19,7 +19,8 @@
                               min="0"
                               max="100"
                               step="5"
-                              v-model="porcentaje">
+                              @change="updatePorcentaje"
+                              v-model="_costes.porcentaje">
                 </b-form-input>
               </b-row>
             </div>
@@ -456,6 +457,7 @@
       this.getClientes();
       this.$store.dispatch('loadCostes').then( () => {
         this.porcentaje = this._costes.porcentaje;
+        this.calcularPorcentaje();
         this.updateTotal();
         this.show = true;
       });
@@ -478,29 +480,24 @@
     }),
     methods: {
       calcularPorcentaje() {
-        var porcentaje = this._costes.porcentaje;
-
-        if( porcentaje == null ) {
-
+        if( this.porcentaje == null ) {
           switch( this._header.tipo_festival ) {
             case 'EMPRESA':
-              porcentaje = 100;
+              this._costes.porcentaje = 100;
               break;
             case 'CAMPEONATO':
             case 'TORNEO':
             default:
-              porcentaje = 50;
+              this._costes.porcentaje = 50;
               break;
           }
-
         }
-        this.porcentaje = porcentaje;
-        return porcentaje;
+        return this._costes.porcentaje;
       },
       onSubmit() {
-        this._costes.porcentaje = this.porcentaje;
         this.$store.dispatch('addCostes', this._costes)
           .then((response) => {
+            this.porcentaje = this._costes.porcentaje;
             this.showSnackbar("Costes GUARDADOS");
           })
           .catch((error) => {
@@ -595,6 +592,9 @@
         }else{
           document.getElementById("coste_importe_venta_aviso").style.display = "none";
         }
+      },
+      updatePorcentaje() {
+        this.porcentaje = this._costes.porcentaje;
       },
       solicitarConfirmacion() {
         store.dispatch('envioCorreoConfirmacion');

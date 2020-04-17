@@ -105462,6 +105462,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -105497,6 +105498,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     this.getClientes();
     this.$store.dispatch('loadCostes').then(function () {
       _this2.porcentaje = _this2._costes.porcentaje;
+      _this2.calcularPorcentaje();
       _this2.updateTotal();
       _this2.show = true;
     });
@@ -105519,29 +105521,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   }),
   methods: {
     calcularPorcentaje: function calcularPorcentaje() {
-      var porcentaje = this._costes.porcentaje;
-
-      if (porcentaje == null) {
-
+      if (this.porcentaje == null) {
         switch (this._header.tipo_festival) {
           case 'EMPRESA':
-            porcentaje = 100;
+            this._costes.porcentaje = 100;
             break;
           case 'CAMPEONATO':
           case 'TORNEO':
           default:
-            porcentaje = 50;
+            this._costes.porcentaje = 50;
             break;
         }
       }
-      this.porcentaje = porcentaje;
-      return porcentaje;
+      return this._costes.porcentaje;
     },
     onSubmit: function onSubmit() {
       var _this3 = this;
 
-      this._costes.porcentaje = this.porcentaje;
       this.$store.dispatch('addCostes', this._costes).then(function (response) {
+        _this3.porcentaje = _this3._costes.porcentaje;
         _this3.showSnackbar("Costes GUARDADOS");
       }).catch(function (error) {
         console.log(error);
@@ -105640,6 +105638,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         document.getElementById("coste_importe_venta_aviso").style.display = "none";
       }
     },
+    updatePorcentaje: function updatePorcentaje() {
+      this.porcentaje = this._costes.porcentaje;
+    },
     solicitarConfirmacion: function solicitarConfirmacion() {
       __WEBPACK_IMPORTED_MODULE_2__store_store__["a" /* store */].dispatch('envioCorreoConfirmacion');
     },
@@ -105682,11 +105683,12 @@ var render = function() {
                           _c("label", { staticClass: "ml-0 mr-2" }, [
                             _vm._v("Porcentaje Baiko:")
                           ]),
-                          _vm._v(
-                            "\n              " +
-                              _vm._s(_vm.calcularPorcentaje()) +
-                              "%\n            "
-                          )
+                          _vm._v(" "),
+                          _vm._header.tipo_festival || true
+                            ? _c("div", [
+                                _vm._v(_vm._s(_vm.calcularPorcentaje()) + "%")
+                              ])
+                            : _vm._e()
                         ]),
                         _vm._v(" "),
                         _c(
@@ -105702,12 +105704,13 @@ var render = function() {
                                 max: "100",
                                 step: "5"
                               },
+                              on: { change: _vm.updatePorcentaje },
                               model: {
-                                value: _vm.porcentaje,
+                                value: _vm._costes.porcentaje,
                                 callback: function($$v) {
-                                  _vm.porcentaje = $$v
+                                  _vm.$set(_vm._costes, "porcentaje", $$v)
                                 },
-                                expression: "porcentaje"
+                                expression: "_costes.porcentaje"
                               }
                             })
                           ],
