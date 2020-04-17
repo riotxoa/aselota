@@ -2,9 +2,11 @@
   <div class="festival-facturacion">
     <b-row class="align-items-end">
       <b-col cols="12" md="8">
-        <strong class="d-inline-block" style="width:120px;">Total facturas:</strong><input class="ml-2 text-right" type="number" v-model="total_facturaciones.toFixed(2)" disabled />
+        <strong class="d-inline-block" style="width:120px;">Total facturas:</strong>
+        <input class="ml-2 text-right" v-bind:class="{ 'text-green' : total_facturaciones == _costes.importe_venta, 'text-blue' : total_facturaciones > _costes.importe_venta, 'text-red' : total_facturaciones < _costes.importe_venta }" type="number" v-model="total_facturaciones.toFixed(2)" disabled />
         <br>
-        <strong class="d-inline-block" style="width:120px;">Total a facturar:</strong><input class="ml-2 text-right" type="number" v-model="_costes.importe_venta" disabled />
+        <strong class="d-inline-block" style="width:120px;">Total a facturar:</strong>
+        <input class="ml-2 text-right" v-bind:class="{ 'text-green' : total_facturaciones == _costes.importe_venta }"  type="number" v-model="_costes.importe_venta" disabled />
       </b-col>
       <b-col cols="12" md="4" class="text-center text-md-right">
         <b-button size="sm" variant="danger" @click.stop="onClickAddFactura()" title="Nueva Factura" :disabled="edit">
@@ -270,6 +272,21 @@
   .festival-facturacion input[type="text"],
   .festival-facturacion input[type="number"] {
     padding:0 5px;
+  }
+  .festival-facturacion input.text-blue {
+    border:2px solid blue;
+    color:blue;
+    margin-bottom:2px;
+  }
+  .festival-facturacion input.text-green {
+    border:2px solid green;
+    color:green;
+    margin-bottom:2px;
+  }
+  .festival-facturacion input.text-red {
+    border:2px solid red;
+    color:red;
+    margin-bottom:2px;
   }
   .festival-facturacion div[role="radiogroup"] .custom-radio:first-child {
     margin-right:35px;

@@ -106987,7 +106987,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.festival-facturacion .card {\n  border-color:#707f8f;\n}\n.festival-facturacion label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-facturacion input {\n  height:27px;\n}\n.festival-facturacion input[type=\"text\"],\n.festival-facturacion input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-facturacion div[role=\"radiogroup\"] .custom-radio:first-child {\n  margin-right:35px;\n}\n.festival-facturacion .botonera {\n  margin-left:0;\n}\n@media screen and (min-width:768px) {\n.festival-facturacion .botonera {\n    bottom:15px;\n    right:30px;\n    position:absolute;\n}\n}\n", ""]);
+exports.push([module.i, "\n.festival-facturacion .card {\n  border-color:#707f8f;\n}\n.festival-facturacion label {\n  font-weight:bold;\n  margin-right:-15px;\n}\n.festival-facturacion input {\n  height:27px;\n}\n.festival-facturacion input[type=\"text\"],\n.festival-facturacion input[type=\"number\"] {\n  padding:0 5px;\n}\n.festival-facturacion input.text-blue {\n  border:2px solid blue;\n  color:blue;\n  margin-bottom:2px;\n}\n.festival-facturacion input.text-green {\n  border:2px solid green;\n  color:green;\n  margin-bottom:2px;\n}\n.festival-facturacion input.text-red {\n  border:2px solid red;\n  color:red;\n  margin-bottom:2px;\n}\n.festival-facturacion div[role=\"radiogroup\"] .custom-radio:first-child {\n  margin-right:35px;\n}\n.festival-facturacion .botonera {\n  margin-left:0;\n}\n@media screen and (min-width:768px) {\n.festival-facturacion .botonera {\n    bottom:15px;\n    right:30px;\n    position:absolute;\n}\n}\n", ""]);
 
 // exports
 
@@ -107004,6 +107004,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_utils_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__(213);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+//
+//
 //
 //
 //
@@ -107287,6 +107289,7 @@ var render = function() {
               },
               [_vm._v("Total facturas:")]
             ),
+            _vm._v(" "),
             _c("input", {
               directives: [
                 {
@@ -107297,6 +107300,13 @@ var render = function() {
                 }
               ],
               staticClass: "ml-2 text-right",
+              class: {
+                "text-green":
+                  _vm.total_facturaciones == _vm._costes.importe_venta,
+                "text-blue":
+                  _vm.total_facturaciones > _vm._costes.importe_venta,
+                "text-red": _vm.total_facturaciones < _vm._costes.importe_venta
+              },
               attrs: { type: "number", disabled: "" },
               domProps: { value: _vm.total_facturaciones.toFixed(2) },
               on: {
@@ -107323,6 +107333,7 @@ var render = function() {
               },
               [_vm._v("Total a facturar:")]
             ),
+            _vm._v(" "),
             _c("input", {
               directives: [
                 {
@@ -107333,6 +107344,10 @@ var render = function() {
                 }
               ],
               staticClass: "ml-2 text-right",
+              class: {
+                "text-green":
+                  _vm.total_facturaciones == _vm._costes.importe_venta
+              },
               attrs: { type: "number", disabled: "" },
               domProps: { value: _vm._costes.importe_venta },
               on: {
