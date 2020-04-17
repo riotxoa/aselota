@@ -15,6 +15,7 @@ class Festivale extends Model
     'fronton_id',
     'television',
     'television_txt',
+    'organizador',
     'estado_id',
     'fecha_presu',
     'tipo_festival',
