@@ -6323,7 +6323,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
       observaciones: '',
       pagado: 0,
       seguimiento: '',
-      explotacion_id: null
+      explotacion_id: null,
+      file_factura: null
     },
     explotaciones: [],
     contactos: {
@@ -6637,7 +6638,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         enviar_id: null,
         observaciones: '',
         pagado: 0,
-        seguimiento: ''
+        seguimiento: '',
+        explotacion_id: null,
+        file_factura: null
       };
       state.costes_fijos = [];
       state.coste_pelotaris = 0.00;
@@ -7608,8 +7611,17 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
       var uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
+      facturacion.id = facturacion.id ? facturacion.id : false;
+
+      var config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+      var data = new FormData();
+
+      data.append('form', JSON.stringify(facturacion));
+      if (facturacion.file_factura) data.append('file_factura', facturacion.file_factura);
+
       return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, facturacion).then(function (r) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(uri, data, config).then(function (r) {
           return r.data;
         }).then(function (response) {
           resolve(response);
@@ -107184,6 +107196,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -107205,12 +107235,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         enviar_id: null,
         observaciones: '',
         pagado: 0,
-        seguimiento: ''
+        seguimiento: '',
+        explotacion_id: null,
+        file_factura: null,
+        file_name: ''
       },
       facturaciones: [],
-      fields: [{ key: 'fecha', label: '<span title="Fecha de Factura">Fecha</span>', sortable: true }, { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true }, { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true }, { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
-      // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
-      { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
+      fields: [{ key: 'fecha', label: '<span title="Fecha de Factura">Fecha</span>', sortable: true }, { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true }, { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true }, { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true }, { key: 'file_factura', label: '<span title="Documento Factura">Factura</span>', class: 'text-center', sortable: false }, { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' }],
       total_facturaciones: 0
     };
   },
@@ -107238,6 +107269,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.showSnackbar("Facturación ELIMINADA");
       });
     },
+    downloadFactura: function downloadFactura(index) {
+      window.open('/www/festival-facturacion/' + this.facturaciones[index].id + '/download');
+    },
     formatCurrency: function formatCurrency(ev) {
       var value = ev.target.value;
       ev.target.value = parseFloat(value).toFixed(2);
@@ -107248,6 +107282,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         return explotacion.text;
       }
+    },
+    getFacturaFileName: function getFacturaFileName(index) {
+      return this.facturaciones[index].file_factura.replace('/storage/facturas/', '');
     },
     loadExplotaciones: function loadExplotaciones() {
       var _this2 = this;
@@ -107299,6 +107336,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this4.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
       });
     },
+    onDocFacturaChange: function onDocFacturaChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createFileFactura(files[0]);
+    },
+    createFileFactura: function createFileFactura(file) {
+      var _this5 = this;
+
+      var reader = new FileReader();
+      var vm = this;
+      reader.onload = function (e) {
+        vm.facturaciones[_this5.edit_index].file_factura = file;
+        vm.facturaciones[_this5.edit_index].file_name = file.name;
+      };
+      reader.readAsDataURL(file);
+    },
     resetFacturacion: function resetFacturacion() {
       this.facturacion = {
         fpago_id: null,
@@ -107307,7 +107360,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         enviar_id: null,
         observaciones: '',
         pagado: 0,
-        seguimiento: ''
+        seguimiento: '',
+        explotacion_id: null,
+        file_factura: null,
+        file_name: ''
       };
     }
   }
@@ -107508,10 +107564,28 @@ var render = function() {
             }
           },
           {
-            key: "documento",
+            key: "file_factura",
             fn: function(row) {
               return [
-                _vm._v("\n      " + _vm._s(row.item.documento) + "\n    ")
+                _vm.facturaciones[row.index].file_factura
+                  ? _c(
+                      "b-button",
+                      {
+                        staticClass: "mt-0 font-weight-bold",
+                        attrs: {
+                          size: "sm",
+                          variant: "primary",
+                          title: "Descargar documento factura"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.downloadFactura(row.index)
+                          }
+                        }
+                      },
+                      [_c("span", { staticClass: "icon voyager-download" })]
+                    )
+                  : _vm._e()
               ]
             }
           },
@@ -107825,6 +107899,91 @@ var render = function() {
                         "div",
                         { staticClass: "card-body" },
                         [
+                          _c(
+                            "b-row",
+                            {
+                              staticStyle: {
+                                "border-bottom": "1px solid lightgray",
+                                "margin-bottom": "1rem"
+                              }
+                            },
+                            [
+                              _c(
+                                "b-form-group",
+                                {
+                                  staticClass: "col-12",
+                                  attrs: { label: "Documento Factura" }
+                                },
+                                [
+                                  _c(
+                                    "b-row",
+                                    [
+                                      _c("b-form-file", {
+                                        staticClass: "mt-0 col-sm-10",
+                                        attrs: {
+                                          accept: ".doc, .docx, .pdf, .rtf",
+                                          plain: ""
+                                        },
+                                        on: { change: _vm.onDocFacturaChange }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _vm.edit &&
+                              _vm.facturaciones[row.index].file_factura
+                                ? _c(
+                                    "b-form-group",
+                                    {
+                                      staticClass: "col-12",
+                                      staticStyle: { color: "transparent" }
+                                    },
+                                    [
+                                      _c(
+                                        "b-button",
+                                        {
+                                          staticClass: "mt-0 font-weight-bold",
+                                          attrs: {
+                                            block: "",
+                                            size: "md",
+                                            variant: "success",
+                                            title: "Descargar documento factura"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.downloadFactura(row.index)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("span", {
+                                            staticClass:
+                                              "icon voyager-download mr-2"
+                                          }),
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.facturaciones[row.index]
+                                                .file_name
+                                                ? _vm.facturaciones[row.index]
+                                                    .file_name
+                                                : _vm.getFacturaFileName(
+                                                    row.index
+                                                  )
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                : _vm._e()
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
                           _c(
                             "b-row",
                             [

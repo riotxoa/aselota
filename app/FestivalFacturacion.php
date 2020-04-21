@@ -19,5 +19,6 @@ class FestivalFacturacion extends Model
     'pagado',
     'seguimiento',
     'explotacion_id',
+    'file_factura',
   ];
 }

@@ -37,6 +37,7 @@ export const store = new Vuex.Store({
       pagado: 0,
       seguimiento: '',
       explotacion_id: null,
+      file_factura: null,
     },
     explotaciones: [],
     contactos: {
@@ -251,6 +252,8 @@ export const store = new Vuex.Store({
         observaciones: '',
         pagado: 0,
         seguimiento: '',
+        explotacion_id: null,
+        file_factura: null,
       };
       state.costes_fijos = [];
       state.coste_pelotaris = 0.00;
@@ -1193,9 +1196,19 @@ export const store = new Vuex.Store({
     addFacturacion({ commit }, facturacion) {
       let uri = '/www/festival-facturacion';
       facturacion.festival_id = this.getters.header.id;
+      facturacion.id = (facturacion.id ? facturacion.id : false);
+
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+      let data = new FormData();
+
+      data.append('form', JSON.stringify(facturacion));
+      if(facturacion.file_factura)
+        data.append('file_factura', facturacion.file_factura);
+
       return new Promise( (resolve, reject) => {
         axios
-          .post(uri, facturacion)
+          .post(uri, data, config)
           .then( r => r.data )
           .then((response) => {
             resolve(response);

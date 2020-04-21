@@ -71,6 +71,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('derechos/{id}/update', 'DerechoController@update');
     Route::post('festivales/{id}/update', 'FestivaleController@update');
     Route::post('festival-entradas/{id}/update', 'FestivalCosteEntradasController@update' );
+    Route::get('festival-facturacion/{id}/download', 'FestivalFacturacionController@download_factura');
     Route::post('partidos/{id}/update', 'FestivalPartidoController@update');
     Route::post('partido-pelotaris/{id}/update', 'FestivalPartidoController@update_pelotari');
     Route::post('partido-celebrado/{id}/update', 'FestivalPartidoController@update_partido_celebrado');

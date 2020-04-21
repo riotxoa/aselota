@@ -32,10 +32,11 @@
       <template slot="explotacion_id" slot-scope="row">
         {{ getExplotacionDesc(row.item.explotacion_id) }}
       </template>
-      <template slot="documento" slot-scope="row">
-        {{ row.item.documento }}
+      <template slot="file_factura" slot-scope="row">
+        <b-button v-if="facturaciones[row.index].file_factura" size="sm" variant="primary" class="mt-0 font-weight-bold" v-on:click="downloadFactura(row.index)" title="Descargar documento factura">
+          <span class="icon voyager-download"></span>
+        </b-button>
       </template>
-
 
       <template slot="actions" slot-scope="row">
         <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
@@ -124,6 +125,23 @@
             <div class="col-md-5 position-relative">
               <div class="card mb-3">
                 <div class="card-body">
+                  <b-row style="border-bottom:1px solid lightgray; margin-bottom:1rem;">
+                    <b-form-group label="Documento Factura"
+                                  class="col-12">
+                      <b-row>
+                        <b-form-file class="mt-0 col-sm-10"
+                                     v-on:change="onDocFacturaChange"
+                                     accept=".doc, .docx, .pdf, .rtf"
+                                     plain>
+                        </b-form-file>
+                      </b-row>
+                    </b-form-group>
+                    <b-form-group v-if="edit && facturaciones[row.index].file_factura"
+                                  class="col-12"
+                                  style="color:transparent;">
+                      <b-button block size="md" variant="success" class="mt-0 font-weight-bold" v-on:click="downloadFactura(row.index)" title="Descargar documento factura"><span class="icon voyager-download mr-2"></span>{{ (facturaciones[row.index].file_name ? facturaciones[row.index].file_name : getFacturaFileName(row.index)) }}</b-button>
+                    </b-form-group>
+                  </b-row>
                   <b-row>
                     <label class="col-md-6">Pagado:</label>
                     <b-form-radio-group class="col-md-6"
@@ -175,6 +193,9 @@
           observaciones: '',
           pagado: 0,
           seguimiento: '',
+          explotacion_id: null,
+          file_factura: null,
+          file_name: '',
         },
         facturaciones: [],
         fields: [
@@ -182,7 +203,7 @@
           { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true },
           { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true },
           { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
-          // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
+          { key: 'file_factura', label: '<span title="Documento Factura">Factura</span>', class: 'text-center', sortable: false },
           { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
         ],
         total_facturaciones: 0,
@@ -209,6 +230,9 @@
           this.showSnackbar("Facturación ELIMINADA");
         })
       },
+      downloadFactura (index) {
+        window.open('/www/festival-facturacion/' + this.facturaciones[index].id + '/download');
+      },
       formatCurrency(ev) {
         let value = ev.target.value;
         ev.target.value = parseFloat(value).toFixed(2);
@@ -219,6 +243,9 @@
 
           return explotacion.text;
         }
+      },
+      getFacturaFileName( index ) {
+        return this.facturaciones[index].file_factura.replace('/storage/facturas/', '')
       },
       loadExplotaciones() {
         this.$store.dispatch('loadExplotaciones').then( (res) => {
@@ -266,6 +293,21 @@
             this.showSnackbar("Se ha producido un ERROR al guardar la FACTURACIÓN");
           });
       },
+      onDocFacturaChange (e) {
+        let files = e.target.files || e.dataTransfer.files;
+        if (!files.length)
+            return;
+        this.createFileFactura(files[0]);
+      },
+      createFileFactura (file) {
+          let reader = new FileReader();
+          let vm = this;
+          reader.onload = (e) => {
+            vm.facturaciones[this.edit_index].file_factura = file;
+            vm.facturaciones[this.edit_index].file_name = file.name;
+          };
+          reader.readAsDataURL(file);
+      },
       resetFacturacion() {
         this.facturacion = {
           fpago_id: null,
@@ -275,6 +317,9 @@
           observaciones: '',
           pagado: 0,
           seguimiento: '',
+          explotacion_id: null,
+          file_factura: null,
+          file_name: '',
         }
       },
     }

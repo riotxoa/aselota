@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+
 use App\FestivalFacturacion;
 
 class FestivalFacturacionController extends Controller
@@ -44,24 +47,31 @@ class FestivalFacturacionController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'gerente']);
 
-        $facturacion = FestivalFacturacion::find($request->get('id'));
+        $data = json_decode($request->get('form'));
+
+        $facturacion = ($data->id ? FestivalFacturacion::find($data->id) : false);
         if( $facturacion ) {
           return $this->update($request, $facturacion->id);
         }
 
-        $facturacion = FestivalFacturacion::where('festival_id', $request->get('festival_id'))->first();
+        $facturacion = FestivalFacturacion::where('festival_id', $data->festival_id)->first();
 
         $facturacion = new FestivalFacturacion([
-          'festival_id' => $request->get('festival_id'),
-          'fpago_id' => $request->get('fpago_id'),
-          'fecha' => $request->get('fecha'),
-          'importe' => $request->get('importe'),
-          'enviar_id' => $request->get('enviar_id'),
-          'observaciones' => $request->get('observaciones'),
-          'pagado' => $request->get('pagado'),
-          'seguimiento' => $request->get('seguimiento'),
-          'explotacion_id' => $request->get('explotacion_id'),
+          'festival_id' => $data->festival_id,
+          'fpago_id' => $data->fpago_id,
+          'fecha' => $data->fecha,
+          'importe' => $data->importe,
+          'enviar_id' => $data->enviar_id,
+          'observaciones' => $data->observaciones,
+          'pagado' => $data->pagado,
+          'seguimiento' => $data->seguimiento,
+          'explotacion_id' => $data->explotacion_id,
         ]);
+
+        if($request->file('file_factura')) {
+          $path = $request->file('file_factura')->storeAs('facturas', $data->file_name);
+          $facturacion->file_factura = Storage::url($path);
+        }
 
         $facturacion->save();
 
@@ -105,16 +115,23 @@ class FestivalFacturacionController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'gerente']);
 
+        $data = json_decode($request->get('form'));
+
         $facturacion = FestivalFacturacion::find($id);
 
-        $facturacion->fpago_id = $request->get('fpago_id');
-        $facturacion->fecha = $request->get('fecha');
-        $facturacion->importe = $request->get('importe');
-        $facturacion->enviar_id = $request->get('enviar_id');
-        $facturacion->observaciones = $request->get('observaciones');
-        $facturacion->pagado = $request->get('pagado');
-        $facturacion->seguimiento = $request->get('seguimiento');
-        $facturacion->explotacion_id = $request->get('explotacion_id');
+        $facturacion->fpago_id = $data->fpago_id;
+        $facturacion->fecha = $data->fecha;
+        $facturacion->importe = $data->importe;
+        $facturacion->enviar_id = $data->enviar_id;
+        $facturacion->observaciones = $data->observaciones;
+        $facturacion->pagado = $data->pagado;
+        $facturacion->seguimiento = $data->seguimiento;
+        $facturacion->explotacion_id = $data->explotacion_id;
+
+        if($request->file('file_factura')) {
+          $path = $request->file('file_factura')->storeAs('facturas', $data->file_name);
+          $facturacion->file_factura = Storage::url($path);
+        }
 
         $facturacion->save();
 
@@ -134,5 +151,19 @@ class FestivalFacturacionController extends Controller
         FestivalFacturacion::destroy($id);
 
         return response()->json("FACTURACION REMOVED", 200);
+    }
+
+    public function download_factura(Request $request, $id)
+    {
+      $request->user()->authorizeRoles(['admin', 'gerente']);
+
+      $item = FestivalFacturacion::find($id);
+      $fileName = str_replace('/storage/facturas/', '', $item->file_factura);
+
+      $headers = array(
+         'Content-Type: application/octet-stream',
+      );
+
+      return response()->download(storage_path('app/facturas/' . $fileName), $fileName, $headers);
     }
 }
