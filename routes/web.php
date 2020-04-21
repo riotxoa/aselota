@@ -44,6 +44,7 @@ Route::group(['prefix' => 'www'], function () {
     Route::resource('festival-facturacion', 'FestivalFacturacionController');
     Route::resource('festival-entradas', 'FestivalCosteEntradasController');
     Route::resource('festival-contactos', 'FestivalContactoController');
+    Route::resource('explotaciones', 'ExplotacionController');
     Route::resource('formas-pago', 'FormasPagoController');
     Route::resource('envio-facturas', 'FacturaEnvioController');
     Route::resource('entrenamientos/contenidos', 'EntrContenidoController');

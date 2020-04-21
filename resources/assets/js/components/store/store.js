@@ -36,7 +36,9 @@ export const store = new Vuex.Store({
       observaciones: '',
       pagado: 0,
       seguimiento: '',
+      explotacion_id: null,
     },
+    explotaciones: [],
     contactos: {
       contact_01_name: '',
       contact_01_desc: '',
@@ -172,6 +174,7 @@ export const store = new Vuex.Store({
     correo_aviso_margen: state => state.correo_aviso_margen,
     coste: state => state.coste,
     facturacion: state => state.facturacion,
+    explotaciones: state => state.explotaciones,
     contactos: state => state.contactos,
     edit: state => state.edit,
     edit_evento: state => state.edit_evento,
@@ -532,6 +535,9 @@ export const store = new Vuex.Store({
       if(facturacion.length) {
         state.facturacion = facturacion[0];
       }
+    },
+    SET_EXPLOTACIONES (state, explotaciones) {
+      state.explotaciones = explotaciones;
     },
     SET_CONTACTOS (state, contactos) {
       state.contactos = contactos;
@@ -1215,6 +1221,23 @@ export const store = new Vuex.Store({
           });
 
       });
+    },
+    loadExplotaciones({ commit }) {
+      return new Promise( (resolve, reject) => {
+        axios
+          .get('/www/explotaciones')
+          .then( r => r.data )
+          .then( explotaciones => {
+            commit('SET_EXPLOTACIONES', explotaciones);
+            var stringified = JSON.stringify(explotaciones).replace(/"id"/g, '"value"').replace(/desc/g, "text");
+            explotaciones = JSON.parse(stringified);
+            explotaciones.unshift({ value: null, text: "Seleccionar" });
+            resolve(explotaciones);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
     },
     loadContactos({ commit }) {
       let data = {

@@ -30,7 +30,7 @@
         <i v-else class="fas fa-times-circle" style="color:red;font-size:18px;" title="NO PAGADA"></i>
       </template>
       <template slot="explotacion_id" slot-scope="row">
-        {{ row.item.explotacion_id }}
+        {{ getExplotacionDesc(row.item.explotacion_id) }}
       </template>
       <template slot="documento" slot-scope="row">
         {{ row.item.documento }}
@@ -91,6 +91,15 @@
                     </b-form-input>
                   </b-row>
                   <b-row>
+                    <label class="col-md-6">Explotación:</label>
+                    <b-form-select id="fact_explotacion"
+                                   :disabled="!edit"
+                                   class="col-md-6"
+                                   :options="explotaciones"
+                                   v-model="facturaciones[row.index].explotacion_id">
+                    </b-form-select>
+                  </b-row>
+                  <b-row>
                     <label class="col-md-6">Enviar factura a:</label>
                     <b-form-select id="fact_enviar_a"
                                         :disabled="!edit"
@@ -102,7 +111,7 @@
                   <b-form-group label="Observaciones:"
                                 label-for="fact_observaciones">
                     <b-form-textarea id="fact_observaciones"
-                                        :disabled="!edit"
+                                     :disabled="!edit"
                                      :rows="3"
                                      :max-rows="6"
                                      v-model="facturaciones[row.index].observaciones">
@@ -157,6 +166,7 @@
       return {
         edit: false,
         edit_index: null,
+        explotaciones: [],
         facturacion: {
           fpago_id: null,
           fecha: null,
@@ -171,7 +181,7 @@
           { key: 'fecha', label: '<span title="Fecha de Factura">Fecha</span>', sortable: true },
           { key: 'importe', label: '<span title="Importe">Importe</span>', class: 'text-right', sortable: true },
           { key: 'pagado', label: '<span title="Pagado">Pagado</span>', class: 'text-center', sortable: true },
-          // { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
+          { key: 'explotacion_id', label: '<span title="Explotación">Explotación</span>', sortable: true },
           // { key: 'documento', lable: '<span title="Documento">Documento</span>', sortable: false },
           { key: 'actions', label: 'Acciones', sortable: false, class: 'text-center' },
         ],
@@ -184,6 +194,7 @@
     created: function () {
       console.log("FestivalFichaFacturacionComponent created");
       this.getEnvioFacturas();
+      this.loadExplotaciones();
       this.loadFacturas();
     },
     methods: {
@@ -201,6 +212,18 @@
       formatCurrency(ev) {
         let value = ev.target.value;
         ev.target.value = parseFloat(value).toFixed(2);
+      },
+      getExplotacionDesc( explotacion_id ) {
+        if( explotacion_id ) {
+          var explotacion = _.find(this.explotaciones, { 'value': explotacion_id });
+
+          return explotacion.text;
+        }
+      },
+      loadExplotaciones() {
+        this.$store.dispatch('loadExplotaciones').then( (res) => {
+          this.explotaciones = res;
+        });
       },
       loadFacturas() {
         this.total_facturaciones = 0;

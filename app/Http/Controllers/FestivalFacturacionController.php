@@ -60,6 +60,7 @@ class FestivalFacturacionController extends Controller
           'observaciones' => $request->get('observaciones'),
           'pagado' => $request->get('pagado'),
           'seguimiento' => $request->get('seguimiento'),
+          'explotacion_id' => $request->get('explotacion_id'),
         ]);
 
         $facturacion->save();
@@ -113,6 +114,7 @@ class FestivalFacturacionController extends Controller
         $facturacion->observaciones = $request->get('observaciones');
         $facturacion->pagado = $request->get('pagado');
         $facturacion->seguimiento = $request->get('seguimiento');
+        $facturacion->explotacion_id = $request->get('explotacion_id');
 
         $facturacion->save();
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FestivalFacturacion extends Model
 {
   protected $table = "festival_facturacion";
-  
+
   protected $fillable = [
     'festival_id',
     'fpago_id',
@@ -18,5 +18,6 @@ class FestivalFacturacion extends Model
     'observaciones',
     'pagado',
     'seguimiento',
+    'explotacion_id',
   ];
 }
