@@ -197,3 +197,7 @@ form label.col-form-label {
   border: 1px solid lightgray;
   box-shadow: 2px 2px 15px -5px grey;
 }
+
+.cursor-pointer {
+  cursor:pointer!important;
+}

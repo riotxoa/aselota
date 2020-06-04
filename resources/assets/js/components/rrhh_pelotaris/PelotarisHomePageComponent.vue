@@ -23,6 +23,9 @@
           <b-tab title="Promesas" title-item-class="text-uppercase font-weight-bold">
             <listado-pelotaris-promesa />
           </b-tab>
+          <b-tab title="Nóminas" title-item-class="text-uppercase font-weight-bold">
+            <listado-pelotaris-nominas />
+          </b-tab>
         </b-tabs>
       </b-card>
     </div>
@@ -30,6 +33,8 @@
 </template>
 
 <script>
+  import ListadoNominas from '../rrhh_nominas/ListadoComponent';
+
   var store_pelotaris = {
     tabIndex: 0,
   }
@@ -45,6 +50,9 @@
     updated() {
       store_pelotaris.tabIndex = this.tabIndex;
     },
+    components: {
+      'listado-pelotaris-nominas': ListadoNominas,
+    }
   }
 </script>
 

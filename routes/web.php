@@ -85,6 +85,9 @@ Route::group(['prefix' => 'www'], function () {
     Route::post('partes/{id}/update', 'ParteMedicoController@update');
 
     Route::get('partes-medicos-aux', 'ParteMedicoController@getAuxTablesInfo');
+
+    Route::get('nominas', 'PelotariController@getNominas');
+    Route::post('nominas/{id}/update', 'PelotariController@updateNomina');
 });
 
 Auth::routes();

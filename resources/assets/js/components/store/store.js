@@ -1713,5 +1713,43 @@ export const store = new Vuex.Store({
     updateParteIsRecaida({ commit }, val) {
       commit('SET_PARTE_IS_RECAIDA', val);
     },
+
+    /* NÓMINAS */
+    getNominasMonth ({ commit }, data) {
+      return new Promise( (resolve, reject) => {
+        var f_ini = new Date(data.ano, data.mes, 1);
+        var f_fin = new Date(data.ano, data.mes+1, 0);
+
+        f_ini = f_ini.getFullYear() + "-" + (f_ini.getMonth()+1) + "-" + f_ini.getDate();
+        f_fin = f_fin.getFullYear() + "-" + (f_fin.getMonth()+1) + "-" + f_fin.getDate();
+
+        axios.get('/www/nominas', {
+          params: {
+            fecha_ini: f_ini,
+            fecha_fin: f_fin,
+            overwrite: data.overwrite
+          }
+        })
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    updateNomina( { commit }, data ) {
+      return new Promise( (resolve, reject) => {
+        let uri = '/www/nominas/' + data.id + '/update';
+
+        axios.post(uri, data)
+          .then((response) => {
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
   }
 });

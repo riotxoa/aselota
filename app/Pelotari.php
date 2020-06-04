@@ -137,4 +137,37 @@ class Pelotari extends Model
 
     return $items;
   }
+
+  static function get_partidos_convocados_mes($pelotari_id, $mes, $ano) {
+    return DB::table('festival_partido_pelotaris as p_pelotaris')
+            ->leftJoin('festival_partidos as partidos', 'partidos.id', '=', 'p_pelotaris.festival_partido_id')
+            ->leftJoin('festivales', 'festivales.id', '=', 'partidos.festival_id')
+            ->whereMonth('festivales.fecha', $mes)
+            ->whereYear('festivales.fecha', $ano)
+            ->where('p_pelotaris.pelotari_id', '=', $pelotari_id)
+            ->count();
+  }
+
+  static function get_partidos_asistencia_mes($pelotari_id, $mes, $ano) {
+    return DB::table('festival_partido_pelotaris as p_pelotaris')
+            ->leftJoin('festival_partidos as partidos', 'partidos.id', '=', 'p_pelotaris.festival_partido_id')
+            ->leftJoin('festivales', 'festivales.id', '=', 'partidos.festival_id')
+            ->whereMonth('festivales.fecha', $mes)
+            ->whereYear('festivales.fecha', $ano)
+            ->where('p_pelotaris.pelotari_id', '=', $pelotari_id)
+            ->where('p_pelotaris.asiste', '=', 1)
+            ->count();
+  }
+
+  static function get_partidos_estelares_mes($pelotari_id, $mes, $ano) {
+    return DB::table('festival_partido_pelotaris as p_pelotaris')
+            ->leftJoin('festival_partidos as partidos', 'partidos.id', '=', 'p_pelotaris.festival_partido_id')
+            ->leftJoin('festivales', 'festivales.id', '=', 'partidos.festival_id')
+            ->whereMonth('festivales.fecha', $mes)
+            ->whereYear('festivales.fecha', $ano)
+            ->where('p_pelotaris.pelotari_id', '=', $pelotari_id)
+            ->where('p_pelotaris.asiste', '=', 1)
+            ->where('partidos.estelar', '=', 1)
+            ->count();
+  }
 }

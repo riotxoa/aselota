@@ -391,7 +391,7 @@ class FestivaleController extends Controller
 
     public function getCalendarMonth(Request $request)
     {
-      $request->user()->authorizeRoles(['admin', 'gerente']);
+      $request->user()->authorizeRoles(['admin', 'gerente', 'rrhh']);
 
       $month = $request->get('month');
       $pelotaris = $request->get('pelotaris');

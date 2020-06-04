@@ -19,6 +19,25 @@ var Utils = {
         return moment().format('YYYY-MM-DD');
     },
 
+    formatDateShort(date) {
+      if( date ) {
+        const d = new Date(date)
+        const dtf = new Intl.DateTimeFormat('es', { year: 'numeric', month: 'short', day: 'numeric' })
+        const [{ value: da },,{ value: mo },,{ value: ye }] = dtf.formatToParts(d)
+
+        return `${da} ${mo}`;
+      } else {
+        return date;
+      }
+    },
+
+    formatHour (date) {
+      if (date)
+        return moment(String(date)).format('HH:mm:ss');
+      else
+        return moment().format('HH:mm:ss');
+    },
+
     formatFestivalID (id, date) {
       var str_id = String(id);
       while (str_id.length < (4 || 2)) {str_id = "0" + str_id;}

@@ -1,5 +1,7 @@
-var APIGetters = {
+import Utils from './utils.js';
 
+var APIGetters = {
+  mixins: [Utils],
   data () {
     return {
       provincias: [],
@@ -266,14 +268,18 @@ var APIGetters = {
     },
     getPelotarisMonth (year, month) {
       return new Promise( (resolve, reject) => {
+        var f_ini = new Date(); // new Date(year, month, 1);
+        var f_fin = new Date(); // new Date(year, month + 1, 0);
+
         axios.get('/www/pelotaris', {
           params: {
-            fecha_ini: new Date(), // new Date(year, month, 1),
-            fecha_fin: new Date(), // new Date(year, month + 1, 0),
+            fecha_ini: this.formatDateEN(f_ini),
+            fecha_fin: this.formatDateEN(f_fin),
           }
         }).then((response) => {
           var stringified = JSON.stringify(response.data);
           this.pelotaris = JSON.parse(stringified);
+          resolve(response.data);
         })
       });
     },
