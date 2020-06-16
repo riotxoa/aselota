@@ -49,6 +49,7 @@
           <b-row>
             <b-col sm="1">
               <img :src="(row.item.foto ? row.item.foto : defaultPhoto)" class="img-responsive" style="width:100%;">
+              <p class="font-weight-bold mt-1 text-center"><small>{{ row.item.num_trabajador }}</small></p>
             </b-col>
             <b-col sm="11">
               <b-row class="mb-2">
@@ -139,6 +140,7 @@
           sortBy: 'age',
           sortDesc: false,
           fields: [
+            { key: 'num_trabajador', label: 'Nº Trab.', sortable: true, class: "text-right" },
             { key: 'alias', label: 'Apodo', sortable: true },
             { key: 'posicion', label: 'Posición', sortable: true },
             { key: 'provincia', label: 'Provincia', sortable: true },

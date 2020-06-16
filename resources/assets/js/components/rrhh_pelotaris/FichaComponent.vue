@@ -22,7 +22,7 @@
       </div>
       <div class="col-10 col-md-9 col-lg-10">
         <p class="d-inline-block text-secondary mb-1">{{ formTitle }}</p>
-        <h1 class="form-title text-secondary"><strong>{{ this.pelotari.alias }}</strong> - <small class="text-capitalize">{{ this.pelotari.posicion }}</small></h1>
+        <h1 class="form-title text-secondary"><strong>{{ this.pelotari.alias }} <span v-if="this.pelotari.num_trabajador">({{ this.pelotari.num_trabajador }})</span></strong> - <small class="text-capitalize">{{ this.pelotari.posicion }}</small></h1>
       </div>
       <div class="col-2 col-md-1 col-lg-1">
         <b-button class="d-inline-block float-right text-right" size="sm" variant="outline-secondary" alt="Borrar Pelotari" title="Borrar Pelotari" style="width:30px;" @click.stop="onClickDelete(pelotari.id, pelotari.alias)" v-if="edit"><span class="icon voyager-trash"></span></b-button>
@@ -49,6 +49,20 @@
 
           <b-tab title="Ficha" active>
             <b-row>
+              <div class="col-md-12">
+                <b-row>
+                  <b-form-group label="NºTrabajador:"
+                                label-for="alias"
+                                class="col-sm-6 col-md-3">
+                    <b-form-input id="alias"
+                                  type="text"
+                                  v-model="pelotari.num_trabajador"
+                                  maxlength="6"
+                                  placeholder="Nº Trabajador">
+                    </b-form-input>
+                  </b-form-group>
+                </b-row>
+              </div>
               <div class="col-md-12">
                 <b-row>
                   <b-form-group label="Nombre deportivo:"
@@ -292,6 +306,7 @@
       return {
         pelotari: {
           id: null,
+          num_trabajador: '',
           dni: '',
           alias: '',
           posicion: null,
@@ -373,6 +388,7 @@
             var pelotari = JSON.parse(stringified);
 
             this.pelotari.id = id;
+            this.pelotari.num_trabajador = pelotari.num_trabajador;
             this.pelotari.dni = pelotari.DNI;
             this.pelotari.alias = pelotari.alias;
             this.pelotari.posicion = pelotari.posicion;
@@ -464,6 +480,7 @@
         evt.preventDefault();
         /* Reset our form values */
         this.pelotari.dni = '';
+        this.pelotari.num_trabajador = '';
         this.pelotari.alias = '';
         this.pelotari.posicion = null;
         this.pelotari.nombre = '';

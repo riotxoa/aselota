@@ -12,6 +12,7 @@ class Pelotari extends Model
 
   protected $fillable = [
     'DNI',
+    'num_trabajador',
     'nombre',
     'apellidos',
     'alias',

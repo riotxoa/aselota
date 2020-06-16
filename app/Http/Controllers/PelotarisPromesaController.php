@@ -96,6 +96,7 @@ class PelotarisPromesaController extends Controller
 
         $item = new Pelotari([
           'DNI' => $data->dni,
+          'num_trabajador' => $data->num_trabajador,
           'nombre' => $data->nombre,
           'apellidos' => $data->apellidos,
           'alias' => $data->alias,
@@ -172,6 +173,7 @@ class PelotarisPromesaController extends Controller
         $data = json_decode($request->get('form'));
 
         $item->DNI = $data->dni;
+        $item->num_trabajador = $data->num_trabajador;
         $item->nombre = $data->nombre;
         $item->apellidos = $data->apellidos;
         $item->alias = $data->alias;
