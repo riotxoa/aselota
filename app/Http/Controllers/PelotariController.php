@@ -285,6 +285,7 @@ class PelotariController extends Controller
             $nomina = Nomina::updateOrCreate(
               [ 'pelotari_id' => $item->id, 'mes' => $month, 'ano' => $year ],
               [
+                'num_trabajador' => $item->num_trabajador,
                 'alias' => $item->alias,
                 'fecha_ini_contrato' => $item->fecha_ini_contrato,
                 'partidos_jugados' => $item->partidos_jugados,

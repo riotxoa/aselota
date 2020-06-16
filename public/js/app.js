@@ -89819,6 +89819,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -89850,6 +89854,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       total_torneos: 0,
       total_pelotaris: 0,
       export_fields: {
+        'NºTrabajador': 'num_trabajador',
         'Pelotari': 'alias',
         'Total Jug/Gar': {
           callback: function callback(item) {
@@ -91755,6 +91760,19 @@ var render = function() {
                               },
                               [_c("i", { staticClass: "fas fa-caret-down" })]
                             )
+                      ]
+                    }
+                  },
+                  {
+                    key: "alias",
+                    fn: function(row) {
+                      return [
+                        row.item.num_trabajador
+                          ? _c("span", [
+                              _vm._v(_vm._s(row.item.num_trabajador) + " - ")
+                            ])
+                          : _vm._e(),
+                        _vm._v(_vm._s(row.item.alias) + "\n      ")
                       ]
                     }
                   },

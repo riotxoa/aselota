@@ -52,6 +52,10 @@
           </b-button>
         </template>
 
+        <template slot="alias" slot-scope="row">
+          <span v-if="row.item.num_trabajador">{{ row.item.num_trabajador }} - </span>{{ row.item.alias}}
+        </template>
+
         <template slot="partidos_total" slot-scope="row">
           {{ row.item.partidos_jugados}} / {{ row.item.partidos_garantia }}
         </template>
@@ -254,6 +258,7 @@
         total_torneos: 0,
         total_pelotaris: 0,
         export_fields: {
+          'NºTrabajador': 'num_trabajador',
           'Pelotari': 'alias',
           'Total Jug/Gar': {
             callback: (item) => {

@@ -11,6 +11,7 @@ class Nomina extends Model
 
   protected $fillable = [
     'pelotari_id',
+    'num_trabajador',
     'alias',
     'mes',
     'ano',
