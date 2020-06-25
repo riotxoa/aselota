@@ -201,3 +201,9 @@ form label.col-form-label {
 .cursor-pointer {
   cursor:pointer!important;
 }
+.font-weight-bold.text-black {
+  font-weight: bold!important;
+}
+.text-black {
+  color:black!important;
+}

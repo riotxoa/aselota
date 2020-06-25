@@ -91661,7 +91661,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$emit('ChangePrimaCampeonato', item);
     },
     setTableFields: function setTableFields() {
-      this.fields = [{ key: 'actions', label: '', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: false }, { key: 'alias', label: 'NºTrabajador', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-left", sortable: true }, { key: 'partidos_asistencia', label: 'NºPart.Pagar', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: true }, { key: 'total_partidos', label: 'Total<br>Partidos', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_estelares', label: 'Plus<br>Estelar', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_torneos', label: 'Plus<br>Torneos', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'irpf', label: 'Base<br>IRPF', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_dietas', label: 'Total<br>Dietas', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_pelotari', label: 'TOTAL<br>PELOTARI', thClass: "background-deepblue font-weight-bold", thStyle: "line-height:1", class: "background-deepblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }];
+      this.fields = [{ key: 'actions', label: '', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "text-center", sortable: false }, { key: 'alias', label: 'NºTrabajador', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "text-left", sortable: true }, { key: 'partidos_asistencia', label: 'NºPart.Pagar', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "text-center", sortable: true }, { key: 'total_partidos', label: 'Total<br>Partidos', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_estelares', label: 'Plus<br>Estelar', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_torneos', label: 'Plus<br>Torneos', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow text-right", formatter: 'formatCurrency', sortable: true }, { key: 'irpf', label: 'Base<br>IRPF', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_dietas', label: 'Total<br>Dietas', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_pelotari', label: 'TOTAL<br>PELOTARI', thClass: "background-deepblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-deepblue font-weight-bold text-black text-right", formatter: 'formatCurrency', sortable: true }];
     }
   }
 });
@@ -92425,7 +92425,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$emit('ChangePrimaCampeonato', item);
     },
     setTableFields: function setTableFields() {
-      this.fields = [{ key: 'actions', label: '', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: false }, { key: 'alias', label: 'Pelotari', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small", sortable: true }, { key: 'partidos_total', label: 'Total<br>Jug./Gar.', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: false }, { key: 'fecha_ini_contrato', label: 'Inicio<br>periodo', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", formatter: 'formatDateShort', sortable: true }, { key: 'asistencia', label: 'Asiste / Conv', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: true }, { key: 'dieta_basica', label: 'Dieta<br>Básica', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true }, { key: 'dieta_partido', label: 'Dieta<br>Partido', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true }, { key: 'total_dietas', label: 'Total&nbsp;€<br>Dietas', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'estelares', label: '<i class="far fa-star">', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true }, { key: 'prima_estelar', label: 'Prima<br>Estelar', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true }, { key: 'total_estelares', label: 'Pluses&nbsp;€<br>Estelares', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'coste_partido', label: 'Coste<br>Partido', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true }, { key: 'total_partidos', label: 'Total&nbsp;€<br>Partidos', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_torneos', label: 'Pluses&nbsp;€<br>Torneos', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_pelotari', label: 'TOTAL&nbsp;€<br>PELOTARI', thClass: "background-deepblue font-weight-bold", thStyle: "line-height:1", class: "background-deepblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true }];
+      this.fields = [{ key: 'actions', label: '', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", sortable: false }, { key: 'alias', label: 'Pelotari', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small", sortable: true }, { key: 'partidos_total', label: 'Total<br>Jug./Gar.', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", sortable: false }, { key: 'fecha_ini_contrato', label: 'Inicio<br>periodo', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", formatter: 'formatDateShort', sortable: true }, { key: 'asistencia', label: 'Asiste / Conv', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", sortable: true }, { key: 'dieta_basica', label: 'Dieta<br>Básica', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true }, { key: 'dieta_partido', label: 'Dieta<br>Partido', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true }, { key: 'total_dietas', label: 'Total&nbsp;€<br>Dietas', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'estelares', label: '<i class="far fa-star">', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true }, { key: 'prima_estelar', label: 'Prima<br>Estelar', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true }, { key: 'total_estelares', label: 'Pluses&nbsp;€<br>Estelares', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'coste_partido', label: 'Coste<br>Partido', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true }, { key: 'total_partidos', label: 'Total&nbsp;€<br>Partidos', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_torneos', label: 'Pluses&nbsp;€<br>Torneos', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true }, { key: 'total_pelotari', label: 'TOTAL&nbsp;€<br>PELOTARI', thClass: "background-deepblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-deepblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true }];
     }
   }
 });
@@ -92525,7 +92525,7 @@ var render = function() {
         key: "asistencia",
         fn: function(row) {
           return [
-            _c("span", { staticClass: "font-weight-bold" }, [
+            _c("span", { staticClass: "font-weight-bold text-black" }, [
               _vm._v(_vm._s(row.item.partidos_asistencia))
             ]),
             _vm._v(" / " + _vm._s(row.item.partidos_convocado) + "\n  ")
@@ -93272,7 +93272,7 @@ var render = function() {
       _vm.show_nominas && !_vm.loading
         ? _c(
             "b-row",
-            { staticClass: "small" },
+            {},
             [
               _c(
                 "b-col",
@@ -93290,16 +93290,10 @@ var render = function() {
                           }
                         },
                         [
-                          _c(
-                            "b-btn",
-                            { attrs: { size: "sm", variant: "primary" } },
-                            [
-                              _c("i", {
-                                staticClass: "fas fa-file-excel mr-2"
-                              }),
-                              _vm._v("Excel Vista Detallada")
-                            ]
-                          )
+                          _c("b-btn", { attrs: { variant: "primary" } }, [
+                            _c("i", { staticClass: "fas fa-file-excel mr-2" }),
+                            _vm._v("Excel Vista Detallada")
+                          ])
                         ],
                         1
                       )
@@ -93314,16 +93308,10 @@ var render = function() {
                           }
                         },
                         [
-                          _c(
-                            "b-btn",
-                            { attrs: { size: "sm", variant: "primary" } },
-                            [
-                              _c("i", {
-                                staticClass: "fas fa-file-excel mr-2"
-                              }),
-                              _vm._v("Excel Vista Compacta")
-                            ]
-                          )
+                          _c("b-btn", { attrs: { variant: "primary" } }, [
+                            _c("i", { staticClass: "fas fa-file-excel mr-2" }),
+                            _vm._v("Excel Vista Compacta")
+                          ])
                         ],
                         1
                       )

@@ -25,7 +25,7 @@
     </template>
 
     <template slot="asistencia" slot-scope="row">
-      <span class="font-weight-bold">{{ row.item.partidos_asistencia }}</span> / {{ row.item.partidos_convocado }}
+      <span class="font-weight-bold text-black">{{ row.item.partidos_asistencia }}</span> / {{ row.item.partidos_convocado }}
     </template>
 
     <template slot="dieta_basica" slot-scope="row" v-bind:class="{ 'text-center': row.item.dieta_basica }">
@@ -158,21 +158,21 @@
       },
       setTableFields() {
         this.fields = [
-          { key: 'actions', label: '', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: false },
-          { key: 'alias', label: 'Pelotari', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small", sortable: true },
-          { key: 'partidos_total', label: 'Total<br>Jug./Gar.', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: false },
-          { key: 'fecha_ini_contrato', label: 'Inicio<br>periodo', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", formatter: 'formatDateShort', sortable: true },
-          { key: 'asistencia', label: 'Asiste / Conv', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: true },
-          { key: 'dieta_basica', label: 'Dieta<br>Básica', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true },
-          { key: 'dieta_partido', label: 'Dieta<br>Partido', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true },
-          { key: 'total_dietas', label: 'Total&nbsp;€<br>Dietas', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'estelares', label: '<i class="far fa-star">', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true },
-          { key: 'prima_estelar', label: 'Prima<br>Estelar', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true },
-          { key: 'total_estelares', label: 'Pluses&nbsp;€<br>Estelares', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'coste_partido', label: 'Coste<br>Partido', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true },
-          { key: 'total_partidos', label: 'Total&nbsp;€<br>Partidos', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'total_torneos', label: 'Pluses&nbsp;€<br>Torneos', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'total_pelotari', label: 'TOTAL&nbsp;€<br>PELOTARI', thClass: "background-deepblue font-weight-bold", thStyle: "line-height:1", class: "background-deepblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'actions', label: '', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", sortable: false },
+          { key: 'alias', label: 'Pelotari', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small", sortable: true },
+          { key: 'partidos_total', label: 'Total<br>Jug./Gar.', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", sortable: false },
+          { key: 'fecha_ini_contrato', label: 'Inicio<br>periodo', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", formatter: 'formatDateShort', sortable: true },
+          { key: 'asistencia', label: 'Asiste / Conv', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "small text-center", sortable: true },
+          { key: 'dieta_basica', label: 'Dieta<br>Básica', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true },
+          { key: 'dieta_partido', label: 'Dieta<br>Partido', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true },
+          { key: 'total_dietas', label: 'Total&nbsp;€<br>Dietas', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'estelares', label: '<i class="far fa-star">', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true },
+          { key: 'prima_estelar', label: 'Prima<br>Estelar', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'format2dec', sortable: true },
+          { key: 'total_estelares', label: 'Pluses&nbsp;€<br>Estelares', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'coste_partido', label: 'Coste<br>Partido', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow small text-center", sortable: true },
+          { key: 'total_partidos', label: 'Total&nbsp;€<br>Partidos', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'total_torneos', label: 'Pluses&nbsp;€<br>Torneos', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'total_pelotari', label: 'TOTAL&nbsp;€<br>PELOTARI', thClass: "background-deepblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-deepblue font-weight-bold text-black small text-right", formatter: 'formatCurrency', sortable: true },
         ]
       },
     }

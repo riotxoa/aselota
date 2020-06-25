@@ -45,21 +45,21 @@
       </b-tabs>
     </b-row>
 
-    <b-row v-if="show_nominas && !loading" class="small">
+    <b-row v-if="show_nominas && !loading" class="">
       <b-col cols="12" md="8">
         <JsonExcel v-if="tabIndex > 0"
           :data="nominas"
           :fields="export_fields"
           :worksheet="export_worksheet"
           :name="export_name">
-          <b-btn size="sm" variant="primary"><i class="fas fa-file-excel mr-2"></i>Excel Vista Detallada</b-btn>
+          <b-btn variant="primary"><i class="fas fa-file-excel mr-2"></i>Excel Vista Detallada</b-btn>
         </JsonExcel>
         <JsonExcel v-else
           :data="nominas"
           :fields="export_fields_compacta"
           :worksheet="export_worksheet"
           :name="export_name">
-          <b-btn size="sm" variant="primary"><i class="fas fa-file-excel mr-2"></i>Excel Vista Compacta</b-btn>
+          <b-btn variant="primary"><i class="fas fa-file-excel mr-2"></i>Excel Vista Compacta</b-btn>
         </JsonExcel>
       </b-col>
       <b-col cols="6" md="2"><big><strong>Total Pelotaris:</strong></big></b-col>

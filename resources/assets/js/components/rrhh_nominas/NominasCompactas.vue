@@ -117,15 +117,15 @@
       },
       setTableFields() {
         this.fields = [
-          { key: 'actions', label: '', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: false },
-          { key: 'alias', label: 'NºTrabajador', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-left", sortable: true },
-          { key: 'partidos_asistencia', label: 'NºPart.Pagar', thClass: "font-weight-bold", thStyle: "line-height:1", class: "small text-center", sortable: true },
-          { key: 'total_partidos', label: 'Total<br>Partidos', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'total_estelares', label: 'Plus<br>Estelar', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'total_torneos', label: 'Plus<br>Torneos', thClass: "background-yellow font-weight-bold", thStyle: "line-height:1", class: "background-yellow small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'irpf', label: 'Base<br>IRPF', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'total_dietas', label: 'Total<br>Dietas', thClass: "background-lightblue font-weight-bold", thStyle: "line-height:1", class: "background-lightblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
-          { key: 'total_pelotari', label: 'TOTAL<br>PELOTARI', thClass: "background-deepblue font-weight-bold", thStyle: "line-height:1", class: "background-deepblue font-weight-bold small text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'actions', label: '', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "text-center", sortable: false },
+          { key: 'alias', label: 'NºTrabajador', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "text-left", sortable: true },
+          { key: 'partidos_asistencia', label: 'NºPart.Pagar', thClass: "font-weight-bold text-black", thStyle: "line-height:1", class: "text-center", sortable: true },
+          { key: 'total_partidos', label: 'Total<br>Partidos', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'total_estelares', label: 'Plus<br>Estelar', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'total_torneos', label: 'Plus<br>Torneos', thClass: "background-yellow font-weight-bold text-black", thStyle: "line-height:1", class: "background-yellow text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'irpf', label: 'Base<br>IRPF', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'total_dietas', label: 'Total<br>Dietas', thClass: "background-lightblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-lightblue font-weight-bold text-black text-right", formatter: 'formatCurrency', sortable: true },
+          { key: 'total_pelotari', label: 'TOTAL<br>PELOTARI', thClass: "background-deepblue font-weight-bold text-black", thStyle: "line-height:1", class: "background-deepblue font-weight-bold text-black text-right", formatter: 'formatCurrency', sortable: true },
         ]
       },
     }
