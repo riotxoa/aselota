@@ -50,14 +50,13 @@ class PelotariController extends Controller
           $fecha_fin = $request->get('fecha_fin');
 
           // $items = $items->leftJoin('contratos as c2', 'pelotaris.id', '=', 'c2.pelotari_id')
-          //                ->leftJoin('contratos_comercial as cc2', 'c2.header_id', '=', 'cc2.header_id')
           //                ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
           //                ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
-          //                ->whereDate('cc2.fecha_ini', '<=', $fecha_fin)
-          //                ->whereDate('cc2.fecha_fin', '>=', $fecha_ini)
-          //                ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'cc2.coste', 'c2.garantia');
+          //                ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.garantia');
 
-          $items = $items->leftJoin('contratos as c2', 'pelotaris.id', '=', 'c2.pelotari_id')
+          $items = $items->leftJoin('contratos_header as ch', 'pelotaris.id', '=', 'ch.pelotari_id')
+                         ->leftJoin('contratos as c2', 'ch.id', '=', 'c2.header_id')
+                         ->where('disabled', '=', 0)
                          ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
                          ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
                          ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.garantia');

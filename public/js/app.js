@@ -8923,6 +8923,7 @@ var APIGetters = {
           }
         }).then(function (response) {
           var stringified = JSON.stringify(response.data);
+          console.log("[getPelotarisMonth] stringified: " + stringified);
           _this10.pelotaris = JSON.parse(stringified);
           resolve(response.data);
         });
