@@ -96186,6 +96186,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -97050,33 +97055,42 @@ var render = function() {
                               _c(
                                 "b-row",
                                 [
-                                  _c(
-                                    "b-col",
-                                    { attrs: { cols: "12", sm: "6" } },
-                                    [
-                                      _c(
-                                        "h5",
-                                        {
-                                          staticClass: "font-weight-bold pt-1"
-                                        },
-                                        [_vm._v("Observaciones")]
-                                      )
-                                    ]
-                                  ),
+                                  _c("b-col", { attrs: { cols: "12" } }, [
+                                    _c(
+                                      "h5",
+                                      { staticClass: "font-weight-bold pt-1" },
+                                      [_vm._v("Observaciones")]
+                                    )
+                                  ]),
                                   _vm._v(" "),
                                   _c(
                                     "b-col",
                                     {
                                       staticClass: "mt-3",
-                                      attrs: { cols: "12", sm: "12", md: "8" }
+                                      attrs: { cols: "12" }
                                     },
                                     [
-                                      _c(
-                                        "div",
-                                        { staticClass: "border px-3 py-2" },
-                                        [_vm._v(_vm._s(contrato.observaciones))]
-                                      )
-                                    ]
+                                      _c("b-form-textarea", {
+                                        attrs: {
+                                          id: "observaciones",
+                                          rows: 6,
+                                          "max-rows": 25,
+                                          disabled: ""
+                                        },
+                                        model: {
+                                          value: contrato.observaciones,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              contrato,
+                                              "observaciones",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "contrato.observaciones"
+                                        }
+                                      })
+                                    ],
+                                    1
                                   )
                                 ],
                                 1

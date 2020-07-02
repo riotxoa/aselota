@@ -107,11 +107,16 @@
             <div v-if="contrato.observaciones">
               <hr/>
               <b-row>
-                <b-col cols="12" sm="6">
+                <b-col cols="12">
                   <h5 class="font-weight-bold pt-1">Observaciones</h5>
                 </b-col>
-                <b-col cols="12" sm="12" md="8" class="mt-3">
-                  <div class="border px-3 py-2">{{ contrato.observaciones }}</div>
+                <b-col cols="12" class="mt-3">
+                  <b-form-textarea id="observaciones"
+                                   :rows="6"
+                                   :max-rows="25"
+                                   v-model="contrato.observaciones"
+                                   disabled>
+                  </b-form-textarea>
                 </b-col>
               </b-row>
 
