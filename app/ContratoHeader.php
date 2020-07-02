@@ -14,6 +14,8 @@ class ContratoHeader extends Model
     'pelotari_id',
     'fecha_ini',
     'fecha_fin',
+    'disabled',
+    'observaciones',
   ];
 
   protected $table = 'contratos_header';

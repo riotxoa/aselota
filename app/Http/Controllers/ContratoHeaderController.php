@@ -29,6 +29,8 @@ class ContratoHeaderController extends Controller
         'name' => $data->name,
         'fecha_ini' => $data->fecha_ini,
         'fecha_fin' => $data->fecha_fin,
+        'disabled' => $data->disabled,
+        'observaciones' => $data->observaciones,
       ]);
 
       if($request->file('file')) {
@@ -64,6 +66,8 @@ class ContratoHeaderController extends Controller
       $item->name = $data->name;
       $item->fecha_ini = $data->fecha_ini;
       $item->fecha_fin = $data->fecha_fin;
+      $item->disabled = $data->disabled;
+      $item->observaciones = $data->observaciones;
 
       if($request->file('file')) {
         $path = $request->file('file')->storeAs('contratos', $data->fileName);

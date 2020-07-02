@@ -41,6 +41,21 @@
               </b-form-input>
             </b-form-group>
           </b-row>
+          <b-row>
+            <b-form-group label="Observaciones:"
+                          label-for="observacionesInput"
+                          class="col-sm-8">
+              <b-form-textarea id="observaciones"
+                               :rows="3"
+                               :max-rows="6"
+                               maxlength="20"
+                               v-model="header.observaciones">
+              </b-form-textarea>
+            </b-form-group>
+            <b-form-group class="col-sm-4 mt-4">
+              <b-form-checkbox id="disabledInput" value="1" unchecked-value="0" v-model="header.disabled" switch>Deshabilitado</b-form-checkbox>
+            </b-form-group>
+          </b-row>
           <b-row style="border-top:1px solid lightgray; padding-top:1rem;">
             <b-form-group label="Contrato Deportivo"
                           class="col-sm-6">
@@ -118,6 +133,8 @@
           file_derechos: null,
           fecha_ini: null,
           fecha_fin: null,
+          disabled: null,
+          observaciones: '',
           created_at: null,
           updated_at: null,
         },
@@ -144,6 +161,8 @@
         this.header.name = rowHeader.name;
         this.header.fecha_ini = rowHeader.fecha_ini;
         this.header.fecha_fin = rowHeader.fecha_fin;
+        this.header.disabled = rowHeader.disabled;
+        this.header.observaciones = rowHeader.observaciones;
         this.header.file = (rowHeader.file ? rowHeader.file.replace('/storage/contratos/', '') : '');
         this.header.file_derechos = (rowHeader.file_derechos ? rowHeader.file_derechos.replace('/storage/contratos/', '') : '');
       }

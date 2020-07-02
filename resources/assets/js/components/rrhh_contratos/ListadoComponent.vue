@@ -17,10 +17,10 @@
             <div class="col-sm-2 p-0" style="max-width:115px;">
               <b-btn block href="#" v-b-toggle="'#contrato-' + contrato.id" variant="secondary"><span class="icon voyager-plus float-left" style="font-size:18px;"></span>Tramos</b-btn>
             </div>
-            <div class="col-sm-2 pt-2 text-center" title="Descripción de contrato" style="font-size:13px;">
+            <div class="col-sm-2 pt-2 text-center" title="Descripción de contrato" style="font-size:13px;" v-bind:class="{ 'text-gray' : contrato.disabled }">
               <strong>{{ contrato.name }}</strong>
             </div>
-            <div class="col-sm-4 pt-2 text-left" title="Periodo de contrato" style="font-size:13px;">
+            <div class="col-sm-4 pt-2 text-left" title="Periodo de contrato" style="font-size:13px;" v-bind:class="{ 'text-gray' : contrato.disabled }">
               <span class="icon voyager-calendar mr-1"></span>{{ contrato.fecha_ini | formatDate }} - {{ contrato.fecha_fin | formatDate }}
             </div>
             <div class="col-sm-4 p-0 text-right" style="right:0;position:absolute;">
@@ -102,6 +102,20 @@
                 </b-button-group>
               </template>
             </b-table>
+
+            <!-- OBSERVACIONES -->
+            <div v-if="contrato.observaciones">
+              <hr/>
+              <b-row>
+                <b-col cols="12" sm="6">
+                  <h5 class="font-weight-bold pt-1">Observaciones</h5>
+                </b-col>
+                <b-col cols="12" sm="12" md="8" class="mt-3">
+                  <div class="border px-3 py-2">{{ contrato.observaciones }}</div>
+                </b-col>
+              </b-row>
+
+            </div>
 
           </b-card-body>
 
@@ -453,6 +467,10 @@
   }
   .table-custom-imagen {
     background-color:#fadde3;
+  }
+  .text-gray {
+    color:#afafaf!important;
+    text-decoration: line-through;
   }
   #listado-contratos .b-table th,
   #listado-contratos .b-table td {

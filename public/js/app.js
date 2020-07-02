@@ -96000,7 +96000,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n.table-custom-ficha-sueldo {\n  background-color:#ffca9b;\n}\n.table-custom-garantia {\n  background-color:#d5e8ff;\n}\n.table-custom-imagen {\n  background-color:#fadde3;\n}\n#listado-contratos .b-table th,\n#listado-contratos .b-table td {\n  border-color:#e5e5e5;\n}\n#listado-contratos .b-table th.table-success,\n#listado-contratos .b-table th.table-warning {\n  border-bottom-color:white;\n}\n#listado-contratos .b-table td.table-success,\n#listado-contratos .b-table td.table-warning {\n  border-color:white;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) {\n  background:#28a745;\n  border-color:#28a745;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) .icon.voyager-plus:before {\n  content: \"p\";\n  position:relative;\n  top:4px;\n}\n#listado-contratos .card-header a.btn:focus {\n  -webkit-box-shadow:none;\n  box-shadow:none;\n}\n", ""]);
+exports.push([module.i, "\n.table-custom-ficha-sueldo {\n  background-color:#ffca9b;\n}\n.table-custom-garantia {\n  background-color:#d5e8ff;\n}\n.table-custom-imagen {\n  background-color:#fadde3;\n}\n.text-gray {\n  color:#afafaf!important;\n  text-decoration: line-through;\n}\n#listado-contratos .b-table th,\n#listado-contratos .b-table td {\n  border-color:#e5e5e5;\n}\n#listado-contratos .b-table th.table-success,\n#listado-contratos .b-table th.table-warning {\n  border-bottom-color:white;\n}\n#listado-contratos .b-table td.table-success,\n#listado-contratos .b-table td.table-warning {\n  border-color:white;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) {\n  background:#28a745;\n  border-color:#28a745;\n}\n#listado-contratos .card-header a.btn:not(.collapsed) .icon.voyager-plus:before {\n  content: \"p\";\n  position:relative;\n  top:4px;\n}\n#listado-contratos .card-header a.btn:focus {\n  -webkit-box-shadow:none;\n  box-shadow:none;\n}\n", ""]);
 
 // exports
 
@@ -96013,6 +96013,20 @@ exports.push([module.i, "\n.table-custom-ficha-sueldo {\n  background-color:#ffc
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -96567,6 +96581,7 @@ var render = function() {
                       "div",
                       {
                         staticClass: "col-sm-2 pt-2 text-center",
+                        class: { "text-gray": contrato.disabled },
                         staticStyle: { "font-size": "13px" },
                         attrs: { title: "Descripción de contrato" }
                       },
@@ -96577,6 +96592,7 @@ var render = function() {
                       "div",
                       {
                         staticClass: "col-sm-4 pt-2 text-left",
+                        class: { "text-gray": contrato.disabled },
                         staticStyle: { "font-size": "13px" },
                         attrs: { title: "Periodo de contrato" }
                       },
@@ -97022,7 +97038,52 @@ var render = function() {
                             }
                           }
                         ])
-                      })
+                      }),
+                      _vm._v(" "),
+                      contrato.observaciones
+                        ? _c(
+                            "div",
+                            [
+                              _c("hr"),
+                              _vm._v(" "),
+                              _c(
+                                "b-row",
+                                [
+                                  _c(
+                                    "b-col",
+                                    { attrs: { cols: "12", sm: "6" } },
+                                    [
+                                      _c(
+                                        "h5",
+                                        {
+                                          staticClass: "font-weight-bold pt-1"
+                                        },
+                                        [_vm._v("Observaciones")]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "b-col",
+                                    {
+                                      staticClass: "mt-3",
+                                      attrs: { cols: "12", sm: "12", md: "8" }
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        { staticClass: "border px-3 py-2" },
+                                        [_vm._v(_vm._s(contrato.observaciones))]
+                                      )
+                                    ]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
                     ],
                     1
                   )
@@ -100363,6 +100424,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var showSnackbar = function showSnackbar(msg) {
   // Get the snackbar DIV
@@ -100391,6 +100467,8 @@ var showSnackbar = function showSnackbar(msg) {
         file_derechos: null,
         fecha_ini: null,
         fecha_fin: null,
+        disabled: null,
+        observaciones: '',
         created_at: null,
         updated_at: null
       },
@@ -100418,6 +100496,8 @@ var showSnackbar = function showSnackbar(msg) {
       this.header.name = rowHeader.name;
       this.header.fecha_ini = rowHeader.fecha_ini;
       this.header.fecha_fin = rowHeader.fecha_fin;
+      this.header.disabled = rowHeader.disabled;
+      this.header.observaciones = rowHeader.observaciones;
       this.header.file = rowHeader.file ? rowHeader.file.replace('/storage/contratos/', '') : '';
       this.header.file_derechos = rowHeader.file_derechos ? rowHeader.file_derechos.replace('/storage/contratos/', '') : '';
     }
@@ -100625,6 +100705,68 @@ var render = function() {
                                 expression: "header.fecha_fin"
                               }
                             })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-form-group",
+                          {
+                            staticClass: "col-sm-8",
+                            attrs: {
+                              label: "Observaciones:",
+                              "label-for": "observacionesInput"
+                            }
+                          },
+                          [
+                            _c("b-form-textarea", {
+                              attrs: {
+                                id: "observaciones",
+                                rows: 3,
+                                "max-rows": 6,
+                                maxlength: "20"
+                              },
+                              model: {
+                                value: _vm.header.observaciones,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.header, "observaciones", $$v)
+                                },
+                                expression: "header.observaciones"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          { staticClass: "col-sm-4 mt-4" },
+                          [
+                            _c(
+                              "b-form-checkbox",
+                              {
+                                attrs: {
+                                  id: "disabledInput",
+                                  value: "1",
+                                  "unchecked-value": "0",
+                                  switch: ""
+                                },
+                                model: {
+                                  value: _vm.header.disabled,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.header, "disabled", $$v)
+                                  },
+                                  expression: "header.disabled"
+                                }
+                              },
+                              [_vm._v("Deshabilitado")]
+                            )
                           ],
                           1
                         )
