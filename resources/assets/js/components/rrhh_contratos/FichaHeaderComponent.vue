@@ -48,7 +48,7 @@
               <b-form-textarea id="observaciones"
                                :rows="3"
                                :max-rows="6"
-                               maxlength="20"
+                               maxlength="2500"
                                v-model="header.observaciones">
               </b-form-textarea>
             </b-form-group>

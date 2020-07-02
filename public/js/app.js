@@ -100731,7 +100731,7 @@ var render = function() {
                                 id: "observaciones",
                                 rows: 3,
                                 "max-rows": 6,
-                                maxlength: "20"
+                                maxlength: "2500"
                               },
                               model: {
                                 value: _vm.header.observaciones,
