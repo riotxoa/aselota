@@ -59,7 +59,7 @@ class PelotariController extends Controller
                          ->where('disabled', '=', 0)
                          ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
                          ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
-                         ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.garantia');
+                         ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.fecha_fin as fecha_fin_contrato', 'c2.garantia');
         }
 
         $items = $items->orderBy('alias')

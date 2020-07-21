@@ -30,7 +30,8 @@
               <th scope="row">
                 {{ pelotari.alias }}<br/>
                 <small>Jugados: <strong>{{ pelotari.partidos_jugados}}</strong> - Garantía: <strong>{{ pelotari.garantia }}</strong></small><br/>
-                <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small><br/>
+                <!-- <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small><br/> -->
+                <small>Periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong>&nbsp;-&nbsp;<strong>{{ formatDateShort(pelotari.fecha_fin_contrato )}}</strong></small><br/>
                 <small>Total {{ today.getFullYear() }}: <strong>{{ pelotari.partidos_jugados_this_year }}</strong> - Total {{ today.getFullYear() - 1 }}: <strong>{{ pelotari.partidos_jugados_last_year }}</strong></small>
               </th>
             </tr>
@@ -122,7 +123,7 @@
 
         month = this.months[short.getMonth()];
 
-        return short.getDate() + " " + month;
+        return short.getDate() + " " + month + "'" + short.getFullYear().toString().substr(-2);
       },
       showAgenda(pelotari, day) {
         var date = this.curr_year + "-" + (this.curr_month+1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
