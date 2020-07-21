@@ -278,7 +278,6 @@ var APIGetters = {
           }
         }).then((response) => {
           var stringified = JSON.stringify(response.data);
-          console.log("[getPelotarisMonth] stringified: " + stringified)
           this.pelotaris = JSON.parse(stringified);
           resolve(response.data);
         })
