@@ -417,13 +417,15 @@ class PelotariController extends Controller
     }
 
     private function get_last_final( $campeonato_id ) {
-      return DB::table('festival_partidos as partidos')
-              ->select('festivales.fecha')
-              ->leftJoin('festivales', 'festivales.id', '=', 'partidos.festival_id')
-              ->where('partidos.campeonato_id', '=', $campeonato_id)
-              ->where('partidos.fase', '=', 'final')
-              ->orderBy('festivales.fecha', 'desc')
-              ->value('festivales.fecha');
+      $last_final = DB::table('festival_partidos as partidos')
+                    ->select('festivales.fecha')
+                    ->leftJoin('festivales', 'festivales.id', '=', 'partidos.festival_id')
+                    ->where('partidos.campeonato_id', '=', $campeonato_id)
+                    ->where('partidos.fase', '=', 'final')
+                    ->orderBy('festivales.fecha', 'desc')
+                    ->value('festivales.fecha');
+
+      return ($last_final ? $last_final : '1990-01-01');
     }
 
     private function get_total_primas_campeonato( $item, $fases ) {
