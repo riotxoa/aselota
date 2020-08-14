@@ -18,16 +18,16 @@
       <div class="col-sm-2"><b-button class="month-nav next" size="sm" variant="primary" @click="onClickNext">{{ this.months[this.next_month] }}&nbsp;{{ this.next_year }}&nbsp;<i class="icon voyager-double-right"></i></b-button></div>
     </b-row>
     <b-row class="mt-4 px-3">
-      <div class="col-2 pr-0" style="margin-right:-1px;">
+      <div class="col-2 pr-0" style="margin-right:-1px; max-width:11.2rem">
         <table class="table table-striped">
           <thead class="thead-dark">
             <tr>
-              <th scope="col" style="min-width:10rem;">Pelotari</th>
+              <th scope="col">Pelotari</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="pelotari in pelotaris">
-              <th scope="row">
+              <th scope="row" class="px-1">
                 {{ pelotari.alias }}<br/>
                 <small>Jugados: <strong>{{ pelotari.partidos_jugados}}</strong> - Garantía: <strong>{{ pelotari.garantia }}</strong></small><br/>
                 <!-- <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small><br/> -->
@@ -38,7 +38,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-10 pl-0" style="overflow:auto;">
+      <div class="col-10 pl-0" style="overflow:auto;max-width:calc(100% - 11.2rem);flex:0 0 100%;">
         <table class="table table-striped">
           <thead class="thead-dark">
             <tr>
