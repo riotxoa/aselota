@@ -1288,11 +1288,12 @@ export const store = new Vuex.Store({
           });
       });
     },
-    loadCalendario({ commit }, month) {
+    loadCalendario({ commit }, periodo) {
       let data = {
         params: {
           pelotaris: [],
-          month: month,
+          month: periodo.month,
+          year: periodo.year
         }
       };
       axios

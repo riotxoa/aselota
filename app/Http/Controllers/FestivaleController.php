@@ -394,6 +394,7 @@ class FestivaleController extends Controller
       $request->user()->authorizeRoles(['admin', 'gerente', 'rrhh']);
 
       $month = $request->get('month');
+      $year = $request->get('year');
       $pelotaris = $request->get('pelotaris');
 
       $calendar = DB::table('pelotaris')
@@ -431,8 +432,10 @@ class FestivaleController extends Controller
 
       if( $month ) {
         $calendar = $calendar->whereMonth('festivales.fecha', $month);
+        $calendar = $calendar->whereYear('festivales.fecha', $year);
       } else {
         $calendar = $calendar->whereMonth('festivales.fecha', date("m"));
+        $calendar = $calendar->whereYear('festivales.fecha', date("Y"));
       }
 
       $calendar = $calendar->whereNull('pelotaris.deleted_at')

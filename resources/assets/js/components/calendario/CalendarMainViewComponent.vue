@@ -110,7 +110,7 @@
 
       this.days = [31, (this.curr_year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-      store.dispatch('loadCalendario', this.curr_month + 1);
+      store.dispatch('loadCalendario', { year: this.curr_year, month: this.curr_month + 1 });
       this.getPelotarisMonth(this.curr_year, this.curr_month);
     },
     updated() {
