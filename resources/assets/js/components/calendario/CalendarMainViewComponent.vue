@@ -185,7 +185,7 @@
         this.prev_year = this.getPrevYear(this.curr_month);
         this.next_year = this.getNextYear(this.curr_month);
 
-        store.dispatch('loadCalendario', this.curr_month + 1);
+        store.dispatch('loadCalendario', { year: this.curr_year, month: this.curr_month + 1 });
         this.getPelotarisMonth(this.curr_year, this.curr_month);
       },
       onClickNext() {
@@ -197,7 +197,7 @@
         this.prev_year = this.getPrevYear(this.curr_month);
         this.next_year = this.getNextYear(this.curr_month);
 
-        store.dispatch('loadCalendario', this.curr_month + 1);
+        store.dispatch('loadCalendario', { year: this.curr_year, month: this.curr_month + 1 });
         this.getPelotarisMonth(this.curr_year, this.curr_month);
       },
       goBack() {
