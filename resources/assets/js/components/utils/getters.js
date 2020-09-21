@@ -268,7 +268,7 @@ var APIGetters = {
     },
     getPelotarisMonth (year, month) {
       return new Promise( (resolve, reject) => {
-        var f_ini = new Date(); // new Date(year, month, 1);
+        var f_ini = new Date(year, month, 1);
         var f_fin = new Date(); // new Date(year, month + 1, 0);
 
         axios.get('/www/pelotaris', {

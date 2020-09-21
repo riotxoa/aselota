@@ -32,6 +32,7 @@ class PelotariController extends Controller
           $get_partidos_jugados = true;
 
           $fecha = $request->get('fecha');
+          $today = date('Y-m-d');
           $three_months_ago = date('Y-m-d', strtotime("-3 Months"));
 
           $items = $items->leftJoin('contratos as c1', 'pelotaris.id', '=', 'c1.pelotari_id')
