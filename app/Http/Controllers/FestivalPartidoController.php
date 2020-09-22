@@ -98,7 +98,7 @@ class FestivalPartidoController extends Controller
         $pelotari->sustituto_txt = $p->sustituto_txt;
         $pelotari->observaciones = $p->observaciones;
 
-        if( $p->sustituto_id ) {
+        if( $p->sustituto_id || !$p->asiste ) {
           if( $p->sustituto_asegarce ) {
             $sustituto = Pelotari::find($p->sustituto_id);
 
@@ -109,7 +109,7 @@ class FestivalPartidoController extends Controller
           } else {
             $sustituto = PelotarisAspe::find($p->sustituto_id);
 
-            $pelotari->sustituto_alias = "ASPE (" . $sustituto->alias . ")";
+            $pelotari->sustituto_alias = ($sustituto ? $sustituto->alias . " (ASPE)" : "PELOTARI ASPE");
 
             $pelotari->sustituto_coste =  0;
           }
