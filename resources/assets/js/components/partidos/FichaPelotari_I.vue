@@ -46,6 +46,7 @@
 
         <b-row v-if="!pelotari.asiste">
 
+          <!-- OLD
           <div class="col-sm-4 px-0 pt-3 pb-0 ml-md-3">
             <b-form-group label="Sustituto">
               <b-form-select :options="pelotaris"
@@ -54,6 +55,34 @@
               </b-form-select>
             </b-form-group>
           </div>
+          -->
+
+          <!-- NEW -->
+          <div class="col-sm-4 px-0 pt-3 pb-0 ml-md-3 form-group d-block">
+            <label for="pelotari1gorriaInput" class="pt-1 col-form-label">
+              Sustituto:
+            </label>
+            <b-form-checkbox
+                       class="float-right m-0"
+                       v-model="pelotari.sustituto_asegarce"
+                       value="1"
+                       unchecked-value="0"
+                       @change="changeEmpresaPelotari">
+            </b-form-checkbox>
+            <img v-if="1 == pelotari.sustituto_asegarce" src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon"/>
+            <img v-else src="/storage/baiko.jpg" width="20" class="float-right asegarce-icon grayscale"/>
+            <b-form-select id="pelotari1gorriaInput"
+                           :options="pelotaris"
+                           v-model="pelotari.sustituto_id"
+                           v-if="1 == pelotari.sustituto_asegarce" required>
+            </b-form-select>
+            <b-form-select id="pelotari1gorriaInput"
+                           :options="pelotaris_aspe"
+                           v-model="pelotari.sustituto_id"
+                           v-else>
+            </b-form-select>
+          </div>
+          <!-- /NEW -->
 
           <div class="col-sm-7 px-0 pt-3 pb-0 ml-md-3">
             <b-form-group label="Motivo sustitución">
@@ -118,6 +147,9 @@
       _header: 'header',
     }),
     methods: {
+      changeEmpresaPelotari() {
+        this.pelotari.sustituto_id = null;
+      },
       onSubmit(evt) {
         evt.preventDefault();
 
@@ -125,6 +157,7 @@
           id: this.pelotari.partido_pelotari_id,
           asiste: this.pelotari.asiste,
           sustituto_id: (this.pelotari.asiste ? null : this.pelotari.sustituto_id),
+          sustituto_asegarce: (this.pelotari.asiste ? 1 : this.pelotari.sustituto_asegarce),
           sustituto_txt: (this.pelotari.asiste ? null : this.pelotari.sustituto_txt),
           observaciones: this.pelotari.observaciones
         }
@@ -132,12 +165,11 @@
         this.$store.dispatch('updatePartidoPelotari', data)
           .then((response) => {
             this.showSnackbar("Pelotari actualizado");
-            response.sustituto_alias = _.find(this.pelotaris, { value: this.pelotari.sustituto_id }).text;
+            // response.sustituto_alias = _.find(this.pelotaris, { value: this.pelotari.sustituto_id }).text;
             this.$emit('update-pelotari', response);
             this.closeModal();
           })
           .catch((error) => {
-            console.log(error);
             this.showSnackbar("Se ha producido un ERROR");
             this.closeModal();
           });

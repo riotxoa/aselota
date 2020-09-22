@@ -92,18 +92,27 @@ class FestivalPartidoController extends Controller
         $pelotari->asiste = $p->asiste;
         $pelotari->is_sustituto = $p->is_sustituto;
         $pelotari->sustituto_id = $p->sustituto_id;
+        $pelotari->sustituto_asegarce = $p->sustituto_asegarce;
         $pelotari->sustituto_alias = "";
         $pelotari->sustituto_coste = 0;
         $pelotari->sustituto_txt = $p->sustituto_txt;
         $pelotari->observaciones = $p->observaciones;
 
         if( $p->sustituto_id ) {
-          $sustituto = Pelotari::find($p->sustituto_id);
+          if( $p->sustituto_asegarce ) {
+            $sustituto = Pelotari::find($p->sustituto_id);
 
-          $pelotari->sustituto_alias = $sustituto->alias;
+            $pelotari->sustituto_alias = $sustituto->alias;
 
-          $sustituto_coste = $sustituto->comercial()->whereDate('fecha_ini', '<=', $p->fecha_presu)->whereDate('fecha_fin', '>=', $p->fecha_presu)->orderBy('created_at', 'desc')->first();
-          $pelotari->sustituto_coste = ($sustituto_coste ? $sustituto_coste->coste : null);
+            $sustituto_coste = $sustituto->comercial()->whereDate('fecha_ini', '<=', $p->fecha_presu)->whereDate('fecha_fin', '>=', $p->fecha_presu)->orderBy('created_at', 'desc')->first();
+            $pelotari->sustituto_coste = ($sustituto_coste ? $sustituto_coste->coste : null);
+          } else {
+            $sustituto = PelotarisAspe::find($p->sustituto_id);
+
+            $pelotari->sustituto_alias = "ASPE (" . $sustituto->alias . ")";
+
+            $pelotari->sustituto_coste =  0;
+          }
         }
 
         if( "R" === $p->color ) {
@@ -436,6 +445,7 @@ class FestivalPartidoController extends Controller
 
       $item->asiste = $request->get('asiste');
       $item->sustituto_id = $request->get('sustituto_id');
+      $item->sustituto_asegarce = $request->get('sustituto_asegarce');
       $item->sustituto_txt = $request->get('sustituto_txt');
       $item->observaciones = $request->get('observaciones');
 
@@ -451,19 +461,26 @@ class FestivalPartidoController extends Controller
         if($sustituto)
           FestivalPartidoPelotari::destroy($sustituto->id);
       } else {
-        if(!$sustituto)
-          $sustituto = new FestivalPartidoPelotari();
+        if($item->sustituto_asegarce) {
+          if(!$sustituto)
+            $sustituto = new FestivalPartidoPelotari();
 
-        $sustituto->festival_partido_id = $item->festival_partido_id;
-        $sustituto->color = $item->color;
-        $sustituto->posicion = $item->posicion;
-        $sustituto->pelotari_id = $item->sustituto_id;
-        $sustituto->asegarce = $item->asegarce;
-        $sustituto->asiste = 1;
-        $sustituto->is_sustituto = 1;
-        $sustituto->save();
+          $sustituto->festival_partido_id = $item->festival_partido_id;
+          $sustituto->color = $item->color;
+          $sustituto->posicion = $item->posicion;
+          $sustituto->pelotari_id = $item->sustituto_id;
+          $sustituto->asegarce = $item->asegarce;
+          $sustituto->asiste = 1;
+          $sustituto->is_sustituto = 1;
+          $sustituto->save();
 
-        $item->sustituto_coste = $sustituto->comercial()->whereDate('fecha_ini', '<=', $item->festival->fecha_presu)->whereDate('fecha_fin', '>=', $item->festival->fecha_presu)->orderBy('created_at', 'desc')->first()->coste;
+          $item->sustituto_coste = $sustituto->comercial()->whereDate('fecha_ini', '<=', $item->festival->fecha_presu)->whereDate('fecha_fin', '>=', $item->festival->fecha_presu)->orderBy('created_at', 'desc')->first()->coste;
+        } else {
+          if($sustituto)
+            FestivalPartidoPelotari::destroy($sustituto->id);
+
+          $item->sustituto_coste = 0;
+        }
       }
 
       return response()->json($item, 200);

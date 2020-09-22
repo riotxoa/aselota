@@ -15,6 +15,7 @@ class FestivalPartidoPelotari extends Model
     'asiste',
     'is_sustituto',
     'sustituto_id',
+    'sustituto_asegarce',
     'sustituto_txt',
     'observaciones'
   ];
