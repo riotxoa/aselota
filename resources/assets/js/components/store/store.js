@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+// import med2 from '../med2/store';
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -310,6 +312,7 @@ export const store = new Vuex.Store({
       state.header.television_txt = txt;
     },
     SET_PARTIDOS (state, partidos) {
+      state.coste_pelotaris = 0;
       state.partidos = partidos;
 
       partidos.map((val,key) => {
@@ -1752,5 +1755,8 @@ export const store = new Vuex.Store({
           });
       });
     },
+  },
+  modules: {
+    // med2: med2
   }
 });
