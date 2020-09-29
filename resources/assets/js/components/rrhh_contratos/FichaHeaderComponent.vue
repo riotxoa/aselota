@@ -133,7 +133,7 @@
           file_derechos: null,
           fecha_ini: null,
           fecha_fin: null,
-          disabled: null,
+          disabled: 0,
           observaciones: '',
           created_at: null,
           updated_at: null,
