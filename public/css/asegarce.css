@@ -110,6 +110,9 @@
   position:relative;
   top:2px;
 }
+.navbar-nav .dropdown-menu-right.show {
+  z-index:9990;
+}
 
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
