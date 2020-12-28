@@ -15,8 +15,13 @@ class Med2PEnfermedad extends Model
       'fecha_alta',
       'med2_tipo_asistencia_id',
       'med2_prueba_id',
-      'diagnostico_obs',
+      'diagnostico_ini',
       'evolucion',
       'tratamiento'
     ];
+
+    public function informes()
+    {
+      return $this->hasMany(Med2InformesPEnf::class, 'parte_id');
+    }
 }

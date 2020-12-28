@@ -19,4 +19,9 @@ class Med2PPrevencion extends Model
       'pruebas',
       'fecha_pru'
     ];
+
+    public function informes()
+    {
+      return $this->hasMany(Med2InformesPPre::class, 'parte_id');
+    }
 }

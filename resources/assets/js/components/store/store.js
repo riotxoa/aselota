@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
-// import med2 from '../med2/store';
+import med2 from '../med2/store';
 
 Vue.use(Vuex);
 
@@ -1757,6 +1757,6 @@ export const store = new Vuex.Store({
     },
   },
   modules: {
-    // med2: med2
+    med2: med2
   }
 });

@@ -117,7 +117,14 @@ const ListPartes = { template: '<listado-partes></listado-partes>' };
 const CreateParte = { template: '<ficha-parte form-title="Nuevo Parte Médico" :is-new-parte=1></ficha-parte>' };
 const EditParte = { template: '<ficha-parte form-title="Editar Parte Médico" :is-new-parte=0></ficha-parte>' };
 
+// Módulo MÉDICO v.2
+Vue.component('home-medico-2', require('./components/HomeMed2Component.vue'));
+Vue.component('listado-partes-2', require('./components/med2/ListadoComponent.vue'));
+Vue.component('ficha-pelotari-2', require('./components/med2/pelotaris/FichaComponent.vue'));
 
+const HomeMedico2 = { template: '<home-medico-2></home-medico-2>' };
+const ListPartes2 = { template: '<listado-partes-2></listado-partes-2>' };
+const PartesPelotari2 = { template: '<ficha-pelotari-2></ficha-pelotari-2>' };
 
 const routes = [
   {
@@ -229,6 +236,17 @@ const routes = [
       },
     ]
   },
+  {
+    path: '/modulo-medico', component: HomeMedico2,
+    children: [
+      {
+        path: '', name: 'MÉDICO 2', component: ListPartes2
+      },
+      {
+        path: 'pelotari/:id/edit', name: 'PARTES_PELOTARI', component: PartesPelotari2, props: true
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

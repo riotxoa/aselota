@@ -24,4 +24,9 @@ class Med2PAccidente extends Model
       'evolucion',
       'tratamiento'
     ];
+
+    public function informes()
+    {
+      return $this->hasMany(Med2InformesPAcc::class, 'parte_id');
+    }
 }

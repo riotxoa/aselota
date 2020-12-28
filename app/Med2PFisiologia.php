@@ -20,4 +20,9 @@ class Med2PFisiologia extends Model
       'observaciones_comp',
       'suplementacion'
     ];
+
+    public function informes()
+    {
+      return $this->hasMany(Med2InformesPFis::class, 'parte_id');
+    }
 }

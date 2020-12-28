@@ -88,6 +88,56 @@ Route::group(['prefix' => 'www'], function () {
 
     Route::get('nominas', 'PelotariController@getNominas');
     Route::post('nominas/{id}/update', 'PelotariController@updateNomina');
+
+    Route::group(['prefix' => 'med2'], function () {
+      Route::get('aux', 'Med2AuxController@getAuxTablesInfo');
+      Route::get('pelotaris', 'Med2PartesController@getPartesProfesionales');
+      Route::get('promesas', 'Med2PartesController@getPartesPromesas');
+
+      /* Partes de Accidente */
+      Route::post('p_accidente', 'Med2PartesAccidenteController@store');
+      Route::post('p_accidente/{id}/remove', 'Med2PartesAccidenteController@destroy');
+      Route::post('p_accidente/{id}/update', 'Med2PartesAccidenteController@update');
+
+      Route::post('p_accidente/upload-informe/{parte_id}', 'Med2PartesAccidenteController@uploadInforme');
+      Route::post('p_accidente/update-informe/{parte_id}', 'Med2PartesAccidenteController@updateInforme');
+      Route::get('p_accidente/{parte_id}/informes', 'Med2PartesAccidenteController@getInformes');
+      Route::delete('p_accidente/informe/{id}', 'Med2PartesAccidenteController@deleteInforme');
+      Route::get('p_accidente/informe/{id}/download', 'Med2PartesAccidenteController@downloadInforme');
+
+      /* Partes de Enfermedad */
+      Route::post('p_enfermedad', 'Med2PartesEnfermedadController@store');
+      Route::post('p_enfermedad/{id}/remove', 'Med2PartesEnfermedadController@destroy');
+      Route::post('p_enfermedad/{id}/update', 'Med2PartesEnfermedadController@update');
+
+      Route::post('p_enfermedad/upload-informe/{parte_id}', 'Med2PartesEnfermedadController@uploadInforme');
+      Route::post('p_enfermedad/update-informe/{parte_id}', 'Med2PartesEnfermedadController@updateInforme');
+      Route::get('p_enfermedad/{parte_id}/informes', 'Med2PartesEnfermedadController@getInformes');
+      Route::delete('p_enfermedad/informe/{id}', 'Med2PartesEnfermedadController@deleteInforme');
+      Route::get('p_enfermedad/informe/{id}/download', 'Med2PartesEnfermedadController@downloadInforme');
+
+      /* Partes de Fisiología */
+      Route::post('p_fisiologia', 'Med2PartesFisiologiaController@store');
+      Route::post('p_fisiologia/{id}/remove', 'Med2PartesFisiologiaController@destroy');
+      Route::post('p_fisiologia/{id}/update', 'Med2PartesFisiologiaController@update');
+
+      Route::post('p_fisiologia/upload-informe/{parte_id}', 'Med2PartesFisiologiaController@uploadInforme');
+      Route::post('p_fisiologia/update-informe/{parte_id}', 'Med2PartesFisiologiaController@updateInforme');
+      Route::get('p_fisiologia/{parte_id}/informes', 'Med2PartesFisiologiaController@getInformes');
+      Route::delete('p_fisiologia/informe/{id}', 'Med2PartesFisiologiaController@deleteInforme');
+      Route::get('p_fisiologia/informe/{id}/download', 'Med2PartesFisiologiaController@downloadInforme');
+
+      /* Partes de Prevención */
+      Route::post('p_prevencion', 'Med2PartesPrevencionController@store');
+      Route::post('p_prevencion/{id}/remove', 'Med2PartesPrevencionController@destroy');
+      Route::post('p_prevencion/{id}/update', 'Med2PartesPrevencionController@update');
+
+      Route::post('p_prevencion/upload-informe/{parte_id}', 'Med2PartesPrevencionController@uploadInforme');
+      Route::post('p_prevencion/update-informe/{parte_id}', 'Med2PartesPrevencionController@updateInforme');
+      Route::get('p_prevencion/{parte_id}/informes', 'Med2PartesPrevencionController@getInformes');
+      Route::delete('p_prevencion/informe/{id}', 'Med2PartesPrevencionController@deleteInforme');
+      Route::get('p_prevencion/informe/{id}/download', 'Med2PartesPrevencionController@downloadInforme');
+    });
 });
 
 Auth::routes();

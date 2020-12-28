@@ -201,6 +201,21 @@ form label.col-form-label {
   border: 1px solid lightgray;
   box-shadow: 2px 2px 15px -5px grey;
 }
+.table-hover tbody tr:hover td.table-danger {
+  background-color:#f1afb6;
+}
+.table-hover tbody tr:hover td.table-info {
+  background-color:#abd5dc;
+}
+.table-hover tbody tr:hover td.table-warning {
+  background-color:#ecddad;
+}
+.table-hover tbody tr:hover td.table-success {
+  background-color:#b8dcc0;
+}
+.table-hover tbody tr:hover td.table-active {
+  background-color:#d2d2d2;
+}
 
 .cursor-pointer {
   cursor:pointer!important;
