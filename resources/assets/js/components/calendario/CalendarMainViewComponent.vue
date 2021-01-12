@@ -28,11 +28,13 @@
           <tbody>
             <tr v-for="pelotari in pelotaris">
               <th scope="row" class="px-1">
-                {{ pelotari.alias }}<br/>
-                <small>Jugados: <strong>{{ pelotari.partidos_jugados}}</strong> - Garantía: <strong>{{ pelotari.garantia }}</strong></small><br/>
-                <!-- <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small><br/> -->
-                <small>Periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong>&nbsp;-&nbsp;<strong>{{ formatDateShort(pelotari.fecha_fin_contrato )}}</strong></small><br/>
-                <small>Total {{ today.getFullYear() }}: <strong>{{ pelotari.partidos_jugados_this_year }}</strong> - Total {{ today.getFullYear() - 1 }}: <strong>{{ pelotari.partidos_jugados_last_year }}</strong></small>
+                <div class="p-0" style="height:50px; max-height:50px; overflow:hidden;">
+                  <span class="p-0">{{ pelotari.alias }}</span><br/>
+                  <small class="p-0">Jugados: <strong>{{ pelotari.partidos_jugados}}</strong> - Garantía: <strong>{{ pelotari.garantia }}</strong></small><br/>
+                  <!-- <small>Inicio periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong></small><br/> -->
+                  <small class="p-0">Periodo: <strong>{{ formatDateShort(pelotari.fecha_contrato) }}</strong>&nbsp;-&nbsp;<strong>{{ formatDateShort(pelotari.fecha_fin_contrato )}}</strong></small><br/>
+                  <small class="p-0">Total {{ today.getFullYear() }}: <strong>{{ pelotari.partidos_jugados_this_year }}</strong> - Total {{ today.getFullYear() - 1 }}: <strong>{{ pelotari.partidos_jugados_last_year }}</strong></small>
+                </div>
               </th>
             </tr>
           </tbody>
@@ -47,7 +49,9 @@
           </thead>
           <tbody>
             <tr v-for="pelotari in pelotaris">
-              <td v-for="day in days[curr_month]" v-html="showAgenda(pelotari, day)" @click="tralara(pelotari, day)"></td>
+              <td v-for="day in days[curr_month]" @click="tralara(pelotari, day)">
+                <div class="p-0" style="height:50px; max-height:50px; overflow:hidden;" v-html="showAgenda(pelotari, day)"></div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -251,8 +255,9 @@
   }
   .calendar-wrap tbody td div {
     height:100%;
+    line-height:1;
     /* max-height:2.8rem; */
-    max-height:3rem;
+    /* max-height:3rem; */
     padding:.25rem .5rem 0;
   }
   .calendar-wrap tbody td div.asiste {
