@@ -95,6 +95,7 @@ Route::group(['prefix' => 'www'], function () {
       Route::get('promesas', 'Med2PartesController@getPartesPromesas');
 
       /* Partes de Accidente */
+      Route::get('p_accidente', 'Med2PartesAccidenteController@getAll');
       Route::post('p_accidente', 'Med2PartesAccidenteController@store');
       Route::post('p_accidente/{id}/remove', 'Med2PartesAccidenteController@destroy');
       Route::post('p_accidente/{id}/update', 'Med2PartesAccidenteController@update');
@@ -106,6 +107,7 @@ Route::group(['prefix' => 'www'], function () {
       Route::get('p_accidente/informe/{id}/download', 'Med2PartesAccidenteController@downloadInforme');
 
       /* Partes de Enfermedad */
+      Route::get('p_enfermedad', 'Med2PartesEnfermedadController@getAll');
       Route::post('p_enfermedad', 'Med2PartesEnfermedadController@store');
       Route::post('p_enfermedad/{id}/remove', 'Med2PartesEnfermedadController@destroy');
       Route::post('p_enfermedad/{id}/update', 'Med2PartesEnfermedadController@update');
@@ -117,6 +119,7 @@ Route::group(['prefix' => 'www'], function () {
       Route::get('p_enfermedad/informe/{id}/download', 'Med2PartesEnfermedadController@downloadInforme');
 
       /* Partes de Fisiología */
+      Route::get('p_fisiologia', 'Med2PartesFisiologiaController@getAll');
       Route::post('p_fisiologia', 'Med2PartesFisiologiaController@store');
       Route::post('p_fisiologia/{id}/remove', 'Med2PartesFisiologiaController@destroy');
       Route::post('p_fisiologia/{id}/update', 'Med2PartesFisiologiaController@update');
@@ -128,6 +131,7 @@ Route::group(['prefix' => 'www'], function () {
       Route::get('p_fisiologia/informe/{id}/download', 'Med2PartesFisiologiaController@downloadInforme');
 
       /* Partes de Prevención */
+      Route::get('p_prevencion', 'Med2PartesPrevencionController@getAll');
       Route::post('p_prevencion', 'Med2PartesPrevencionController@store');
       Route::post('p_prevencion/{id}/remove', 'Med2PartesPrevencionController@destroy');
       Route::post('p_prevencion/{id}/update', 'Med2PartesPrevencionController@update');

@@ -96,20 +96,66 @@ export default {
     });
   },
   getAllPAccidente: (context) => {
+    context.dispatch('resetPartesAcc');
 
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/med2/p_accidente')
+        .then( r => r.data )
+        .then( (val) => {
+          context.dispatch('setPartesAcc', val);
+          resolve(val);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
   },
   getAllPEnfermedad: (context) => {
+    context.dispatch('resetPartesEnf');
 
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/med2/p_enfermedad')
+        .then( r => r.data )
+        .then( (val) => {
+          context.dispatch('setPartesEnf', val);
+          resolve(val);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
   },
   getAllPFisiologia: (context) => {
+    context.dispatch('resetPartesFis');
 
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/med2/p_fisiologia')
+        .then( r => r.data )
+        .then( (val) => {
+          context.dispatch('setPartesFis', val);
+          resolve(val);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
   },
   getAllPPrevencion: (context) => {
+    context.dispatch('resetPartesPre');
 
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/med2/p_prevencion')
+        .then( r => r.data )
+        .then( (val) => {
+          context.dispatch('setPartesPre', val);
+          resolve(val);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
   },
-  getAllPDelta: (context) => {
 
-  },
   getInformesPAcc: (context, parte_id) => {
     return new Promise( (resolve, reject) => {
       axios.get('/www/med2/p_accidente/' + parte_id + '/informes')
@@ -161,18 +207,6 @@ export default {
           reject(err);
         });
     });
-  },
-  getPAccidente: (context, pelotari_id) => {
-
-  },
-  getPEnfermedad: (context, pelotari_id) => {
-
-  },
-  getPFisiologia: (context, pelotari_id) => {
-
-  },
-  getPPrevencion: (context, pelotari_id) => {
-
   },
   getPDelta: (context, p_accidente_id) => {
     return new Promise( (resolve, reject) => {
@@ -258,6 +292,18 @@ export default {
   },
   resetPDelta: (context) => {
     context.commit('RESET_P_DELTA');
+  },
+  resetPartesAcc: (context) => {
+    context.commit('RESET_PARTES_ACC');
+  },
+  resetPartesEnf: (context) => {
+    context.commit('RESET_PARTES_ENF');
+  },
+  resetPartesFis: (context) => {
+    context.commit('RESET_PARTES_FIS');
+  },
+  resetPartesPre: (context) => {
+    context.commit('RESET_PARTES_PRE');
   },
 
   saveParteAccidente: (context, data) => {
@@ -461,6 +507,19 @@ export default {
 
   setPDelta: (context, value) => {
     context.commit('SET_P_DELTA', value);
+  },
+
+  setPartesAcc: (context, value) => {
+    context.commit('SET_PARTES_ACC', value);
+  },
+  setPartesEnf: (context, value) => {
+    context.commit('SET_PARTES_ENF', value);
+  },
+  setPartesFis: (context, value) => {
+    context.commit('SET_PARTES_FIS', value);
+  },
+  setPartesPre: (context, value) => {
+    context.commit('SET_PARTES_PRE', value);
   },
 
   updateParteAccidente: (context, data) => {

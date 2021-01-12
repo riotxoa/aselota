@@ -25,38 +25,38 @@
             <b-tab title="Accidente">
               <b-row>
                 <b-col cols="12">
-                  <PartesAccidente />
+                  <PartesAccidente :partes="pelotari.accidente" :alias="pelotari.alias" :show-alias="false" />
                 </b-col>
               </b-row>
             </b-tab>
             <b-tab title="Enfermedad">
               <b-row>
                 <b-col cols="12">
-                  <PartesEnfermedad />
+                  <PartesEnfermedad :partes="pelotari.enfermedad" :alias="pelotari.alias" :show-alias="false" />
                 </b-col>
               </b-row>
             </b-tab>
             <b-tab title="Prevención">
               <b-row>
                 <b-col cols="12">
-                  <PartesPrevencion />
+                  <PartesPrevencion :partes="pelotari.prevencion" :alias="pelotari.alias" :show-alias="false" />
                 </b-col>
               </b-row>
             </b-tab>
             <b-tab title="Fisiología">
               <b-row>
                 <b-col cols="12">
-                  <PartesFisiologia />
+                  <PartesFisiologia :partes="pelotari.fisiologia" :alias="pelotari.alias" :show-alias="false" />
                 </b-col>
               </b-row>
             </b-tab>
           </b-tabs>
         </b-card>
       </div>
-      <ModalParteAccidente />
-      <ModalParteEnfermedad />
-      <ModalParteFisiologia />
-      <ModalPartePrevencion />
+      <!-- <ModalParteAccidente /> -->
+      <!-- <ModalParteEnfermedad /> -->
+      <!-- <ModalParteFisiologia /> -->
+      <!-- <ModalPartePrevencion /> -->
     </div>
   </div>
 </template>
@@ -66,10 +66,10 @@
   import _ from 'lodash';
 
   import MainHeader from '../components/MainHeader';
-  import ModalParteAccidente from '../partes/accidente/ModalParteAccidente';
-  import ModalParteEnfermedad from '../partes/enfermedad/ModalParteEnfermedad';
-  import ModalParteFisiologia from '../partes/fisiologia/ModalParteFisiologia';
-  import ModalPartePrevencion from '../partes/prevencion/ModalPartePrevencion';
+  // import ModalParteAccidente from '../partes/accidente/ModalParteAccidente';
+  // import ModalParteEnfermedad from '../partes/enfermedad/ModalParteEnfermedad';
+  // import ModalParteFisiologia from '../partes/fisiologia/ModalParteFisiologia';
+  // import ModalPartePrevencion from '../partes/prevencion/ModalPartePrevencion';
   import PartesAccidente from '../partes/PartesAccidente';
   import PartesEnfermedad from '../partes/PartesEnfermedad';
   import PartesFisiologia from '../partes/PartesFisiologia';
@@ -106,10 +106,10 @@
     },
     components: {
       MainHeader,
-      ModalParteAccidente,
-      ModalParteEnfermedad,
-      ModalParteFisiologia,
-      ModalPartePrevencion,
+      // ModalParteAccidente,
+      // ModalParteEnfermedad,
+      // ModalParteFisiologia,
+      // ModalPartePrevencion,
       PartesAccidente,
       PartesEnfermedad,
       PartesFisiologia,

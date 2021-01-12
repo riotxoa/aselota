@@ -17,6 +17,17 @@ use Illuminate\Support\Facades\Log;
 
 class Med2PartesAccidenteController extends Med2PartesController
 {
+    public function getAll(Request $request)
+    {
+      $request->user()->authorizeRoles(['admin', 'medico']);
+
+      $partes = Med2PAccidente::select('pelotaris.id', 'pelotaris.num_trabajador', 'pelotaris.alias', 'pelotaris.posicion', 'pelotaris.promesa', 'pelotaris.fecha_nac', 'pelotaris.email', 'pelotaris.telefono', 'pelotaris.foto', 'med2_p_accidente.*')
+                ->leftJoin('pelotaris', 'pelotaris.id', '=', 'pelotari_id')
+                ->orderBy('fecha_parte', 'desc')
+                ->get();
+
+      return response()->json($partes, 200);
+    }
 
     public function store(Request $request)
     {

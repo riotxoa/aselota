@@ -1,14 +1,20 @@
 <template>
   <div>
     <b-row>
-      <b-col cols="12" class="my-3">
+      <b-col v-if="showAlias" cols="12" class="my-3">
+        <h3 class="font-weight-bold text-center">PARTES ENFERMEDAD</h3>
+      </b-col>
+      <b-col v-else cols="12" class="my-3">
         <BotonNewEnfermedad />
       </b-col>
       <b-col cols="12">
         <b-table striped hover small responsive
-          :items="pelotari.enfermedad"
+          :items="partes"
           :fields="fields"
         >
+        <template v-if="showAlias" slot="alias" slot-scope="row">
+          {{ row.item.alias }}
+        </template>
           <template slot="fecha_asistencia" slot-scope="row">
             {{ formatDateES(row.item.fecha_asistencia) }}
           </template>
@@ -32,7 +38,7 @@
         </b-row>
         <b-row v-if="delParteEnfermedad" class="mx-0">
           <ul class="mt-3">
-            <li><strong>Pelotari</strong>: {{ pelotari.alias }}</li>
+            <li><strong>Pelotari</strong>: {{ showAlias ? delParteFisiologia.alias : alias }}</li>
             <li><strong>F.Asistencia</strong>: {{ formatDateES(delParteEnfermedad.fecha_asistencia) }}</li>
             <li><strong>F.Inicio</strong>: {{ formatDateES(delParteEnfermedad.fecha_inicio) }}</li>
             <li><strong>Diagnóstico</strong>: {{ delParteEnfermedad.diagnostico_ini }}</li>
@@ -47,15 +53,18 @@
           <b-btn variant="default" ref="focusThis" @click.stop="hideParteEnfermedadModal">Cancelar</b-btn>
         </b-row>
     </b-modal>
+    <ModalParteEnfermedad />
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import Utils from '../../utils/utils.js';
-  import BotonNewEnfermedad from './enfermedad/BotonNewEnfermedad'
+  import BotonNewEnfermedad from './enfermedad/BotonNewEnfermedad';
+  import ModalParteEnfermedad from '../partes/enfermedad/ModalParteEnfermedad';
 
   export default {
+    props: ['partes', 'alias', 'showAlias'],
     mixins: [ Utils ],
     data() {
       return {
@@ -69,9 +78,11 @@
         ],
       }
     },
-    computed: mapGetters({
-      pelotari: 'med2/pelotari'
-    }),
+    created() {
+      if( this.showAlias ) {
+        this.fields.splice( 1, 0, { key: 'alias', label: 'Pelotari', sortable: true } );
+      }
+    },
     methods: {
       ...mapActions({
         delPEnfermedad: 'med2/delPEnfermedad',
@@ -98,13 +109,17 @@
         this.$refs.delParteModal.show();
       },
       onClickEditParte(data) {
+        if( this.showAlias) {
+          this.setPelotari(data);
+        }
         this.setPEnfermedad(data);
         this.$root.$emit('edit-parte-enfermedad', data.id);
         this.$root.$emit('bv::show::modal', 'modal-parte-enfermedad', '#btnNewPEnfermedad');
       },
     },
     components: {
-      BotonNewEnfermedad
+      BotonNewEnfermedad,
+      ModalParteEnfermedad
     }
   }
 </script>

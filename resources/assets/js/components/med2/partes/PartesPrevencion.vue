@@ -1,14 +1,20 @@
 <template>
   <div>
     <b-row>
-      <b-col cols="12" class="my-3">
+      <b-col v-if="showAlias" cols="12" class="my-3">
+        <h3 class="font-weight-bold text-center">PARTES PREVENCIÓN</h3>
+      </b-col>
+      <b-col v-else cols="12" class="my-3">
         <BotonNewPrevencion />
       </b-col>
       <b-col cols="12">
         <b-table striped hover small responsive
-          :items="pelotari.prevencion"
+          :items="partes"
           :fields="fields"
         >
+          <template v-if="showAlias" slot="alias" slot-scope="row">
+            {{ row.item.alias }}
+          </template>
           <template slot="fecha_asistencia" slot-scope="row">
             {{ formatDateES(row.item.fecha_asistencia) }}
           </template>
@@ -32,7 +38,7 @@
         </b-row>
         <b-row v-if="delPartePrevencion" class="mx-0">
           <ul class="mt-3">
-            <li><strong>Pelotari</strong>: {{ pelotari.alias }}</li>
+            <li><strong>Pelotari</strong>: {{ showAlias ? delParteFisiologia.alias : alias }}</li>
             <li><strong>F.Asistencia</strong>: {{ formatDateES(delPartePrevencion.fecha_asistencia) }}</li>
             <li><strong>F.Reconocimiento</strong>: {{ formatDateES(delPartePrevencion.fecha_rec) }}</li>
           </ul>
@@ -46,15 +52,18 @@
           <b-btn variant="default" ref="focusThis" @click.stop="hidePartePrevencionModal">Cancelar</b-btn>
         </b-row>
     </b-modal>
+    <ModalPartePrevencion />
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import Utils from '../../utils/utils.js';
-  import BotonNewPrevencion from './prevencion/BotonNewPrevencion'
+  import BotonNewPrevencion from './prevencion/BotonNewPrevencion';
+  import ModalPartePrevencion from '../partes/prevencion/ModalPartePrevencion';
 
   export default {
+    props: ['partes', 'alias', 'showAlias'],
     mixins: [ Utils ],
     data() {
       return {
@@ -68,9 +77,11 @@
         ],
       }
     },
-    computed: mapGetters({
-      pelotari: 'med2/pelotari'
-    }),
+    created() {
+      if( this.showAlias ) {
+        this.fields.splice( 1, 0, { key: 'alias', label: 'Pelotari', sortable: true } );
+      }
+    },
     methods: {
       ...mapActions({
         delPPrevencion: 'med2/delPPrevencion',
@@ -97,13 +108,17 @@
         this.$refs.delParteModal.show();
       },
       onClickEditParte(data) {
+        if( this.showAlias) {
+          this.setPelotari(data);
+        }
         this.setPPrevencion(data);
         this.$root.$emit('edit-parte-prevencion', data.id);
         this.$root.$emit('bv::show::modal', 'modal-parte-prevencion', '#btnNewPPrevencion');
       },
     },
     components: {
-      BotonNewPrevencion
+      BotonNewPrevencion,
+      ModalPartePrevencion
     }
   }
 </script>

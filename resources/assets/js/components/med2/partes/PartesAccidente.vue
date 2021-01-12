@@ -1,14 +1,20 @@
 <template>
   <div>
     <b-row>
-      <b-col cols="12" class="my-3">
+      <b-col v-if="showAlias" cols="12" class="my-3">
+        <h3 class="font-weight-bold text-center">PARTES ACCIDENTE</h3>
+      </b-col>
+      <b-col v-else cols="12" class="my-3">
         <BotonNewAccidente />
       </b-col>
       <b-col cols="12">
         <b-table striped hover small responsive
-          :items="pelotari.accidente"
+          :items="partes"
           :fields="fields"
         >
+          <template v-if="showAlias" slot="alias" slot-scope="row">
+            {{ row.item.alias }}
+          </template>
           <template slot="fecha_parte" slot-scope="row">
             {{ formatDateES(row.item.fecha_parte) }}
           </template>
@@ -40,7 +46,7 @@
         </b-row>
         <b-row v-if="delParteAccidentes" class="mx-0">
           <ul class="mt-3">
-            <li><strong>Pelotari</strong>: {{ pelotari.alias }}</li>
+            <li><strong>Pelotari</strong>: {{ showAlias ? delParteAccidentes.alias : alias }}</li>
             <li><strong>F.Parte</strong>: {{ formatDateES(delParteAccidentes.fecha_parte) }}</li>
             <li><strong>F.Accidente</strong>: {{ formatDateES(delParteAccidentes.fecha_accidente) }}</li>
             <li><strong>Parte del cuerpo</strong>: {{ delParteAccidentes.parte_cuerpo }}</li>
@@ -55,15 +61,18 @@
           <b-btn variant="default" ref="focusThis" @click.stop="hideParteAccidenteModal">Cancelar</b-btn>
         </b-row>
     </b-modal>
+    <ModalParteAccidente />
   </div>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
   import Utils from '../../utils/utils.js';
-  import BotonNewAccidente from './accidente/BotonNewAccidente'
+  import BotonNewAccidente from './accidente/BotonNewAccidente';
+  import ModalParteAccidente from '../partes/accidente/ModalParteAccidente';
 
   export default {
+    props: ['partes', 'alias', 'showAlias'],
     mixins: [ Utils ],
     data() {
       return {
@@ -79,9 +88,11 @@
         ],
       }
     },
-    computed: mapGetters({
-      pelotari: 'med2/pelotari'
-    }),
+    created() {
+      if( this.showAlias ) {
+        this.fields.splice( 1, 0, { key: 'alias', label: 'Pelotari', sortable: true } );
+      }
+    },
     methods: {
       ...mapActions({
         delPAccidente: 'med2/delPAccidente',
@@ -112,6 +123,9 @@
         this.$refs.delParteModal.show();
       },
       onClickEditParte(data) {
+        if( this.showAlias) {
+          this.setPelotari(data);
+        }
         this.getPDelta(data.id).then( (delta) => {
           this.setPAccidente(data);
           if( delta ) {
@@ -125,7 +139,8 @@
       },
     },
     components: {
-      BotonNewAccidente
+      BotonNewAccidente,
+      ModalParteAccidente
     }
   }
 </script>

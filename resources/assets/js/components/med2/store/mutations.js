@@ -112,6 +112,18 @@ export default {
       tiempo_previsto: ''
     };
   },
+  RESET_PARTES_ACC: (state) => {
+    state.partes_acc = 'KAKAKULO 2';
+  },
+  RESET_PARTES_ENF: (state) => {
+    state.partes_enf = 'KAKAKULO 2';
+  },
+  RESET_PARTES_FIS: (state) => {
+    state.partes_fis = 'KAKAKULO 2';
+  },
+  RESET_PARTES_PRE: (state) => {
+    state.partes_pre = 'KAKAKULO 2';
+  },
   RESET_INFORMES_P_ACC: (state) => {
     state.informes_p_acc = [];
   },
@@ -225,5 +237,17 @@ export default {
   },
   SET_P_DELTA: (state, value) => {
     state.p_delta = value;
+  },
+  SET_PARTES_ACC: (state, value) => {
+    state.partes_acc = value;
+  },
+  SET_PARTES_ENF: (state, value) => {
+    state.partes_enf = value;
+  },
+  SET_PARTES_FIS: (state, value) => {
+    state.partes_fis = value;
+  },
+  SET_PARTES_PRE: (state, value) => {
+    state.partes_pre = value;
   },
 }
