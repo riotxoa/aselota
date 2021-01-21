@@ -19,5 +19,7 @@ export default {
   p_fisiologia: (state) => ( state.p_fisiologia ),
   informes_p_fis: (state) => ( state.informes_p_fis ),
   p_prevencion: (state) => ( state.p_prevencion ),
-  informes_p_pre: (state) => ( state.informes_p_pre )
+  informes_p_pre: (state) => ( state.informes_p_pre ),
+
+  notificacion: (state) => ( state.notificacion ),
 }

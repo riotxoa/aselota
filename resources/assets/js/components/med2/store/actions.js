@@ -234,6 +234,8 @@ export default {
     context.commit('RESET_P_FISIOLOGIA');
     context.commit('RESET_P_PREVENCION');
     context.commit('RESET_P_DELTA');
+    context.commit('RESET_NOTIFICACIONES');
+    context.commit('RESET_NOTIFICACION');
   },
   resetAux: (context) => {
     context.dispatch('resetCausantes');
@@ -304,6 +306,26 @@ export default {
   },
   resetPartesPre: (context) => {
     context.commit('RESET_PARTES_PRE');
+  },
+  resetNotificacion: (context) => {
+    context.commit('RESET_NOTIFICACION');
+  },
+  resetNotificaciones: (context) => {
+    context.commit('RESET_NOTIFICACIONES');
+  },
+
+  saveNotificacion: (context, data) => {
+    axios.post('/www/med2/notificacion', data);
+    // return new Promise( (resolve, reject) => {
+    //   axios.post('/www/med2/notificacion', data)
+    //     .then( r => r.data )
+    //     .then( (res) => {
+    //       resolve(res);
+    //     })
+    //     .catch( (err) => {
+    //       reject(err);
+    //     });
+    // });
   },
 
   saveParteAccidente: (context, data) => {
@@ -505,6 +527,13 @@ export default {
     context.commit('SET_P_PREVENCION_PELOTARI_ID');
   },
 
+  setNotificacion: (context, value) => {
+    context.commit('SET_NOTIFICACION', value);
+  },
+  setNotificacion_key: (context, value) => {
+    context.commit('SET_NOTIFICACION_KEY', value);
+  },
+
   setPDelta: (context, value) => {
     context.commit('SET_P_DELTA', value);
   },
@@ -520,6 +549,10 @@ export default {
   },
   setPartesPre: (context, value) => {
     context.commit('SET_PARTES_PRE', value);
+  },
+
+  setNotificaciones: (context, value) => {
+    context.commit('SET_NOTIFICACIONES', value)
   },
 
   updateParteAccidente: (context, data) => {

@@ -113,16 +113,16 @@ export default {
     };
   },
   RESET_PARTES_ACC: (state) => {
-    state.partes_acc = 'KAKAKULO 2';
+    state.partes_acc = [];
   },
   RESET_PARTES_ENF: (state) => {
-    state.partes_enf = 'KAKAKULO 2';
+    state.partes_enf = [];
   },
   RESET_PARTES_FIS: (state) => {
-    state.partes_fis = 'KAKAKULO 2';
+    state.partes_fis = [];
   },
   RESET_PARTES_PRE: (state) => {
-    state.partes_pre = 'KAKAKULO 2';
+    state.partes_pre = [];
   },
   RESET_INFORMES_P_ACC: (state) => {
     state.informes_p_acc = [];
@@ -135,6 +135,19 @@ export default {
   },
   RESET_INFORMES_P_PRE: (state) => {
     state.informes_p_pre = [];
+  },
+  RESET_NOTIFICACION: (state) => {
+    state.notificacion = {
+      pelotari_id: null,
+      destinatarios: [],
+      disponible: true,
+      date_from: '',
+      date_to: '',
+      texto: '',
+    };
+  },
+  RESET_NOTIFICACIONES: (state) => {
+    state.notificaciones = [];
   },
 
 
@@ -234,6 +247,18 @@ export default {
   },
   SET_P_PREVENCION_PELOTARI_ID: (state, value) => {
     state.p_prevencion.pelotari_id = value;
+  },
+  SET_NOTIFICACION: (state, value) => {
+    state.notificacion = value;
+  },
+  SET_NOTIFICACION_KEY: (state, value) => {
+    const key = value.key;
+    const val = value.val;
+
+    state.notificacion[key] = val;
+  },
+  SET_NOTIFICACIONES: (state, value) => {
+    state.notificaciones = value;
   },
   SET_P_DELTA: (state, value) => {
     state.p_delta = value;

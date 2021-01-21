@@ -50,13 +50,16 @@
                 </b-col>
               </b-row>
             </b-tab>
+            <b-tab title="Notificaciones">
+              <b-row>
+                <b-col cols="12">
+                  <Notificaciones />
+                </b-col>
+              </b-row>
+            </b-tab>
           </b-tabs>
         </b-card>
       </div>
-      <!-- <ModalParteAccidente /> -->
-      <!-- <ModalParteEnfermedad /> -->
-      <!-- <ModalParteFisiologia /> -->
-      <!-- <ModalPartePrevencion /> -->
     </div>
   </div>
 </template>
@@ -66,10 +69,7 @@
   import _ from 'lodash';
 
   import MainHeader from '../components/MainHeader';
-  // import ModalParteAccidente from '../partes/accidente/ModalParteAccidente';
-  // import ModalParteEnfermedad from '../partes/enfermedad/ModalParteEnfermedad';
-  // import ModalParteFisiologia from '../partes/fisiologia/ModalParteFisiologia';
-  // import ModalPartePrevencion from '../partes/prevencion/ModalPartePrevencion';
+  import Notificaciones from '../notificaciones/Notificaciones';
   import PartesAccidente from '../partes/PartesAccidente';
   import PartesEnfermedad from '../partes/PartesEnfermedad';
   import PartesFisiologia from '../partes/PartesFisiologia';
@@ -106,10 +106,7 @@
     },
     components: {
       MainHeader,
-      // ModalParteAccidente,
-      // ModalParteEnfermedad,
-      // ModalParteFisiologia,
-      // ModalPartePrevencion,
+      Notificaciones,
       PartesAccidente,
       PartesEnfermedad,
       PartesFisiologia,

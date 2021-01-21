@@ -141,6 +141,10 @@ Route::group(['prefix' => 'www'], function () {
       Route::get('p_prevencion/{parte_id}/informes', 'Med2PartesPrevencionController@getInformes');
       Route::delete('p_prevencion/informe/{id}', 'Med2PartesPrevencionController@deleteInforme');
       Route::get('p_prevencion/informe/{id}/download', 'Med2PartesPrevencionController@downloadInforme');
+
+      /* Notificaciones */
+      Route::get('notificaciones', 'Med2PartesController@getNotifications');
+      Route::post('notificacion', 'Med2PartesController@sendNotification');
     });
 });
 
