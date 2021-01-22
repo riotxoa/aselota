@@ -22,4 +22,5 @@ export default {
   informes_p_pre: (state) => ( state.informes_p_pre ),
 
   notificacion: (state) => ( state.notificacion ),
+  notificaciones: (state) => ( state.notificaciones )
 }

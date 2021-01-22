@@ -143,10 +143,11 @@
 
         if ( this.checkFields() ) {
           if( confirm("Va a enviar una notificación. ¿Está seguro?") ) {
-            this.saveNotificacion(this.notificacion);
-            this.resetNotificacion();
-            this.showSnackbar("Nueva Notificación guardada");
-            this.$root.$emit('bv::hide::modal','modal-notificacion-med2');
+            this.saveNotificacion(this.notificacion).then( () => {
+              this.resetNotificacion();
+              this.showSnackbar("Nueva Notificación guardada");
+              this.$root.$emit('bv::hide::modal','modal-notificacion-med2');
+            });
           }
         }
       }

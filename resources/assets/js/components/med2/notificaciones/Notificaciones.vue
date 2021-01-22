@@ -1,8 +1,14 @@
 <template>
   <div>
-    <BotonNewNotificacion />
+    <b-row>
+      <b-col cols="12" class="mb-3">
+        <BotonNewNotificacion />
+      </b-col>
+      <b-col cols="12">
+        <ListadoNotificaciones />
+      </b-col>
+    </b-row>
     <ModalNotificacion />
-    <ListadoNotificaciones />
   </div>
 </template>
 
@@ -14,6 +20,7 @@
   export default {
     components: {
       BotonNewNotificacion,
+      ListadoNotificaciones,
       ModalNotificacion
     }
   }

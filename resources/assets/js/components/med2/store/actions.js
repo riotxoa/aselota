@@ -208,6 +208,19 @@ export default {
         });
     });
   },
+  getNotificaciones: (context, pelotari_id) => {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/med2/notificaciones/' + pelotari_id)
+        .then( r => r.data )
+        .then( (val) => {
+          context.commit('SET_NOTIFICACIONES', val)
+          resolve(val);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
   getPDelta: (context, p_accidente_id) => {
     return new Promise( (resolve, reject) => {
       resolve( _.find( context.state.pelotari.delta, [ 'p_accidente_id', p_accidente_id ] ) );
@@ -315,17 +328,17 @@ export default {
   },
 
   saveNotificacion: (context, data) => {
-    axios.post('/www/med2/notificacion', data);
-    // return new Promise( (resolve, reject) => {
-    //   axios.post('/www/med2/notificacion', data)
-    //     .then( r => r.data )
-    //     .then( (res) => {
-    //       resolve(res);
-    //     })
-    //     .catch( (err) => {
-    //       reject(err);
-    //     });
-    // });
+    return new Promise( (resolve, reject) => {
+      axios.post('/www/med2/notificacion', data)
+        .then( r => r.data )
+        .then( (res) => {
+          context.commit('SET_NOTIFICACIONES', res)
+          resolve(res);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
   },
 
   saveParteAccidente: (context, data) => {

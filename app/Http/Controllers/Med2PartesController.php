@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use TCG\Voyager\Models\Role;
 use App\User;
 use App\Notifications\PelotariNoDisponible;
+use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 
 class Med2PartesController extends Controller
 {
@@ -65,18 +66,32 @@ class Med2PartesController extends Controller
       return response()->json("[getNotifications]", 200);
     }
 
-    public function sendNotification(Request $request) {
-      Log::debug("[sendNotification] ************");
-      Log::debug("[sendNotification][START] hora: " . date('H:i:s'));
+    public function getNotificationsByPelotariId(Request $request, $pelotari_id) {
       $request->user()->authorizeRoles(['admin', 'medico']);
-Log::debug("[sendNotification][01] hora: " . date('H:i:s'));
+
+      $notifications = DB::table('notifications')
+        ->select('notifications.*', 'pelotaris.alias as pelotari_alias', 'to_users.name as to_user_name', 'to_users.email as to_user_email', 'roles.display_name as to_user_role', 'from_users.name as from_user_name', 'from_users.email as from_user_email')
+        ->leftJoin('pelotaris', 'pelotaris.id', '=', DB::raw('JSON_EXTRACT(data, "$.pelotari_id")'))
+        ->leftJoin('users as to_users', 'to_users.id', '=', 'notifications.notifiable_id')
+        ->leftJoin('roles', 'roles.id', '=', 'to_users.role_id')
+        ->leftJoin('users as from_users', 'from_users.email', '=', DB::raw('JSON_EXTRACT(data, "$.from")'))
+        ->whereRaw('JSON_EXTRACT(data, "$.pelotari_id") = ' . $pelotari_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+      return response()->json($notifications, 200);
+    }
+
+    public function sendNotification(Request $request) {
+      $request->user()->authorizeRoles(['admin', 'medico']);
+
       $pelotari_id = $request->get('pelotari_id');
       $destinatarios = $request->get('destinatarios');
       $disponible = $request->get('disponible');
       $date_from = $request->get('date_from');
       $date_to = $request->get('date_to');
       $texto = $request->get('texto');
-Log::debug("[sendNotification][02] hora: " . date('H:i:s'));
+
       $notificacion = new \stdClass;
       $notificacion->from = $request->user()->email;
       $notificacion->pelotari_id = $pelotari_id;
@@ -85,20 +100,16 @@ Log::debug("[sendNotification][02] hora: " . date('H:i:s'));
       $notificacion->date_from = $date_from;
       $notificacion->date_to = $date_to;
       $notificacion->texto = $texto;
-Log::debug("[sendNotification][03] hora: " . date('H:i:s'));
+
       foreach($destinatarios as $key_1 => $destinatario) {
-Log::debug("[sendNotification][04][$key_1] hora: " . date('H:i:s'));
         $rol = Role::where('name', '=', $destinatario)->first();
         $usuarios = User::where('role_id', '=', $rol->id)->get();
 
         foreach( $usuarios as $key => $usuario ) {
-Log::debug("[sendNotification][05.1][$key] hora: " . date('H:i:s'));
           $usuario->notify(new PelotariNoDisponible($notificacion));
-Log::debug("[sendNotification][05.2][$key] hora: " . date('H:i:s'));
         }
       }
-      Log::debug("[sendNotification][END] hora: " . date('H:i:s'));
-      Log::debug("[sendNotification] ************");
-      return response()->json("Notificación enviada", 200);
+
+      return $this->getNotificationsByPelotariId($request, $pelotari_id);
     }
 }
