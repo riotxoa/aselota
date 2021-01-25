@@ -30,11 +30,19 @@
           <i class="fas fa-check-circle"></i>
         </div>
         <div v-else>
-          <i class="fas fa-times-circle"></i>
+          <b-row>
+            <b-col cols="3" class="px-0">
+              <i class="fas fa-times-circle"></i>
+            </b-col>
+            <b-col cols="9" class="px-0 text-left">
+              <p class="m-0" style="line-height:1"><small><strong>Desde:</strong>&nbsp;{{ formatDateES(JSON.parse(row.item.data).date_from) }}</small></p>
+              <p class="m-0" style="line-height:1"><small><strong>Hasta:</strong>&nbsp;{{ formatDateES(JSON.parse(row.item.data).date_to) }}</small></p>
+            </b-col>
+          </b-row>
         </div>
       </template>
       <template slot="texto" slot-scope="row">
-        <div style="font-size:13px; line-height:1.35">{{ JSON.parse(row.item.data).texto }}</div>
+        <div style="font-size:13px; line-height:1.35; max-width:200px;">{{ JSON.parse(row.item.data).texto }}</div>
       </template>
       <template slot="leida" slot-scope="row">
         <div v-if="row.item.read_at">
