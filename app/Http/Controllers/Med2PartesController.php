@@ -62,11 +62,7 @@ class Med2PartesController extends Controller
       return $pelotari;
     }
 
-    public function getNotifications(Request $request) {
-      return response()->json("[getNotifications]", 200);
-    }
-
-    public function getNotificationsByPelotariId(Request $request, $pelotari_id) {
+    public function getNotifications(Request $request, $pelotari_id = false) {
       $request->user()->authorizeRoles(['admin', 'medico']);
 
       $notifications = DB::table('notifications')
@@ -74,10 +70,13 @@ class Med2PartesController extends Controller
         ->leftJoin('pelotaris', 'pelotaris.id', '=', DB::raw('JSON_EXTRACT(data, "$.pelotari_id")'))
         ->leftJoin('users as to_users', 'to_users.id', '=', 'notifications.notifiable_id')
         ->leftJoin('roles', 'roles.id', '=', 'to_users.role_id')
-        ->leftJoin('users as from_users', 'from_users.email', '=', DB::raw('JSON_EXTRACT(data, "$.from")'))
-        ->whereRaw('JSON_EXTRACT(data, "$.pelotari_id") = ' . $pelotari_id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        ->leftJoin('users as from_users', 'from_users.email', '=', DB::raw('JSON_EXTRACT(data, "$.from")'));
+
+      if( $pelotari_id ) {
+        $notifications = $notifications->whereRaw('JSON_EXTRACT(data, "$.pelotari_id") = ' . $pelotari_id);
+      }
+
+      $notifications = $notifications->orderBy('created_at', 'desc')->get();
 
       return response()->json($notifications, 200);
     }
@@ -110,6 +109,6 @@ class Med2PartesController extends Controller
         }
       }
 
-      return $this->getNotificationsByPelotariId($request, $pelotari_id);
+      return $this->getNotifications($request, $pelotari_id);
     }
 }

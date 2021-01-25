@@ -81,6 +81,7 @@
   import Utils from '../../utils/utils.js';
 
   export default {
+    props: [ 'pelotari' ],
     mixins: [ Utils ],
     data() {
       return {
@@ -88,6 +89,7 @@
         perPage: 10,
         fields: [
           { key: 'created_at', label: 'Fecha', class: 'align-middle text-center', sortable: true },
+          { key: 'pelotari_alias', label: 'Pelotari', class: 'align-middle font-weight-bold text-left text-uppercase', sortable: true },
           { key: 'remitente', label: 'Remitente', class: 'align-middle text-left', sortable: true },
           { key: 'destinatario', label: 'Destinatario', class: 'align-middle text-left', sortable: true },
           { key: 'disponible', label: 'Pelotari Disponible', class: 'align-middle text-center', sortable: true },
@@ -100,16 +102,23 @@
     },
     computed: mapGetters({
       notificaciones: "med2/notificaciones",
-      pelotari: 'med2/pelotari',
     }),
     created() {
-      this.getNotificaciones(this.pelotari.id).then( () => {
-        this.show = true;
-      });
+      if( this.pelotari ) {
+        this.fields.splice(1, 1);
+        this.getNotificacionesByPelotariID(this.pelotari).then( () => {
+          this.show = true;
+        });
+      } else {
+        this.getAllNotificaciones().then( () => {
+          this.show = true;
+        });
+      }
     },
     methods: {
       ...mapActions({
-        getNotificaciones: 'med2/getNotificaciones'
+        getAllNotificaciones: 'med2/getAllNotificaciones',
+        getNotificacionesByPelotariID: 'med2/getNotificacionesByPelotariID'
       })
     }
   }

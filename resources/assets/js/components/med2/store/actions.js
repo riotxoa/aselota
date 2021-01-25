@@ -208,7 +208,20 @@ export default {
         });
     });
   },
-  getNotificaciones: (context, pelotari_id) => {
+  getAllNotificaciones: (context) => {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/med2/notificaciones/')
+        .then( r => r.data )
+        .then( (val) => {
+          context.commit('SET_NOTIFICACIONES', val);
+          resolve(val);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    })
+  },
+  getNotificacionesByPelotariID: (context, pelotari_id) => {
     return new Promise( (resolve, reject) => {
       axios.get('/www/med2/notificaciones/' + pelotari_id)
         .then( r => r.data )

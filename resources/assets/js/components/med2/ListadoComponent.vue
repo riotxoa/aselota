@@ -5,23 +5,26 @@
     <div class="container">
       <b-card no-body>
         <b-tabs v-model="tabIndex" pills card>
-          <b-tab title="Pelotaris Profesionales" title-item-class-rk="text-uppercase font-weight-bold" :title-link-class="linkClass(0)">
+          <b-tab title="Profesionales" :title-link-class="linkClass(0)">
             <listado-partes-pelotaris :promesas="false" />
           </b-tab>
-          <b-tab title="Promesas" title-item-class-rk="text-uppercase font-weight-bold" :title-link-class="linkClass(1)">
+          <b-tab title="Promesas" :title-link-class="linkClass(1)">
             <listado-partes-pelotaris :promesas="true" />
           </b-tab>
-          <b-tab title="Asistencia Accidente" title-item-class-rk="text-uppercase font-weight-bold" :title-link-class="linkClass(2)">
+          <b-tab title="Accidente" :title-link-class="linkClass(2)">
             <listado-partes-accidente :partes="partes_acc" :show-alias="true" />
           </b-tab>
-          <b-tab title="Asistencia Enfermedad" title-item-class-rk="text-uppercase font-weight-bold" :title-link-class="linkClass(3)">
+          <b-tab title="Enfermedad" :title-link-class="linkClass(3)">
             <listado-partes-enfermedad :partes="partes_enf" :show-alias="true" />
           </b-tab>
-          <b-tab title="Fisiología" title-item-class-rk="text-uppercase font-weight-bold" :title-link-class="linkClass(4)">
+          <b-tab title="Fisiología" :title-link-class="linkClass(4)">
             <listado-partes-fisiologia :partes="partes_fis" :show-alias="true" />
           </b-tab>
-          <b-tab title="Prevención" title-item-class-rk="text-uppercase font-weight-bold" :title-link-class="linkClass(5)">
+          <b-tab title="Prevención" :title-link-class="linkClass(5)">
             <listado-partes-prevencion :partes="partes_pre" :show-alias="true" />
+          </b-tab>
+          <b-tab title="Notificaciones" :title-link-class="linkClass(6)">
+            <listado-notificaciones :pelotari="false" />
           </b-tab>
         </b-tabs>
       </b-card>
@@ -37,6 +40,8 @@
   import ListadoEnfermedadComponent from './partes/PartesEnfermedad';
   import ListadoFisiologiaComponent from './partes/PartesFisiologia';
   import ListadoPrevencionComponent from './partes/PartesPrevencion';
+  import ListadoNotificacionesComponent from './notificaciones/ListadoNotificaciones';
+
   import MainHeader from './components/MainHeader';
 
   export default {
@@ -88,6 +93,9 @@
             case 5:
               classes += ' text-success';
               break;
+            case 6:
+              classes += ' text-secondary';
+              break;
           }
         } else {
           switch( idx ) {
@@ -101,6 +109,9 @@
             case 5:
               classes += ' bg-success';
               break;
+            case 6:
+              classes += ' bg-secondary';
+              break;
           }
         }
         return classes;
@@ -112,6 +123,7 @@
       'listado-partes-enfermedad': ListadoEnfermedadComponent,
       'listado-partes-fisiologia': ListadoFisiologiaComponent,
       'listado-partes-prevencion': ListadoPrevencionComponent,
+      'listado-notificaciones': ListadoNotificacionesComponent,
       'MainHeader': MainHeader
     }
   }

@@ -5,7 +5,7 @@
         <BotonNewNotificacion />
       </b-col>
       <b-col cols="12">
-        <ListadoNotificaciones />
+        <ListadoNotificaciones :pelotari="pelotari.id" />
       </b-col>
     </b-row>
     <ModalNotificacion />
@@ -13,11 +13,16 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
   import BotonNewNotificacion from './BotonNewNotificacion';
   import ModalNotificacion from './ModalNotificacion';
   import ListadoNotificaciones from './ListadoNotificaciones';
 
   export default {
+    computed: mapGetters({
+      pelotari: 'med2/pelotari',
+    }),
     components: {
       BotonNewNotificacion,
       ListadoNotificaciones,
