@@ -111,4 +111,43 @@ class Med2PartesController extends Controller
 
       return $this->getNotifications($request, $pelotari_id);
     }
+
+    public function getNotificationsByUserID(Request $request) {
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa']);
+
+      $notifications = DB::table('notifications')
+        ->select('notifications.*', 'pelotaris.alias as pelotari_alias', 'to_users.name as to_user_name', 'to_users.email as to_user_email', 'roles.display_name as to_user_role', 'from_users.name as from_user_name', 'from_users.email as from_user_email')
+        ->leftJoin('pelotaris', 'pelotaris.id', '=', DB::raw('JSON_EXTRACT(data, "$.pelotari_id")'))
+        ->leftJoin('users as to_users', 'to_users.id', '=', 'notifications.notifiable_id')
+        ->leftJoin('roles', 'roles.id', '=', 'to_users.role_id')
+        ->leftJoin('users as from_users', 'from_users.email', '=', DB::raw('JSON_EXTRACT(data, "$.from")'))
+        ->where('notifiable_id', $request->user()->id)
+        ->where(function ($query) {
+          $fecha = date('Y-m-d', strtotime('-1 week'));
+
+          $query->where('read_at', '=', null)
+                ->orWhere('read_at', '>=', $fecha);
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+      return response()->json($notifications, 200);
+    }
+
+    public function readNotification(Request $request, $notification_id) {
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa']);
+
+      $notification = $request->user()->unreadNotifications()->find($notification_id)->markAsRead();
+
+      return $this->getNotificationsByUserID($request);
+    }
+
+    public function unreadNotification(Request $request, $notification_id) {
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa']);
+
+      $notification = $request->user()->notifications()->find($notification_id)->update(['read_at' => null]);
+
+      return $this->getNotificationsByUserID($request);
+    }
+
 }

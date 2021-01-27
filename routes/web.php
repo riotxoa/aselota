@@ -146,6 +146,10 @@ Route::group(['prefix' => 'www'], function () {
       Route::get('notificaciones', 'Med2PartesController@getNotifications');
       Route::get('notificaciones/{pelotari_id}', 'Med2PartesController@getNotifications');
       Route::post('notificacion', 'Med2PartesController@sendNotification');
+
+      Route::get('user/notificaciones', 'Med2PartesController@getNotificationsByUserID');
+      Route::post('notificacion/{notificacion_id}/read', 'Med2PartesController@readNotification');
+      Route::post('notificacion/{notificacion_id}/unread', 'Med2PartesController@unreadNotification');
     });
 });
 

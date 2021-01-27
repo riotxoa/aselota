@@ -1,8 +1,13 @@
 <template>
-  <router-view></router-view>
+  <div class="w-100">
+    <router-view></router-view>
+    <Notificaciones />
+  </div>
 </template>
 
 <script>
+  import Notificaciones from './notificaciones/Notificaciones';
+
   export default {
     props: ['userRole'],
     data() {
@@ -78,6 +83,9 @@
           this.title = "SIN PERMISOS";
           break;
       }
+    },
+    components: {
+      Notificaciones
     }
   }
 </script>

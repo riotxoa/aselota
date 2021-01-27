@@ -74,10 +74,11 @@
       <h4 class="green">Situación médica de {{ $alias }}</h4>
       <p>El Departamento Médico de Baiko Pilota le envía la siguiente actualización de la situación médica del pelotari <strong>{{ $alias }}</strong>:</p>
       <p class="quote">{{ $texto }}</p>
-      <p>El pelotari sigue activo y disponible para su convocatoria en festivales, entrenamientos, etc.</p>
+      <!-- <p>El pelotari sigue activo y disponible para su convocatoria en festivales, entrenamientos, etc.</p> -->
     @else
       <h4 class="red">{{ $alias }} NO DISPONIBLE</h4>
-      <p>El Departamento Médico de Baiko Pilota comunica que el pelotari <strong>{{ $alias }}</strong> no estará disponible para su convocatoria en festivales, entrenamientos, etc. en el siguiente rango de fechas:</p>
+      <!-- <p>El Departamento Médico de Baiko Pilota comunica que el pelotari <strong>{{ $alias }}</strong> no estará disponible para su convocatoria en festivales, entrenamientos, etc. en el siguiente rango de fechas:</p> -->
+      <p>El Departamento Médico de Baiko Pilota comunica que el pelotari <strong>{{ $alias }}</strong> no estará disponible para su convocatoria durante el siguiente rango de fechas:</p>
       <ul>
         <li>Desde: <strong>{{ $date_from }}</strong></li>
         <li>Hasta: <strong>{{ $date_to }}</strong></li>
