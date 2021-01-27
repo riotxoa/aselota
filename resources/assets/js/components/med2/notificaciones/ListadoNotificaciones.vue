@@ -46,7 +46,8 @@
       </template>
       <template slot="leida" slot-scope="row">
         <div v-if="row.item.read_at">
-          <i class="fas fa-check-circle"></i>
+          <p class="m-0" style="line-height:1"><i class="fas fa-check-circle"></i></p>
+          <p class="m-0" style="line-height:1"><small>{{ formatDateES(row.item.read_at) }}</small></p>
         </div>
         <div v-else>
           <i class="fas fa-times-circle"></i>
