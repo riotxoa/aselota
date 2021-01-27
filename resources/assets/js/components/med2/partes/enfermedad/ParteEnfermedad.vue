@@ -14,7 +14,6 @@
                         size="sm">
           </b-form-input>
         </b-form-group>
-        <small><strong>Fecha asistencia:</strong> {{ parte.fecha_asistencia }}</small>
       </b-col>
       <b-col cols="12" md="4">
         <b-form-group label="Fecha inicio:"
