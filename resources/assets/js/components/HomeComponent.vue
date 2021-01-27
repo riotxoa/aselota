@@ -72,10 +72,10 @@
           })
           break;
         case 'medico':
-          this.home = '/medico';
+          this.home = '/modulo-medico';
           this.title = "Partes Médicos";
           this.$router.push({
-            name: 'MÉDICO',
+            name: 'MÉDICO 2',
             params: { userRole: this.userRole },
           })
           break;
