@@ -113,7 +113,7 @@ class Med2PartesController extends Controller
     }
 
     public function getNotificationsByUserID(Request $request) {
-      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa']);
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'plen_entrenador', 'plen_gestor']);
 
       $notifications = DB::table('notifications')
         ->select('notifications.*', 'pelotaris.alias as pelotari_alias', 'to_users.name as to_user_name', 'to_users.email as to_user_email', 'roles.display_name as to_user_role', 'from_users.name as from_user_name', 'from_users.email as from_user_email')
@@ -135,7 +135,7 @@ class Med2PartesController extends Controller
     }
 
     public function readNotification(Request $request, $notification_id) {
-      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa']);
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'plen_entrenador', 'plen_gestor']);
 
       $notification = $request->user()->unreadNotifications()->find($notification_id)->markAsRead();
 
@@ -143,7 +143,7 @@ class Med2PartesController extends Controller
     }
 
     public function unreadNotification(Request $request, $notification_id) {
-      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa']);
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'plen_entrenador', 'plen_gestor']);
 
       $notification = $request->user()->notifications()->find($notification_id)->update(['read_at' => null]);
 
