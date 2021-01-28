@@ -79,6 +79,22 @@
             params: { userRole: this.userRole },
           })
           break;
+        case 'plen_gestor': // PLEN: Gestor de Planificación de Entrenamientos
+          this.home = '/PLEN';
+          this.title = "PLANIFICACIÓN DE ENTRENAMIENTOS";
+          this.$router.push({
+            name: 'PLEN_GESTOR',
+            params: { userRole: this.userRole },
+          })
+          break;
+        case 'plen_entrenador': // PLEN: Entrenador
+            this.home = '/PLEN';
+            this.title = "PLANIFICACIÓN DE ENTRENAMIENTOS";
+            this.$router.push({
+              name: 'PLEN_ENTRENADOR',
+              params: { userRole: this.userRole },
+            })
+            break;
         default:
           this.title = "SIN PERMISOS";
           break;

@@ -25,6 +25,12 @@
             @case ('medico')
               <home-component user-role="medico"></home-component>
               @break
+            @case ('plen_gestor')
+              <home-component user-role="plen_gestor"></home-component>
+              @break
+            @case ('plen_entrenador')
+              <home-component user-role="plen_entrenador"></home-component>
+              @break;
             @default
               <div class="col-md-8">
                   <div class="card">
