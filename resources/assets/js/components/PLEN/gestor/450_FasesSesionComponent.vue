@@ -128,11 +128,19 @@
       cancelDeleteItem() {
         this.resetItemDelete();
       },
+      checkNumberOfItems() {
+        this.resetItemNew();
+        this.items_count = this.items.length;
+        if( !this.items_count ) {
+          this.items.push(this.item_new);
+        }
+      },
       deleteItem() {
         this.deleteFase(this.item_delete.id)
           .then( () => {
             this.items.splice(this.del_index, 1);
             this.resetItemDelete();
+            this.checkNumberOfItems();
             this.showSnackBar("FASE eliminada");
           })
           .catch( (err) => {
@@ -150,6 +158,7 @@
           this.items.shift();
           this.resetItemNew();
           this.items_count = this.items.length;
+          this.checkNumberOfItems();
           this.add_new = false;
         } else {
           this.items[index].order = this.item_backup.order;
