@@ -16,7 +16,11 @@ class PLEN_SubtipoEjercicioController extends Controller
     {
       $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-      $clientes = PLEN_SubtipoEjercicio::orderBy('desc', 'asc')->get();
+      $clientes = PLEN_SubtipoEjercicio::select('plen_subtipos_ejercicio.*', 'plen_tipos_ejercicio.desc as tipo_name')
+        ->leftJoin('plen_tipos_ejercicio', 'plen_subtipos_ejercicio.plen_tipos_ejercicio_id', '=', 'plen_tipos_ejercicio.id')
+        ->orderBy('plen_subtipos_ejercicio.plen_tipos_ejercicio_id', 'asc')
+        ->orderBy('plen_subtipos_ejercicio.order', 'asc')
+        ->get();
 
       return response()->json($clientes, 200);
     }
@@ -48,6 +52,8 @@ class PLEN_SubtipoEjercicioController extends Controller
         ]);
 
         $item->save();
+
+        $item->tipo_name = $request->get('tipo_name');
 
         return response()->json($item, 200);
     }
@@ -93,6 +99,8 @@ class PLEN_SubtipoEjercicioController extends Controller
 
         $item->save();
 
+        $item->tipo_name = $request->get('tipo_name');
+
         return response()->json($item, 200);
     }
 
@@ -102,7 +110,7 @@ class PLEN_SubtipoEjercicioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
