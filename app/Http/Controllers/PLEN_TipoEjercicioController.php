@@ -16,7 +16,7 @@ class PLEN_TipoEjercicioController extends Controller
     {
       $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-      $clientes = PLEN_TipoEjercicio::orderBy('desc', 'asc')->get();
+      $clientes = PLEN_TipoEjercicio::orderBy('order', 'asc')->get();
 
       return response()->json($clientes, 200);
     }
@@ -100,7 +100,7 @@ class PLEN_TipoEjercicioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
