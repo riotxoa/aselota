@@ -61,7 +61,7 @@
             :total-rows="items.length"
             :per-page="perPage"
           ></b-pagination>
-        </b-col>        
+        </b-col>
       </b-row>
     </b-container>
     <b-modal ref="confirm-delete-modal"
@@ -199,7 +199,7 @@
             this.showSnackBar("SUBTIPO eliminado");
           })
           .catch( (err) => {
-            alert("[deleteItem] Error al borrar: " + JSON.stringify(err));
+            alert("[deleteItem] Error al borrar: " + JSON.stringify(err.response.data));
           });
       },
       focusOnDesc() {

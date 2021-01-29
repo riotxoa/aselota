@@ -167,7 +167,7 @@
             this.showSnackBar("TIPO eliminado");
           })
           .catch( (err) => {
-            alert("[deleteItem] Error al borrar: " + JSON.stringify(err));
+            alert("[deleteItem] Error al borrar: " + JSON.stringify(err.response.data));
           });
       },
       focusOnDesc() {
