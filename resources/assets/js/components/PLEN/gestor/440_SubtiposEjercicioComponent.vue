@@ -3,7 +3,7 @@
     <p class="module-title py-2 text-center">Subtipos de Ejercicio</p>
     <b-container class="p-xl-3">
       <b-button :disabled="edit_index > 0" @click="addNewItem" variant="danger" class="float-right mb-3">Nuevo Subtipo de Ejercicio</b-button>
-      <b-table v-if="show" outlined striped hover :items="items" :fields="fields" class="plen-table">
+      <b-table v-if="show" outlined striped hover :items="items" :fields="fields" class="plen-table" :current-page="currentPage" :per-page="perPage">
         <template slot="tipo_name" slot-scope="row">
           <b-form-select v-if="edit_index && ( edit_index == row.index + 1 )"
                          id="tipoInput"
@@ -48,6 +48,12 @@
           </div>
         </template>
       </b-table>
+      <b-pagination
+        class="float-right"
+        v-model="currentPage"
+        :total-rows="items.length"
+        :per-page="perPage"
+      ></b-pagination>
     </b-container>
     <b-modal ref="confirm-delete-modal"
              title="Borrar Subtipo de Ejercicio"
@@ -76,6 +82,7 @@
     data() {
       return {
         add_new: false,
+        currentPage: 1,
         del_index: null,
         edit_index: 0,
         fields: [
@@ -107,6 +114,7 @@
         },
         items: [],
         items_count: 0,
+        perPage: 10,
         tipos: [
           { value: null, text: 'Seleccionar Tipo de Ejercicio' }
         ],
