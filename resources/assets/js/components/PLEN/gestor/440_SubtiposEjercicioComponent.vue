@@ -48,12 +48,21 @@
           </div>
         </template>
       </b-table>
-      <b-pagination
-        class="float-right"
-        v-model="currentPage"
-        :total-rows="items.length"
-        :per-page="perPage"
-      ></b-pagination>
+      <b-row>
+        <b-col cols="1">
+          <b-form-select v-model="perPage"
+                         :options="perPageOptions">
+          </b-form-select>
+        </b-col>
+        <b-col cols="11">
+          <b-pagination
+            class="float-right"
+            v-model="currentPage"
+            :total-rows="items.length"
+            :per-page="perPage"
+          ></b-pagination>
+        </b-col>        
+      </b-row>
     </b-container>
     <b-modal ref="confirm-delete-modal"
              title="Borrar Subtipo de Ejercicio"
@@ -115,6 +124,12 @@
         items: [],
         items_count: 0,
         perPage: 10,
+        perPageOptions: [
+          { value: 10, text: "10" },
+          { value: 20, text: "20" },
+          { value: 50, text: "50" },
+          { value: 100, text: "100" },
+        ],
         tipos: [
           { value: null, text: 'Seleccionar Tipo de Ejercicio' }
         ],
