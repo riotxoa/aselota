@@ -14,6 +14,66 @@ export default {
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1500);
   },
 
+  // Tabla 40_Ejercicios
+  addEjercicio( { commit }, item ) {
+    commit('ADD_EJERCICIO', item);
+  },
+  deleteEjercicio( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.delete('/www/PLEN/ejercicios/' + id)
+      .then((response) => {
+        commit('SET_EJERCICIOS', response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  getEjercicios( { commit } ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/ejercicios')
+        .then( (response) => {
+          commit('SET_EJERCICIOS', response.data);
+          resolve(response.data);
+        })
+        .catch( (error) => {
+          reject(error);
+        });
+    });
+  },
+  resetEjercicio( { commit } ) {
+    commit('RESET_EJERCICIO');
+  },
+  saveEjercicio( { commit }, item ) {
+    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+    let data = new FormData();
+
+    data.append('form', JSON.stringify(item));
+    if(item.file) {
+      data.append('photo', item.file);
+    }
+
+    return new Promise( (resolve, reject) => {
+      axios.post('/www/PLEN/ejercicios', data, config)
+      .then((response) => {
+        commit('SET_EJERCICIOS', response.data);
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  setEjercicio( { commit }, value ) {
+    commit('SET_EJERCICIO', value);
+  },
+  setEjercicioImagen( { commit }, imagen ) {
+    commit('SET_EJERCICIO_IMAGEN', imagen);
+  },
+  
+
   // Tabla Auxiliar: Fases de Sesión
   deleteFase( { commit }, id ) {
     return new Promise( (resolve, reject) => {
@@ -61,7 +121,7 @@ export default {
   },
 
   // Tabla Auxiliar: Tipos de Ejercicio
-  deleteTipoEjercicio( dispatch, id ) {
+  deleteTipoEjercicio( { commit }, id ) {
     return new Promise( (resolve, reject) => {
       axios.delete('/www/PLEN/tipos-ejercicio/' + id)
       .then((response) => {
@@ -72,10 +132,11 @@ export default {
       });
     });
   },
-  getTiposEjercicio( dispatch ) {
+  getTiposEjercicio( { commit } ) {
     return new Promise( (resolve, reject) => {
       axios.get('/www/PLEN/tipos-ejercicio')
         .then( (res) => {
+          commit('SET_TIPOS_EJERCICIO', res.data);
           resolve(res.data);
         })
         .catch( (err) => {
@@ -83,7 +144,7 @@ export default {
         });
     });
   },
-  saveTipoEjercicio( dispatch, item ) {
+  saveTipoEjercicio( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/tipos-ejercicio', item)
       .then((response) => {
@@ -94,7 +155,7 @@ export default {
       });
     });
   },
-  updateTipoEjercicio( dispatch, item ) {
+  updateTipoEjercicio( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/tipos-ejercicio/' + item.id, item)
       .then((response) => {
@@ -107,7 +168,7 @@ export default {
   },
 
   // Tabla Auxiliar: Tipos de Mesociclo
-  deleteTipoMesociclo( dispatch, id ) {
+  deleteTipoMesociclo( { commit }, id ) {
     return new Promise( (resolve, reject) => {
       axios.delete('/www/PLEN/tipos-mesociclo/' + id)
       .then((response) => {
@@ -118,7 +179,7 @@ export default {
       });
     });
   },
-  getTiposMesociclo( dispatch ) {
+  getTiposMesociclo( { commit } ) {
     return new Promise( (resolve, reject) => {
       axios.get('/www/PLEN/tipos-mesociclo')
         .then( (res) => {
@@ -129,7 +190,7 @@ export default {
         });
     });
   },
-  saveTipoMesociclo( dispatch, item ) {
+  saveTipoMesociclo( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/tipos-mesociclo', item)
       .then((response) => {
@@ -140,7 +201,7 @@ export default {
       });
     });
   },
-  updateTipoMesociclo( dispatch, item ) {
+  updateTipoMesociclo( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/tipos-mesociclo/' + item.id, item)
       .then((response) => {
@@ -153,7 +214,7 @@ export default {
   },
 
   // Tabla Auxiliar: Tipos de Microciclo
-  deleteTipoMicrociclo( dispatch, id ) {
+  deleteTipoMicrociclo( { commit }, id ) {
     return new Promise( (resolve, reject) => {
       axios.delete('/www/PLEN/tipos-microciclo/' + id)
       .then((response) => {
@@ -164,7 +225,7 @@ export default {
       });
     });
   },
-  getTiposMicrociclo( dispatch ) {
+  getTiposMicrociclo( { commit } ) {
     return new Promise( (resolve, reject) => {
       axios.get('/www/PLEN/tipos-microciclo')
         .then( (res) => {
@@ -175,7 +236,7 @@ export default {
         });
     });
   },
-  saveTipoMicrociclo( dispatch, item ) {
+  saveTipoMicrociclo( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/tipos-microciclo', item)
       .then((response) => {
@@ -186,7 +247,7 @@ export default {
       });
     });
   },
-  updateTipoMicrociclo( dispatch, item ) {
+  updateTipoMicrociclo( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/tipos-microciclo/' + item.id, item)
       .then((response) => {
@@ -199,7 +260,7 @@ export default {
   },
 
   // Tabla Auxiliar: Tipos de Mesociclo
-  deleteSubtipoEjercicio( dispatch, id ) {
+  deleteSubtipoEjercicio( { commit }, id ) {
     return new Promise( (resolve, reject) => {
       axios.delete('/www/PLEN/subtipos-ejercicio/' + id)
       .then((response) => {
@@ -210,10 +271,11 @@ export default {
       });
     });
   },
-  getSubtiposEjercicio( dispatch ) {
+  getSubtiposEjercicio( { commit } ) {
     return new Promise( (resolve, reject) => {
       axios.get('/www/PLEN/subtipos-ejercicio')
         .then( (res) => {
+          commit('SET_SUBTIPOS_EJERCICIO', res.data);
           resolve(res.data);
         })
         .catch( (err) => {
@@ -221,7 +283,7 @@ export default {
         });
     });
   },
-  saveSubtipoEjercicio( dispatch, item ) {
+  saveSubtipoEjercicio( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/subtipos-ejercicio', item)
       .then((response) => {
@@ -232,7 +294,7 @@ export default {
       });
     });
   },
-  updateSubtipoEjercicio( dispatch, item ) {
+  updateSubtipoEjercicio( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/subtipos-ejercicio/' + item.id, item)
       .then((response) => {

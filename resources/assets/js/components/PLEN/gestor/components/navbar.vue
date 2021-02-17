@@ -16,6 +16,7 @@
             <b-navbar-nav class="m-0">
               <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }">Mesociclos</b-nav-item>
               <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }">Sesiones</b-nav-item>
+              <b-nav-item :to="{ name: 'PLEN_GESTOR_Ejercicios' }">Ejercicios</b-nav-item>
               <b-nav-item-dropdown text="Auxiliares" right>
                 <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMeso' }">Tipos de Mesociclo</b-dropdown-item>
                 <b-dropdown-item :to="{ name: 'PLEN_GESTOR_TiposMicro' }">Tipos de Microciclo</b-dropdown-item>
@@ -36,6 +37,7 @@
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Inicio' }"><i class="fa fa-home mr-2"></i>Inicio</b-nav-item>
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }"><i class="fa fa-arrows-alt-h mr-2"></i>Mesociclos</b-nav-item>
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }"><i class="fas fa-stopwatch mr-2"></i>Sesiones</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Ejercicios' }"><i class="fa fa-chevron-right mr-2"></i>Ejercicios</b-nav-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-nav-item class="dropdown position-relative">
           <a class="nav-link dropdown-toggle p-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class='fas fa-table mr-2'></i>Auxiliares</a>

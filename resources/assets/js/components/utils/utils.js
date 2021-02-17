@@ -44,6 +44,17 @@ var Utils = {
       return 'F' + date.substr(2,2) + '-' + str_id; // 'FXX-YYYY'
     },
 
+    getVideoFrame(video) {
+      let src = "";
+      if( video.includes("youtube") || video.includes("youtu.be") ) {
+        src = video;
+      }
+      if( video.includes("vimeo") ) {
+        src = video.replace("https://vimeo.com/", "https://player.vimeo.com/video/");
+      }
+      return "<iframe src='" + src + "' style='position:absolute;top:0;left:0;width:100%;height:100%;' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+    },
+
     showPreloader($) {
       jQuery("body").addClass("preloader");
     },

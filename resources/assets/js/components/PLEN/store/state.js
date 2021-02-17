@@ -1,4 +1,21 @@
 export default {
+
+  // Ejercicios
+  ejercicios: [],
+  ejercicio: {
+    id: null,
+    order: null,
+    name: null,
+    desc: null,
+    tipo_ejercicio_id: null,
+    subtipo_ejercicio_id: null,
+    image: null,
+    file: null,
+    fileName: '',
+    video: null,
+    material: null,
+  },
+
   // *********************************************
   // ** Tablas Auxiliares
   // *********************************************
@@ -9,5 +26,7 @@ export default {
     id: null,
     order: null,
     desc: '',
-  }
+  },
+  subtipos_ejercicio: [],
+  tipos_ejercicio: [],
 }

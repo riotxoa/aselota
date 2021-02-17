@@ -151,8 +151,9 @@ Route::group(['prefix' => 'www'], function () {
       Route::post('notificacion/{notificacion_id}/read', 'Med2PartesController@readNotification');
       Route::post('notificacion/{notificacion_id}/unread', 'Med2PartesController@unreadNotification');
     });
-    
+
     Route::group(['prefix' => 'PLEN'], function () {
+      Route::resource('ejercicios', 'PLEN_EjercicioController');
       Route::resource('fases-sesion', 'PLEN_FaseSesionController');
       Route::resource('tipos-ejercicio', 'PLEN_TipoEjercicioController');
       Route::resource('tipos-mesociclo', 'PLEN_TipoMesocicloController');
