@@ -1,4 +1,33 @@
 export default {
+  // Tabla principal: Macrociclos
+  ADD_MACROCICLO( state, value ) {
+    state.macrociclos.unshift(value);
+  },
+
+  RESET_MACROCICLOS( state ) {
+    state.macrociclos = [];
+  },
+  RESET_MACROCICLO( state ) {
+    state.macrociclo = {
+      id: null,
+      order: null,
+      fecha_ini: null,
+      fecha_fin: null,
+      description: '',
+      objetivos: '',
+    }
+  },
+
+  SET_MACROCICLOS( state, value ) {
+    state.macrociclos = value;
+  },
+  SET_MACROCICLO_ID( state, value ) {
+    state.macrociclo.id = value;
+  },
+  SET_MACROCICLO( state, value )  {
+    state.macrociclo = value;
+  },
+
   // Tabla principal: Ejercicios
   ADD_EJERCICIO( state, value ) {
     state.ejercicios.unshift(value);

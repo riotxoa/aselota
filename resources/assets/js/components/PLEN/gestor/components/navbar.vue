@@ -14,7 +14,9 @@
 
           <b-collapse id="navbar-toggle-collapse" is-nav>
             <b-navbar-nav class="m-0">
+              <b-nav-item :to="{ name: 'PLEN_GESTOR_Macrociclos' }">Macrociclos</b-nav-item>
               <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }">Mesociclos</b-nav-item>
+              <b-nav-item :to="{ name: 'PLEN_GESTOR_Microciclos' }">Microciclos</b-nav-item>
               <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }">Sesiones</b-nav-item>
               <b-nav-item :to="{ name: 'PLEN_GESTOR_Ejercicios' }">Ejercicios</b-nav-item>
               <b-nav-item-dropdown text="Auxiliares" right>
@@ -35,7 +37,9 @@
     <b-col class="d-none d-xl-inline">
       <b-nav class="plen-side-nav" vertical>
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Inicio' }"><i class="fa fa-home mr-2"></i>Inicio</b-nav-item>
-        <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }"><i class="fa fa-arrows-alt-h mr-2"></i>Mesociclos</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Macrociclos' }"><i class="fa fa-arrows-alt-h mr-2"></i>Macrociclos</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Mesociclos' }"><i class="fas fa-exchange-alt mr-2"></i>Mesociclos</b-nav-item>
+        <b-nav-item :to="{ name: 'PLEN_GESTOR_Microciclos' }"><i class="fa fa-arrows-alt mr-2"></i>Microciclos</b-nav-item>
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Sesiones' }"><i class="fas fa-stopwatch mr-2"></i>Sesiones</b-nav-item>
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Ejercicios' }"><i class="fa fa-chevron-right mr-2"></i>Ejercicios</b-nav-item>
         <b-dropdown-divider></b-dropdown-divider>

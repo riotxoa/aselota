@@ -12,7 +12,7 @@ class PLEN_Macrociclo extends Model
       'order',
       'fecha_ini',
       'fecha_fin',
-      'descripcion',
+      'description',
       'objetivos'
     ];
 

@@ -153,6 +153,7 @@ Route::group(['prefix' => 'www'], function () {
     });
 
     Route::group(['prefix' => 'PLEN'], function () {
+      Route::resource('macrociclos', 'PLEN_MacrocicloController');
       Route::resource('ejercicios', 'PLEN_EjercicioController');
       Route::resource('fases-sesion', 'PLEN_FaseSesionController');
       Route::resource('tipos-ejercicio', 'PLEN_TipoEjercicioController');

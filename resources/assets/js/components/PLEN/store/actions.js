@@ -14,6 +14,52 @@ export default {
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1500);
   },
 
+  // Tabla Macrociclos
+  deleteMacrociclo( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.delete('/www/PLEN/macrociclos/' + id)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  getMacrociclos( { commit } ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/macrociclos')
+        .then( (res) => {
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  saveMacrociclo( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/www/PLEN/macrociclos', item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  updateMacrociclo( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.put('/www/PLEN/macrociclos/' + item.id, item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+
   // Tabla 40_Ejercicios
   addEjercicio( { commit }, item ) {
     commit('ADD_EJERCICIO', item);
@@ -72,7 +118,7 @@ export default {
   setEjercicioImagen( { commit }, imagen ) {
     commit('SET_EJERCICIO_IMAGEN', imagen);
   },
-  
+
 
   // Tabla Auxiliar: Fases de Sesión
   deleteFase( { commit }, id ) {

@@ -1,5 +1,16 @@
 export default {
 
+  // Macrociclos
+  macrocilos: [],
+  macrociclo: {
+    id: null,
+    order: null,
+    fecha_ini: null,
+    fecha_fin: null,
+    description: '',
+    objetivos: '',
+  },
+
   // Ejercicios
   ejercicios: [],
   ejercicio: {
