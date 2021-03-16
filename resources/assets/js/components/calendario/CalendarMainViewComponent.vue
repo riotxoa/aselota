@@ -169,7 +169,6 @@
         }
       },
       getDays(year) {
-        console.log("[getDays] year: " + year + "; this.curr_month: " + this.curr_month + "; return: " + [31, (year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]);
         return [31, (year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
       },
       getPrevMonth(month) {
