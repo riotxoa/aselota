@@ -112,7 +112,7 @@
       this.prev_year = this.getPrevYear(this.curr_month);
       this.next_year = this.getNextYear(this.curr_month);
 
-      this.days = [31, (this.curr_year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      this.days = this.getDays(this.curr_year);
 
       store.dispatch('loadCalendario', { year: this.curr_year, month: this.curr_month + 1 });
       this.getPelotarisMonth(this.curr_year, this.curr_month);
@@ -168,6 +168,9 @@
           this.$router.push('/gerente/festival/' + match.festival_id + '/edit/');
         }
       },
+      getDays(year) {
+        return [31, (year % 4 ? 28 : 29), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      },
       getPrevMonth(month) {
         return ( month > 0 ? month - 1 : 11);
       },
@@ -189,6 +192,8 @@
         this.prev_year = this.getPrevYear(this.curr_month);
         this.next_year = this.getNextYear(this.curr_month);
 
+        this.days = this.getDays(this.curr_year);
+
         store.dispatch('loadCalendario', { year: this.curr_year, month: this.curr_month + 1 });
         this.getPelotarisMonth(this.curr_year, this.curr_month);
       },
@@ -200,6 +205,8 @@
         this.curr_year = this.next_year;
         this.prev_year = this.getPrevYear(this.curr_month);
         this.next_year = this.getNextYear(this.curr_month);
+
+        this.days = this.getDays(this.curr_year);
 
         store.dispatch('loadCalendario', { year: this.curr_year, month: this.curr_month + 1 });
         this.getPelotarisMonth(this.curr_year, this.curr_month);
