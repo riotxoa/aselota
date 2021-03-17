@@ -24,6 +24,10 @@
     <div class="col-12"><!-- #MODIF4 -->
       <router-link class="text-white" :to="{ name: 'CUADRO', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Cuadro de Mando</div></router-link>
     </div>
+    <!-- TXOSTENAK -->
+    <div class="col-12">
+      <router-link class="text-white" :to="{ name: 'INFORMES', params: { userRole: 'admin' } }"><div class="btn btn-secondary">Informes</div></router-link>
+    </div>
   </div>
 </template>
 

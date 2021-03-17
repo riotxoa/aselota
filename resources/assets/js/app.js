@@ -126,6 +126,13 @@ const HomeMedico2 = { template: '<home-medico-2></home-medico-2>' };
 const ListPartes2 = { template: '<listado-partes-2></listado-partes-2>' };
 const PartesPelotari2 = { template: '<ficha-pelotari-2></ficha-pelotari-2>' };
 
+// TXOSTENAK
+Vue.component('home-informes', require('./components/HomeInformesComponent.vue'));
+Vue.component('listado-informes', require('./components/informes/ListadoComponent.vue'));
+
+const HomeInformes = { template: '<home-informes></home-informes>' };
+const ListInformes = { template: '<listado-informes></listado-informes>' };
+
 // PLEN: PLANIFICACIÓN DE ENTRENAMIENTOS
 Vue.component('plen-home', require('./components/HomePLENComponent.vue'));
 
@@ -278,6 +285,13 @@ const routes = [
       },
       {
         path: 'pelotari/:id/edit', name: 'PARTES_PELOTARI', component: PartesPelotari2, props: true
+      }
+    ]
+  },
+  { path: '/informes', component: HomeInformes,
+    children: [
+      {
+        path: '', name: 'INFORMES', component: ListInformes
       }
     ]
   },

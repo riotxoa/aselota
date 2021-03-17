@@ -154,12 +154,17 @@ Route::group(['prefix' => 'www'], function () {
 
     Route::group(['prefix' => 'PLEN'], function () {
       Route::resource('macrociclos', 'PLEN_MacrocicloController');
+      Route::resource('mesociclos', 'PLEN_MesocicloController');
       Route::resource('ejercicios', 'PLEN_EjercicioController');
       Route::resource('fases-sesion', 'PLEN_FaseSesionController');
       Route::resource('tipos-ejercicio', 'PLEN_TipoEjercicioController');
       Route::resource('tipos-mesociclo', 'PLEN_TipoMesocicloController');
       Route::resource('tipos-microciclo', 'PLEN_TipoMicrocicloController');
       Route::resource('subtipos-ejercicio', 'PLEN_SubtipoEjercicioController');
+    });
+
+    Route::group(['prefix' => 'informes'], function () {
+      Route::get('pilotakadak-eta-iraupena', 'InformesController@GetPilotakadakEtaIraupena');
     });
 });
 

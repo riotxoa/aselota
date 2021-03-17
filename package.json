@@ -23,6 +23,7 @@
     "dependencies": {
         "bootstrap-vue": "^2.0.0-rc.11",
         "moment": "^2.22.2",
+        "vis-timeline": "^7.4.6",
         "vue-axios": "^2.1.1",
         "vue-json-excel": "^0.2.98",
         "vue-router": "^3.0.1",

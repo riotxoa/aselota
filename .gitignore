@@ -3,9 +3,11 @@
 /public/storage
 /storage/*.key
 /vendor
+/__vendor
 /.idea
 /.vscode
 /.vagrant
+__composer.lock
 Homestead.json
 Homestead.yaml
 npm-debug.log
