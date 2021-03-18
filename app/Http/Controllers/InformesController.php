@@ -39,7 +39,9 @@ class InformesController extends Controller
       // return view('informes.pilotakadak-eta-iraupena', $data);
       // $pdf = PDF::setPaper('a4', 'landscape')->loadView('informes.pilotakadak-eta-iraupena', $data);
       $pdf = PDF::loadView('informes.pilotakadak-eta-iraupena', $data);
-      return $pdf->download('invoice.pdf');
+      $today = date('Ymd');
+      $file_name = "BAIKO - $today Informe Pelotazos y duracion.pdf";
+      return $pdf->download($file_name);
     }
 
     private function getPartidosByFestivalId($id)
