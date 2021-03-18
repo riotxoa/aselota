@@ -4,11 +4,10 @@
     <meta charset="utf-8">
     <title>PELOTAZOS Y DURACIÓN</title>
     <style>
-      h2,
-      table {
+      body {
         font-family:arial;
       }
-      h2 {
+      h2, h4 {
         line-height:1;
         text-align:center;
       }
@@ -64,64 +63,67 @@
     </style>
   </head>
   <body>
-    <h2>PELOTAZOS Y DURACIÓN<br><small><?php echo date('d-m-Y'); ?></small></h2>
-      @foreach( $festivales as $festival )
-        <table style="border:none;padding:0;">
+    <h2>PELOTAZOS Y DURACIÓN<br><small><?php echo "Fecha listado: " . date('d-m-Y'); ?></small></h2>
+    @if( $fecha_ini or $fecha_fin )
+      <h4><?php echo ($fecha_ini ? "Desde: $fecha_ini - " : "") . ($fecha_fin ? "Hasta: $fecha_fin" : ""); ?></h4>
+    @endif
+    @foreach( $festivales as $festival )
+      <table style="border:none;padding:0;">
+        <tr>
+          <td colspan="4" class="festival">
+            <div style="display:inline-block; text-align:left; width:49.5%;">
+              <strong>[{{ $loop->iteration }}] Fecha y hora: </strong><?php $fecha = new DateTime($festival->fecha); echo $fecha->format('d-m-Y'); ?> - {{ $festival->hora }}
+            </div>
+            <div style="display:inline-block; text-align:right; width:49.5%;">
+              <strong>Frontón: </strong>{{ $festival->fronton_name }}&nbsp;({{ $festival->fronton_localidad }})
+            </div>
+          </td>
+        </tr>
+        @foreach( $festival->partidos as $partido )
           <tr>
-            <td colspan="4" class="festival">
-              <div style="display:inline-block; text-align:left; width:49.5%;">
-                <strong>[{{ $loop->iteration }}] Fecha y hora: </strong><?php $fecha = new DateTime($festival->fecha); echo $fecha->format('d-m-Y'); ?> - {{ $festival->hora }}
-              </div>
-              <div style="display:inline-block; text-align:right; width:49.5%;">
-                <strong>Frontón: </strong>{{ $festival->fronton_name }}&nbsp;({{ $festival->fronton_localidad }})
-              </div>
+            <td colspan="2" class="partido">
+              @if( $partido->campeonato )
+                <strong>Campeonato: </strong>{{ $partido->campeonato }}<br/>
+              @endif
+              @if( $partido->tipo_partido )
+                <strong>Tipo de partido: </strong>{{ $partido->tipo_partido }}
+              @endif
+            </td>
+            <td class="pelotazos">
+              <strong>Pelotazos</strong>
+            </td>
+            <td class="duracion">
+              <strong>Duración</strong>
             </td>
           </tr>
-          @foreach( $festival->partidos as $partido )
-            <tr>
-              <td colspan="2" class="partido">
-                @if( $partido->campeonato )
-                  <strong>Campeonato: </strong>{{ $partido->campeonato }}<br/>
+          <tr>
+            <td class="red puntos">{{ $partido->puntos_rojo }}</td>
+            <td class="red">
+              @foreach( $partido->pelotaris_rojo as $pelotari )
+                @if( $loop->iteration > 1 )
+                 &nbsp;-&nbsp;{{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
+                @else
+                 {{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
                 @endif
-                @if( $partido->tipo_partido )
-                  <strong>Tipo de partido: </strong>{{ $partido->tipo_partido }}
+              @endforeach
+            </td>
+            <td rowspan="2" class="pelotazos"><?php echo ( $partido->pelotazos ? $partido->pelotazos . ' pel.' : 'N/D' ); ?></td>
+            <td rowspan="2" class="duracion"><?php echo ( $partido->duracion ? $partido->duracion . ' min.' : 'N/D' ); ?></td>
+          </tr>
+          <tr>
+            <td class="blue puntos">{{ $partido->puntos_azul }}</td>
+            <td class="blue">
+              @foreach( $partido->pelotaris_azul as $pelotari )
+                @if( $loop->iteration > 1 )
+                 &nbsp;-&nbsp;{{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
+                @else
+                 {{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
                 @endif
-              </td>
-              <td class="pelotazos">
-                <strong>Pelotazos</strong>
-              </td>
-              <td class="duracion">
-                <strong>Duración</strong>
-              </td>
-            </tr>
-            <tr>
-              <td class="red puntos">{{ $partido->puntos_rojo }}</td>
-              <td class="red">
-                @foreach( $partido->pelotaris_rojo as $pelotari )
-                  @if( $loop->iteration > 1 )
-                   &nbsp;-&nbsp;{{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
-                  @else
-                   {{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
-                  @endif
-                @endforeach
-              </td>
-              <td rowspan="2" class="pelotazos"><?php echo ( $partido->pelotazos ? $partido->pelotazos . ' pel.' : 'N/D' ); ?></td>
-              <td rowspan="2" class="duracion"><?php echo ( $partido->duracion ? $partido->duracion . ' min.' : 'N/D' ); ?></td>
-            </tr>
-            <tr>
-              <td class="blue puntos">{{ $partido->puntos_azul }}</td>
-              <td class="blue">
-                @foreach( $partido->pelotaris_azul as $pelotari )
-                  @if( $loop->iteration > 1 )
-                   &nbsp;-&nbsp;{{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
-                  @else
-                   {{ $pelotari->alias }}<?php echo ( $pelotari->is_sustituto ? '<sup><small>*SUST.</small></sup>' : '' ); ?>
-                  @endif
-                @endforeach
-              </td>
-            </tr>
-          @endforeach
-        </table>
-      @endforeach
+              @endforeach
+            </td>
+          </tr>
+        @endforeach
+      </table>
+    @endforeach
   </body>
 </html>

@@ -9,6 +9,7 @@ use App\FestivalPartidoPelotari as Pelotari;
 use App\Pelotari as PelotariBaiko;
 use App\PelotarisAspe as PelotariAspe;
 
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
 
 use PDF; // https://www.positronx.io/laravel-pdf-tutorial-generate-pdf-with-dompdf-in-laravel/
@@ -18,6 +19,9 @@ class InformesController extends Controller
 
     public function GetPilotakadakEtaIraupena()
     {
+      $fecha_ini = Input::get('fecha_ini');
+      $fecha_fin = Input::get('fecha_fin');
+
       $festivales = Festival::select(
                       'festivales.id',
                       'festivales.fecha',
@@ -26,14 +30,25 @@ class InformesController extends Controller
                       'municipios.name as fronton_localidad'
                     )
                     ->leftJoin('frontones', 'festivales.fronton_id', 'frontones.id')
-                    ->leftJoin('municipios', 'frontones.municipio_id', 'municipios.id')
-                    ->get();
+                    ->leftJoin('municipios', 'frontones.municipio_id', 'municipios.id');
+      if( $fecha_ini ) {
+        $festivales = $festivales->where('fecha', '>=', $fecha_ini);
+      }
+      if( $fecha_fin ) {
+        $festivales = $festivales->where('fecha', '<=', $fecha_fin);
+      }
+      $festivales = $festivales->get();
 
       foreach( $festivales as $key => $festival ) {
         $festival->partidos = $this->getPartidosByFestivalId($festival->id);
       }
 
+      $fecha01 = ($fecha_ini ? date_create($fecha_ini) : false);
+      $fecha02 = ($fecha_fin ? date_create($fecha_fin) : false);
+
       $data = array(
+        'fecha_ini' => ( $fecha01 ? date_format($fecha01, 'd-m-Y') : $fecha01),
+        'fecha_fin' => ( $fecha02 ? date_format($fecha02, 'd-m-Y') : $fecha02),
         'festivales' => $festivales
       );
       // return view('informes.pilotakadak-eta-iraupena', $data);
