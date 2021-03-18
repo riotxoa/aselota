@@ -30,12 +30,13 @@ class InformesController extends Controller
                       'municipios.name as fronton_localidad'
                     )
                     ->leftJoin('frontones', 'festivales.fronton_id', 'frontones.id')
-                    ->leftJoin('municipios', 'frontones.municipio_id', 'municipios.id');
+                    ->leftJoin('municipios', 'frontones.municipio_id', 'municipios.id')
+                    ->where('festivales.estado_id', 3);
       if( $fecha_ini ) {
-        $festivales = $festivales->where('fecha', '>=', $fecha_ini);
+        $festivales = $festivales->where('festivales.fecha', '>=', $fecha_ini);
       }
       if( $fecha_fin ) {
-        $festivales = $festivales->where('fecha', '<=', $fecha_fin);
+        $festivales = $festivales->where('festivales.fecha', '<=', $fecha_fin);
       }
       $festivales = $festivales->get();
 
