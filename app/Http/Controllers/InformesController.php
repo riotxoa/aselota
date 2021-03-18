@@ -8,9 +8,11 @@ use App\FestivalPartido as Partido;
 use App\FestivalPartidoPelotari as Pelotari;
 use App\Pelotari as PelotariBaiko;
 use App\PelotarisAspe as PelotariAspe;
+use App\Exports\InformePelotazosDuracionExport;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 use PDF; // https://www.positronx.io/laravel-pdf-tutorial-generate-pdf-with-dompdf-in-laravel/
 
@@ -21,6 +23,7 @@ class InformesController extends Controller
     {
       $fecha_ini = Input::get('fecha_ini');
       $fecha_fin = Input::get('fecha_fin');
+      $formato = Input::get('formato');
 
       $festivales = Festival::select(
                       'festivales.id',
@@ -52,12 +55,23 @@ class InformesController extends Controller
         'fecha_fin' => ( $fecha02 ? date_format($fecha02, 'd-m-Y') : $fecha02),
         'festivales' => $festivales
       );
-      // return view('informes.pilotakadak-eta-iraupena', $data);
-      // $pdf = PDF::setPaper('a4', 'landscape')->loadView('informes.pilotakadak-eta-iraupena', $data);
-      $pdf = PDF::loadView('informes.pilotakadak-eta-iraupena', $data);
+
       $today = date('Ymd');
-      $file_name = "BAIKO - $today Informe Pelotazos y duracion.pdf";
-      return $pdf->download($file_name);
+      $file_name = "BAIKO - $today Informe Pelotazos y duracion";
+
+      switch( $formato ) {
+        case 'PDF':
+          // return view('informes.pilotakadak-eta-iraupena', $data);
+          // $pdf = PDF::setPaper('a4', 'landscape')->loadView('informes.pilotakadak-eta-iraupena', $data);
+          $pdf = PDF::loadView('informes.pilotakadak-eta-iraupena', $data);
+
+
+          return $pdf->download("$file_name.pdf");
+          break;
+        case 'XLS':
+          return Excel::download(new InformePelotazosDuracionExport($data), "$file_name.xlsx");
+          break;
+      }
     }
 
     private function getPartidosByFestivalId($id)

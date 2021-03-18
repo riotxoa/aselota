@@ -14,6 +14,19 @@
             <label for="fecha-ini">Hasta fecha:</label>
             <input type="date" id="fecha-fin" v-model="fecha_fin" class="mb-2"></input>
           </b-col>
+          <b-col cols="12">
+            <b-form-group label="Formato listado:">
+              <!-- <b-form-radio v-model="formato" name="format-radios" value="PDF">Generar PDF</b-form-radio> -->
+              <!-- <b-form-radio v-model="formato" name="format-radios" value="XLS">Generar Hoja de Cálculo (XLS)</b-form-radio> -->
+              <b-form-radio-group
+                id="radio-group-formato"
+                v-model="formato"
+              >
+                <b-form-radio value="PDF">Generar PDF</b-form-radio>
+                <b-form-radio value="XLS">Generar Hoja de Cálculo (XLS)</b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+          </b-col>
         </b-row>
       </b-form>
     </b-modal>
@@ -26,12 +39,13 @@
       return {
         fecha_ini: null,
         fecha_fin: null,
+        formato: 'PDF',
       }
     },
     methods: {
       getTxosten01() {
         var query = '';
-        if( this.fecha_ini || this.fecha_fin ) {
+        if( this.fecha_ini || this.fecha_fin || this.formato ) {
           query += '?';
         }
         if( this.fecha_ini ) {
@@ -40,6 +54,10 @@
         if( this.fecha_fin ) {
           query += 'fecha_fin=' + this.fecha_fin + '&';
         }
+        if( this.formato ) {
+          query += 'formato=' + this.formato + '&';
+        }
+        console.log("[getTxosten01] query: " + query);
         var redirectWindow = window.open('/www/informes/pilotakadak-eta-iraupena' + query, '_blank');
         redirectWindow.location;
       },
