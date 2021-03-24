@@ -164,7 +164,7 @@ Route::group(['prefix' => 'www'], function () {
     });
 
     Route::group(['prefix' => 'informes'], function () {
-      Route::get('pilotakadak-eta-iraupena', 'InformesController@GetPilotakadakEtaIraupena');
+      Route::get('pilotakadak-eta-iraupena', 'InformesController@GetPelotazosDuracion');
     });
 });
 

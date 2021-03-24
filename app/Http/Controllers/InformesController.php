@@ -19,11 +19,16 @@ use PDF; // https://www.positronx.io/laravel-pdf-tutorial-generate-pdf-with-domp
 class InformesController extends Controller
 {
 
-    public function GetPilotakadakEtaIraupena()
+    public function GetPelotazosDuracion()
     {
       $fecha_ini = Input::get('fecha_ini');
       $fecha_fin = Input::get('fecha_fin');
+      $campeonato_id = Input::get('campeonato_id');
+      $tipo_partido_id = Input::get('tipo_partido_id');
+      $pelotari_id = Input::get('pelotari_id');
       $formato = Input::get('formato');
+
+      $leftJoinPartidos = false;
 
       $festivales = Festival::select(
                       'festivales.id',
@@ -34,13 +39,44 @@ class InformesController extends Controller
                     )
                     ->leftJoin('frontones', 'festivales.fronton_id', 'frontones.id')
                     ->leftJoin('municipios', 'frontones.municipio_id', 'municipios.id')
-                    ->where('festivales.estado_id', 3);
+                    ->where('festivales.estado_id', 3)
+                    ->groupBy('festivales.id');
+
       if( $fecha_ini ) {
         $festivales = $festivales->where('festivales.fecha', '>=', $fecha_ini);
       }
+
       if( $fecha_fin ) {
         $festivales = $festivales->where('festivales.fecha', '<=', $fecha_fin);
       }
+
+      if( $campeonato_id ) {
+        if( !$leftJoinPartidos ) {
+          $festivales = $festivales->leftJoin('festival_partidos', 'festival_partidos.festival_id', 'festivales.id');
+        }
+        $festivales = $festivales->leftJoin('campeonatos', 'campeonatos.id', 'festival_partidos.campeonato_id')
+                      ->where('festival_partidos.campeonato_id', $campeonato_id);
+        $leftJoinPartidos = true;
+      }
+
+      if( $tipo_partido_id ) {
+        if( !$leftJoinPartidos ) {
+          $festivales = $festivales->leftJoin('festival_partidos', 'festival_partidos.festival_id', 'festivales.id');
+        }
+        $festivales = $festivales->leftJoin('tipo_partidos', 'tipo_partidos.id', 'festival_partidos.tipo_partido_id')
+                      ->where('festival_partidos.tipo_partido_id', $tipo_partido_id);
+        $leftJoinPartidos = true;
+      }
+
+      if( $pelotari_id ) {
+        if( !$leftJoinPartidos ) {
+          $festivales = $festivales->leftJoin('festival_partidos', 'festival_partidos.festival_id', 'festivales.id');
+        }
+        $festivales = $festivales->leftJoin('festival_partido_pelotaris', 'festival_partido_pelotaris.festival_partido_id', 'festival_partidos.id')
+                      ->where('festival_partido_pelotaris.pelotari_id', $pelotari_id);
+        $leftJoinPartidos = true;
+      }
+
       $festivales = $festivales->get();
 
       foreach( $festivales as $key => $festival ) {
