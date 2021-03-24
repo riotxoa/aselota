@@ -4,7 +4,9 @@
       <div class="toolbar mb-0 py-1">
         <div class="container">
           <b-row>
-            <div class="col-sm-3">&nbsp;</div>
+            <div class="col-sm-3">
+              <NavDropdownInformes />
+            </div>
             <h4 class="col-sm-6 text-white font-weight-bold">GESTIÓN DE FESTIVALES</h4>
             <div class="col-sm-3 text-right home-icon">
               <b-button v-if="this.$route.params.userRole === 'admin'" size="sm" variant="outline" href="/" class="mt-1"><i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;Admin Menú</b-button>
@@ -109,9 +111,15 @@
   import Utils from '../utils/utils.js';
   Vue.component('delete-modal', require('../modals/ModalDeleteComponent.vue'));
   Vue.component('filtro-festivales', require('./FiltroFestivalComponent.vue'));
+
+  import NavDropdownInformes from '../informes/NavDropdownInformes.vue';
+
   export default {
       mixins: [ Utils ],
       props: ['isGerente', 'isPrensa'],
+      components: {
+        NavDropdownInformes,
+      },
       data () {
         return {
           filter: true,
