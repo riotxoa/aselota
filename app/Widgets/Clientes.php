@@ -5,6 +5,7 @@ namespace App\Widgets;
 use Arrilot\Widgets\AbstractWidget;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Support\Facades\Auth;
 
 class Clientes extends AbstractWidget
 {
@@ -34,5 +35,15 @@ class Clientes extends AbstractWidget
             ],
             'image' => 'images/bilboko_udala.jpg',
         ]));
+    }
+
+    /**
+     * Determine if the widget should be displayed.
+     *
+     * @return bool
+     */
+    public function shouldBeDisplayed()
+    {
+        return Auth::user()->can('browse', Voyager::model('User'));
     }
 }

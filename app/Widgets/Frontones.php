@@ -5,6 +5,7 @@ namespace App\Widgets;
 use Arrilot\Widgets\AbstractWidget;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Support\Facades\Auth;
 
 class Frontones extends AbstractWidget
 {
@@ -34,5 +35,15 @@ class Frontones extends AbstractWidget
             ],
             'image' => 'images/bizkaia_frontoia.jpg',
         ]));
+    }
+
+    /**
+     * Determine if the widget should be displayed.
+     *
+     * @return bool
+     */
+    public function shouldBeDisplayed()
+    {
+        return Auth::user()->can('browse', Voyager::model('User'));
     }
 }
