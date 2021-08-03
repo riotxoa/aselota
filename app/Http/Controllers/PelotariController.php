@@ -381,17 +381,38 @@ class PelotariController extends Controller
 
       $column = 'c_campeonatos.' . $fase->fase;
 
+      // $prima = DB::table('contrato_campeonatos as c_campeonatos')
+      //           ->select($column)
+      //           ->leftJoin('contratos_header as c_header', 'c_header.id', '=', 'c_campeonatos.header_id')
+      //           ->leftJoin('pelotaris', 'pelotaris.id', '=', 'c_header.pelotari_id')
+      //           ->where('c_campeonatos.campeonato_id', $fase->campeonato_id)
+      //           ->whereDate('c_header.fecha_ini', '<=', $fecha_fin)
+      //           ->whereDate('c_header.fecha_fin', '>=', $fecha_ini)
+      //           ->where('pelotaris.id', $item->id)
+      //           ->value($column);
+
+      // return ($prima ? $prima : 0);
+
+      /*
+         2021/08/03 Puede ser que se nos pase una Fase (previa o tercer_cuarto) que no tenga
+                    columna asociada en la tabla del contrato. En tal caso, lo comprobamos y
+                    devolvemos 0 si no tiene columna asociada
+       */
       $prima = DB::table('contrato_campeonatos as c_campeonatos')
-                ->select($column)
                 ->leftJoin('contratos_header as c_header', 'c_header.id', '=', 'c_campeonatos.header_id')
                 ->leftJoin('pelotaris', 'pelotaris.id', '=', 'c_header.pelotari_id')
                 ->where('c_campeonatos.campeonato_id', $fase->campeonato_id)
                 ->whereDate('c_header.fecha_ini', '<=', $fecha_fin)
                 ->whereDate('c_header.fecha_fin', '>=', $fecha_ini)
                 ->where('pelotaris.id', $item->id)
-                ->value($column);
+                ->get();
 
-      return ($prima ? $prima : 0);
+      if( array_key_exists($fase->fase, $prima) ) {
+        return ($prima[$fase->fase] ? $prima[$fase->fase] : 0);
+      } else {
+        return 0;
+      }
+      /* /2021/08/03 */
     }
 
     private function get_fechas_fase( $fase, $item ) {
