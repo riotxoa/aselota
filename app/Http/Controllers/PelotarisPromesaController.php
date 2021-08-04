@@ -35,8 +35,10 @@ class PelotarisPromesaController extends Controller
           $today = date('Y-m-d');
           $three_months_ago = date('Y-m-d', strtotime("-3 Months"));
 
-          $items = $items->leftJoin('contratos as c1', 'pelotaris.id', '=', 'c1.pelotari_id')
+          $items = $items->leftJoin('contratos_header as ch1', 'pelotaris.id', '=', 'ch1.pelotari_id')
+                         ->leftJoin('contratos as c1', 'ch1.id', '=', 'c1.header_id')
                          ->leftJoin('contratos_comercial as cc1', 'c1.header_id', '=', 'cc1.header_id')
+                         ->where('ch1.disabled', '=', 0)
                          ->whereDate('c1.fecha_ini', '<=', $today)
                          ->whereDate('c1.fecha_fin', '>=', $three_months_ago)
                          ->whereDate('cc1.fecha_ini', '<=', $fecha)
@@ -50,8 +52,10 @@ class PelotarisPromesaController extends Controller
           $fecha_ini = $request->get('fecha_ini');
           $fecha_fin = $request->get('fecha_fin');
 
-          $items = $items->leftJoin('contratos as c2', 'pelotaris.id', '=', 'c2.pelotari_id')
+          $items = $items->leftJoin('contratos_header as ch2', 'pelotaris.id', '=', 'ch2.pelotari_id')
+                         ->leftJoin('contratos as c2', 'ch2.id', '=', 'c2.header_id')
                          ->leftJoin('contratos_comercial as cc2', 'c2.header_id', '=', 'cc2.header_id')
+                         ->where('ch2.disabled', '=', 0)
                          ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
                          ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
                          ->whereDate('cc2.fecha_ini', '<=', $fecha_fin)
