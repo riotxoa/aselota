@@ -16,7 +16,7 @@ class CreatePlenMicrociclosTable extends Migration
         Schema::create('plen_microciclos', function (Blueprint $table) {
             $table->increments('id');
             $table->smallInteger('order')->nullable()->default(0);
-            $table->unsignedInteger('microciclo_id')->nullable();
+            $table->unsignedInteger('mesociclo_id')->nullable();
             $table->unsignedInteger('tipo_microciclo_id')->nullable();
             $table->date('fecha_ini')->nullable();
             $table->date('fecha_fin')->nullable();
@@ -26,7 +26,7 @@ class CreatePlenMicrociclosTable extends Migration
             $table->text('objetivos')->nullable();
             $table->timestamps();
 
-            $table->foreign('microciclo_id')->references('id')->on('plen_microciclos');
+            $table->foreign('mesociclo_id')->references('id')->on('plen_mesociclos');
             $table->foreign('tipo_microciclo_id')->references('id')->on('plen_tipos_microciclo');
         });
     }
