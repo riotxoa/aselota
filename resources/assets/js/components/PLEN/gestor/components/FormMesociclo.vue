@@ -1,28 +1,18 @@
 <template>
   <div>
     <b-form v-if="show">
-      <b-row>
-        <b-col cols="12">
-          <b-form-group label="Macrociclo:" label-for="descMacrociclo" label-class="font-weight-bold">
-            <b-row>
-              <b-col cols="4">
-                <b-form-input
-                  id="datesMacrociclo"
-                  v-model="macrociclo_dates"
-                  disabled
-                ></b-form-input>
-              </b-col>
-              <b-col cols="8">
-                <b-form-input
-                  id="descMacrociclo"
-                  v-model="macrociclo_desc"
-                  maxLength="50"
-                  disabled
-                ></b-form-input>
-              </b-col>
-            </b-row>
-          </b-form-group>
+      <b-row class="border-bottom mb-3 macrociclo-wrap">
+        <b-col cols="2">
+          <label class="font-weight-bold">Macrociclo:</label>
         </b-col>
+        <b-col cols="3" class="px-0">
+          <p class="border px-2">{{ macrociclo_dates }}</p>
+        </b-col>
+        <b-col cols="7">
+          <p class="border px-2">{{ macrociclo_desc }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col cols="4">
           <b-form-group label="Tipo Mesociclo:" label-for="tipoMesociclo" label-class="font-weight-bold">
             <b-form-select
@@ -128,4 +118,7 @@
 </script>
 
 <style scoped>
+.macrociclo-wrap p {
+  background-color:rgba(255, 192, 203, 0.55);
+}
 </style>
