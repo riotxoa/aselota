@@ -1,7 +1,7 @@
 export default {
 
   // Macrociclos
-  macrocilos: [],
+  macrociclos: [],
   macrociclo: {
     id: null,
     order: null,
@@ -9,6 +9,33 @@ export default {
     fecha_fin: null,
     description: '',
     objetivos: '',
+    mesociclos: [],
+  },
+  mesociclo: {
+    id: null,
+    order: null,
+    macrociclo_id: null,
+    macrociclo_desc: '',
+    tipo_mesociclo_id: null,
+    fecha_ini: null,
+    fecha_fin: null,
+    description: '',
+    objetivos: '',
+    microciclos: []
+  },
+  microciclo: {
+    id: null,
+    order: null,
+    mesociclo_id: null,
+    mesociclo_desc: '',
+    tipo_microciclo_id: null,
+    fecha_ini: null,
+    fecha_fin: null,
+    volumen: null,
+    intensidad: null,
+    descripcion: '',
+    objetivos: '',
+    sesiones: []
   },
 
   // Ejercicios

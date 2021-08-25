@@ -15,6 +15,7 @@ export default {
       fecha_fin: null,
       description: '',
       objetivos: '',
+      mesociclos: [],
     }
   },
 
@@ -26,6 +27,77 @@ export default {
   },
   SET_MACROCICLO( state, value )  {
     state.macrociclo = value;
+  },
+
+  // Tabla principal: Mesociclos
+  ADD_MESOCICLO( state, value ) {
+    state.macrociclo.mesociclos.unshift(value);
+  },
+
+  RESET_MESOCICLOS( state ) {
+    state.macrociclo.mesociclos = [];
+  },
+  RESET_MESOCICLO( state ) {
+    state.mesociclo = {
+      id: null,
+      order: null,
+      macrociclo_id: null,
+      macrociclo_desc: '',
+      tipo_mesociclo_id: null,
+      fecha_ini: null,
+      fecha_fin: null,
+      description: '',
+      objetivos: '',
+      microciclos: [],
+    }
+  },
+
+  SET_MESOCICLO_ID( state, value ) {
+    state.mesociclo.id = value;
+  },
+  SET_MESOCICLO( state, value )  {
+    state.mesociclo = value;
+  },
+  SET_MESOCICLOS( state, value ) {
+    state.macrociclo.mesociclos = value;
+  },
+
+  // Tabla principal: Microciclos
+  ADD_MICROCICLO( state, value ) {
+    state.mesociclo.microciclos.unshift(value);
+  },
+
+  RESET_MICROCICLOS( state ) {
+    state.mesociclo.microciclos = [];
+  },
+  RESET_MICROCICLO( state ) {
+    state.microciclo = {
+      id: null,
+      order: null,
+      mesociclo_id: null,
+      mesociclo_desc: '',
+      tipo_microciclo_id: null,
+      fecha_ini: null,
+      fecha_fin: null,
+      volumen: null,
+      intensidad: null,
+      descripcion: '',
+      objetivos: '',
+      sesiones: []
+    }
+  },
+
+  SET_MICROCICLOS( state, value ) {
+    state.mesociclo.microciclos = value;
+  },
+  SET_MICROCICLO_ID( state, value ) {
+    state.microciclo.id = value;
+  },
+  SET_MICROCICLO( state, value )  {
+    state.microciclo = value;
+  },
+  SET_SESIONES( state, value ) {
+    state.microciclo.sesiones = value;
   },
 
   // Tabla principal: Ejercicios

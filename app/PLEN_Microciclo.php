@@ -10,7 +10,7 @@ class PLEN_Microciclo extends Model
 
     protected $fillable = [
       'order',
-      'microciclo_id',
+      'mesociclo_id',
       'tipo_microciclo_id',
       'fecha_ini',
       'fecha_fin',

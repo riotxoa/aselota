@@ -30,6 +30,10 @@ export default {
     return new Promise( (resolve, reject) => {
       axios.get('/www/PLEN/macrociclos')
         .then( (res) => {
+          res.data.map( val => {
+            val._showDetails = false;
+          })
+          commit('SET_MACROCICLOS', res.data);
           resolve(res.data);
         })
         .catch( (err) => {
@@ -41,6 +45,8 @@ export default {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/macrociclos', item)
       .then((response) => {
+        response.data._showDetails = false;
+        commit('ADD_MACROCICLO', response.data);
         resolve(response.data);
       })
       .catch((error) => {
@@ -48,9 +54,127 @@ export default {
       });
     });
   },
+  setMacrociclo( { commit }, value ) {
+    commit('SET_MACROCICLO', value);
+  },
+  setMacrociclos( { commit }, value ) {
+    commit('SET_MACROCICLOS', value);
+  },
+  setMacrocicloMesociclos( { commit }, value ) {
+    commit('SET_MACROCICLO_MESOCICLOS', value);
+  },
   updateMacrociclo( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/macrociclos/' + item.id, item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+
+  // Tabla Mesociclos
+  deleteMesociclo( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.delete('/www/PLEN/mesociclos/' + id)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  getMesociclos( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/mesociclos/' + id)
+        .then( (res) => {
+          commit('SET_MESOCICLOS', res.data);
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  resetMesociclo( { commit } ) {
+    commit('RESET_MESOCICLO');
+  },
+  saveMesociclo( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/www/PLEN/mesociclos', item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  setMesociclo( { commit }, value ) {
+    commit('SET_MESOCICLO', value);
+  },
+  setMesocicloMicrociclos( { commit }, value ) {
+    commit('SET_MESOCICLO_MICROCICLOS', value);
+  },
+  updateMesociclo( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.put('/www/PLEN/mesociclos/' + item.id, item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+
+  // Tabla Microciclos
+  deleteMicrociclo( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.delete('/www/PLEN/microciclos/' + id)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  getMicrociclos( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/microciclos/' + id)
+        .then( (res) => {
+          commit('SET_MICROCICLOS', res.data);
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  resetMicrociclo( { commit } ) {
+    commit('RESET_MICROCICLO');
+  },
+  saveMicrociclo( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/www/PLEN/microciclos', item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  setMicrociclo( { commit }, value ) {
+    commit('SET_MICROCICLO', value);
+  },
+  updateMicrociclo( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.put('/www/PLEN/microciclos/' + item.id, item)
       .then((response) => {
         resolve(response.data);
       })

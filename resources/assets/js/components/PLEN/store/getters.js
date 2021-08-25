@@ -2,6 +2,8 @@ export default {
   // Tabla Primaria: Macrociclos
   macrociclos: state => state.macrociclos,
   macrociclo: state => state.macrociclo,
+  mesociclo: state => state.mesociclo,
+  microciclo: state => state.microciclo,
 
   // Tabla Primaria: Ejercicios
   ejercicios: state => state.ejercicios,
