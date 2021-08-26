@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form v-if="show" @submit="onSubmit" @reset="onReset">
+    <b-form v-if="show">
       <b-row class="macrociclo-wrap">
         <b-col cols="2">
           <label class="font-weight-bold">Macrociclo:</label>
@@ -39,9 +39,11 @@
             <b-form-input
               id="fechaInicio"
               v-model="microciclo.fecha_ini"
+              v-on:input="onInputFechaIni"
               type="date"
               required
             ></b-form-input>
+            <p id="errFechaIni" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_ini }}</p>
           </b-form-group>
         </b-col>
         <b-col cols="3" class="pl-0">
@@ -49,9 +51,11 @@
             <b-form-input
               id="fechaFin"
               v-model="microciclo.fecha_fin"
+              v-on:change="onInputFechaFin"
               type="date"
               required
             ></b-form-input>
+            <p id="errFechaFin" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_fin }}</p>
           </b-form-group>
         </b-col>
         <b-col cols="1" class="pl-0">
@@ -114,6 +118,7 @@
   export default {
     data() {
       return {
+        error_msg: null,
         macrociclo_dates: '',
         macrociclo_desc: '',
         mesociclo_dates: '',
@@ -128,10 +133,18 @@
       microciclo: state => state.plen.microciclo
     }),
     created() {
+      this.resetErrorMsg();
       this.getTiposMicrociclo().then( (res) => {
         this.setTiposMicrociclo(res);
         this.show = true;
       })
+    },
+    mounted() {
+      this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+        if( 'editMicrociclo' == bvEvent.target.id ) {
+          this.resetErrorMsg();
+        }
+      });
     },
     updated() {
       this.macrociclo_desc = this.macrociclo.description;
@@ -143,6 +156,35 @@
       ...mapActions({
         getTiposMicrociclo: 'plen/getTiposMicrociclo'
       }),
+      onInputFechaFin(f_fin) {
+        this.error_msg.fecha_fin = '';
+        if( f_fin <= this.macrociclo.fecha_ini || f_fin > this.macrociclo.fecha_fin ||
+            f_fin < this.mesociclo.fecha_ini   || f_fin > this.mesociclo.fecha_fin  ||
+            f_fin <= this.microciclo.fecha_ini ) {
+          this.error_msg.fecha_fin = "La fecha debe estar dentro del intervalo";
+        }
+        this.setErrorMsgExists();
+      },
+      onInputFechaIni(f_ini) {
+        this.error_msg.fecha_ini = '';
+        if( f_ini < this.macrociclo.fecha_ini || f_ini > this.macrociclo.fecha_fin ||
+            f_ini < this.mesociclo.fecha_ini  || f_ini > this.mesociclo.fecha_fin  ||
+            f_ini >= this.microciclo.fecha_fin ) {
+          this.error_msg.fecha_ini = "La fecha debe estar dentro del intervalo";
+        }
+        this.setErrorMsgExists();
+      },
+      resetErrorMsg() {
+        this.error_msg = {
+          exists: false,
+          fecha_ini: '',
+          fecha_fin: '',
+        };
+      },
+      setErrorMsgExists() {
+        this.error_msg.exists = this.error_msg.fecha_ini.length > 0 || this.error_msg.fecha_fin.length > 0
+        this.$root.$emit('disable-modal-microciclo-save-button', this.error_msg.exists)
+      },
       setTiposMicrociclo(arr) {
         this.tipos.push({
           value: null,
@@ -154,18 +196,16 @@
             text:  val.desc
           });
         });
-      },
-      onReset() {
-        alert("RESET")
-      },
-      onSubmit() {
-        alert("SUBMIT")
       }
     }
   }
 </script>
 
 <style scoped>
+#errFechaIni,
+#errFechaFin {
+  color:red;
+}
 .macrociclo-wrap p {
   background-color:rgba(255, 192, 203, 0.55);
 }
