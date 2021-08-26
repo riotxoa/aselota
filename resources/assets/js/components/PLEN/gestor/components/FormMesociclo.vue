@@ -28,9 +28,11 @@
             <b-form-input
               id="fechaInicio"
               v-model="mesociclo.fecha_ini"
+              v-on:input="onInputFechaIni"
               type="date"
               required
             ></b-form-input>
+            <p id="errFechaIni" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_ini }}</p>
           </b-form-group>
         </b-col>
         <b-col cols="4">
@@ -38,9 +40,11 @@
             <b-form-input
               id="fechaFin"
               v-model="mesociclo.fecha_fin"
+              v-on:change="onInputFechaFin"
               type="date"
               required
             ></b-form-input>
+            <p id="errFechaFin" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_fin }}</p>
           </b-form-group>
         </b-col>
         <b-col cols="12" md="8">
@@ -77,6 +81,7 @@
   export default {
     data() {
       return {
+        error_msg: null,
         macrociclo_dates: '',
         macrociclo_desc: '',
         show: false,
@@ -88,10 +93,18 @@
       mesociclo: state => state.plen.mesociclo
     }),
     created() {
+      this.resetErrorMsg();
       this.getTiposMesociclo().then( (res) => {
         this.setTiposMesociclo(res);
         this.show = true;
       })
+    },
+    mounted() {
+      this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+        if( 'editMesociclo' == bvEvent.target.id ) {
+          this.resetErrorMsg();
+        }
+      });
     },
     updated() {
       this.macrociclo_desc = this.macrociclo.description;
@@ -101,6 +114,31 @@
       ...mapActions({
         getTiposMesociclo: 'plen/getTiposMesociclo'
       }),
+      onInputFechaFin(f_fin) {
+        this.error_msg.fecha_fin = '';
+        if( f_fin <= this.macrociclo.fecha_ini || f_fin > this.macrociclo.fecha_fin || f_fin <= this.mesociclo.fecha_ini ) {
+          this.error_msg.fecha_fin = "La fecha debe estar dentro del intervalo";
+        }
+        this.setErrorMsgExists();
+      },
+      onInputFechaIni(f_ini) {
+        this.error_msg.fecha_ini = '';
+        if( f_ini < this.macrociclo.fecha_ini || f_ini > this.macrociclo.fecha_fin || f_ini >= this.mesociclo.fecha_fin ) {
+          this.error_msg.fecha_ini = "La fecha debe estar dentro del intervalo";
+        }
+        this.setErrorMsgExists();
+      },
+      resetErrorMsg() {
+        this.error_msg = {
+          exists: false,
+          fecha_ini: '',
+          fecha_fin: '',
+        };
+      },
+      setErrorMsgExists() {
+        this.error_msg.exists = this.error_msg.fecha_ini.length > 0 || this.error_msg.fecha_fin.length > 0
+        this.$root.$emit('disable-modal-mesociclo-save-button', this.error_msg.exists)
+      },
       setTiposMesociclo(arr) {
         this.tipos.push({
           value: null,
@@ -118,6 +156,10 @@
 </script>
 
 <style scoped>
+#errFechaIni,
+#errFechaFin {
+  color:red;
+}
 .macrociclo-wrap p {
   background-color:rgba(255, 192, 203, 0.55);
 }
