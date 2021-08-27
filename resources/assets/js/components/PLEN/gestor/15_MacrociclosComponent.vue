@@ -102,8 +102,7 @@
         </b-col>
       </b-row>
     </b-container>
-    <ModalDialog :ref="dialog.ref"
-                 :title="dialog.title"
+    <ModalDialog :title="dialog.title"
                  :dialog="dialog.content"
                  :ok-title="dialog.okTitle"
                  :cancel-title="dialog.cancelTitle"
