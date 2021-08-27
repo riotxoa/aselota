@@ -102,23 +102,13 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-modal ref="confirm-delete-modal"
-             title="Borrar Macrociclo"
-             @ok="deleteItem"
-             @cancel="cancelDeleteItem"
-             ok-title="Borrar"
-             ok-variant="danger"
-             cancel-title="Cancelar"
-             cancel-variant="secondary">
-      <p>Va a borrar el siguiente Macrociclo:</p>
-      <ul>
-        <li><strong>ID</strong>: {{ item_delete.id }}</li>
-        <li><strong>Fecha inicio:</strong>: {{ formatDateES(item_delete.fecha_ini) }}</li>
-        <li><strong>Fecha fin:</strong>: {{ formatDateES(item_delete.fecha_fin) }}</li>
-        <li><strong>Descripción</strong>: {{ item_delete.description }}</li>
-      </ul>
-      <p>¿Desea continuar?</p>
-    </b-modal>
+    <ModalDialog :ref="dialog.ref"
+                 :title="dialog.title"
+                 :dialog="dialog.content"
+                 :ok-title="dialog.okTitle"
+                 :cancel-title="dialog.cancelTitle"
+                 :ok-function="dialog.okFunction"
+                 :cancel-function="dialog.cancelFunction" />
     <ModalMesociclo />
     <ModalMicrociclo />
   </div>
@@ -131,6 +121,7 @@
   import _ from 'lodash';
 
   import MacroDetails from './components/MacroDetails';
+  import ModalDialog from './components/ModalDialog';
   import ModalMesociclo from './components/ModalMesociclo';
   import ModalMicrociclo from './components/ModalMicrociclo';
 
@@ -144,6 +135,7 @@
         add_new: false,
         currentPage: 1,
         del_index: null,
+        dialog: null,
         edit_index: 0,
         fields: [
           // { key: 'order', label: 'Orden', tdClass: 'w-auto', sortable: true },
@@ -194,6 +186,8 @@
       macrociclos: state => state.plen.macrociclos
     }),
     created() {
+      this.resetModalDialog();
+
       this.getMacrociclos().then( (res) => {
         if( res.length ) {
           this.items = res;
@@ -236,6 +230,25 @@
         if( !this.items_count ) {
           this.items.push(this.item_new);
         }
+      },
+      confirmDeleteMacrociclo() {
+        this.resetModalDialog();
+        this.dialog = {
+          title: 'Borrar Macrociclo',
+          content: `<p>Va a borrar el siguiente Macrociclo:</p> \
+                    <ul> \
+                      <li><strong>ID</strong>: ${this.item_delete.id}</li> \
+                      <li><strong>Fecha inicio:</strong>: ${this.formatDateES(this.item_delete.fecha_ini)}</li> \
+                      <li><strong>Fecha fin:</strong>: ${this.formatDateES(this.item_delete.fecha_fin)}</li> \
+                      <li><strong>Descripción</strong>: ${this.item_delete.description}</li> \
+                    </ul> \
+                    <p>¿Desea continuar?</p>`,
+          okTitle: 'Borrar',
+          cancelTitle: 'Cancelar',
+          okFunction: this.deleteItem,
+          cancelFunction: this.cancelDeleteItem,
+        }
+        this.$root.$emit('bv::show::modal', 'PLENModalDialog');
       },
       deleteItem() {
         this.deleteMacrociclo(this.item_delete.id)
@@ -306,7 +319,7 @@
         this.item_delete.fecha_fin = this.items[index].fecha_fin;
         this.item_delete.description = this.items[index].description;
         this.item_delete.objetivos = this.items[index].objetivos;
-        this.$refs['confirm-delete-modal'].show();
+        this.confirmDeleteMacrociclo();
       },
       onClickSave(index) {
         if( true == this.add_new ) {
@@ -348,6 +361,16 @@
         };
         this.items_count = this.items.length;
       },
+      resetModalDialog() {
+        this.dialog = {
+          title: '',
+          content: '',
+          okTitle: 'Borrar',
+          cancelTitle: 'Cancelar',
+          okFunction: null,
+          cancelFunction: null,
+        }
+      },
       saveItem(index) {
         this.saveMacrociclo(this.item_new)
           .then( (item) => {
@@ -381,6 +404,7 @@
     },
     components: {
       MacroDetails,
+      ModalDialog,
       ModalMesociclo,
       ModalMicrociclo
     }
