@@ -46,7 +46,6 @@ export default {
       axios.post('/www/PLEN/macrociclos', item)
       .then((response) => {
         response.data._showDetails = false;
-        commit('ADD_MACROCICLO', response.data);
         resolve(response.data);
       })
       .catch((error) => {
