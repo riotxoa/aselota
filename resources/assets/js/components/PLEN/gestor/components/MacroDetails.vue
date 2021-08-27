@@ -367,20 +367,18 @@
         }
       },
       onItemRemove(item, callback) {
-        let deleteFunction;
+        let event_id;
 
         switch( item.group ) {
           case 1:
-            deleteFunction = this.deleteMesociclo;
+            event_id = 'delete-mesociclo';
             break;
           case 2:
-            deleteFunction = this.deleteMicrociclo;
+            event_id = 'delete-microciclo';
             break;
         }
-        deleteFunction(item.id).then( () => {
-          _.remove(this.time_items, { id: item.id, group: item.group })
-          callback(item);
-        });
+
+        this.$root.$emit(event_id, () => this.removeItem(item, callback), item);
       },
       onItemUpdate(item, callback) {
         switch( item.group ) {
@@ -397,6 +395,22 @@
             this.$root.$emit("bv::show::modal", "editMicrociclo");
             break;
         }
+      },
+      removeItem(item, callback) {
+        let deleteFunction;
+
+        switch( item.group ) {
+          case 1:
+            deleteFunction = this.deleteMesociclo;
+            break;
+          case 2:
+            deleteFunction = this.deleteMicrociclo;
+            break;
+        }
+        deleteFunction(item.id).then( () => {
+          _.remove(this.time_items, { id: item.id, group: item.group })
+          callback(item);
+        });
       },
       resetEditMesociclo() {
         this.editMesociclo = {

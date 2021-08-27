@@ -186,6 +186,8 @@
     }),
     created() {
       this.resetModalDialog();
+      this.$root.$on('delete-mesociclo', this.confirmDeleteMesociclo);
+      this.$root.$on('delete-microciclo', this.confirmDeleteMicrociclo);
 
       this.getMacrociclos().then( (res) => {
         if( res.length ) {
@@ -230,9 +232,13 @@
           this.items.push(this.item_new);
         }
       },
-      confirmDeleteMacrociclo() {
+      confirmDelete(dialog) {
         this.resetModalDialog();
-        this.dialog = {
+        this.dialog = dialog;
+        this.$root.$emit('bv::show::modal', 'PLENModalDialog');
+      },
+      confirmDeleteMacrociclo() {
+        const dialog = {
           title: 'Borrar Macrociclo',
           content: `<p>Va a borrar el siguiente Macrociclo:</p> \
                     <ul> \
@@ -247,7 +253,41 @@
           okFunction: this.deleteItem,
           cancelFunction: this.cancelDeleteItem,
         }
-        this.$root.$emit('bv::show::modal', 'PLENModalDialog');
+        this.confirmDelete(dialog);
+      },
+      confirmDeleteMesociclo(functionDelete, item) {
+        const dialog = {
+          title: 'Borrar Mesociclo',
+          content: `<p>Va a borrar el siguiente Mesociclo:</p> \
+                    <ul> \
+                      <li><strong>ID</strong>: ${item.mesociclo.id}</li> \
+                      <li><strong>Fecha inicio:</strong>: ${this.formatDateES(item.mesociclo.fecha_ini)}</li> \
+                      <li><strong>Fecha fin:</strong>: ${this.formatDateES(item.mesociclo.fecha_fin)}</li> \
+                      <li><strong>Descripción</strong>: ${item.mesociclo.description}</li> \
+                    </ul> \
+                    <p>¿Desea continuar?</p>`,
+          okTitle: 'Borrar',
+          cancelTitle: 'Cancelar',
+          okFunction: functionDelete
+        }
+        this.confirmDelete(dialog);
+      },
+      confirmDeleteMicrociclo(functionDelete, item) {
+        const dialog = {
+          title: 'Borrar Microciclo',
+          content: `<p>Va a borrar el siguiente Microciclo:</p> \
+                    <ul> \
+                      <li><strong>ID</strong>: ${item.microciclo.id}</li> \
+                      <li><strong>Fecha inicio:</strong>: ${this.formatDateES(item.microciclo.fecha_ini)}</li> \
+                      <li><strong>Fecha fin:</strong>: ${this.formatDateES(item.microciclo.fecha_fin)}</li> \
+                      <li><strong>Descripción</strong>: ${item.microciclo.description}</li> \
+                    </ul> \
+                    <p>¿Desea continuar?</p>`,
+          okTitle: 'Borrar',
+          cancelTitle: 'Cancelar',
+          okFunction: functionDelete
+        }
+        this.confirmDelete(dialog);
       },
       deleteItem() {
         this.deleteMacrociclo(this.item_delete.id)
