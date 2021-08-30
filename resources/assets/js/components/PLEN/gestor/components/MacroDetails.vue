@@ -80,7 +80,8 @@
 
       this.time_items = [
         {
-          id: this.item.id,
+          id: `plen_group_0_${this.item.id}`,
+          plen_id: this.item.id,
           content: this.item.description,
           start: this.item.fecha_ini,
           end: this.item.fecha_fin,
@@ -132,12 +133,13 @@
         if( macrociclo ) {
           const end = moment(item.start).endOf('month').subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
+          item.group = 1;
           item.new = true;
           item.start = ( moment(item.start).isBefore(macrociclo.start) ? macrociclo.start : start );
           item.end = ( moment(end).isAfter(macrociclo.end) ? macrociclo.end : end );
           item.mesociclo = {
             id: item.id,
-            macrociclo_id: macrociclo.id,
+            macrociclo_id: macrociclo.plen_id,
             tipo_mesociclo_id: null,
             fecha_ini: moment(item.start).format("YYYY-MM-DD"),
             fecha_fin: moment(item.end).format("YYYY-MM-DD"),
@@ -148,8 +150,9 @@
           item.content = this.getMesocicloContent(item);
           item.className = 'font-weight-bold mesociclo';
           this.saveMesociclo(item.mesociclo).then( (res) => {
-            item.id = res.id;
-            item.mesociclo.id = item.id;
+            item.id = `plen_group_1_${res.id}`;
+            item.plen_id = res.id;
+            item.mesociclo.id = res.id;
             this.time_items.push(item);
             callback(item);
           })
@@ -170,12 +173,13 @@
         if( mesociclo ) {
           const end = moment(item.start).endOf('week').subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
 
+          item.group = 2;
           item.new = true;
           item.start = ( moment(item.start).isBefore(mesociclo.start) ? mesociclo.start : start );
           item.end = ( moment(end).isAfter(mesociclo.end) ? mesociclo.end : end );
           item.microciclo = {
             id: item.id,
-            mesociclo_id: mesociclo.id,
+            mesociclo_id: mesociclo.plen_id,
             tipo_microciclo_id: null,
             fecha_ini: moment(item.start).format("YYYY-MM-DD"),
             fecha_fin: moment(item.end).format("YYYY-MM-DD"),
@@ -188,7 +192,8 @@
           item.className = 'font-weight-bold microciclo';
 
           this.saveMicrociclo(item.microciclo).then( (res) => {
-            item.id = res.id;
+            item.id = `plen_group_2_${res.id}`;
+            item.plen_id = res.id;
             item.microciclo.id = res.id;
             this.time_items.push(item);
             callback(item);
@@ -207,21 +212,21 @@
       },
       findMacrocicloById(id) {
         return _.find(this.time_items, (o) => {
-          if( o.group === 0 && o.id === id ) {
+          if( o.group === 0 && o.plen_id === id ) {
             return o;
           }
         });
       },
       findMesocicloById(id) {
         return _.find(this.time_items, (o) => {
-          if( o.group === 1 && o.id === id ) {
+          if( o.group === 1 && o.plen_id === id ) {
             return o;
           }
         });
       },
       findMicrocicloById(id) {
         return _.find(this.time_items, (o) => {
-          if( o.group === 2 && o.id === id ) {
+          if( o.group === 2 && o.plen_id === id ) {
             return o;
           }
         });
@@ -256,7 +261,8 @@
 
           mesociclo.group = 1;
           mesociclo.new = false;
-          mesociclo.id = val.id;
+          mesociclo.id = `plen_group_${mesociclo.group}_${val.id}`;
+          mesociclo.plen_id = val.id;
           mesociclo.start = val.fecha_ini;
           mesociclo.end = val.fecha_fin;
           mesociclo.mesociclo = {
@@ -282,7 +288,8 @@
 
           microciclo.group = 2;
           microciclo.new = false;
-          microciclo.id = val.id;
+          microciclo.id = `plen_group_${microciclo.group}_${val.id}`;
+          microciclo.plen_id = val.id;
           microciclo.start = val.fecha_ini;
           microciclo.end = val.fecha_fin;
           microciclo.microciclo = {
@@ -315,7 +322,7 @@
       onItemMoving(item, callback) {
         switch( item.group ) {
           case 1:
-            let mesociclo_1 = this.findMesocicloById(item.id);
+            let mesociclo_1 = this.findMesocicloById(item.plen_id);
 
             const macrociclo_1 = this.findMacrocicloById(item.mesociclo.macrociclo_id);
             const duration_1 = moment(mesociclo_1.end) - moment(mesociclo_1.start);
@@ -340,7 +347,7 @@
             this.updateMesociclo(item.mesociclo);
             break;
           case 2:
-            let microciclo_2 = this.findMicrocicloById(item.id);
+            let microciclo_2 = this.findMicrocicloById(item.plen_id);
 
             const mesociclo_2 = this.findMesocicloById(item.microciclo.mesociclo_id);
             const duration_2 = moment(microciclo_2.end) - moment(microciclo_2.start);
@@ -388,7 +395,7 @@
             this.$root.$emit("bv::show::modal", "editMesociclo");
             break;
           case 2:
-            const mesociclo = _.find(this.macrociclo.mesociclos, { id: item.microciclo.mesociclo_id });
+            const mesociclo = _.find(this.macrociclo.mesociclos, { plen_id: item.microciclo.mesociclo_id });
             this.setMesociclo(mesociclo);
             this.setMicrociclo(item.microciclo);
             this.setEditMicrociclo( item, callback );
@@ -407,8 +414,8 @@
             deleteFunction = this.deleteMicrociclo;
             break;
         }
-        deleteFunction(item.id).then( () => {
-          _.remove(this.time_items, { id: item.id, group: item.group })
+        deleteFunction(item.plen_id).then( () => {
+          _.remove(this.time_items, { plen_id: item.id, group: item.group })
           callback(item);
         });
       },
