@@ -137,6 +137,7 @@
           item.new = true;
           item.start = ( moment(item.start).isBefore(macrociclo.start) ? macrociclo.start : start );
           item.end = ( moment(end).isAfter(macrociclo.end) ? macrociclo.end : end );
+          item.macrociclo_id = macrociclo.plen_id;
           item.mesociclo = {
             id: item.id,
             macrociclo_id: macrociclo.plen_id,
@@ -177,6 +178,7 @@
           item.new = true;
           item.start = ( moment(item.start).isBefore(mesociclo.start) ? mesociclo.start : start );
           item.end = ( moment(end).isAfter(mesociclo.end) ? mesociclo.end : end );
+          item.mesociclo_id = mesociclo.plen_id;
           item.microciclo = {
             id: item.id,
             mesociclo_id: mesociclo.plen_id,
@@ -265,6 +267,7 @@
           mesociclo.plen_id = val.id;
           mesociclo.start = val.fecha_ini;
           mesociclo.end = val.fecha_fin;
+          mesociclo.macrociclo_id = val.macrociclo_id;
           mesociclo.mesociclo = {
             id: val.id,
             macrociclo_id: val.macrociclo_id,
@@ -292,6 +295,7 @@
           microciclo.plen_id = val.id;
           microciclo.start = val.fecha_ini;
           microciclo.end = val.fecha_fin;
+          microciclo.mesociclo_id = val.mesociclo_id;
           microciclo.microciclo = {
             id: val.id,
             mesociclo_id: val.mesociclo_id,
@@ -404,19 +408,26 @@
         }
       },
       removeItem(item, callback) {
-        let deleteFunction;
-
         switch( item.group ) {
           case 1:
-            deleteFunction = this.deleteMesociclo;
+            this.removeMesociclo(item, callback);
             break;
           case 2:
-            deleteFunction = this.deleteMicrociclo;
+            this.removeMicrociclo(item, callback);
             break;
         }
-        deleteFunction(item.plen_id).then( () => {
-          _.remove(this.time_items, { plen_id: item.id, group: item.group })
-          callback(item);
+      },
+      removeMesociclo(item, callback) {
+        this.deleteMesociclo(item.plen_id).then( () => {
+          _.remove(this.time_items, { mesociclo_id: item.plen_id, group: 2 });
+          _.remove(this.time_items, { plen_id: item.plen_id, group: 1 });
+          this.timeline.setItems(this.time_items);
+        });
+      },
+      removeMicrociclo(item, callback) {
+        this.deleteMicrociclo(item.plen_id).then( () => {
+          _.remove(this.time_items, { plen_id: item.plen_id, group: 2});
+          this.timeline.setItems(this.time_items);
         });
       },
       resetEditMesociclo() {
