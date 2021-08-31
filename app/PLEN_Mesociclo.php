@@ -19,7 +19,7 @@ class PLEN_Mesociclo extends Model
     ];
 
     public function microciclos() {
-      return $this->hasMany('App\PLEN_Microciclo');
+      return $this->hasMany('App\PLEN_Microciclo', 'mesociclo_id');
     }
 
     public function tipo_mesociclo() {

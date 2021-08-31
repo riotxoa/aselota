@@ -21,7 +21,7 @@ class PLEN_Microciclo extends Model
     ];
 
     public function sesiones() {
-      return $this->hasMany('App\PLEN_Sesion');
+      return $this->hasMany('App\PLEN_Sesion', 'microciclo_id');
     }
 
     public function tipo_microciclo() {
