@@ -16,12 +16,14 @@ class CreatePlenSesionessTable extends Migration
         Schema::create('plen_sesiones', function (Blueprint $table) {
             $table->increments('id');
             $table->smallInteger('order')->nullable()->default(0);
+            $table->unsignedInteger('microciclo_id')->nullable();
             $table->date('fecha')->nullable();
             $table->time('hora')->nullable();
             $table->unsignedInteger('fronton_id')->nullable();
             $table->timestamps();
 
             $table->foreign('fronton_id')->references('id')->on('frontones');
+            $table->foreign('microciclo_id')->references('id')->on('plen_microciclos');
         });
     }
 

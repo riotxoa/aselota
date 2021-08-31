@@ -10,6 +10,7 @@ class PLEN_Sesion extends Model
 
     protected $fillable = [
       'order',
+      'microciclo_id',
       'fecha',
       'hora',
       'fronton_id',
