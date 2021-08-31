@@ -399,7 +399,7 @@
             this.$root.$emit("bv::show::modal", "editMesociclo");
             break;
           case 2:
-            const mesociclo = _.find(this.macrociclo.mesociclos, { plen_id: item.microciclo.mesociclo_id });
+            const mesociclo = _.find(this.macrociclo.mesociclos, { id: item.microciclo.mesociclo_id });
             this.setMesociclo(mesociclo);
             this.setMicrociclo(item.microciclo);
             this.setEditMicrociclo( item, callback );
