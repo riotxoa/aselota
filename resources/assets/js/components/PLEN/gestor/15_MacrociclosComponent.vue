@@ -247,7 +247,8 @@
                       <li><strong>Fecha fin:</strong>: ${this.formatDateES(this.item_delete.fecha_fin)}</li> \
                       <li><strong>Descripción</strong>: ${this.item_delete.description}</li> \
                     </ul> \
-                    <p>¿Desea continuar?</p>`,
+                    <p class="mb-1">¿Desea continuar?</p> \
+                    <p style="color:red" class="border font-weight-bold mb-1 px-1 small text-center">También se eliminarán los Mesociclos, Microciclos y Sesiones relacionados con este Macrociclo.</p>`,
           okTitle: 'Borrar',
           cancelTitle: 'Cancelar',
           okFunction: this.deleteItem,
@@ -265,7 +266,8 @@
                       <li><strong>Fecha fin:</strong>: ${this.formatDateES(item.mesociclo.fecha_fin)}</li> \
                       <li><strong>Descripción</strong>: ${item.mesociclo.description}</li> \
                     </ul> \
-                    <p>¿Desea continuar?</p>`,
+                    <p class="mb-1">¿Desea continuar?</p> \
+                    <p style="color:red" class="border font-weight-bold mb-1 px-1 small text-center">También se eliminarán los Microciclos y Sesiones relacionados con este Mesociclo.</p>`,
           okTitle: 'Borrar',
           cancelTitle: 'Cancelar',
           okFunction: functionDelete
@@ -282,7 +284,8 @@
                       <li><strong>Fecha fin:</strong>: ${this.formatDateES(item.microciclo.fecha_fin)}</li> \
                       <li><strong>Descripción</strong>: ${item.microciclo.description}</li> \
                     </ul> \
-                    <p>¿Desea continuar?</p>`,
+                    <p class="mb-1">¿Desea continuar?</p> \
+                    <p style="color:red" class="border font-weight-bold mb-1 px-1 small text-center">También se eliminarán las Sesiones relacionados con este Microciclo.</p>`,
           okTitle: 'Borrar',
           cancelTitle: 'Cancelar',
           okFunction: functionDelete
