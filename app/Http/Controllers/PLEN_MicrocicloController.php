@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\PLEN_Microciclo;
 
-use Illuminate\Support\Facades\Log;
-
 class PLEN_MicrocicloController extends Controller
 {
     /**
@@ -128,7 +126,11 @@ class PLEN_MicrocicloController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-        PLEN_Microciclo::destroy($id);
+        $microciclo = PLEN_Microciclo::find($id);
+        foreach( $microciclo->sesiones as $sesion ) {
+          $sesion->delete();
+        }
+        $microciclo->delete();
 
         return response()->json("MICROCICLO ELIMINADO", 200);
     }

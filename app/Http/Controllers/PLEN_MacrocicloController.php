@@ -108,23 +108,20 @@ class PLEN_MacrocicloController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['admin', 'plen_gestor']);
+      $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-        $mesociclos = \App\PLEN_Mesociclo::where('macrociclo_id', '=', $id)->get();
-        foreach( $mesociclos as $mesociclo ) {
-          $microciclos = \App\PLEN_Microciclo::where('mesociclo_id', '=', $mesociclo->$id)->get();
-          foreach( $microciclos as $microciclo ) {
-            $sesiones = \App\PLEN_Sesion::where('microciclo_id', '=', $microciclo->id)->get();
-            foreach( $sesiones as $sesion ) {
-              \App\PLEN_Sesion::destroy($sesion->id);
-            }
-            \App\PLEN_Microciclo::destroy($microciclo->id);
+      $macrociclo = PLEN_Macrociclo::find($id);
+      foreach( $macrociclo->mesociclos as $mesociclo ) {
+        foreach( $mesociclo->microciclos as $microciclo ) {
+          foreach( $microciclo->sesiones as $sesion ) {
+            $sesion->delete();
           }
-          \App\PLEN_Mesociclo::destroy($mesociclo->id);
+          $microciclo->delete();
         }
+        $mesociclo->delete();
+      }
+      $macrociclo->delete();
 
-        PLEN_Macrociclo::destroy($id);
-
-        return response()->json("MACROCILO ELIMINADO", 200);
+      return response()->json("MACROCILO ELIMINADO", 200);
     }
 }

@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\PLEN_Mesociclo;
 
-use Illuminate\Support\Facades\Log;
-
 class PLEN_MesocicloController extends Controller
 {
     /**
@@ -68,15 +66,13 @@ class PLEN_MesocicloController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-        Log::debug("[show] id: $id");
-
         $items = PLEN_Mesociclo::where('macrociclo_id', $id)->orderBy('order', 'asc')->get();
 
         foreach( $items as $index => $mesociclo ) {
           $microciclos = \App\PLEN_Microciclo::where('mesociclo_id', $mesociclo->id)->orderBy('fecha_ini', 'ASC')->get();
           $items[$index]->microciclos = $microciclos;
         }
-  
+
         return response()->json($items, 200);
     }
 
@@ -129,7 +125,14 @@ class PLEN_MesocicloController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-        PLEN_Mesociclo::destroy($id);
+        $mesociclo = PLEN_Mesociclo::find($id);
+        foreach( $mesociclo->microciclos as $microciclo ) {
+          foreach( $microciclo->sesiones as $sesion ) {
+            $sesion->delete();
+          }
+          $microciclo->delete();
+        }
+        $mesociclo->delete();
 
         return response()->json("MESOCILO ELIMINADO", 200);
     }
