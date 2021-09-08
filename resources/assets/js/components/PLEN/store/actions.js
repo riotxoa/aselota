@@ -105,6 +105,7 @@ export default {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/mesociclos', item)
       .then((response) => {
+        commit('ADD_MESOCICLO_TO_MACROCICLO', response.data)
         resolve(response.data);
       })
       .catch((error) => {

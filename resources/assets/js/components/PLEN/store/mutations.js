@@ -3,6 +3,9 @@ export default {
   ADD_MACROCICLO( state, value ) {
     state.macrociclos.unshift(value);
   },
+  ADD_MESOCICLO_TO_MACROCICLO( state, value ) {
+    state.macrociclo.mesociclos.unshift(value)
+  },
 
   RESET_MACROCICLOS( state ) {
     state.macrociclos = [];
