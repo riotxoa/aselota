@@ -32,7 +32,7 @@
         time_options: {
           orientation: 'top', //Add the timeline to the top
           itemsAlwaysDraggable: true, // Dont have to click for moving entries around
-          clickToUse: true,
+          clickToUse: false,
           editable: {
             add: true,
             remove: true,
