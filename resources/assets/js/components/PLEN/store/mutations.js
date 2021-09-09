@@ -32,6 +32,11 @@ export default {
     state.macrociclo = value;
   },
 
+  UPDATE_MESOCICLO_FROM_MACROCICLO( state, value ) {
+    const index = state.macrociclo.mesociclos.findIndex(mesociclo => mesociclo.id === value.id)
+    state.macrociclo.mesociclos[index] = value
+  },
+
   // Tabla principal: Mesociclos
   ADD_MESOCICLO( state, value ) {
     state.macrociclo.mesociclos.unshift(value);

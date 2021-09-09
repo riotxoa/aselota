@@ -123,6 +123,7 @@ export default {
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/mesociclos/' + item.id, item)
       .then((response) => {
+        commit('UPDATE_MESOCICLO_FROM_MACROCICLO', response.data)
         resolve(response.data);
       })
       .catch((error) => {
