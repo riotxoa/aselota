@@ -31,7 +31,7 @@
         time_items: [],
         time_options: {
           orientation: 'top', //Add the timeline to the top
-          itemsAlwaysDraggable: true, // Dont have to click for moving entries around
+          itemsAlwaysDraggable: false, // Dont have to click for moving entries around
           clickToUse: false,
           editable: {
             add: true,
@@ -47,13 +47,22 @@
             }
           },
           locale: 'es',
+          margin: {
+            axis: 0,
+            item: {
+              horizontal: 0,
+              vertical: 0
+            }
+          },
           onAdd: this.onItemAdd,
+          onMove: this.onItemMove,
           onMoving: this.onItemMoving,
           onRemove: this.onItemRemove,
           onUpdate: this.onItemUpdate,
           showWeekScale: false,
           timeAxis: {
             scale: 'week',
+            step: 1,
           },
           tooltipOnItemUpdateTime: {
             template: function (item) {
@@ -61,8 +70,8 @@
             },
           },
           type: 'range',
-          start: this.item.fecha_ini,
-          end: this.item.fecha_fin,
+          start: moment(this.item.fecha_ini).subtract(2, 'weeks').startOf('week'),
+          end: moment(this.item.fecha_fin).add(2, 'weeks').endOf('week')
         },
         timeline: null,
       }
@@ -83,8 +92,8 @@
           id: `plen_group_0_${this.item.id}`,
           plen_id: this.item.id,
           content: this.item.description,
-          start: this.item.fecha_ini,
-          end: this.item.fecha_fin,
+          start: moment(this.item.fecha_ini).startOf('day'),
+          end: moment(this.item.fecha_fin).endOf('day'),
           group: 0,
           selectable: false,
           editable: false,
@@ -120,18 +129,37 @@
         updateMesociclo: 'plen/updateMesociclo',
         updateMicrociclo: 'plen/updateMicrociclo',
       }),
+      addItemToMicrocicloArrayInMesociclo(item) {
+        const meso_index = _.findIndex(this.time_items, { group: 1, plen_id: item.mesociclo_id });
+        this.time_items[meso_index].mesociclo.microciclos.push(item.microciclo);
+        this.timeline.setItems(this.time_items);
+      },
       addMesociclo(item, callback) {
-        const start = moment(item.start).startOf('month').add(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
-
-        if( this.findSuitableMesociclo(start) ) {
-          alert("No puede crear 2 mesociclos que cubran la misma fecha");
-          return;
-        }
-
-        const macrociclo = this.findSuitableMacrociclo(start);
+        const macrociclo = this.findSuitableMacrociclo(item.start);
 
         if( macrociclo ) {
-          const end = moment(item.start).endOf('month').subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
+          let start = null
+          let end = null
+
+          start = moment(item.start).startOf('month').startOf('week');
+
+          if( moment(start).isBefore(macrociclo.start) ) {
+            start = moment(macrociclo.start).startOf('day');
+          }
+
+          // if( this.findSuitableMesociclo(start) ) {
+          //   alert("No puede crear 2 mesociclos que cubran la misma fecha");
+          //   return;
+          // }
+
+          end = moment(start).day(8).endOf('month').day('Sunday').endOf('day');
+
+          if( 6 === moment(end).endOf('month').weekday() ) {
+            end = moment(end).endOf('month')
+          }
+          if( moment(end).endOf('month').format('YYYY-MM-DD') == moment(macrociclo.end).endOf('day').format('YYYY-MM-DD') ) {
+            end = moment(macrociclo.end).endOf('day')
+          }
 
           item.group = 1;
           item.new = true;
@@ -162,17 +190,24 @@
         }
       },
       addMicrociclo(item, callback) {
-        const start = moment(item.start).startOf('week').add(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
-
-        if( this.findSuitableMicrociclo(start) ) {
-          alert("No puede crear 2 microcilos que cubran la misma fecha");
-          return;
-        }
-
-        const mesociclo = this.findSuitableMesociclo(start);
+        const mesociclo = this.findSuitableMesociclo(item.start);
 
         if( mesociclo ) {
-          const end = moment(item.start).endOf('week').subtract(1, 'hours').format('YYYY-MM-DD HH:mm:ss');
+          let start = null
+          let end = null
+
+          start = moment(item.start).startOf('week');
+
+          if( moment(start).isBefore(mesociclo.start) ) {
+            start = moment(mesociclo.start).startOf('day');
+          }
+
+          // if( this.findSuitableMicrociclo(start) ) {
+          //   alert("No puede crear 2 microcilos que cubran la misma fecha");
+          //   return;
+          // }
+
+          end = moment(item.start).endOf('week');
 
           item.group = 2;
           item.new = true;
@@ -197,6 +232,7 @@
             item.id = `plen_group_2_${res.id}`;
             item.plen_id = res.id;
             item.microciclo.id = res.id;
+            this.addItemToMicrocicloArrayInMesociclo(item);
             this.time_items.push(item);
             callback(item);
           });
@@ -211,6 +247,61 @@
       cancelEditMicrociclo() {
         this.setMicrociclo(this.editMicrociclo.item);
         this.resetEditMicrociclo();
+      },
+      checkDateAfterLimit(end, limit) {
+        var isAfterLimit = false;
+
+        if( moment(end).endOf('day') > moment(limit).endOf('day') ) {
+          isAfterLimit = true;
+        }
+
+        return isAfterLimit;
+      },
+      checkDateBeforeLimit(start, limit) {
+        var isBeforeLimit = false;
+
+        if( moment(start).startOf('day') < moment(limit).startOf('day') ) {
+          isBeforeLimit = true;
+        }
+
+        return isBeforeLimit
+      },
+      dragMicrociclos(item) {
+        const mesociclo = this.findMesocicloById(item.plen_id);
+        const new_duration = Math.round(moment.duration(moment(item.end) - moment(item.start)).asDays());
+        const old_duration = Math.round(moment.duration(moment(mesociclo.end) - moment(mesociclo.start)).asDays());
+
+        if( item.mesociclo.microciclos.length && new_duration === old_duration ) {
+          let gap = 0;
+          let index = 0;
+          let microciclos = [];
+          let new_fecha_ini = null;
+          let new_fecha_fin = null;
+          let old_fecha_ini = null;
+          let old_fecha_fin = null;
+
+          gap = Math.round(moment.duration(moment(item.start) - moment(mesociclo.start)).asDays());
+
+          microciclos = _.filter(this.time_items, { group: 2, mesociclo_id: item.plen_id })
+
+          microciclos.map( (val, key) => {
+            old_fecha_ini = moment(item.mesociclo.microciclos[key].fecha_ini);
+            old_fecha_fin = moment(item.mesociclo.microciclos[key].fecha_fin);
+            new_fecha_ini = moment(old_fecha_ini).add(gap, 'days');
+            new_fecha_fin = moment(old_fecha_fin).add(gap, 'days');
+
+            index = _.findIndex(this.time_items, { group: 2, plen_id: val.plen_id });
+
+            item.mesociclo.microciclos[key].fecha_ini = new_fecha_ini.format('YYYY-MM-DD');
+            item.mesociclo.microciclos[key].fecha_fin = new_fecha_fin.format('YYYY-MM-DD');
+
+            this.time_items[index].start = new_fecha_ini.startOf('day').format('YYYY-MM-DD HH:mm:ss');
+            this.time_items[index].end = new_fecha_fin.endOf('day').format('YYYY-MM-DD HH:mm:ss');
+            this.time_items[index].content = this.getMicrocicloContent(this.time_items[index]);
+
+            this.updateMicrociclo(item.mesociclo.microciclos[key]);
+          });
+        }
       },
       findMacrocicloById(id) {
         return _.find(this.time_items, (o) => {
@@ -265,18 +356,18 @@
           mesociclo.new = false;
           mesociclo.id = `plen_group_${mesociclo.group}_${val.id}`;
           mesociclo.plen_id = val.id;
-          mesociclo.start = val.fecha_ini;
-          mesociclo.end = val.fecha_fin;
+          mesociclo.start = moment(val.fecha_ini).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+          mesociclo.end = moment(val.fecha_fin).endOf('day').format('YYYY-MM-DD HH:mm:ss');
           mesociclo.macrociclo_id = val.macrociclo_id;
           mesociclo.mesociclo = {
             id: val.id,
             macrociclo_id: val.macrociclo_id,
             tipo_mesociclo_id: val.tipo_mesociclo_id,
-            fecha_ini: val.fecha_ini,
-            fecha_fin: val.fecha_fin,
+            fecha_ini: val.fecha_ini, //moment(val.fecha_ini),
+            fecha_fin: val.fecha_fin, //moment(val.fecha_fin),
             description: val.description,
             objetivos: val.objetivos,
-            microciclos: [],
+            microciclos: val.microciclos,
           }
           mesociclo.content = this.getMesocicloContent(mesociclo);
           mesociclo.className = 'font-weight-bold mesociclo';
@@ -293,8 +384,8 @@
           microciclo.new = false;
           microciclo.id = `plen_group_${microciclo.group}_${val.id}`;
           microciclo.plen_id = val.id;
-          microciclo.start = val.fecha_ini;
-          microciclo.end = val.fecha_fin;
+          microciclo.start = moment(val.fecha_ini).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+          microciclo.end = moment(val.fecha_fin).endOf('day').format('YYYY-MM-DD HH:mm:ss');
           microciclo.mesociclo_id = val.mesociclo_id;
           microciclo.microciclo = {
             id: val.id,
@@ -323,59 +414,135 @@
             break;
         }
       },
-      onItemMoving(item, callback) {
+      onItemMove(item, callback) {
         switch( item.group ) {
           case 1:
-            let mesociclo_1 = this.findMesocicloById(item.plen_id);
-
-            const macrociclo_1 = this.findMacrocicloById(item.mesociclo.macrociclo_id);
-            const duration_1 = moment(mesociclo_1.end) - moment(mesociclo_1.start);
-
-            if( moment(item.start).isBetween(moment(macrociclo_1.start), moment(macrociclo_1.end), undefined, '[]') &&
-                moment(item.end).isBetween(moment(macrociclo_1.start), moment(macrociclo_1.end), undefined, '[]') ) {
-              mesociclo_1.start = item.start;
-              mesociclo_1.end = item.end;
-              item.content = this.getMesocicloContent(item);
-            } else if( moment(item.start).isBefore(moment(macrociclo_1.start)) ) {
-              item.start = macrociclo_1.start;
-              item.end = moment(item.start).add(duration_1).format('YYYY-MM-DD HH:mm:ss');
-              item.content = this.getMesocicloContent(item);
-            } else if( moment(item.end).isAfter(moment(macrociclo_1.end)) ) {
-              item.end = macrociclo_1.end;
-              item.start = moment(item.end).subtract(duration_1).format('YYYY-MM-DD HH:mm:ss');
-              item.content = this.getMesocicloContent(item);
-            }
-            item.mesociclo.fecha_ini = moment(item.start).format('YYYY-MM-DD');
-            item.mesociclo.fecha_fin = moment(item.end).format('YYYY-MM-DD');
-            callback(item);
+            this.dragMicrociclos(item);
             this.updateMesociclo(item.mesociclo);
             break;
           case 2:
-            let microciclo_2 = this.findMicrocicloById(item.plen_id);
-
-            const mesociclo_2 = this.findMesocicloById(item.microciclo.mesociclo_id);
-            const duration_2 = moment(microciclo_2.end) - moment(microciclo_2.start);
-
-            if( moment(item.start).isBetween(moment(mesociclo_2.start), moment(mesociclo_2.end), undefined, '[]') &&
-                moment(item.end).isBetween(moment(mesociclo_2.start), moment(mesociclo_2.end), undefined, '[]') ) {
-              microciclo_2.start = item.start;
-              microciclo_2.end = item.end;
-              item.content = this.getMicrocicloContent( item );
-            } else if( moment(item.start).isBefore(moment(mesociclo_2.start)) ) {
-              item.start = mesociclo_2.start;
-              item.end = moment(item.start).add(duration_2).format('YYYY-MM-DD HH:mm:ss');
-              item.content = this.getMicrocicloContent( item );
-            } else if( moment(item.end).isAfter(moment(mesociclo_2.end)) ) {
-              item.end = mesociclo_2.end;
-              item.start = moment(item.end).subtract(duration_2).format('YYYY-MM-DD HH:mm:ss');
-              item.content = this.getMicrocicloContent( item );
-            }
-            item.microciclo.fecha_ini = moment(item.start).format('YYYY-MM-DD');
-            item.microciclo.fecha_fin = moment(item.end).format('YYYY-MM-DD');
-            callback(item);
+            this.updateMicrocicloArrayInMesociclo(item);
             this.updateMicrociclo(item.microciclo);
             break;
+          default:
+            break;
         }
+        this.updateTimelineItem(item);
+        callback(item);
+      },
+      onItemMoving(item, callback) {
+        switch( item.group ) {
+          case 1:
+            this.onMesocicloMoving(item, callback);
+            break;
+          case 2:
+            this.onMicrocicloMoving(item, callback);
+            break;
+          default:
+            break;
+        }
+      },
+      onMesocicloMoving(item, callback) {
+        // Corrección para que la fecha final siempre coincida con domingo
+        item.end = moment(item.end).day('Sunday').endOf('day');
+        if( this.checkDateBeforeLimit(item.end, item.start) ) {
+          item.end = moment(item.start).add(6, 'days').endOf('day');
+        }
+
+        const macrociclo = this.findMacrocicloById(item.mesociclo.macrociclo_id);
+        const mesociclo = this.findMesocicloById(item.plen_id);
+        const new_duration = Math.round(moment.duration(moment(item.end) - moment(item.start)).asDays());
+        const old_duration = Math.round(moment.duration(moment(mesociclo.end) - moment(mesociclo.start)).asDays());
+        let gap = 0;
+        let max_end = null;
+        let min_start = null;
+
+        if( new_duration === old_duration ) {
+          if( this.checkDateBeforeLimit(item.start, macrociclo.start) ) {
+            gap = Math.round(moment.duration(moment(mesociclo.start) - moment(macrociclo.start)).asDays());
+            item.start = moment(mesociclo.start).subtract(gap, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss');
+            item.end   = moment(mesociclo.end).subtract(gap, 'days').endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          };
+          if( this.checkDateAfterLimit(item.end, macrociclo.end) ) {
+            gap = Math.round(moment.duration(moment(macrociclo.end) - moment(mesociclo.end)).asDays());
+            item.start = moment(mesociclo.start).add(gap, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss');
+            item.end   = moment(mesociclo.end).add(gap, 'days').endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          };
+        } else {
+          min_start = item.start;
+          max_end = item.end;
+
+          if( item.mesociclo.microciclos.length ) {
+            var micro = null;
+
+            micro = _.minBy(item.mesociclo.microciclos, (val) => {
+              return moment(val.fecha_ini);
+            });
+            min_start = micro.fecha_ini;
+
+            micro = _.maxBy(item.mesociclo.microciclos, (val) => {
+              return moment(val.fecha_fin);
+            });
+            max_end = micro.fecha_fin
+          }
+
+          if( this.checkDateBeforeLimit(item.start, macrociclo.start) ) {
+            item.start = moment(macrociclo.start).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+          } else if( this.checkDateBeforeLimit(min_start, item.start) ) {
+            item.start = moment(min_start).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+          }
+
+          if( this.checkDateAfterLimit(item.end, macrociclo.end) ) {
+            item.end = moment(macrociclo.end).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          } else if( this.checkDateAfterLimit(max_end, item.end) ) {
+            item.end = moment(max_end).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          }
+        }
+
+        item.content = this.getMesocicloContent(item);
+        item.mesociclo.fecha_ini = moment(item.start).format('YYYY-MM-DD');
+        item.mesociclo.fecha_fin = moment(item.end).format('YYYY-MM-DD');
+
+        callback(item);
+      },
+      onMicrocicloMoving(item, callback) {
+        // Corrección para que la fecha final siempre coincida con domingo
+        item.end = moment(item.end).day("Sunday").endOf('day');
+        if( this.checkDateBeforeLimit(item.end, item.start) ) {
+          item.end = moment(item.start).add(6, 'days').endOf('day');
+        }
+
+        const mesociclo = this.findMesocicloById(item.microciclo.mesociclo_id);
+        const microciclo = this.findMicrocicloById(item.plen_id);
+        const new_duration = Math.round(moment.duration(moment(item.end) - moment(item.start)).asDays());
+        const old_duration = Math.round(moment.duration(moment(microciclo.end) - moment(microciclo.start)).asDays());
+        let gap = 0;
+
+        if( new_duration === old_duration ) {
+          if( this.checkDateBeforeLimit(item.start, mesociclo.start) ) {
+            gap = Math.round(moment.duration(moment(microciclo.start) - moment(mesociclo.start)).asDays());
+            item.start = moment(microciclo.start).subtract(gap, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss');
+            item.end   = moment(microciclo.end).subtract(gap, 'days').endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          };
+          if( this.checkDateAfterLimit(item.end, mesociclo.end) ) {
+            gap = Math.round(moment.duration(moment(mesociclo.end) - moment(microciclo.end)).asDays());
+            item.start = moment(microciclo.start).add(gap, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss');
+            item.end   = moment(microciclo.end).add(gap, 'days').endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          };
+        } else {
+          if( this.checkDateBeforeLimit(item.start, mesociclo.start) ) {
+            item.start = moment(mesociclo.start).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+          }
+          if( this.checkDateAfterLimit(item.end, mesociclo.end) ) {
+            item.end = moment(mesociclo.end).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+          }
+        }
+
+        item.content = this.getMicrocicloContent(item);
+        item.microciclo.fecha_ini = moment(item.start).format('YYYY-MM-DD');
+        item.microciclo.fecha_fin = moment(item.end).format('YYYY-MM-DD');
+
+        callback(item);
       },
       onItemRemove(item, callback) {
         let event_id;
@@ -426,7 +593,12 @@
       },
       removeMicrociclo(item, callback) {
         this.deleteMicrociclo(item.plen_id).then( () => {
+          // Eliminar microciclo del array dentro del mesociclo
+          const mesoIndex = _.findIndex(this.time_items, { plen_id: item.mesociclo_id, group: 1 });
+          _.remove(this.time_items[mesoIndex].mesociclo.microciclos, { id: item.plen_id });
+          // Eliminar microciclo del timeline
           _.remove(this.time_items, { plen_id: item.plen_id, group: 2});
+          // Actualizar timeline
           this.timeline.setItems(this.time_items);
         });
       },
@@ -445,8 +617,8 @@
       saveEditMesociclo() {
         const index = _.findIndex(this.time_items, { id: this.editMesociclo.item.id, group: 1 });
         this.time_items[index].mesociclo = this.mesociclo;
-        this.time_items[index].start = moment(this.mesociclo.fecha_ini).format('YYYY-MM-DD');
-        this.time_items[index].end = moment(this.mesociclo.fecha_fin).format('YYYY-MM-DD');
+        this.time_items[index].start = moment(this.mesociclo.fecha_ini).startOf('day'); // .format('YYYY-MM-DD');
+        this.time_items[index].end = moment(this.mesociclo.fecha_fin).endOf('day'); // .format('YYYY-MM-DD');
         this.time_items[index].content = this.getMesocicloContent(this.time_items[index]);
 
         this.editMesociclo.callback(this.time_items[index]);
@@ -477,23 +649,46 @@
           item: item,
           callback: callback
         }
-      }
+      },
+      updateMicrocicloArrayInMesociclo(item) {
+        const meso_index = _.findIndex(this.time_items, { group: 1, plen_id: item.mesociclo_id });
+        const micro_index = _.findIndex(this.time_items[meso_index].mesociclo.microciclos, { id: item.plen_id });
+
+        this.time_items[meso_index].mesociclo.microciclos[micro_index] = item.microciclo;
+      },
+      updateTimelineItem(item) {
+        const index =_.findIndex(this.time_items, { group: item.group, plen_id: item.plen_id });
+
+        this.time_items[index] = item;
+        this.timeline.setItems(this.time_items);
+      },
     }
   }
 </script>
 
 <style>
-  .macrociclo {
-    background-color:#c82333;
-    color:#ffffff;
-  }
+  .macrociclo,
   .mesociclo {
-    background-color:#007bff;
     color:#ffffff;
   }
-  .microciclo {
-    background-color:slategray;
-    color:#ffffff;
+  .vis-group .macrociclo {
+    background-color:#c82333;
+  }
+  .vis-group .mesociclo:nth-child(2n) {
+    background-color:#007bff;
+  }
+  .vis-group .mesociclo:nth-child(2n+1) {
+    background-color:#2b8400;
+  }
+  .vis-group .mesociclo.vis-selected {
+    background-color:#ff8400;
+  }
+  .vis-group .microciclo {
+    background-color:goldenrod;
+    color:darkslategray;
+  }
+  .vis-group .microciclo.vis-selected {
+    background-color:greenyellow;
   }
   .vis-item-content p {
     line-height:1;
