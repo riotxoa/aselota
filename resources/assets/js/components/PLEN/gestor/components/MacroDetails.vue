@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="py-5">
     <div :id="visualization_id"></div>
   </div>
 </template>
@@ -671,6 +671,8 @@
   .macrociclo,
   .mesociclo {
     color:#ffffff;
+    text-align:center;
+    width:100%;
   }
   .vis-group .macrociclo {
     background-color:#c82333;
