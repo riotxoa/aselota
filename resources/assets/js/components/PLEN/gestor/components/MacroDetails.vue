@@ -694,4 +694,8 @@
     line-height:1;
     margin:0;
   }
+  .vis-time-axis .vis-text {
+    font-weight:bold;
+    text-transform:uppercase;
+  }
 </style>
