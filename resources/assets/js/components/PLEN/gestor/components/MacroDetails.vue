@@ -60,6 +60,7 @@
           onRemove: this.onItemRemove,
           onUpdate: this.onItemUpdate,
           showWeekScale: false,
+          showMinorLabels: false,
           timeAxis: {
             scale: 'week',
             step: 1,
