@@ -182,6 +182,8 @@
           }
           item.content = this.getMesocicloContent(item);
           item.className = 'font-weight-bold mesociclo';
+          item.style = this.getMesocicloStyle(item.mesociclo.tipo_mesociclo_id);
+
           this.saveMesociclo(item.mesociclo).then( (res) => {
             item.id = `plen_group_1_${res.id}`;
             item.plen_id = res.id;
@@ -232,6 +234,7 @@
           }
           item.content = this.getMicrocicloContent( item );
           item.className = 'font-weight-bold microciclo';
+          item.style = this.getMesocicloStyle(mesociclo.mesociclo.tipo_mesociclo_id);
 
           this.saveMicrociclo(item.microciclo).then( (res) => {
             item.id = `plen_group_2_${res.id}`;
@@ -434,7 +437,7 @@
         let fecha_ini = moment(item.start).format('DD/MM');
 
         if( item.mesociclo.tipo_mesociclo_id ) {
-          description = this.tiposMesociclo[item.mesociclo.tipo_mesociclo_id];
+          description = this.tiposMesociclo[item.mesociclo.tipo_mesociclo_id].desc;
         } else if( item.mesociclo.description && item.mesociclo.description.length ) {
           description = item.mesociclo.description;
         } else {
@@ -442,6 +445,9 @@
         }
 
         return "<p>" + description + "</p><p><small>" + fecha_ini + " - " + fecha_fin + "</small></p>";
+      },
+      getMesocicloStyle( tipo_mesociclo_id ) {
+        return (tipo_mesociclo_id ? 'background-color:' + this.tiposMesociclo[tipo_mesociclo_id].color : '');
       },
       getMicrocicloContent( item ) {
         let description = '';
@@ -517,6 +523,7 @@
           }
           mesociclo.content = this.getMesocicloContent(mesociclo);
           mesociclo.className = 'font-weight-bold mesociclo';
+          mesociclo.style = this.getMesocicloStyle(val.tipo_mesociclo_id);
           this.time_items.push(mesociclo);
 
           this.loadMicrociclos(val.microciclos);
@@ -524,6 +531,7 @@
       },
       loadMicrociclos(microciclos) {
         microciclos.map( (val, key) => {
+          let mesociclo = _.find(this.time_items, { group: 1, plen_id: val.mesociclo_id });
           let microciclo = {};
 
           microciclo.group = 2;
@@ -547,6 +555,7 @@
           }
           microciclo.content = this.getMicrocicloContent(microciclo);
           microciclo.className = 'font-weight-bold microciclo';
+          microciclo.style = this.getMesocicloStyle(mesociclo.mesociclo.tipo_mesociclo_id);
           this.time_items.push(microciclo);
 
           this.loadSesiones(microciclo);
@@ -890,11 +899,18 @@
         this.time_items[index].start = moment(this.mesociclo.fecha_ini).startOf('day'); // .format('YYYY-MM-DD');
         this.time_items[index].end = moment(this.mesociclo.fecha_fin).endOf('day'); // .format('YYYY-MM-DD');
         this.time_items[index].content = this.getMesocicloContent(this.time_items[index]);
+        this.time_items[index].style = this.getMesocicloStyle(this.mesociclo.tipo_mesociclo_id);
+
+        this.mesociclo.microciclos.map( (val) => {
+          const microIndex = _.findIndex(this.time_items, { group: 2, plen_id: val.id });
+          this.time_items[microIndex].style = this.getMesocicloStyle(this.mesociclo.tipo_mesociclo_id);
+        })
 
         this.editMesociclo.callback(this.time_items[index]);
 
         this.updateMesociclo(this.mesociclo);
         this.resetEditMesociclo();
+        this.timeline.setItems(this.time_items);
       },
       saveEditMicrociclo() {
         const index = _.findIndex(this.time_items, { id: this.editMicrociclo.item.id, group: 2 });
@@ -938,7 +954,10 @@
       },
       setTiposMesociclo(arr) {
         arr.map( (val) => {
-          this.tiposMesociclo[val.id] = val.desc;
+          this.tiposMesociclo[val.id] = {
+            desc: val.desc,
+            color: val.color
+          }
         });
       },
       setTiposMicrociclo(arr) {
@@ -977,21 +996,32 @@
   }
 
   .vis-group .mesociclo:nth-child(2n) {
-    background-color:#007bff;
+    background-color:#676767;
   }
   .vis-group .mesociclo:nth-child(2n+1) {
-    background-color:#2b8400;
+    background-color:#676767;
   }
-  .vis-group .mesociclo.vis-selected {
-    background-color:#ff8400;
+  .vis-group .mesociclo.vis-selected,
+  .vis-group .microciclo.vis-selected,
+  .vis-group .sesion.vis-selected {
+    background-color:greenyellow!important;
+    color:darkslategray;
   }
 
   .vis-group .microciclo {
-    background-color:goldenrod;
+    /* background-color:goldenrod; */
+    background-color:#ead9ff;
     color:darkslategray;
   }
-  .vis-group .microciclo.vis-selected {
-    background-color:greenyellow;
+  .vis-group .microciclo::before {
+    background-color:rgba(255,255,255,0.5);
+    content:" ";
+    position:absolute;
+
+    bottom:0;
+    left:0;
+    right:0;
+    top:0;
   }
   .vis-group .microciclo .vis-item-content,
   .vis-group .sesion .vis-item-content {
