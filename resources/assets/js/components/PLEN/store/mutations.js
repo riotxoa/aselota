@@ -104,8 +104,38 @@ export default {
   SET_MICROCICLO( state, value )  {
     state.microciclo = value;
   },
+
+  // Tabla principal: Sesiones
+  ADD_SESION( state, value ) {
+    state.microciclo.sesioness.unshift(value);
+  },
+
+  RESET_SESIONES( state ) {
+    state.microciclo.sesiones = [];
+  },
+  RESET_SESION( state ) {
+    state.sesion = {
+      id: null,
+      order: null,
+      microciclo_id: null,
+      fecha: null,
+      hora: null,
+      fronton_id: null,
+      ejercicios: []
+    }
+  },
+
   SET_SESIONES( state, value ) {
     state.microciclo.sesiones = value;
+  },
+  SET_SESION_ID( state, value ) {
+    state.sesion.id = value;
+  },
+  SET_SESION( state, value )  {
+    state.sesion = value;
+  },
+  SET_EJERCICIOS( state, value ) {
+    state.sesion.ejercicios = value;
   },
 
   // Tabla principal: Ejercicios

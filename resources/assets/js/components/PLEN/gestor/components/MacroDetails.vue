@@ -6,12 +6,13 @@
 
 <script>
   import { mapActions, mapState } from 'vuex';
-
+  import APIGetters from '../../../utils/getters.js';
   import { Timeline } from 'vis-timeline/standalone';
   import moment from 'moment';
 
   export default {
     props: ['item'],
+    mixins: [ APIGetters ],
     data() {
       return {
         editMesociclo: {
@@ -22,11 +23,16 @@
           item: null,
           callback: null
         },
+        editSesion: {
+          item: null,
+          callback: null
+        },
         visualization_id: "visualization_",
         time_groups: [
           { id: 0, content: 'Macrociclo' , style: 'height:15px' },
           { id: 1, content: 'Mesociclos' , style: 'height:15px' },
           { id: 2, content: 'Microciclos', style: 'height:15px' },
+          { id: 3, content: 'Sesiones'   , style: 'height:15px' },
         ],
         time_items: [],
         time_options: {
@@ -90,9 +96,11 @@
     computed: mapState({
       macrociclo: state => state.plen.macrociclo,
       mesociclo:  state => state.plen.mesociclo,
-      microciclo: state => state.plen.microciclo
+      microciclo: state => state.plen.microciclo,
+      sesion:     state => state.plen.sesion,
     }),
     created() {
+      this.getFrontones();
       this.visualization_id = "visualization_" + this.item.id;
       this.getTiposMesociclo().then( (tMeso) => {
         this.getTiposMicrociclo().then( (tMicro) => {
@@ -106,19 +114,28 @@
       ...mapActions({
         deleteMesociclo: 'plen/deleteMesociclo',
         deleteMicrociclo: 'plen/deleteMicrociclo',
+        deleteSesion: 'plen/deleteSesion',
         getTiposMesociclo: 'plen/getTiposMesociclo',
         getTiposMicrociclo: 'plen/getTiposMicrociclo',
         saveMesociclo: 'plen/saveMesociclo',
         saveMicrociclo: 'plen/saveMicrociclo',
+        saveSesion: 'plen/saveSesion',
         setMacrociclo: 'plen/setMacrociclo',
         setMesociclo: 'plen/setMesociclo',
         setMicrociclo: 'plen/setMicrociclo',
+        setSesion: 'plen/setSesion',
         updateMesociclo: 'plen/updateMesociclo',
         updateMicrociclo: 'plen/updateMicrociclo',
+        updateSesion: 'plen/updateSesion',
       }),
       addItemToMicrocicloArrayInMesociclo(item) {
         const meso_index = _.findIndex(this.time_items, { group: 1, plen_id: item.mesociclo_id });
         this.time_items[meso_index].mesociclo.microciclos.push(item.microciclo);
+        this.timeline.setItems(this.time_items);
+      },
+      addItemToSesionArrayInMicrociclo(item) {
+        const micro_index = _.findIndex(this.time_items, { group: 2, plen_id: item.microciclo_id });
+        this.time_items[micro_index].microciclo.sesiones.push(item.sesion);
         this.timeline.setItems(this.time_items);
       },
       addMesociclo(item, callback) {
@@ -210,7 +227,8 @@
             volumen: null,
             intensidad: null,
             description: "",
-            objetivos: ""
+            objetivos: "",
+            sesiones: []
           }
           item.content = this.getMicrocicloContent( item );
           item.className = 'font-weight-bold microciclo';
@@ -227,6 +245,37 @@
           alert("Debe seleccionar una fecha dentro de un Mesociclo");
         }
       },
+      addSesion(item, callback) {
+        const microciclo = this.findSuitableMicrociclo(item.start);
+
+        if( microciclo ) {
+          item.group = 3;
+          item.new = true;
+          item.start = microciclo.start;
+          item.end = microciclo.end;
+          item.microciclo_id = microciclo.plen_id;
+          item.sesion = {
+            id: item.id,
+            microciclo_id: microciclo.plen_id,
+            fecha: moment(item.start).format("YYYY-MM-DD"),
+            hora: null,
+            fronton_id: null
+          }
+          item.content = this.getSesionContent( item );
+          item.className = 'font-weight-bold sesion';
+
+          this.saveSesion(item.sesion).then( (res) => {
+            item.id = `plen_group_3_${res.id}`;
+            item.plen_id = res.id;
+            item.sesion.id = res.id;
+            this.addItemToSesionArrayInMicrociclo(item);
+            this.time_items.push(item);
+            callback(item);
+          });
+        } else {
+          alert("Debe seleccionar una fecha dentro de un Microciclo");
+        }
+      },
       cancelEditMesociclo() {
         this.setMesociclo(this.editMesociclo.item);
         this.resetEditMesociclo();
@@ -234,6 +283,10 @@
       cancelEditMicrociclo() {
         this.setMicrociclo(this.editMicrociclo.item);
         this.resetEditMicrociclo();
+      },
+      cancelEditSesion() {
+        this.setSesion(this.editSesion.item);
+        this.resetEditSesion();
       },
       checkDateAfterLimit(end, limit) {
         var isAfterLimit = false;
@@ -286,7 +339,43 @@
             this.time_items[index].end = new_fecha_fin.endOf('day').format('YYYY-MM-DD HH:mm:ss');
             this.time_items[index].content = this.getMicrocicloContent(this.time_items[index]);
 
+            this.dragSesiones(this.time_items[index], gap);
+
             this.updateMicrociclo(item.mesociclo.microciclos[key]);
+          });
+        }
+      },
+      dragSesiones(item, gap) {
+        const duration = Math.round(moment.duration(moment(item.end) - moment(item.start)).asDays());
+        const microciclo = this.findMicrocicloById(item.plen_id);
+
+        if( !gap ) {
+          gap = Math.round(moment.duration(moment(item.start) - moment(microciclo.start)).asDays());
+        }
+
+        if( item.microciclo.sesiones.length ) {
+          let index = 0;
+          let sesiones = [];
+          let new_fecha = null;
+          let old_fecha = null;
+
+          sesiones = _.filter(this.time_items, { group: 3, microciclo_id: item.plen_id })
+
+          sesiones.map( (val, key) => {
+            old_fecha = moment(item.microciclo.sesiones[key].fecha);
+            new_fecha = moment(old_fecha).add(gap, 'days');
+
+            index = _.findIndex(this.time_items, { group: 3, id: val.id });
+
+            item.microciclo.sesiones[key].fecha = new_fecha.format('YYYY-MM-DD');
+
+
+            this.time_items[index].start = moment(this.time_items[index].start).add(gap, 'days'); // microciclo.start;
+            this.time_items[index].end = moment(this.time_items[index].start).add(duration, 'days'); // microciclo.end;
+            this.time_items[index].sesion = item.microciclo.sesiones[key];
+            this.time_items[index].content = this.getSesionContent(this.time_items[index]);
+
+            this.updateSesion(item.microciclo.sesiones[key]);
           });
         }
       },
@@ -311,6 +400,13 @@
           }
         });
       },
+      findSesionById(id) {
+        return _.find(this.time_items, (o) => {
+          if( o.group === 3 && o.plen_id === id ) {
+            return o;
+          }
+        });
+      },
       findSuitableItem(start, group) {
         return _.find(this.time_items, (e) => {
           if( e.group === group ) {
@@ -328,6 +424,9 @@
       },
       findSuitableMicrociclo(start) {
         return this.findSuitableItem(start, 2);
+      },
+      findSuitableSesion(start) {
+        return this.findSuitableItem(start, 3);
       },
       getMesocicloContent( item ) {
         let description = "";
@@ -387,6 +486,14 @@
       getMicrocicloHTMLVolumen( volumen ) {
         return this.getMicrocicloHTMLRows( volumen );
       },
+      getSesionContent( item ) {
+        const fronton = _.find(this.frontones, { value: item.sesion.fronton_id });
+        let fecha = moment(item.sesion.fecha).locale('es').format('D MMM');
+        let hora = (item.sesion.hora ? item.sesion.hora.substr(0, 5) : '&nbsp;');
+        let frontonText = (item.sesion.fronton_id ? fronton.text : '&nbsp;');
+
+        return "<p><small><strong>" + fecha.toUpperCase() + "</strong></small></p><p><small>" + hora + "</small></p><p><small>" + frontonText + "</small></p>";
+      },
       loadMesociclos() {
         this.item.mesociclos.map( (val, key) => {
           let mesociclo = {};
@@ -435,12 +542,39 @@
             volumen: val.volumen,
             intensidad: val.intensidad,
             description: val.description,
-            objetivos: val.objetivos
+            objetivos: val.objetivos,
+            sesiones: val.sesiones,
           }
           microciclo.content = this.getMicrocicloContent(microciclo);
           microciclo.className = 'font-weight-bold microciclo';
           this.time_items.push(microciclo);
+
+          this.loadSesiones(microciclo);
         });
+      },
+      loadSesiones(microciclo) {
+        microciclo.microciclo.sesiones.map( (val, key) => {
+          let sesion = {};
+
+          sesion.group = 3;
+          sesion.new = false;
+          sesion.id = `plen_group_${sesion.group}_${val.id}`;
+          sesion.plen_id = val.id;
+          sesion.start = microciclo.start;
+          sesion.end = microciclo.end;
+          sesion.microciclo_id = val.microciclo_id;
+          sesion.sesion = {
+            id: val.id,
+            microciclo_id: val.microciclo_id,
+            fecha: val.fecha,
+            hora: val.hora,
+            fronton_id: val.fronton_id,
+            ejercicios: val.ejercicios,
+          }
+          sesion.content = this.getSesionContent(sesion);
+          sesion.className = 'font-weight-bold sesion';
+          this.time_items.push(sesion);
+        } );
       },
       loadTimeline() {
         this.setMacrociclo(this.item);
@@ -474,6 +608,9 @@
 
         this.$root.$on('saveEditMicrociclo', this.saveEditMicrociclo);
         this.$root.$on('cancelEditMicrociclo', this.cancelEditMicrociclo);
+
+        this.$root.$on('saveEditSesion', this.saveEditSesion);
+        this.$root.$on('cancelEditSesion', this.cancelEditSesion);
       },
       onItemAdd(item, callback) {
         moment.locale('es');
@@ -484,6 +621,12 @@
           case 2:
             this.addMicrociclo(item, callback);
             break;
+          case 3:
+            this.addSesion(item, callback);
+            break;
+          default:
+            callback(item);
+            break;
         }
       },
       onItemMove(item, callback) {
@@ -493,10 +636,14 @@
             this.updateMesociclo(item.mesociclo);
             break;
           case 2:
+            this.dragSesiones(item, 0);
             this.updateMicrocicloArrayInMesociclo(item);
             this.updateMicrociclo(item.microciclo);
             break;
+          case 3:
+            break;
           default:
+            callback(item);
             break;
         }
         this.updateTimelineItem(item);
@@ -510,7 +657,10 @@
           case 2:
             this.onMicrocicloMoving(item, callback);
             break;
+          case 3:
+            break;
           default:
+            callback(item);
             break;
         }
       },
@@ -626,6 +776,12 @@
           case 2:
             event_id = 'delete-microciclo';
             break;
+          case 3:
+            event_id = 'delete-sesion';
+            break;
+          default:
+            callback(item);
+            break;
         }
 
         this.$root.$emit(event_id, () => this.removeItem(item, callback), item);
@@ -638,11 +794,23 @@
             this.$root.$emit("bv::show::modal", "editMesociclo");
             break;
           case 2:
-            const mesociclo = _.find(this.macrociclo.mesociclos, { id: item.microciclo.mesociclo_id });
+            mesociclo = _.find(this.macrociclo.mesociclos, { id: item.microciclo.mesociclo_id });
             this.setMesociclo(mesociclo);
             this.setMicrociclo(item.microciclo);
             this.setEditMicrociclo( item, callback );
             this.$root.$emit("bv::show::modal", "editMicrociclo");
+            break;
+          case 3:
+            let microciclo = _.find(this.time_items, { group: 2, plen_id: item.microciclo_id });
+            let mesociclo = _.find(this.time_items, { group: 1, plen_id: microciclo.mesociclo_id });
+            this.setMesociclo(mesociclo.mesociclo);
+            this.setMicrociclo(microciclo.microciclo);
+            this.setSesion(item.sesion);
+            this.setEditSesion( item, callback );
+            this.$root.$emit("bv::show::modal", "editSesion");
+            break;
+          default:
+            callback(item);
             break;
         }
       },
@@ -654,11 +822,22 @@
           case 2:
             this.removeMicrociclo(item, callback);
             break;
+          case 3:
+            this.removeSesion(item, callback);
+            break;
         }
       },
       removeMesociclo(item, callback) {
         this.deleteMesociclo(item.plen_id).then( () => {
+          // Sesiones
+          item.mesociclo.microciclos.map( (val) => {
+            val.sesiones.map( (o) => {
+              _.remove(this.time_items, { microciclo_id: o.microciclo_id, group: 3 });
+            })
+          });
+          // Microciclos
           _.remove(this.time_items, { mesociclo_id: item.plen_id, group: 2 });
+          // Mesociclo
           _.remove(this.time_items, { plen_id: item.plen_id, group: 1 });
           this.timeline.setItems(this.time_items);
         });
@@ -668,8 +847,21 @@
           // Eliminar microciclo del array dentro del mesociclo
           const mesoIndex = _.findIndex(this.time_items, { plen_id: item.mesociclo_id, group: 1 });
           _.remove(this.time_items[mesoIndex].mesociclo.microciclos, { id: item.plen_id });
+          // Eliminar Sesiones
+          _.remove(this.time_items, { microciclo_id: item.plen_id, group: 3 });
           // Eliminar microciclo del timeline
           _.remove(this.time_items, { plen_id: item.plen_id, group: 2});
+          // Actualizar timeline
+          this.timeline.setItems(this.time_items);
+        });
+      },
+      removeSesion(item, callback) {
+        this.deleteSesion(item.plen_id).then( () => {
+          // Eliminar sesión del array dentro del microciclo
+          const microIndex = _.findIndex(this.time_items, { plen_id: item.microciclo_id, group: 2 });
+          _.remove(this.time_items[microIndex].microciclo.sesiones, { id: item.plen_id });
+          // Eliminar sesión del timeline
+          _.remove(this.time_items, { plen_id: item.plen_id, group: 3});
           // Actualizar timeline
           this.timeline.setItems(this.time_items);
         });
@@ -682,6 +874,12 @@
       },
       resetEditMicrociclo() {
         this.editMicrociclo = {
+          item: null,
+          callback: null
+        }
+      },
+      resetEditSesion() {
+        this.editSesion = {
           item: null,
           callback: null
         }
@@ -710,6 +908,16 @@
         this.updateMicrociclo(this.microciclo);
         this.resetEditMicrociclo();
       },
+      saveEditSesion() {
+        const index = _.findIndex(this.time_items, { id: this.editSesion.item.id, group: 3 });
+        this.time_items[index].sesion = this.sesion;
+        this.time_items[index].content = this.getSesionContent(this.time_items[index]);
+
+        this.editSesion.callback(this.time_items[index]);
+
+        this.updateSesion(this.sesion);
+        this.resetEditSesion();
+      },
       setEditMesociclo( item, callback ) {
         this.editMesociclo = {
           item: item,
@@ -718,6 +926,12 @@
       },
       setEditMicrociclo( item, callback ) {
         this.editMicrociclo = {
+          item: item,
+          callback: callback
+        }
+      },
+      setEditSesion( item, callback ) {
+        this.editSesion = {
           item: item,
           callback: callback
         }
@@ -751,7 +965,8 @@
 <style>
   .macrociclo,
   .mesociclo,
-  .microciclo {
+  .microciclo,
+  .sesion {
     color:#ffffff;
     text-align:center;
     width:100%;
@@ -778,7 +993,8 @@
   .vis-group .microciclo.vis-selected {
     background-color:greenyellow;
   }
-  .vis-group .microciclo .vis-item-content {
+  .vis-group .microciclo .vis-item-content,
+  .vis-group .sesion .vis-item-content {
     display:block;
     padding-bottom:0;
   }
@@ -811,6 +1027,11 @@
   }
   .vis-group .microciclo .vis-item-content article:last-of-type p span {
     background-color:green;
+  }
+
+  .vis-group .sesion {
+    background-color:lightgray;
+    color:darkslategray;
   }
 
   .vis-item.vis-range .vis-item-content {

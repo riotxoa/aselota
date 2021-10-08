@@ -37,6 +37,15 @@ export default {
     objetivos: '',
     sesiones: []
   },
+  sesion: {
+    id: null,
+    order: null,
+    microciclo_id: null,
+    fecha: null,
+    hora: null,
+    fronton_id: null,
+    ejercicios: []
+  },
 
   // Ejercicios
   ejercicios: [],

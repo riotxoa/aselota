@@ -14,7 +14,7 @@ class FrontonController extends Controller
      */
     public function index(Request $request)
     {
-      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
+      $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico', 'plen_gestor']);
 
       $frontones = \App\Fronton::orderBy('name', 'asc')->get();
 

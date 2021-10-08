@@ -185,6 +185,59 @@ export default {
     });
   },
 
+  // Tabla Sesiones
+  deleteSesion( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.delete('/www/PLEN/sesiones/' + id)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  getSesiones( { commit }, id ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/sesiones/' + id)
+        .then( (res) => {
+          commit('SET_SESIONES', res.data);
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  resetSesion( { commit } ) {
+    commit('RESET_SESION');
+  },
+  saveSesion( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.post('/www/PLEN/sesiones', item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+  setSesion( { commit }, value ) {
+    commit('SET_SESION', value);
+  },
+  updateSesion( { commit }, item ) {
+    return new Promise( (resolve, reject) => {
+      axios.put('/www/PLEN/sesiones/' + item.id, item)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  },
+
   // Tabla 40_Ejercicios
   addEjercicio( { commit }, item ) {
     commit('ADD_EJERCICIO', item);

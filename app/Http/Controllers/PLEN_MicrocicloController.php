@@ -68,9 +68,12 @@ class PLEN_MicrocicloController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-        Log::debug("[show] id: $id");
-
         $items = PLEN_Microciclo::where('mesociclo_id', $id)->orderBy('order', 'asc')->get();
+
+        foreach( $items as $index => $microciclo ) {
+          $sesiones = \App\PLEN_Sesion::where('microciclo_id', $microciclo->id)->orderBy('fecha', 'ASC')->get();
+          $items[$index]->sesiones = $sesiones;
+        }
 
         return response()->json($items, 200);
     }

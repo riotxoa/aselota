@@ -110,6 +110,7 @@
                  :cancel-function="dialog.cancelFunction" />
     <ModalMesociclo />
     <ModalMicrociclo />
+    <ModalSesion />
   </div>
 </template>
 
@@ -123,6 +124,7 @@
   import ModalDialog from './components/ModalDialog';
   import ModalMesociclo from './components/ModalMesociclo';
   import ModalMicrociclo from './components/ModalMicrociclo';
+  import ModalSesion from './components/ModalSesion';
 
   // Drag the slider Totally useless vue range slider: https://vuejsexamples.com/drag-the-slider-totally-useless-vue-range-slider/
   // Horizontal calendar <<- OSO ITXURA ONA ->> https://medium.com/@casperbottelet/building-a-horizontal-calendar-with-vuejs-and-vis-js-part-1-3-2322b7e7ff
@@ -188,6 +190,7 @@
       this.resetModalDialog();
       this.$root.$on('delete-mesociclo', this.confirmDeleteMesociclo);
       this.$root.$on('delete-microciclo', this.confirmDeleteMicrociclo);
+      this.$root.$on('delete-sesion', this.confirmDeleteSesion);
 
       this.getMacrociclos().then( (res) => {
         if( res.length ) {
@@ -283,6 +286,24 @@
                       <li><strong>Fecha inicio:</strong>: ${this.formatDateES(item.microciclo.fecha_ini)}</li> \
                       <li><strong>Fecha fin:</strong>: ${this.formatDateES(item.microciclo.fecha_fin)}</li> \
                       <li><strong>Descripción</strong>: ${item.microciclo.description}</li> \
+                    </ul> \
+                    <p class="mb-1">¿Desea continuar?</p> \
+                    <p style="color:red" class="border font-weight-bold mb-1 px-1 small text-center">También se eliminarán las Sesiones relacionados con este Microciclo.</p>`,
+          okTitle: 'Borrar',
+          cancelTitle: 'Cancelar',
+          okFunction: functionDelete
+        }
+        this.confirmDelete(dialog);
+      },
+      confirmDeleteSesion(functionDelete, item) {
+        const dialog = {
+          title: 'Borrar Sesión',
+          content: `<p>Va a borrar la siguiente Sesión:</p> \
+                    <ul> \
+                      <li><strong>ID</strong>: ${item.sesion.id}</li> \
+                      <li><strong>Fecha</strong>: ${this.formatDateES(item.sesion.fecha)}</li> \
+                      <li><strong>Hora</strong>: ${item.sesion.hora}</li> \
+                      <li><strong>Frontón</strong>: ${item.sesion.fronton_id}</li> \
                     </ul> \
                     <p class="mb-1">¿Desea continuar?</p> \
                     <p style="color:red" class="border font-weight-bold mb-1 px-1 small text-center">También se eliminarán las Sesiones relacionados con este Microciclo.</p>`,
@@ -448,7 +469,8 @@
       MacroDetails,
       ModalDialog,
       ModalMesociclo,
-      ModalMicrociclo
+      ModalMicrociclo,
+      ModalSesion
     }
   }
 </script>

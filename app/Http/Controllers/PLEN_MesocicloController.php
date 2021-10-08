@@ -68,9 +68,13 @@ class PLEN_MesocicloController extends Controller
 
         $items = PLEN_Mesociclo::where('macrociclo_id', $id)->orderBy('order', 'asc')->get();
 
-        foreach( $items as $index => $mesociclo ) {
+        foreach( $items as $index01 => $mesociclo ) {
           $microciclos = \App\PLEN_Microciclo::where('mesociclo_id', $mesociclo->id)->orderBy('fecha_ini', 'ASC')->get();
-          $items[$index]->microciclos = $microciclos;
+          foreach( $microciclos as $index02 => $microciclo ) {
+            $sesiones = \App\PLEN_Sesion::where('microciclo_id', $microciclo->id)->orderBy('fecha', 'ASC')->get();
+            $microciclos[$index02]->sesiones = $sesiones;
+          }
+          $items[$index01]->microciclos = $microciclos;
         }
 
         return response()->json($items, 200);
