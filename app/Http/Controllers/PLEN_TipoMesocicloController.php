@@ -43,7 +43,8 @@ class PLEN_TipoMesocicloController extends Controller
 
         $item = new PLEN_TipoMesociclo([
           'order' => $request->get('order'),
-          'desc' => $request->get('desc')
+          'desc' => $request->get('desc'),
+          'color' => $request->get('color')
         ]);
 
         $item->save();
@@ -88,6 +89,7 @@ class PLEN_TipoMesocicloController extends Controller
 
         $item->order = $request->get('order');
         $item->desc = $request->get('desc');
+        $item->color = $request->get('color');
 
         $item->save();
 

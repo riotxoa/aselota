@@ -26,6 +26,10 @@
           </input>
           <div v-else>{{ row.item.desc }}</div>
         </template>
+        <template slot="color" slot-scope="row">
+          <verte v-if="edit_index && ( edit_index == row.index + 1 )"  picker="square" v-model="item_new.color" model="hex"></verte>
+          <div v-else><span v-bind:style="{ backgroundColor: row.item.color }" style="border-radius: 100%; color:transparent; display:block; margin:0 auto; height:25px; width:25px;">{{ row.item.color }}</span></div>
+        </template>
         <template slot="actions" slot-scope="row" v-if="items_count || edit_index">
           <div v-if="edit_index && ( edit_index == row.index + 1 )">
             <b-button size="sm" title="Guardar" variant="success" @click="onClickSave(row.index)"><i class="far fa-save"></i></b-button>
@@ -76,6 +80,9 @@
   import { mapActions } from 'vuex';
   import $ from 'jquery';
 
+  import Verte from 'verte';
+  import 'verte/dist/verte.css';
+
   export default {
     data() {
       return {
@@ -86,22 +93,26 @@
         fields: [
           { key: 'order', label: 'Orden', sortable: true },
           { key: 'desc', label: 'Descripción', sortable: true },
+          { key: 'color', label: 'Color', sortable: true },
           { key: 'actions', label: 'Acciones', sortable: false },
         ],
         item_backup: {
           id: null,
           order:null,
           desc:'',
+          color:null,
         },
         item_delete: {
           id: null,
           order: null,
           desc: '',
+          color:null,
         },
         item_new: {
           id: null,
           order:null,
           desc: '',
+          color:null,
         },
         items: [],
         items_count: 0,
@@ -186,6 +197,7 @@
         } else {
           this.items[index].order = this.item_backup.order;
           this.items[index].desc  = this.item_backup.desc;
+          this.items[index].color = this.item_backup.color;
           this.resetItemBackup();
         }
         this.edit_index = 0;
@@ -194,6 +206,7 @@
         this.item_backup.id = this.items[index].id;
         this.item_backup.order = this.items[index].order;
         this.item_backup.desc  = this.items[index].desc;
+        this.item_backup.color   = this.items[index].color;
         this.item_new = this.item_backup;
         this.edit_index = index + 1;
         this.focusOnOrder();
@@ -203,6 +216,7 @@
         this.item_delete.id = this.items[index].id;
         this.item_delete.order = this.items[index].order;
         this.item_delete.desc = this.items[index].desc;
+        this.item_delete.color = this.items[index].color;
         this.$refs['confirm-delete-modal'].show();
       },
       onClickSave(index) {
@@ -217,6 +231,7 @@
           id: null,
           order: null,
           desc: '',
+          color: null,
         };
       },
       resetItemDelete() {
@@ -224,6 +239,7 @@
           id: null,
           order: null,
           desc: '',
+          color: null,
         };
         this.del_index = null;
       },
@@ -232,10 +248,12 @@
           id: null,
           order: null,
           desc: '',
+          color: null,
         };
         this.items_count = this.items.length;
       },
       saveItem(index) {
+        console.log('[saveItem] this.item_new: ', this.item_new);
         this.saveTipo(this.item_new)
           .then( (item) => {
             this.resetItemNew();
@@ -249,12 +267,14 @@
           });
       },
       updateItem(index) {
+        console.log('[updateItem] this.item_new: ', this.item_new);
         this.updateTipo(this.item_new)
         .then( (item) => {
           this.resetItemNew();
           this.items[index].id = item.id;
           this.items[index].order = item.order;
           this.items[index].desc = item.desc;
+          this.items[index].color = item.color;
           this.edit_index = 0;
           this.showSnackBar("TIPO actualizado");
         })
@@ -262,7 +282,10 @@
           alert("updateItem AKATSA");
         });
       }
-    }
+    },
+    components: {
+      Verte,
+    },
   }
 </script>
 

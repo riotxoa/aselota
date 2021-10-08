@@ -10,6 +10,7 @@ class PLEN_TipoMesociclo extends Model
 
     protected $fillable = [
       'order',
-      'desc'
+      'desc',
+      'color'
     ];
 }
