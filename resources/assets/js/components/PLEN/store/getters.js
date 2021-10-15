@@ -15,4 +15,6 @@ export default {
   fase: state => state.fase,
   subtipos_ejercicio: state => state.subtipos_ejercicio,
   tipos_ejercicio: state => state.tipos_ejercicio,
+
+  pelotaris: state => state.pelotaris,
 }

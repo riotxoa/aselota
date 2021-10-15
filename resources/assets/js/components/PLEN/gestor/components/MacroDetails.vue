@@ -578,6 +578,7 @@
             fecha: val.fecha,
             hora: val.hora,
             fronton_id: val.fronton_id,
+            pelotaris: val.pelotaris,
             ejercicios: val.ejercicios,
           }
           sesion.content = this.getSesionContent(sesion);

@@ -44,6 +44,9 @@
         this.sesion_backup.fecha = this.sesion.fecha;
         this.sesion_backup.hora = this.sesion.hora;
         this.sesion_backup.fronton_id = this.sesion.fronton_id;
+        this.sesion.pelotaris.map( (val, key) => {
+          this.sesion_backup.pelotaris[key] = val;
+        });
       },
       onShowModal() {
         this.makeSesionBackup();
@@ -54,7 +57,8 @@
           microciclo_id: null,
           fecha: null,
           hora: null,
-          fronton_id: null
+          fronton_id: null,
+          pelotaris: [],
         };
       },
       restoreSesionBackup() {
@@ -63,7 +67,10 @@
         this.sesion.fecha = this.sesion_backup.fecha;
         this.sesion.hora = this.sesion_backup.hora;
         this.sesion.fronton_id = this.sesion_backup.fronton_id;
-        this.resetSesionBackup();
+        this.sesion.pelotaris = [];
+        this.sesion_backup.pelotaris.map( (val, key) => {
+          this.sesion.pelotaris[key] = val;
+        })
       },
       saveSesion() {
         this.$root.$emit('saveEditSesion');

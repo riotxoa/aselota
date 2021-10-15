@@ -121,6 +121,7 @@ export default {
       fecha: null,
       hora: null,
       fronton_id: null,
+      pelotaris: [],
       ejercicios: []
     }
   },
@@ -134,7 +135,10 @@ export default {
   SET_SESION( state, value )  {
     state.sesion = value;
   },
-  SET_EJERCICIOS( state, value ) {
+  SET_SESION_PELOTARIS( state, value ) {
+    state.sesion.pelotaris = value;
+  },
+  SET_SESION_EJERCICIOS( state, value ) {
     state.sesion.ejercicios = value;
   },
 
@@ -215,5 +219,13 @@ export default {
   },
   SET_TIPOS_EJERCICIO( state, value ) {
     state.tipos_ejercicio = value;
-  }
+  },
+
+  // Pelotaris
+  RESET_PELOTARIS( state ) {
+    state.pelotaris = [];
+  },
+  SET_PELOTARIS( state, value ) {
+    state.pelotaris = value;
+  },
 }

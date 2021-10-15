@@ -44,6 +44,7 @@ export default {
     fecha: null,
     hora: null,
     fronton_id: null,
+    pelotaris: [],
     ejercicios: []
   },
 
@@ -76,4 +77,7 @@ export default {
   },
   subtipos_ejercicio: [],
   tipos_ejercicio: [],
+
+  // Pelotaris
+  pelotaris: [],
 }
