@@ -18,14 +18,42 @@ class PelotariController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
+        $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico', 'plen_gestor']);
 
         $get_partidos_jugados = false;
+
+        // Según el rol del usuario, se devuelven unos campos u otros
+        $user = $request->user();
+        $role = $user->role->name;
+        $extended_select = false;
+        $select = array();
+        switch( $role ) {
+          case 'plen_gestor':
+            $select = array(
+              'pelotaris.id',
+              'pelotaris.num_trabajador',
+              'pelotaris.fecha_nac',
+              'pelotaris.alias',
+              'pelotaris.nombre',
+              'pelotaris.apellidos',
+              'pelotaris.posicion',
+              'pelotaris.email',
+              'pelotaris.telefono',
+              'pelotaris.foto',
+              'provincias.name as provincia',
+              'municipios.name as municipio'
+            );
+            break;
+          default:
+            $select = array('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio');
+            $extended_select = true;
+            break;
+        }
 
         $items = DB::table('pelotaris')
           ->leftJoin('provincias', 'pelotaris.provincia_id', '=', 'provincias.id')
           ->leftJoin('municipios', 'pelotaris.municipio_id', '=', 'municipios.id')
-          ->select('pelotaris.*', 'provincias.name as provincia', 'municipios.name as municipio')
+          ->select($select)
           ->where('pelotaris.deleted_at', null);
 
         if($request->get('fecha')) {
@@ -43,7 +71,10 @@ class PelotariController extends Controller
                          ->whereDate('c1.fecha_fin', '>=', $three_months_ago)
                          ->whereDate('cc1.fecha_ini', '<=', $fecha)
                          ->whereDate('cc1.fecha_fin', '>=', $three_months_ago)
-                         ->whereNull('c1.deleted_at')->addSelect('c1.fecha_ini as fecha_contrato', 'cc1.coste', 'c1.garantia');
+                         ->whereNull('c1.deleted_at');
+          if( $extended_select ) {
+            $items = $items->addSelect('c1.fecha_ini as fecha_contrato', 'cc1.coste', 'c1.garantia');
+          }
         }
 
         if($request->get('fecha_ini')) {
@@ -62,13 +93,16 @@ class PelotariController extends Controller
                          ->where('ch2.disabled', '=', 0)
                          ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
                          ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
-                         ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.fecha_fin as fecha_fin_contrato', 'c2.garantia');
+                         ->whereNull('c2.deleted_at');
+          if( $extended_select ) {
+            $items = $items->addSelect('c2.fecha_ini as fecha_contrato', 'c2.fecha_fin as fecha_fin_contrato', 'c2.garantia');
+          }
         }
 
         $items = $items->orderBy('alias')
                        ->get();
 
-        if($get_partidos_jugados) {
+        if($get_partidos_jugados && $extended_select) {
           $fecha = ( $request->get('fecha') ? $request->get('fecha') : $request->get('fecha_fin'));
           foreach($items as $key => $item) {
             $items[$key]->partidos_jugados = Pelotari::get_partidos_jugados_contrato($item->id, $fecha);

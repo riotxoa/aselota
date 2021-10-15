@@ -64,8 +64,6 @@ class PLEN_SesionController extends Controller
     {
         $request->user()->authorizeRoles(['admin', 'plen_gestor']);
 
-        Log::debug("[show] id: $id");
-
         $items = PLEN_Sesion::where('microciclo_id', $id)->orderBy('fecha', 'asc')->get();
 
         return response()->json($items, 200);
@@ -102,8 +100,15 @@ class PLEN_SesionController extends Controller
         $item->fecha = $request->get('fecha');
         $item->hora = $request->get('hora');
         $item->fronton_id = $request->get('fronton_id');
+        $item->pelotaris()->detach();
 
         $item->save();
+
+        $pelotaris = $request->get('pelotaris');
+        foreach( $pelotaris as $pelotari ) {
+          $item->pelotaris()->attach($pelotari['id']);
+        }
+        $item->pelotaris = $item->pelotaris;
 
         return response()->json($item, 200);
     }

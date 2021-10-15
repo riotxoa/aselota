@@ -40,6 +40,10 @@ class Pelotari extends Model
     return $this->hasOne('App\ContratoComercial');
   }
 
+  public function plen_sesiones() {
+    return $this->belongsToMany('App\PLEN_Sesion', 'plen_sesion_pelotaris', 'pelotari_id', 'sesion_id');
+  }
+
   static function get_partidos_jugados_ano($pelotari_id, $year)
   {
     $fecha_ini = date('Y-m-d', strtotime('first day of january ' . $year));
