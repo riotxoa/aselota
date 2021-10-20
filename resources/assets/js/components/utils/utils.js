@@ -46,6 +46,9 @@ var Utils = {
 
     getVideoFrame(video) {
       let src = "";
+      if( !video ) {
+        return "";
+      }
       if( video.includes("youtube") || video.includes("youtu.be") ) {
         src = video;
       }
