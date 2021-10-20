@@ -73,7 +73,7 @@ class PLEN_MesocicloController extends Controller
           foreach( $microciclos as $index02 => $microciclo ) {
             $sesiones = \App\PLEN_Sesion::where('microciclo_id', $microciclo->id)->orderBy('fecha', 'ASC')->get();
             foreach( $sesiones as $index03 => $sesion ) {
-              $sesiones[$index03]->pelotaris = $sesion->pelotaris()->select('id', 'alias', 'nombre', 'apellidos', 'email', 'telefono', 'foto', 'fecha_nac')->get();
+              $sesiones[$index03]->pelotaris = $sesion->pelotaris()->select('pelotaris.id', 'pelotaris.alias', 'pelotaris.nombre', 'pelotaris.apellidos', 'pelotaris.email', 'pelotaris.telefono', 'pelotaris.foto', 'pelotaris.fecha_nac')->get();
             }
             $microciclos[$index02]->sesiones = $sesiones;
           }
