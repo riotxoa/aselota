@@ -2,52 +2,55 @@
   <div>
     <b-form v-if="show">
       <b-row class="border-bottom mb-3 macrociclo-wrap">
-        <b-col cols="2">
+        <b-col sm="3" lg="2">
           <label class="font-weight-bold">Macrociclo:</label>
         </b-col>
-        <b-col cols="3" class="px-0">
-          <p class="border px-2">{{ macrociclo_dates }}</p>
+        <b-col sm="9" lg="3" class="px-lg-0">
+          <p class="border mb-1 px-2">{{ macrociclo_dates }}</p>
         </b-col>
-        <b-col cols="7">
+        <b-col sm="9" lg="7" class="offset-sm-3 offset-lg-0">
           <p class="border px-2">{{ macrociclo_desc }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="4">
-          <b-form-group label="Tipo Mesociclo:" label-for="tipoMesociclo" label-class="font-weight-bold">
-            <b-form-select
-              id="tipoMesociclo"
-              v-model="mesociclo.tipo_mesociclo_id"
-              :options="tipos"
-              required
-            ></b-form-select>
-          </b-form-group>
+        <b-col cols="12" lg="4" class="mb-2">
+          <label for="tipoMesociclo" class="col-12 col-md-4 col-lg-12 d-inline d-lg-block font-weight-bold mb-1 pl-0">Tipo Mesociclo:</label>
+          <b-form-select
+            id="tipoMesociclo"
+            class="col-12 col-md-8 col-lg-12 d-inline d-lg-block float-right"
+            v-model="mesociclo.tipo_mesociclo_id"
+            :options="tipos"
+            size="sm"
+            required
+          ></b-form-select>
         </b-col>
-        <b-col cols="4">
-          <b-form-group label="Fecha inicio:" label-for="fechaInicio" label-class="font-weight-bold">
-            <b-form-input
-              id="fechaInicio"
-              v-model="mesociclo.fecha_ini"
-              v-on:input="onInputFechaIni"
-              type="date"
-              required
-            ></b-form-input>
-            <p id="errFechaIni" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_ini }}</p>
-          </b-form-group>
+        <b-col cols="12" sm="6" md="12" lg="4" class="mb-2">
+          <label for="fechaInicio" class="col-12 col-md-4 col-lg-12 d-inline d-lg-block font-weight-bold mb-1 pl-0">Fecha inicio:</label>
+          <b-form-input
+            id="fechaInicio"
+            class="col-12 col-md-8 col-lg-12 d-inline d-lg-block float-right"
+            v-model="mesociclo.fecha_ini"
+            v-on:input="onInputFechaIni"
+            type="date"
+            size="sm"
+            required
+          ></b-form-input>
+          <p id="errFechaIni" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_ini }}</p>
         </b-col>
-        <b-col cols="4">
-          <b-form-group label="Fecha fin:" label-for="fechaFin" label-class="font-weight-bold">
-            <b-form-input
-              id="fechaFin"
-              v-model="mesociclo.fecha_fin"
-              v-on:change="onInputFechaFin"
-              type="date"
-              required
-            ></b-form-input>
-            <p id="errFechaFin" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_fin }}</p>
-          </b-form-group>
+        <b-col cols="12" sm="6" md="12" lg="4" class="mb-2">
+          <label for="fechaFin" class="col-12 col-md-4 col-lg-12 d-inline d-lg-block font-weight-bold mb-1 pl-0">Fecha fin:</label>
+          <b-form-input
+            id="fechaFin"
+            class="col-12 col-md-8 col-lg-12 d-inline d-lg-block float-right"
+            v-model="mesociclo.fecha_fin"
+            v-on:change="onInputFechaFin"
+            type="date"
+            size="sm"
+            required
+          ></b-form-input>
+          <p id="errFechaFin" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_fin }}</p>
         </b-col>
-        <b-col cols="12" md="8">
+        <b-col cols="12" lg="8">
           <b-form-group label="Descripción:" label-for="descMesociclo" label-class="font-weight-bold">
             <b-form-textarea
               id="descMesociclo"
@@ -58,7 +61,7 @@
             ></b-form-textarea>
           </b-form-group>
         </b-col>
-        <b-col cols="12" md="4">
+        <b-col cols="12" lg="4">
           <b-form-group label="Objetivos:" label-for="objMesociclo" label-class="font-weight-bold">
             <b-form-textarea
               id="objMesociclo"
