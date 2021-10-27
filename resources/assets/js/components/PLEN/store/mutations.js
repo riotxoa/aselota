@@ -121,8 +121,7 @@ export default {
       fecha: null,
       hora: null,
       fronton_id: null,
-      pelotaris: [],
-      ejercicios: []
+      pelotaris: []
     }
   },
 
@@ -137,9 +136,6 @@ export default {
   },
   SET_SESION_PELOTARIS( state, value ) {
     state.sesion.pelotaris = value;
-  },
-  SET_SESION_EJERCICIOS( state, value ) {
-    state.sesion.ejercicios = value;
   },
 
   // Tabla principal: Ejercicios
