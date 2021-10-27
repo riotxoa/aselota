@@ -2,13 +2,13 @@
   <div>
     <b-form v-if="show">
       <b-row class="border-bottom mb-3 macrociclo-wrap">
-        <b-col sm="3" lg="2">
+        <b-col sm="4" lg="2">
           <label class="font-weight-bold">Macrociclo:</label>
         </b-col>
-        <b-col sm="9" lg="3" class="px-lg-0">
+        <b-col sm="8" lg="3" class="pl-sm-1 px-lg-0">
           <p class="border mb-1 px-2">{{ macrociclo_dates }}</p>
         </b-col>
-        <b-col sm="9" lg="7" class="offset-sm-3 offset-lg-0">
+        <b-col sm="8" lg="7" class="offset-sm-4 offset-lg-0 pl-sm-1">
           <p class="border px-2">{{ macrociclo_desc }}</p>
         </b-col>
       </b-row>
