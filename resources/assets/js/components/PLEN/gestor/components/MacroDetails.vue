@@ -29,10 +29,10 @@
         },
         visualization_id: "visualization_",
         time_groups: [
-          { id: 0, content: 'Macrociclo' , style: 'height:15px' },
-          { id: 1, content: 'Mesociclos' , style: 'height:15px' },
-          { id: 2, content: 'Microciclos', style: 'height:15px' },
-          { id: 3, content: 'Sesiones'   , style: 'height:15px' },
+          { id: 0, content: '<small><strong>MACROCICLO</strong></small>' , style: 'letter-spacing:-1px;' },
+          { id: 1, content: '<small><strong>MESOCICLOS</strong></small>' , style: 'letter-spacing:-1px;' },
+          { id: 2, content: '<small><strong>MICROCICLOS</strong></small>', style: 'letter-spacing:-1px;' },
+          { id: 3, content: '<small><strong>SESIONES</strong></small>'   , style: 'letter-spacing:-1px;' },
         ],
         time_items: [],
         time_options: {
@@ -49,7 +49,7 @@
               week:       '',
             },
             majorLabels: {
-              week:       'MMMM',
+              week:       'MMM',
             }
           },
           locale: 'es',

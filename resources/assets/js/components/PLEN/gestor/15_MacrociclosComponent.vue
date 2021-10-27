@@ -3,17 +3,29 @@
     <p class="module-title py-2 text-center">Macrociclos</p>
     <b-container fluid class="p-xl-3">
       <b-button :disabled="edit_index > 0" @click="addNewItem" variant="danger" class="float-right mb-3">Nuevo Macrociclo</b-button>
-      <b-table v-if="show" outlined small striped hover :items="items" :fields="fields" class="plen-table" :current-page="currentPage" :per-page="perPage">
+      <b-table
+        v-if="show"
+        outlined
+        small
+        striped
+        hover
+        responsive
+        :items="items"
+        :fields="fields"
+        class="plen-table"
+        :current-page="currentPage"
+        :per-page="perPage"
+      >
         <template slot="order" slot-scope="row">
-            <input v-if="edit_index && ( edit_index == row.index + 1 )"
-                   id="orderInput"
-                   class="px-2 w-100"
-                   v-on:keyup.enter="focusOnFechaIni"
-                   type="number"
-                   size="sm"
-                   v-model="item_new.order">
-            </input>
-            <div v-else>{{ row.item.order }}</div>
+          <input v-if="edit_index && ( edit_index == row.index + 1 )"
+                 id="orderInput"
+                 class="px-2 w-100"
+                 v-on:keyup.enter="focusOnFechaIni"
+                 type="number"
+                 size="sm"
+                 v-model="item_new.order">
+          </input>
+          <div v-else>{{ row.item.order }}</div>
         </template>
         <template slot="fecha_ini" slot-scope="row">
           <input v-if="edit_index && ( edit_index == row.index + 1 )"
@@ -44,15 +56,15 @@
           </div>
         </template>
         <template slot="description" slot-scope="row">
-              <input v-if="edit_index && ( edit_index == row.index + 1 )"
-                            id="descInput"
-                            class="px-2 w-100"
-                            v-on:keyup.enter="focusOnObjetivos"
-                            type="text"
-                            size="sm"
-                            v-model="item_new.description">
-              </input>
-              <div v-else>{{ row.item.description }}</div>
+          <input v-if="edit_index && ( edit_index == row.index + 1 )"
+                 id="descInput"
+                 class="px-2 w-100"
+                 v-on:keyup.enter="focusOnObjetivos"
+                 type="text"
+                 size="sm"
+                 v-model="item_new.description">
+          </input>
+          <div v-else>{{ row.item.description }}</div>
         </template>
         <template slot="objetivos" slot-scope="row">
           <input v-if="edit_index && ( edit_index == row.index + 1 )"
@@ -68,33 +80,120 @@
           </div>
         </template>
         <template slot="actions" slot-scope="row" v-if="items_count || edit_index">
+          <div v-if="edit_index && ( edit_index == row.index + 1 )">
+            <b-button size="sm" title="Guardar" variant="success" class="action-btn" @click="onClickSave(row.index)"><i class="far fa-save"></i></b-button>
+            <b-button size="sm" title="Cancelar" variant="secondary" class="action-btn" @click="onClickCancel(row.index)"><i class="fas fa-times"></i></b-button>
+          </div>
+          <div v-if="!edit_index">
+            <b-button size="sm" title="Editar" variant="primary" class="action-btn" @click="onClickEdit(row.index)"><i class="fas fa-edit"></i></b-button>
+            <b-button size="sm" title="Mostrar/Ocultar Detalle" variant="secondary" class="action-btn" @click="onClick(row)"> <!-- @click.stop="row.toggleDetails"> -->
+              <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+            </b-button>
+            <b-button size="sm" title="Borrar" variant="danger" class="action-btn" @click="onClickRemove(row.index)"><i class="fas fa-trash-alt"></i></b-button>
+          </div>
+        </template>
+        <template slot="mobile" slot-scope="row">
+          <b-row class="mb-2">
+            <b-col cols="6">
+              <strong>F.Inicio:</strong>
+            </b-col>
+            <b-col cols="6">
+              <strong>F.Fin:</strong>
+            </b-col>
+            <b-col cols="6">
+              <input v-if="edit_index && ( edit_index == row.index + 1 )"
+                     id="fechaIniInput"
+                     class="px-2 w-100"
+                     v-on:keyup.enter="focusOnFechaFin"
+                     type="date"
+                     size="sm"
+                     v-model="item_new.fecha_ini">
+              </input>
+              <div v-else>
+                <div v-if="row.item.fecha_ini">{{ formatDateES(row.item.fecha_ini) }}</div>
+                <div v-else>&nbsp;</div>
+              </div>
+            </b-col>
+            <b-col cols="6">
+              <input v-if="edit_index && ( edit_index == row.index + 1 )"
+                     id="fechaFinInput"
+                     class="px-2 w-100"
+                     v-on:keyup.enter="focusOnDesc"
+                     type="date"
+                     size="sm"
+                     v-model="item_new.fecha_fin">
+              </input>
+              <div v-else>
+                <div v-if="row.item.fecha_fin">{{ formatDateES(row.item.fecha_fin) }}</div>
+                <div v-else>&nbsp;</div>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row class="mb-2">
+            <b-col cols="12">
+              <strong>Descripción:</strong>
+            </b-col>
+            <b-col cols="12">
+              <input v-if="edit_index && ( edit_index == row.index + 1 )"
+                     id="descInput"
+                     class="px-2 w-100"
+                     v-on:keyup.enter="focusOnObjetivos"
+                     type="text"
+                     size="sm"
+                     v-model="item_new.description">
+              </input>
+              <div v-else>{{ row.item.description }}</div>
+            </b-col>
+          </b-row>
+          <b-row class="mb-2">
+            <b-col cols="12">
+              <strong>Objetivos:</strong>
+            </b-col>
+            <b-col cols="12">
+              <input v-if="edit_index && ( edit_index == row.index + 1 )"
+                     id="objetivosInput"
+                     class="px-2 w-100"
+                     v-on:keyup.enter="onClickSave(row.index)"
+                     type="text"
+                     size="sm"
+                     v-model="item_new.objetivos">
+              </input>
+              <div v-else>
+                {{ row.item.objetivos }}
+              </div>
+            </b-col>
+          </b-row>
+          <b-row v-if="items_count || edit_index" class="text-right">
+            <b-col cols="12">
               <div v-if="edit_index && ( edit_index == row.index + 1 )">
-                <b-button size="sm" title="Guardar" variant="success" @click="onClickSave(row.index)"><i class="far fa-save"></i></b-button>
-                <b-button size="sm" title="Cancelar" variant="secondary" @click="onClickCancel(row.index)"><i class="fas fa-times"></i></b-button>
+                <b-button size="sm" title="Guardar" variant="success" class="action-btn" @click="onClickSave(row.index)">GUARDAR</b-button>
+                <b-button size="sm" title="Cancelar" variant="secondary" class="action-btn" @click="onClickCancel(row.index)">CANCELAR</b-button>
               </div>
               <div v-if="!edit_index">
-                <b-button size="sm" title="Editar" variant="primary" @click="onClickEdit(row.index)"><i class="fas fa-edit"></i></b-button>
-                <b-button size="sm" title="Mostrar/Ocultar Detalle" variant="secondary" @click="onClick(row)"> <!-- @click.stop="row.toggleDetails"> -->
-                  <span class="icon" v-bind:class="{ 'voyager-x': row.detailsShowing, 'voyager-eye': !row.detailsShowing }"></span>
+                <b-button size="sm" title="Editar" variant="primary" class="action-btn" @click="onClickEdit(row.index)">Editar</b-button>
+                <b-button size="sm" title="Mostrar/Ocultar Detalle" variant="secondary" class="action-btn" @click="onClick(row)"> <!-- @click.stop="row.toggleDetails"> -->
+                  <span v-html="row.detailsShowing ? 'Ver menos' : 'Ver más'"></span>
                 </b-button>
-                <b-button size="sm" title="Borrar" variant="danger" @click="onClickRemove(row.index)"><i class="fas fa-trash-alt"></i></b-button>
+                <b-button size="sm" title="Borrar" variant="danger" class="action-btn" @click="onClickRemove(row.index)">Borrar</b-button>
               </div>
+            </b-col>
+          </b-row>
         </template>
 
         <!-- Detalles del item -->
-        <template slot="row-details" slot-scope="row">
+        <template slot="row-details" slot-scope="row" slot-class="bg-danger">
            <MacroDetails v-if="items[row.index]._showDetails" :item="items[row.index]" />
         </template>
       </b-table>
       <b-row>
-        <b-col cols="1">
+        <b-col cols="4" sm="3" md="2" lg="1" class="mb-2 mb-sm-0">
           <b-form-select v-model="perPage"
                          :options="perPageOptions">
           </b-form-select>
         </b-col>
-        <b-col cols="11">
+        <b-col cols="12" sm="9" md="10" lg="11">
           <b-pagination
-            class="float-right"
+            class="float-sm-right"
             v-model="currentPage"
             :total-rows="items.length"
             :per-page="perPage"
@@ -140,11 +239,12 @@
         edit_index: 0,
         fields: [
           // { key: 'order', label: 'Orden', tdClass: 'w-auto', sortable: true },
-          { key: 'fecha_ini', label: 'F.Inicio', tdClass: 'w-auto', sortable: true },
-          { key: 'fecha_fin', label: 'F.Fin', tdClass: 'w-auto', sortable: true },
-          { key: 'description', label: 'Descripción', tdClass: 'w-auto', sortable: true },
-          { key: 'objetivos', label: 'Objetivos', tdClass: 'col-objetivos w-auto', sortable: true },
-          { key: 'actions', label: 'Acciones', tdClass: 'w-auto', sortable: false },
+          { key: 'fecha_ini', label: 'F.Inicio', tdClass: 'd-none d-sm-table-cell w-auto', thClass: 'd-none d-sm-table-cell', sortable: true },
+          { key: 'fecha_fin', label: 'F.Fin', tdClass: 'd-none d-sm-table-cell w-auto', thClass: 'd-none d-sm-table-cell', sortable: true },
+          { key: 'description', label: 'Descripción', tdClass: 'd-none d-sm-table-cell w-auto', thClass: 'd-none d-sm-table-cell', sortable: true },
+          { key: 'objetivos', label: 'Objetivos', tdClass: 'col-objetivos d-none d-sm-table-cell w-auto', thClass: 'd-none d-sm-table-cell', sortable: true },
+          { key: 'actions', label: 'Acciones', tdClass: 'actions-wrap d-none d-sm-table-cell w-auto', thClass: 'd-none d-sm-table-cell', sortable: false },
+          { key: 'mobile', label: 'Macrociclos', tdClass: 'd-sm-none p-3', thClass: 'd-sm-none' },
         ],
         item_backup: {
           id: null,
@@ -481,5 +581,12 @@
   }
   .plen-table {
     background-color:#ffffff;
+  }
+  @media all and (max-width:600px) {
+    .actions-wrap .action-btn {
+      height:25px;
+      padding:0;
+      width:25px;
+    }
   }
 </style>
