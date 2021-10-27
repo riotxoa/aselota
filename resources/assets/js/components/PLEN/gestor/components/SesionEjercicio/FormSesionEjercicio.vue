@@ -6,19 +6,19 @@
         <b-col cols="12" v-if="disable">
           <b-row class="px-0">
             <b-col cols="12" sm="6" lg="4">
-              <strong>Pelotari:</strong><span class="float-right text-secondary">{{ getPelotariAlias(pelotari) }}</span>
+              <strong>Pelotari:</strong><span class="float-sm-right ml-2 text-secondary">{{ getPelotariAlias(pelotari) }}</span>
             </b-col>
             <b-col cols="12" sm="6" lg="4" class="d-inline-block d-lg-none">
-              <strong>Frontón:</strong><span class="float-right text-secondary">{{ getFrontonName(sesion.fronton_id) }}</span>
+              <strong>Frontón:</strong><span class="float-sm-right ml-2 text-secondary">{{ getFrontonName(sesion.fronton_id) }}</span>
             </b-col>
             <b-col cols="6" sm="6" lg="3">
-              <strong>Fecha:</strong><span class="float-right text-secondary">{{ getSesionFecha(sesion.fecha) }}</span>
+              <strong>Fecha:</strong><span class="float-sm-right ml-2 text-secondary">{{ getSesionFecha(sesion.fecha) }}</span>
             </b-col>
             <b-col cols="6" sm="6" lg="1">
-              <strong class="d-lg-none">Hora:</strong><span class="float-right text-secondary">{{ sesion.hora.substr(0,5) }}</span>
+              <strong class="d-lg-none">Hora:</strong><span class="float-sm-right ml-2 text-secondary">{{ sesion.hora.substr(0,5) }}</span>
             </b-col>
             <b-col cols="12" lg="4" class="d-none d-lg-inline-block">
-              <strong>Frontón:</strong><span class="float-right text-secondary">{{ getFrontonName(sesion.fronton_id) }}</span>
+              <strong>Frontón:</strong><span class="float-sm-right ml-2 text-secondary">{{ getFrontonName(sesion.fronton_id) }}</span>
             </b-col>
           </b-row>
         </b-col>

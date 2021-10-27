@@ -2,113 +2,100 @@
   <div>
     <b-form v-if="show">
       <b-row class="macrociclo-wrap">
-        <b-col cols="12" sm="2">
+        <b-col sm="2">
           <label class="font-weight-bold">Macrociclo:</label>
         </b-col>
-        <b-col cols="12" sm="3" class="px-sm-0">
-          <p class="border mb-1 px-2">{{ macrociclo_dates }}</p>
+        <b-col sm="4" lg="3" class="px-sm-0">
+          <p class="border mb-1 px-2" style="letter-spacing:-0.5px">{{ macrociclo_dates }}</p>
         </b-col>
-        <b-col cols="12" sm="7">
-          <p class="border mb-2 px-2">{{ macrociclo_desc }}</p>
+        <b-col sm="6" lg="7" class="pl-sm-1">
+          <p class="border px-2">{{ macrociclo_desc }}</p>
         </b-col>
       </b-row>
       <b-row class="mesociclo-wrap">
-        <b-col cols="12" sm="2">
+        <b-col sm="2">
           <label class="font-weight-bold">Mesociclo:</label>
         </b-col>
-        <b-col cols="12" sm="3" class="px-sm-0">
-          <p class="border mb-1 px-2">{{ mesociclo_dates }}</p>
+        <b-col sm="4" lg="3" class="px-sm-0">
+          <p class="border mb-1 px-2" style="letter-spacing:-0.5px">{{ mesociclo_dates }}</p>
         </b-col>
-        <b-col cols="12" sm="7">
-          <p class="border mb-2 px-2">{{ mesociclo_desc }}</p>
+        <b-col sm="6" lg="7" class="pl-sm-1">
+          <p class="border px-2">{{ mesociclo_desc }}</p>
         </b-col>
       </b-row>
       <b-row class="border-bottom mb-3 microciclo-wrap">
-        <b-col cols="12" sm="2">
+        <b-col sm="2">
           <label class="font-weight-bold">Microciclo:</label>
         </b-col>
-        <b-col cols="12" sm="3" class="px-sm-0">
-          <p class="border mb-1 px-2">{{ microciclo_dates }}</p>
+        <b-col sm="4" lg="3" class="px-sm-0">
+          <p class="border mb-1 px-2" style="letter-spacing:-0.5px">{{ microciclo_dates }}</p>
         </b-col>
-        <b-col cols="12" sm="7">
+        <b-col sm="6" lg="7" class="pl-sm-1">
           <p class="border px-2">{{ microciclo_desc }}</p>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="12" sm="4">
-          <b-row>
-            <b-col cols="3">
-              <label for="fecha" class="font-weight-bold">Fecha:</label>
-            </b-col>
-            <b-col cols="9">
-              <b-form-input
-                id="fecha"
-                v-model="sesion.fecha"
-                v-on:input="onInputFecha"
-                type="date"
-                :min="microciclo.fecha_ini"
-                :max="microciclo.fecha_fin"
-                size="sm"
-                required
-              ></b-form-input>
-            </b-col>
-            <b-col cols="12">
-              <p id="errFecha" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha }}</p>
-            </b-col>
-          </b-row>
+        <b-col cols="3" sm="2">
+          <label for="fecha" class="font-weight-bold">Fecha:</label>
         </b-col>
-        <b-col cols="12" sm="3" class="pl-sm-0">
-          <b-row>
-            <b-col cols="3">
-              <label for="hora" class="font-weight-bold">Hora:</label>
-            </b-col>
-            <b-col cols="9">
-              <b-form-input
-                id="hora"
-                v-model="sesion.hora"
-                type="time"
-                size="sm"
-                required
-              ></b-form-input>
-            </b-col>
-            <b-col cols="12">
-              <p id="errHora" class="font-weight-bold m-0 position-absolute small">{{ error_msg.hora }}</p>
-            </b-col>
-          </b-row>
+        <b-col cols="9" sm="4" md="3" class="px-sm-0">
+          <b-form-input
+            id="fecha"
+            v-model="sesion.fecha"
+            v-on:input="onInputFecha"
+            type="date"
+            :min="microciclo.fecha_ini"
+            :max="microciclo.fecha_fin"
+            size="sm"
+            required
+          ></b-form-input>
+          <p id="errFecha" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha }}</p>
         </b-col>
-        <b-col cols="12" sm="5" class="pl-sm-0">
-          <b-row>
-            <b-col cols="3">
-              <label for="lugar" class="font-weight-bold">Lugar:</label>
-            </b-col>
-            <b-col cols="9">
-              <b-form-select
-                id="fronton"
-                v-model="sesion.fronton_id"
-                :options="frontones"
-                size="sm"
-                required
-              ></b-form-select>
-            </b-col>
-          </b-row>
+        <b-col cols="3" sm="1" md="1" class="offset-sm-2 offset-md-0 px-sm-0 px-md-3">
+          <label for="hora" class="font-weight-bold">Hora:</label>
+        </b-col>
+        <b-col cols="9" sm="3" md="2" class="pl-sm-1 px-md-0">
+          <b-form-input
+            id="hora"
+            v-model="sesion.hora"
+            type="time"
+            size="sm"
+            required
+          ></b-form-input>
+          <p id="errHora" class="font-weight-bold m-0 position-absolute small">{{ error_msg.hora }}</p>
+        </b-col>
+        <b-col cols="3" sm="2" md="1">
+          <label for="lugar" class="font-weight-bold">Lugar:</label>
+        </b-col>
+        <b-col cols="9" sm="4" md="3" class="px-sm-0 pl-md-0 pr-md-3">
+          <b-form-select
+            id="fronton"
+            v-model="sesion.fronton_id"
+            :options="frontones"
+            size="sm"
+            required
+          ></b-form-select>
         </b-col>
       </b-row>
 
       <!-- Pelotaris convocados -->
       <b-row class="border-top mt-3 pt-3">
-        <b-col cols="12" sm="7">
+        <b-col cols="12" sm="4" md="5">
           <label for="pelotariInput" class="font-weight-bold">Pelotaris convocados:</label>
         </b-col>
-        <b-col cols="12" sm="5" class="pl-sm-0">
+        <b-col cols="12" sm="4" md="3" class="mb-1 mb-sm-0 pr-md-0">
           <b-form-select
             id="pelotariInput"
+            class="w-100"
             :options="pelotaris_select"
             v-model="pelotari_selected"
             size="sm">
           </b-form-select>
+        </b-col>
+        <b-col cols="12" sm="4" class="pl-sm-0 pl-md-3">
           <b-btn
             id="addPelotariBtn"
-            class="font-weight-bold text-uppercase"
+            class="font-weight-bold text-uppercase w-100"
             variant="primary"
             size="sm"
             v-on:click="onClickAddPelotari">
@@ -123,43 +110,47 @@
             <b-button block size="sm" class="d-inline-block delete-btn" variant="danger" v-on:click="onClickRemovePelotari(pelotari.id)"><i class="fas fa-trash-alt"></i></b-button>
             <b-collapse :id="'accordion-' + pelotari.id" role="tabpanel">
               <b-card class="ejercicios-wrap mb-3" body-class="p-3">
-                <b-row class="border-bottom border-dark mx-0">
-                  <b-col cols="1" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">&nbsp;</small></b-col>
-                  <b-col cols="2" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Fase</small></b-col>
-                  <b-col cols="6" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Ejercicio</small></b-col>
-                  <b-col cols="1" class="pl-0 pr-2 text-right"><small class="font-weight-bold">Vol.</small></b-col>
-                  <b-col cols="1" class="pl-0 pr-2 text-right"><small class="font-weight-bold">Int.</small></b-col>
-                  <b-col cols="1" class="px-0">&nbsp;</b-col>
+                <b-row class="border-bottom border-dark mx-0 table-header">
+                  <b-col cols="2" md="1" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">&nbsp;</small></b-col>
+                  <b-col cols="3" sm="2" md="2" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Fase</small></b-col>
+                  <b-col cols="5" md="6" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Ejercicio</small></b-col>
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 text-right"><small class="font-weight-bold">Vol.</small></b-col>
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 text-right"><small class="font-weight-bold">Int.</small></b-col>
+                  <b-col cols="1" md="1" class="d-none d-sm-block d-md-none pl-0 pr-2 text-right"><small class="font-weight-bold">V/I</small></b-col>
+                  <b-col cols="2" md="1" class="px-0">&nbsp;</b-col>
                 </b-row>
-                <b-row v-for="(ejercicio, index) in pelotari.ejercicios" v-bind:key="index" class="border-bottom mx-0">
-                  <b-col cols="1" class="pl-0 pr-2 text-left">
-                    <b-button v-if="index > 0" size="sm" variant="link" class="arrow float-left px-0 text-dark" title="Desplazar hacia arriba en el orden del listado" @click="onClickOrderUp(index, pelotari.id)">
+                <b-row v-for="(ejercicio, index) in pelotari.ejercicios" v-bind:key="index" class="border-bottom mx-0 ejercicios-row">
+                  <b-col cols="2" md="1" class="pl-0 pr-2 py-1 text-left">
+                    <b-button v-if="index > 0" size="sm" variant="link" class="arrow d-none d-sm-block float-left p-0 text-dark" title="Desplazar hacia arriba en el orden del listado" @click="onClickOrderUp(index, pelotari.id)">
                       <i class="fas fa-long-arrow-alt-up"></i>
                     </b-button>
-                    <span v-else class="float-left pl-1">&nbsp;</span>
-                    <b-button v-if="index < (pelotari.ejercicios.length - 1)" size="sm" variant="link" class="arrow float-left px-0 text-dark" title="Desplazar hacia abajo en el orden del listado" @click="onClickOrderDown(index, pelotari.id)">
+                    <span v-else class="d-none d-sm-block float-left pl-1">&nbsp;</span>
+                    <b-button v-if="index < (pelotari.ejercicios.length - 1)" size="sm" variant="link" class="arrow d-none d-sm-block float-left p-0 text-dark" title="Desplazar hacia abajo en el orden del listado" @click="onClickOrderDown(index, pelotari.id)">
                       <i class="fas fa-long-arrow-alt-down"></i>
                     </b-button>
-                    <span v-else class="float-left pl-1">&nbsp;</span>
+                    <span v-else class="d-none d-sm-block float-left pl-1">&nbsp;</span>
                     <small class="ml-2">{{ ejercicio.order }}</small>
                   </b-col>
-                  <b-col cols="2" class="pl-0 pr-2">
+                  <b-col cols="3" sm="2" md="2" class="pl-0 pr-2 py-1">
                     <small>{{ ejercicio.fase_desc }}</small>
                   </b-col>
-                  <b-col cols="6" class="pl-0 pr-2">
+                  <b-col cols="5" md="6" class="pl-0 pr-2 py-1">
                     <small>{{ ejercicio.name }}</small>
                   </b-col>
-                  <b-col cols="1" class="pl-0 pr-2 text-right">
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-right">
                     <small>{{ ejercicio.volumen }}</small>
                   </b-col>
-                  <b-col cols="1" class="pl-0 pr-2 text-right">
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-right">
                     <small>{{ ejercicio.intensidad }}</small>
                   </b-col>
-                  <b-col cols="1" class="px-0 text-right">
-                    <b-button size="sm" variant="link" class="action-btn mx-2 px-0 text-primary" title="Editar Ejercicio" @click="onClickEditEjercicio(pelotari.id, ejercicio.ejercicio_id)">
+                  <b-col cols="1" md="1" class="d-none d-sm-block d-md-none pl-0 pr-2 py-1 text-right">
+                    <small>{{ ejercicio.volumen }}/{{ ejercicio.intensidad}}</small>
+                  </b-col>
+                  <b-col cols="2" md="1" class="px-0 py-1 text-right">
+                    <b-button size="sm" variant="link" class="action-btn mx-0 mx-sm-2 p-0 text-primary" title="Editar Ejercicio" @click="onClickEditEjercicio(pelotari.id, ejercicio.ejercicio_id)">
                       <i class="fas fa-edit"></i>
                     </b-button>
-                    <b-button size="sm" variant="link" class="action-btn px-0 text-danger" title="Eliminar Ejercicio" @click="onClickRemoveEjercicio(pelotari.id, ejercicio.ejercicio_id)">
+                    <b-button size="sm" variant="link" class="action-btn p-0 text-danger" title="Eliminar Ejercicio" @click="onClickRemoveEjercicio(pelotari.id, ejercicio.ejercicio_id)">
                       <i class="fas fa-trash-alt"></i>
                     </b-button>
                   </b-col>
@@ -409,6 +400,9 @@
 </script>
 
 <style scoped>
+.ejercicios-wrap .ejercicios-row{
+  line-height: 1;
+}
 .ejercicios-wrap .arrow:focus {
   box-shadow:none;
 }

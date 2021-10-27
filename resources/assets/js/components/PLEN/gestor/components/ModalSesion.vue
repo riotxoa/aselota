@@ -3,6 +3,7 @@
            id="editSesion"
            title="Editar Sesion"
            size="lg"
+           scrollable="true"
            @ok="saveSesion"
            @cancel="cancelEditItem"
            :ok-disabled="ok_disabled"
@@ -99,3 +100,11 @@
     }
   }
 </script>
+
+<style>
+  @media all and (max-width:991px) {
+    #editSesion .modal-dialog {
+      max-width:95vw!important;
+    }
+  }
+</style>
