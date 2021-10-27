@@ -227,11 +227,9 @@ export default {
     commit('SET_SESION', value);
   },
   updateSesion( { commit }, item ) {
-    console.log("[updateSesion] item: " + JSON.stringify(item));
     return new Promise( (resolve, reject) => {
       axios.put('/www/PLEN/sesiones/' + item.id, item)
       .then((response) => {
-        console.log("[updateSesion] response.data: " + JSON.stringify(response.data));
         resolve(response.data);
       })
       .catch((error) => {
@@ -316,6 +314,7 @@ export default {
     return new Promise( (resolve, reject) => {
       axios.get('/www/PLEN/fases-sesion')
         .then( (res) => {
+          commit('SET_FASES', res.data);
           resolve(res.data);
         })
         .catch( (err) => {
