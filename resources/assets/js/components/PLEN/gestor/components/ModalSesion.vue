@@ -5,25 +5,29 @@
            size="lg"
            @ok="saveSesion"
            @cancel="cancelEditItem"
-           :ok-disabled="disabled"
+           :ok-disabled="ok_disabled"
            ok-title="Guardar"
            ok-variant="danger"
+           :cancel-disabled="cancel_disabled"
            cancel-title="Cancelar"
            cancel-variant="secondary"
-           @show="onShowModal">
+           @show="onShowModal"
+           :no-close-on-backdrop="true"
+           :no-close-on-esc="true">
     <FormSesion />
   </b-modal>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapActions, mapState } from 'vuex';
   import FormSesion from './FormSesion.vue';
 
   export default {
     data() {
       return {
-        sesion_backup: null,
-        disabled: false
+        cancel_disabled: false,
+        ok_disabled: false,
+        sesion_backup: null
       }
     },
     computed: mapState({
@@ -32,21 +36,19 @@
     created() {
       this.resetSesionBackup();
       this.$root.$on('disable-modal-sesion-save-button', this.toggleSaveButton);
+      this.$root.$on('disable-modal-sesion-footer-buttons', this.toggleFooterButtons);
     },
     methods: {
+      ...mapActions({
+        setSesion: 'plen/setSesion'
+      }),
       cancelEditItem() {
         this.restoreSesionBackup();
         this.$root.$emit('cancelEditSesion');
       },
       makeSesionBackup() {
-        this.sesion_backup.id = this.sesion.id;
-        this.sesion_backup.microciclo_id = this.sesion.microciclo_id;
-        this.sesion_backup.fecha = this.sesion.fecha;
-        this.sesion_backup.hora = this.sesion.hora;
-        this.sesion_backup.fronton_id = this.sesion.fronton_id;
-        this.sesion.pelotaris.map( (val, key) => {
-          this.sesion_backup.pelotaris[key] = val;
-        });
+        this.resetSesionBackup();
+        this.sesion_backup = JSON.parse(JSON.stringify(this.sesion));
       },
       onShowModal() {
         this.makeSesionBackup();
@@ -62,21 +64,34 @@
         };
       },
       restoreSesionBackup() {
-        this.sesion.id = this.sesion_backup.id;
-        this.sesion.microciclo_id = this.sesion_backup.microciclo_id;
-        this.sesion.fecha = this.sesion_backup.fecha;
-        this.sesion.hora = this.sesion_backup.hora;
-        this.sesion.fronton_id = this.sesion_backup.fronton_id;
+        const sesion_backup = JSON.parse(JSON.stringify(this.sesion_backup));
+        this.sesion.id = sesion_backup.id;
+        this.sesion.microciclo_id = sesion_backup.microciclo_id;
+        this.sesion.fecha = sesion_backup.fecha;
+        this.sesion.hora = sesion_backup.hora;
+        this.sesion.fronton_id = sesion_backup.fronton_id;
         this.sesion.pelotaris = [];
-        this.sesion_backup.pelotaris.map( (val, key) => {
-          this.sesion.pelotaris[key] = val;
-        })
+        sesion_backup.pelotaris.map( (val, key) => {
+          const index = this.sesion.pelotaris.length;
+          this.sesion.pelotaris.push(val);
+          let ejercicios = [];
+          sesion_backup.pelotaris[key].ejercicios.map( (v, k) => {
+            ejercicios.push(v);
+          });
+          this.sesion.pelotaris[index].ejercicios = ejercicios;
+        });
+        this.setSesion(this.sesion);
       },
       saveSesion() {
         this.$root.$emit('saveEditSesion');
       },
+      toggleFooterButtons(disabled) {
+        this.cancel_disabled = disabled ? true : false;
+        this.ok_disabled = this.cancel_disabled;
+      },
       toggleSaveButton(disabled) {
-        this.disabled = disabled ? true : false;
+        this.cancel_disabled = false;
+        this.ok_disabled = disabled ? true : false;
       }
     },
     components: {

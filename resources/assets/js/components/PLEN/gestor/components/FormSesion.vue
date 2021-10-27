@@ -93,6 +93,8 @@
           </b-row>
         </b-col>
       </b-row>
+
+      <!-- Pelotaris convocados -->
       <b-row class="border-top mt-3 pt-3">
         <b-col cols="12" sm="7">
           <label for="pelotariInput" class="font-weight-bold">Pelotaris convocados:</label>
@@ -107,7 +109,8 @@
           <b-btn
             id="addPelotariBtn"
             class="font-weight-bold text-uppercase"
-            variant="primary" size="sm"
+            variant="primary"
+            size="sm"
             v-on:click="onClickAddPelotari">
             Añadir Pelotari
           </b-btn>
@@ -119,16 +122,74 @@
             <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="light" class="border d-inline-block font-weight-bold pelotari-btn text-uppercase">{{ pelotari.alias }}</b-button>
             <b-button block size="sm" class="d-inline-block delete-btn" variant="danger" v-on:click="onClickRemovePelotari(pelotari.id)"><i class="fas fa-trash-alt"></i></b-button>
             <b-collapse :id="'accordion-' + pelotari.id" role="tabpanel">
-              <b-card class="mb-3">
-                <b-card-body>
-                  {{ pelotari }}
-                </b-card-body>
+              <b-card class="ejercicios-wrap mb-3" body-class="p-3">
+                <b-row class="border-bottom border-dark mx-0">
+                  <b-col cols="1" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">&nbsp;</small></b-col>
+                  <b-col cols="2" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Fase</small></b-col>
+                  <b-col cols="6" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Ejercicio</small></b-col>
+                  <b-col cols="1" class="pl-0 pr-2 text-right"><small class="font-weight-bold">Vol.</small></b-col>
+                  <b-col cols="1" class="pl-0 pr-2 text-right"><small class="font-weight-bold">Int.</small></b-col>
+                  <b-col cols="1" class="px-0">&nbsp;</b-col>
+                </b-row>
+                <b-row v-for="(ejercicio, index) in pelotari.ejercicios" v-bind:key="index" class="border-bottom mx-0">
+                  <b-col cols="1" class="pl-0 pr-2 text-left">
+                    <b-button v-if="index > 0" size="sm" variant="link" class="arrow float-left px-0 text-dark" title="Desplazar hacia arriba en el orden del listado" @click="onClickOrderUp(index, pelotari.id)">
+                      <i class="fas fa-long-arrow-alt-up"></i>
+                    </b-button>
+                    <span v-else class="float-left pl-1">&nbsp;</span>
+                    <b-button v-if="index < (pelotari.ejercicios.length - 1)" size="sm" variant="link" class="arrow float-left px-0 text-dark" title="Desplazar hacia abajo en el orden del listado" @click="onClickOrderDown(index, pelotari.id)">
+                      <i class="fas fa-long-arrow-alt-down"></i>
+                    </b-button>
+                    <span v-else class="float-left pl-1">&nbsp;</span>
+                    <small class="ml-2">{{ ejercicio.order }}</small>
+                  </b-col>
+                  <b-col cols="2" class="pl-0 pr-2">
+                    <small>{{ ejercicio.fase_desc }}</small>
+                  </b-col>
+                  <b-col cols="6" class="pl-0 pr-2">
+                    <small>{{ ejercicio.name }}</small>
+                  </b-col>
+                  <b-col cols="1" class="pl-0 pr-2 text-right">
+                    <small>{{ ejercicio.volumen }}</small>
+                  </b-col>
+                  <b-col cols="1" class="pl-0 pr-2 text-right">
+                    <small>{{ ejercicio.intensidad }}</small>
+                  </b-col>
+                  <b-col cols="1" class="px-0 text-right">
+                    <b-button size="sm" variant="link" class="action-btn mx-2 px-0 text-primary" title="Editar Ejercicio" @click="onClickEditEjercicio(pelotari.id, ejercicio.ejercicio_id)">
+                      <i class="fas fa-edit"></i>
+                    </b-button>
+                    <b-button size="sm" variant="link" class="action-btn px-0 text-danger" title="Eliminar Ejercicio" @click="onClickRemoveEjercicio(pelotari.id, ejercicio.ejercicio_id)">
+                      <i class="fas fa-trash-alt"></i>
+                    </b-button>
+                  </b-col>
+                </b-row>
+                <b-row v-if="!pelotari.ejercicios.length"  class="border-bottom mx-0">
+                  <b-col cols="12">&nbsp;</b-col>
+                </b-row>
+                <b-row class="mt-3">
+                  <b-col cols="12" class="text-right">
+                    <b-button
+                      class="font-weight-bold text-uppercase"
+                      variant="success"
+                      size="sm"
+                      v-on:click="onClickAddEjercicio(pelotari.id)">
+                      Añadir Ejercicio
+                    </b-button>
+                  </b-col>
+                </b-row>
               </b-card>
             </b-collapse>
           </div>
         </b-col>
       </b-row>
+      <!-- /Pelotaris convocados -->
     </b-form>
+    <!-- Formulario Ejercicios Programados -->
+    <div v-if="showFormSesionEjercicio" id="formSesionEjercicio" class="px-2 py-1">
+      <FormSesionEjercicio class="form-wrap" :pelotari_id="pelotari_ejercicio" :order="order" :frontones="frontones" :ejercicio_id="ejercicio_id" />
+    </div>
+    <!-- /Formulario Ejercicios Programados -->
   </div>
 </template>
 
@@ -137,10 +198,13 @@
   import APIGetters from '../../../utils/getters.js';
   import moment from 'moment';
 
+  import FormSesionEjercicio from './SesionEjercicio/FormSesionEjercicio.vue';
+
   export default {
     mixins: [ APIGetters ],
     data() {
       return {
+        ejercicio_id: 0,
         error_msg: null,
         macrociclo_dates: '',
         macrociclo_desc: '',
@@ -148,10 +212,13 @@
         mesociclo_desc: '',
         microciclo_dates: '',
         microciclo_desc: '',
+        order: 10,
+        pelotari_ejercicio: null,
         pelotari_selected: null,
         pelotaris_all: [],
         pelotaris_select: [],
-        show: false
+        show: false,
+        showFormSesionEjercicio: false
       }
     },
     computed: mapState({
@@ -161,9 +228,20 @@
       sesion: state => state.plen.sesion,
     }),
     created() {
-      this.resetErrorMsg();
-      this.getFrontones();
-      this.loadPelotaris();
+      this.getEjercicios().then( () => {
+        this.getSubtiposEjercicio().then( () => {
+          this.getTiposEjercicio().then( () => {
+            this.getFases().then( () => {
+              this.resetErrorMsg();
+              this.getFrontones();
+              this.loadPelotaris();
+              this.$root.$on('saveEditSesion', this.hideFormSesionEjercicio);
+              this.$root.$on('cancelEditSesion', this.hideFormSesionEjercicio);
+              this.$root.$on('hideFormSesionEjercicio', this.hideFormSesionEjercicio);
+            });
+          });
+        });
+      });
     },
     mounted() {
       this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
@@ -183,7 +261,16 @@
     methods: {
       ...mapActions({
         getAllPelotaris: 'plen/getPelotaris',
+        getEjercicios: 'plen/getEjercicios',
+        getFases: 'plen/getFases',
+        getSubtiposEjercicio: 'plen/getSubtiposEjercicio',
+        getTiposEjercicio: 'plen/getTiposEjercicio'
       }),
+      hideFormSesionEjercicio() {
+        this.showFormSesionEjercicio = false;
+        this.pelotari_ejercicio = null;
+        this.$root.$emit('disable-modal-sesion-footer-buttons', this.showFormSesionEjercicio);
+      },
       loadPelotaris() {
         this.getAllPelotaris(this.sesion.fecha).then( (res) => {
           var stringified = JSON.stringify(res).replace(/"id"/g, '"value"').replace(/alias/g, "text");
@@ -207,12 +294,64 @@
 
         if( !_.find(this.sesion.pelotaris, { id: this.pelotari_selected }) ) {
           pelotari.new = true;
+          pelotari.ejercicios = [];
           this.sesion.pelotaris.push(pelotari);
         } else {
           alert("El Pelotari " + pelotari.alias + " ya se encuentra convocado");
         }
 
         this.pelotari_selected = null;
+      },
+      onClickAddEjercicio(pelotari_id) {
+        const pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        const maxOrder = _.maxBy(pelotari.ejercicios, 'order');
+
+        this.pelotari_ejercicio = pelotari_id;
+        this.order = (maxOrder && maxOrder.order ? Math.round(maxOrder.order / 10) * 10 + 10 : this.order);
+        this.ejercicio_id = 0;
+
+        this.showFormSesionEjercicio = true;
+
+        this.$root.$emit('disable-modal-sesion-footer-buttons', this.showFormSesionEjercicio);
+      },
+      onClickEditEjercicio(pelotari_id, ejercicio_id) {
+        const pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        const ejercicio = _.find(pelotari.ejercicios, { ejercicio_id: ejercicio_id });
+
+        this.pelotari_ejercicio = pelotari_id;
+        this.order = ejercicio.order;
+        this.ejercicio_id = ejercicio_id;
+
+        this.showFormSesionEjercicio = true;
+
+        this.$root.$emit('disable-modal-sesion-footer-buttons', this.showFormSesionEjercicio);
+      },
+      onClickOrderDown(index, pelotari_id) {
+        let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        const currentOrder = pelotari.ejercicios[index].order;
+        const nextOrder = pelotari.ejercicios[index + 1].order;
+
+        pelotari.ejercicios[index].order = nextOrder;
+        pelotari.ejercicios[index + 1].order = currentOrder;
+
+        pelotari.ejercicios = _.orderBy(pelotari.ejercicios, 'order', 'asc');
+      },
+      onClickOrderUp(index, pelotari_id) {
+        let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        const currentOrder = pelotari.ejercicios[index].order;
+        const prevOrder = pelotari.ejercicios[index - 1].order;
+
+        pelotari.ejercicios[index].order = prevOrder;
+        pelotari.ejercicios[index - 1].order = currentOrder;
+
+        pelotari.ejercicios = _.orderBy(pelotari.ejercicios, 'order', 'asc');
+      },
+      onClickRemoveEjercicio(pelotari_id, ejercicio_id) {
+        const pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        const ejercicio = _.find(pelotari.ejercicios, { ejercicio_id: ejercicio_id });
+        if( confirm("¿Desea BORRAR el Ejercicio '" + ejercicio.name + "' de la lista de ejercicios programados del pelotari '" + pelotari.alias + "'?") ) {
+          this.removeEjercicio(pelotari_id, ejercicio_id);
+        }
       },
       onClickRemovePelotari(id) {
         const pelotari = _.find(this.pelotaris_all, { id: id });
@@ -230,6 +369,11 @@
           this.loadPelotaris();
         }
         this.setErrorMsgExists();
+      },
+      removeEjercicio(pelotari_id, ejercicio_id) {
+        const index_pelotaris = _.findIndex(this.sesion.pelotaris, { 'id': pelotari_id });
+        const index_ejercicios = _.findIndex(this.sesion.pelotaris[index_pelotaris].ejercicios, { 'ejercicio_id': ejercicio_id});
+        this.sesion.pelotaris[index_pelotaris].ejercicios.splice(index_ejercicios, 1);
       },
       removePelotari(id) {
         const index = _.findIndex(this.sesion.pelotaris, { 'id': id });
@@ -257,11 +401,17 @@
           });
         });
       }
+    },
+    components: {
+      FormSesionEjercicio
     }
   }
 </script>
 
 <style scoped>
+.ejercicios-wrap .arrow:focus {
+  box-shadow:none;
+}
 #errFecha {
   color:red;
   line-height:1.1;
@@ -272,6 +422,33 @@
 }
 #pelotariInput {
   width:calc(98% - 130px);
+}
+#formSesionEjercicio {
+  background-color:rgba(60, 60, 60, 0.75);
+  height:100%;
+  left:0;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+#formSesionEjercicio .form-wrap {
+  background-color:white;
+  border:2px solid rgba(0, 127, 255, 0.5);
+  left:2.5%;
+  position:absolute;
+  top:50%;
+  width:95%;
+
+  -webkit-transform:translateY(-50%);
+  -moz-transform:translateY(-50%);
+  -ms-transform:translateY(-50%);
+  -o-transform:translateY(-50%);
+  transform:translateY(-50%);
+}
+.ejercicios-wrap .action-btn:active,
+.ejercicios-wrap .action-btn:focus,
+.ejercicios-wrap .action-btn:hover {
+  opacity:.8;
 }
 .macrociclo-wrap p {
   background-color:rgba(255, 192, 203, 0.55);
