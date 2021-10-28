@@ -894,45 +894,51 @@
         }
       },
       saveEditMesociclo() {
-        const index = _.findIndex(this.time_items, { id: this.editMesociclo.item.id, group: 1 });
-        this.time_items[index].mesociclo = this.mesociclo;
-        this.time_items[index].start = moment(this.mesociclo.fecha_ini).startOf('day'); // .format('YYYY-MM-DD');
-        this.time_items[index].end = moment(this.mesociclo.fecha_fin).endOf('day'); // .format('YYYY-MM-DD');
-        this.time_items[index].content = this.getMesocicloContent(this.time_items[index]);
-        this.time_items[index].style = this.getMesocicloStyle(this.mesociclo.tipo_mesociclo_id);
+        if( this.editMesociclo.item && this.editMesociclo.item.id ) {
+          const index = _.findIndex(this.time_items, { id: this.editMesociclo.item.id, group: 1 });
+          this.time_items[index].mesociclo = this.mesociclo;
+          this.time_items[index].start = moment(this.mesociclo.fecha_ini).startOf('day'); // .format('YYYY-MM-DD');
+          this.time_items[index].end = moment(this.mesociclo.fecha_fin).endOf('day'); // .format('YYYY-MM-DD');
+          this.time_items[index].content = this.getMesocicloContent(this.time_items[index]);
+          this.time_items[index].style = this.getMesocicloStyle(this.mesociclo.tipo_mesociclo_id);
 
-        this.mesociclo.microciclos.map( (val) => {
-          const microIndex = _.findIndex(this.time_items, { group: 2, plen_id: val.id });
-          this.time_items[microIndex].style = this.getMesocicloStyle(this.mesociclo.tipo_mesociclo_id);
-        })
+          this.mesociclo.microciclos.map( (val) => {
+            const microIndex = _.findIndex(this.time_items, { group: 2, plen_id: val.id });
+            this.time_items[microIndex].style = this.getMesocicloStyle(this.mesociclo.tipo_mesociclo_id);
+          })
 
-        this.editMesociclo.callback(this.time_items[index]);
+          this.editMesociclo.callback(this.time_items[index]);
 
-        this.updateMesociclo(this.mesociclo);
-        this.resetEditMesociclo();
-        this.timeline.setItems(this.time_items);
+          this.updateMesociclo(this.mesociclo);
+          this.resetEditMesociclo();
+          this.timeline.setItems(this.time_items);
+        }
       },
       saveEditMicrociclo() {
-        const index = _.findIndex(this.time_items, { id: this.editMicrociclo.item.id, group: 2 });
-        this.time_items[index].microciclo = this.microciclo;
-        this.time_items[index].start = moment(this.microciclo.fecha_ini).startOf('day'); // .format('YYYY-MM-DD');
-        this.time_items[index].end = moment(this.microciclo.fecha_fin).endOf('day'); // .format('YYYY-MM-DD');
-        this.time_items[index].content = this.getMicrocicloContent(this.time_items[index]);
+        if( this.editMicrociclo.item && this.editMicrociclo.item.id ) {
+          const index = _.findIndex(this.time_items, { id: this.editMicrociclo.item.id, group: 2 });
+          this.time_items[index].microciclo = this.microciclo;
+          this.time_items[index].start = moment(this.microciclo.fecha_ini).startOf('day'); // .format('YYYY-MM-DD');
+          this.time_items[index].end = moment(this.microciclo.fecha_fin).endOf('day'); // .format('YYYY-MM-DD');
+          this.time_items[index].content = this.getMicrocicloContent(this.time_items[index]);
 
-        this.editMicrociclo.callback(this.time_items[index]);
+          this.editMicrociclo.callback(this.time_items[index]);
 
-        this.updateMicrociclo(this.microciclo);
-        this.resetEditMicrociclo();
+          this.updateMicrociclo(this.microciclo);
+          this.resetEditMicrociclo();
+        }
       },
       saveEditSesion() {
-        const index = _.findIndex(this.time_items, { id: this.editSesion.item.id, group: 3 });
-        this.time_items[index].sesion = this.sesion;
-        this.time_items[index].content = this.getSesionContent(this.time_items[index]);
+        if( this.editSesion.item && this.editSesion.item.id ) {
+          const index = _.findIndex(this.time_items, { id: this.editSesion.item.id, group: 3 });
+          this.time_items[index].sesion = this.sesion;
+          this.time_items[index].content = this.getSesionContent(this.time_items[index]);
 
-        this.editSesion.callback(this.time_items[index]);
+          this.editSesion.callback(this.time_items[index]);
 
-        this.updateSesion(this.sesion);
-        this.resetEditSesion();
+          this.updateSesion(this.sesion);
+          this.resetEditSesion();
+        }
       },
       setEditMesociclo( item, callback ) {
         this.editMesociclo = {
