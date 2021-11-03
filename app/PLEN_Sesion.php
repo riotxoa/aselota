@@ -18,6 +18,18 @@ class PLEN_Sesion extends Model
       'fronton_id',
     ];
 
+    public function delete() {
+      $pelotaris = $this->sesion_pelotaris;
+      foreach( $pelotaris as $pelotari ) {
+        $ejercicios = $pelotari->ejercicios;
+        foreach( $ejercicios as $ejercicio ) {
+          $ejercicio->delete();
+        }
+        $pelotari->delete();
+      }
+      DB::table($this->table)->where('id', $this->id)->delete();
+    }
+
     public function fronton() {
       return $this->belongsTo('App\Fronton');
     }
