@@ -163,6 +163,11 @@ Route::group(['prefix' => 'www'], function () {
       Route::resource('tipos-mesociclo', 'PLEN_TipoMesocicloController');
       Route::resource('tipos-microciclo', 'PLEN_TipoMicrocicloController');
       Route::resource('subtipos-ejercicio', 'PLEN_SubtipoEjercicioController');
+
+      Route::get('date/{date}', 'PLEN_MacrocicloController@getActiveItems');
+      Route::get('month/{date}', 'PLEN_MacrocicloController@getActiveItemsByMonth');
+      Route::get('week/{date}', 'PLEN_MacrocicloController@getActiveItemsByWeek');
+      Route::get('year/{date}', 'PLEN_MacrocicloController@getActiveItemsByYear');
     });
 
     Route::group(['prefix' => 'informes'], function () {

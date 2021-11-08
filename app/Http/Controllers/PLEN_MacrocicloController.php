@@ -124,4 +124,122 @@ class PLEN_MacrocicloController extends Controller
 
       return response()->json("MACROCILO ELIMINADO", 200);
     }
+
+    public function getActiveItems(Request $request, $date)
+    {
+      $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
+
+      $fecha = date('Y-m-d', $date/1000);
+
+      $macrociclos = PLEN_Macrociclo::whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+      $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo')->leftJoin('plen_tipos_mesociclo', 'plen_tipos_mesociclo.id', '=', 'plen_mesociclos.tipo_mesociclo_id')->whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+      $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microcilo')->leftJoin('plen_tipos_microciclo', 'plen_tipos_microciclo.id', '=', 'plen_microciclos.tipo_microciclo_id')->whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+      $sesiones = \App\PLEN_Sesion::select('plen_sesiones.*', 'frontones.name as fronton')->leftJoin('frontones', 'frontones.id', '=', 'plen_sesiones.fronton_id')->whereDate('fecha', $fecha)->get();
+      $sesion_ids = \App\PLEN_Sesion::whereDate('fecha', $fecha)->pluck('id');
+      $pelotaris = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')->whereIn('sesion_id', $sesion_ids)->get();
+      $pelotari_ids = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')->whereIn('sesion_id', $sesion_ids)->pluck('id');
+      $ejercicios = \App\PLEN_SesionEjercicio::select('plen_sesion_ejercicios.*', 'plen_ejercicios.name')->leftJoin('plen_ejercicios', 'plen_ejercicios.id', '=', 'plen_sesion_ejercicios.ejercicio_id')->whereIn('sesion_pelotari_id', $pelotari_ids)->get();
+
+      $items = [
+        'macrociclos' => $macrociclos,
+        'mesociclos' => $mesociclos,
+        'microciclos' => $microciclos,
+        'sesiones' => $sesiones,
+        'pelotaris' => $pelotaris,
+        'ejercicios' => $ejercicios,
+        'fecha' => $fecha
+      ];
+
+      return response()->json($items, 200);
+    }
+
+    private function getActiveItemsBetweenDates($fecha_ini, $fecha_fin)
+    {
+      // $macrociclos = PLEN_Macrociclo::whereBetween($fecha_ini, ['fecha_ini', 'fecha_fin'])->orWhereBetween($fecha_fin, ['fecha_ini', 'fecha_fin'])->get();
+      $macrociclos = PLEN_Macrociclo::select('plen_macrociclos.*')
+        ->whereRaw("'$fecha_ini' between fecha_ini and fecha_fin")
+        ->orWhereRaw("'$fecha_fin' between fecha_ini and fecha_fin")
+        ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
+        ->get();
+      $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo')
+        ->leftJoin('plen_tipos_mesociclo', 'plen_tipos_mesociclo.id', '=', 'plen_mesociclos.tipo_mesociclo_id')
+        ->whereRaw("'$fecha_ini' between fecha_ini and fecha_fin")
+        ->orWhereRaw("'$fecha_fin' between fecha_ini and fecha_fin")
+        ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
+        ->get();
+      $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microcilo')
+        ->leftJoin('plen_tipos_microciclo', 'plen_tipos_microciclo.id', '=', 'plen_microciclos.tipo_microciclo_id')
+        ->whereRaw("$fecha_ini between fecha_ini and fecha_fin")
+        ->orWhereRaw("$fecha_fin between fecha_ini and fecha_fin")
+        ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
+        ->get();
+      $sesiones = \App\PLEN_Sesion::select('plen_sesiones.*', 'frontones.name as fronton')
+        ->leftJoin('frontones', 'frontones.id', '=', 'plen_sesiones.fronton_id')
+        ->whereBetween('fecha', [$fecha_ini, $fecha_fin])
+        ->get();
+      $sesion_ids = \App\PLEN_Sesion::whereBetween('fecha', [$fecha_ini, $fecha_fin])->pluck('id');
+      $pelotaris = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')
+        ->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')
+        ->whereIn('sesion_id', $sesion_ids)
+        ->get();
+      $pelotari_ids = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')
+        ->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')
+        ->whereIn('sesion_id', $sesion_ids)
+        ->pluck('id');
+      $ejercicios = \App\PLEN_SesionEjercicio::select('plen_sesion_ejercicios.*', 'plen_ejercicios.name')
+        ->leftJoin('plen_ejercicios', 'plen_ejercicios.id', '=', 'plen_sesion_ejercicios.ejercicio_id')
+        ->whereIn('sesion_pelotari_id', $pelotari_ids)
+        ->get();
+
+      return [
+        'macrociclos' => $macrociclos,
+        'mesociclos' => $mesociclos,
+        'microciclos' => $microciclos,
+        'sesiones' => $sesiones,
+        'pelotaris' => $pelotaris,
+        'ejercicios' => $ejercicios
+      ];
+    }
+
+    public function getActiveItemsByMonth(Request $request, $date)
+    {
+      $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
+
+      $fecha_ini = date('Y-m-01', $date/1000);
+      $fecha_fin = date('Y-m-t', $date/1000);
+
+      return response()->json($this->getActiveItemsBetweenDates($fecha_ini, $fecha_fin), 200);
+    }
+
+    public function getActiveItemsByWeek(Request $request, $date)
+    {
+      $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
+
+      $fecha = date('Y-m-d', $date/1000);
+
+      $fecha_ini = date('Y-m-d', strtotime($fecha . 'monday'));
+      $fecha_fin = date('Y-m-d', strtotime($fecha . 'sunday'));
+
+      return response()->json($this->getActiveItemsBetweenDates($fecha_ini, $fecha_fin), 200);
+    }
+
+    public function getActiveItemsByYear(Request $request, $date)
+    {
+      $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
+
+      $fecha_ini = date('Y-01-01', $date/1000);
+      $fecha_fin = date('Y-12-31', $date/1000);
+
+      return response()->json($this->getActiveItemsBetweenDates($fecha_ini, $fecha_fin), 200);
+    }
+
+    public function getActiveMacrociclos(Request $request, $date)
+    {
+      $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
+
+      $fecha = date('Y-m-d', $date/1000);
+      $items = PLEN_Macrociclo::whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+
+      return response()->json($items, 200);
+    }
 }

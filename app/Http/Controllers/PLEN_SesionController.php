@@ -109,18 +109,20 @@ class PLEN_SesionController extends Controller
         $item->save();
 
         $pelotaris = $request->get('pelotaris');
-        foreach( $pelotaris as $pelotari ) {
-          $item->pelotaris()->attach($pelotari['id']);
-          $sesion_pelotari = $item->sesion_pelotaris()->where('pelotari_id', $pelotari['id'])->first();
-          foreach( $pelotari['ejercicios'] as $ejercicio ) {
-            $sesion_pelotari->ejercicios()->attach($ejercicio['ejercicio_id'], [
-              'sesion_pelotari_id' => $sesion_pelotari->id,
-              'order' => $ejercicio['order'],
-              'fase_sesion_id' => $ejercicio['fase_sesion_id'],
-              'ejercicio_id' => $ejercicio['ejercicio_id'],
-              'volumen' => $ejercicio['volumen'],
-              'intensidad' => $ejercicio['intensidad']
-            ]);
+        if( $pelotaris ) {
+          foreach( $pelotaris as $pelotari ) {
+            $item->pelotaris()->attach($pelotari['id']);
+            $sesion_pelotari = $item->sesion_pelotaris()->where('pelotari_id', $pelotari['id'])->first();
+            foreach( $pelotari['ejercicios'] as $ejercicio ) {
+              $sesion_pelotari->ejercicios()->attach($ejercicio['ejercicio_id'], [
+                'sesion_pelotari_id' => $sesion_pelotari->id,
+                'order' => $ejercicio['order'],
+                'fase_sesion_id' => $ejercicio['fase_sesion_id'],
+                'ejercicio_id' => $ejercicio['ejercicio_id'],
+                'volumen' => $ejercicio['volumen'],
+                'intensidad' => $ejercicio['intensidad']
+              ]);
+            }
           }
         }
         $item->pelotaris = $item->pelotaris;
