@@ -262,7 +262,8 @@
             microciclo_id: microciclo.plen_id,
             fecha: moment(item.start).format("YYYY-MM-DD"),
             hora: null,
-            fronton_id: null
+            fronton_id: null,
+            pelotaris: []
           }
           item.content = this.getSesionContent( item );
           item.className = 'font-weight-bold sesion';

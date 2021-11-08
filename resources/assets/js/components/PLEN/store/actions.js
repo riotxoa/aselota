@@ -41,6 +41,50 @@ export default {
         });
     });
   },
+  getActiveItemsThisMonth( { commit }, date ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/month/' + date)
+        .then( (res) => {
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  getActiveItemsThisWeek( { commit }, date ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/week/' + date)
+        .then( (res) => {
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  getActiveItemsThisYear( { commit }, date ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/year/' + date)
+        .then( (res) => {
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
+  getActiveItemsByDate( { commit }, date ) {
+    return new Promise( (resolve, reject) => {
+      axios.get('/www/PLEN/date/' + date)
+        .then( (res) => {
+          resolve(res.data);
+        })
+        .catch( (err) => {
+          reject(err);
+        });
+    });
+  },
   saveMacrociclo( { commit }, item ) {
     return new Promise( (resolve, reject) => {
       axios.post('/www/PLEN/macrociclos', item)
