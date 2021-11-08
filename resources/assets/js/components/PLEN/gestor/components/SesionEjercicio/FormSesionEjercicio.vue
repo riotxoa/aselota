@@ -85,6 +85,7 @@
               id="tipoEjercicioInput"
               :options="tipos_options"
               v-model="tipo_ejercicio"
+              @input="onClickTipoEjercicio"
               size="sm">
             </b-form-select>
           </b-form-group>
@@ -95,6 +96,7 @@
               id="subtipoEjercicioInput"
               :options="subtipos_options"
               v-model="subtipo_ejercicio"
+              @input="onClickSubtipoEjercicio"
               size="sm">
             </b-form-select>
           </b-form-group>
@@ -105,6 +107,7 @@
               id="ejercicioInput"
               :options="ejercicios_options"
               v-model="ejercicio"
+              @input="onClickEjercicio"
               size="sm"
               required>
             </b-form-select>
@@ -209,8 +212,19 @@
         this.subtipo_ejercicio = _ejercicio.subtipo_ejercicio_id;
         this.ejercicio = ejercicio_id;
       },
-      loadOptionsEjercicios() {
-        var stringified = JSON.stringify(this.ejercicios).replace(/"id"/g, '"value"').replace(/"name"/g, '"text"');
+      loadOptionsEjercicios(tipo = false, subtipo = false) {
+        let stringified = '';
+        let ejercicios = this.ejercicios;
+
+        if( tipo ) {
+          ejercicios = _.filter(ejercicios, { tipo_ejercicio_id: tipo });
+        }
+        if( subtipo ) {
+          ejercicios = _.filter(ejercicios, { subtipo_ejercicio_id: subtipo });
+        }
+
+        stringified = JSON.stringify(ejercicios).replace(/"id"/g, '"value"').replace(/"name"/g, '"text"');
+
         this.ejercicios_options = JSON.parse(stringified);
         this.ejercicios_options.unshift({ value: null, text: "Seleccionar ejercicio" });
       },
@@ -225,8 +239,15 @@
         this.pelotaris_options.unshift({ value: 'XX', text: "Todos los pelotaris convocados" });
         this.pelotaris_options.unshift({ value: null, text: "Seleccionar pelotari" });
       },
-      loadOptionsSubtiposEjercicio() {
-        var stringified = JSON.stringify(this.subtipos_ejercicio).replace(/"id"/g, '"value"').replace(/"desc"/g, '"text"');
+      loadOptionsSubtiposEjercicio(tipo = false) {
+        let stringified = '';
+        let subtipos = this.subtipos_ejercicio;
+
+        if( tipo ) {
+          subtipos = _.filter(subtipos, { plen_tipos_ejercicio_id: tipo });
+        }
+
+        stringified = JSON.stringify(subtipos).replace(/"id"/g, '"value"').replace(/"desc"/g, '"text"');
         this.subtipos_options = JSON.parse(stringified);
         this.subtipos_options.unshift({ value: null, text: "Seleccionar subtipo" });
       },
@@ -234,6 +255,26 @@
         var stringified = JSON.stringify(this.tipos_ejercicio).replace(/"id"/g, '"value"').replace(/"desc"/g, '"text"');
         this.tipos_options = JSON.parse(stringified);
         this.tipos_options.unshift({ value: null, text: "Seleccionar tipo" });
+      },
+      onClickEjercicio(value) {
+        if( value ) {
+          const ejercicio = _.find(this.ejercicios, { id: value });
+          this.tipo_ejercicio = ejercicio.tipo_ejercicio_id;
+          this.subtipo_ejercicio = ejercicio.subtipo_ejercicio_id;
+        }
+      },
+      onClickSubtipoEjercicio(value) {
+        if( value ) {
+          const subtipo = _.find(this.subtipos_ejercicio, { id: value });
+          this.tipo_ejercicio = subtipo.plen_tipos_ejercicio_id;
+          this.loadOptionsEjercicios(subtipo.plen_tipos_ejercicio_id, subtipo.id);
+        } else {
+          this.loadOptionsEjercicios(this.tipo_ejercicio);
+        }
+      },
+      onClickTipoEjercicio(value) {
+        this.loadOptionsSubtiposEjercicio(value);
+        this.loadOptionsEjercicios(value);
       },
       onSubmit(e) {
         e.preventDefault();
