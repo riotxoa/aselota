@@ -47,6 +47,7 @@
             :min="microciclo.fecha_ini"
             :max="microciclo.fecha_fin"
             size="sm"
+            :disabled="readonly"
             required
           ></b-form-input>
           <p id="errFecha" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha }}</p>
@@ -60,6 +61,7 @@
             v-model="sesion.hora"
             type="time"
             size="sm"
+            :disabled="readonly"
             required
           ></b-form-input>
           <p id="errHora" class="font-weight-bold m-0 position-absolute small">{{ error_msg.hora }}</p>
@@ -73,6 +75,7 @@
             v-model="sesion.fronton_id"
             :options="frontones"
             size="sm"
+            :disabled="readonly"
             required
           ></b-form-select>
         </b-col>
@@ -83,7 +86,7 @@
         <b-col cols="12" sm="4" md="5">
           <label for="pelotariInput" class="font-weight-bold">Pelotaris convocados:</label>
         </b-col>
-        <b-col cols="12" sm="4" md="3" class="mb-1 mb-sm-0 pr-md-0">
+        <b-col v-if="!readonly" cols="12" sm="4" md="3" class="mb-1 mb-sm-0 pr-md-0">
           <b-form-select
             id="pelotariInput"
             class="w-100"
@@ -92,7 +95,7 @@
             size="sm">
           </b-form-select>
         </b-col>
-        <b-col cols="12" sm="4" class="pl-sm-0 pl-md-3">
+        <b-col v-if="!readonly" cols="12" sm="4" class="pl-sm-0 pl-md-3">
           <b-btn
             id="addPelotariBtn"
             class="font-weight-bold text-uppercase w-100"
@@ -106,8 +109,8 @@
       <b-row class="mt-3">
         <b-col cols="12" class="pelotaris-wrap">
           <div v-for="pelotari in sesion.pelotaris" v-bind:key="pelotari.id" class="pelotari-wrap" v-if="!pelotari.delete">
-            <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="light" class="border d-inline-block font-weight-bold pelotari-btn text-uppercase">{{ pelotari.alias }}</b-button>
-            <b-button block size="sm" class="d-inline-block delete-btn" variant="danger" v-on:click="onClickRemovePelotari(pelotari.id)"><i class="fas fa-trash-alt"></i></b-button>
+            <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="light" class="border d-inline-block font-weight-bold pelotari-btn text-uppercase" v-bind:class="{ 'w-100': readonly }">{{ pelotari.alias }}</b-button>
+            <b-button v-if="!readonly" block size="sm" class="d-inline-block delete-btn" variant="danger" v-on:click="onClickRemovePelotari(pelotari.id)"><i class="fas fa-trash-alt"></i></b-button>
             <b-collapse :id="'accordion-' + pelotari.id" role="tabpanel">
               <b-card class="ejercicios-wrap mb-3" body-class="p-3">
                 <b-row class="border-bottom border-dark mx-0 table-header">
@@ -147,10 +150,10 @@
                     <small>{{ ejercicio.volumen }}/{{ ejercicio.intensidad}}</small>
                   </b-col>
                   <b-col cols="2" md="1" class="px-0 py-1 text-right">
-                    <b-button size="sm" variant="link" class="action-btn mx-0 mx-sm-2 p-0 text-primary" title="Editar Ejercicio" @click="onClickEditEjercicio(pelotari.id, ejercicio.ejercicio_id)">
+                    <b-button v-if="!readonly" size="sm" variant="link" class="action-btn mx-0 mx-sm-2 p-0 text-primary" title="Editar Ejercicio" @click="onClickEditEjercicio(pelotari.id, ejercicio.ejercicio_id)">
                       <i class="fas fa-edit"></i>
                     </b-button>
-                    <b-button size="sm" variant="link" class="action-btn p-0 text-danger" title="Eliminar Ejercicio" @click="onClickRemoveEjercicio(pelotari.id, ejercicio.ejercicio_id)">
+                    <b-button v-if="!readonly" size="sm" variant="link" class="action-btn p-0 text-danger" title="Eliminar Ejercicio" @click="onClickRemoveEjercicio(pelotari.id, ejercicio.ejercicio_id)">
                       <i class="fas fa-trash-alt"></i>
                     </b-button>
                   </b-col>
@@ -161,6 +164,7 @@
                 <b-row class="mt-3">
                   <b-col cols="12" class="text-right">
                     <b-button
+                      v-if="!readonly"
                       class="font-weight-bold text-uppercase"
                       variant="success"
                       size="sm"
@@ -193,6 +197,7 @@
 
   export default {
     mixins: [ APIGetters ],
+    props: [ 'readonly' ],
     data() {
       return {
         ejercicio_id: 0,

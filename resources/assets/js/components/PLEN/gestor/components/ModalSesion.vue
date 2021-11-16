@@ -6,7 +6,7 @@
            scrollable="true"
            @ok="saveSesion"
            @cancel="cancelEditItem"
-           :ok-disabled="ok_disabled"
+           :ok-disabled="ok_disabled || readonly"
            ok-title="Guardar"
            ok-variant="danger"
            :cancel-disabled="cancel_disabled"
@@ -15,7 +15,7 @@
            @show="onShowModal"
            :no-close-on-backdrop="true"
            :no-close-on-esc="true">
-    <FormSesion />
+    <FormSesion :readonly="readonly"/>
   </b-modal>
 </template>
 
@@ -29,17 +29,27 @@
       return {
         cancel_disabled: false,
         ok_disabled: false,
+        readonly: false,
       }
     },
     created() {
       this.resetSesionBackup();
       this.$root.$on('disable-modal-sesion-save-button', this.toggleSaveButton);
       this.$root.$on('disable-modal-sesion-footer-buttons', this.toggleFooterButtons);
+
+      this.$root.$on('disable-modal-sesion-readonly', this.disableReadOnly );
+      this.$root.$on('enable-modal-sesion-readonly', this.enableReadOnly );
     },
     methods: {
       cancelEditItem() {
         this.restoreSesionBackup();
         this.$root.$emit('cancelEditSesion');
+      },
+      disableReadOnly() {
+        this.readonly = false;
+      },
+      enableReadOnly() {
+        this.readonly = true;
       },
       onShowModal() {
         this.makeSesionBackup();
