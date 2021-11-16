@@ -20,68 +20,29 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex';
   import FormSesion from './FormSesion.vue';
+  import { sesion } from '../../common/functions.js';
 
   export default {
+    mixins: [ sesion ],
     data() {
       return {
         cancel_disabled: false,
         ok_disabled: false,
-        sesion_backup: null
       }
     },
-    computed: mapState({
-      sesion: state => state.plen.sesion
-    }),
     created() {
       this.resetSesionBackup();
       this.$root.$on('disable-modal-sesion-save-button', this.toggleSaveButton);
       this.$root.$on('disable-modal-sesion-footer-buttons', this.toggleFooterButtons);
     },
     methods: {
-      ...mapActions({
-        setSesion: 'plen/setSesion'
-      }),
       cancelEditItem() {
         this.restoreSesionBackup();
         this.$root.$emit('cancelEditSesion');
       },
-      makeSesionBackup() {
-        this.resetSesionBackup();
-        this.sesion_backup = JSON.parse(JSON.stringify(this.sesion));
-      },
       onShowModal() {
         this.makeSesionBackup();
-      },
-      resetSesionBackup() {
-        this.sesion_backup = {
-          id: null,
-          microciclo_id: null,
-          fecha: null,
-          hora: null,
-          fronton_id: null,
-          pelotaris: [],
-        };
-      },
-      restoreSesionBackup() {
-        const sesion_backup = JSON.parse(JSON.stringify(this.sesion_backup));
-        this.sesion.id = sesion_backup.id;
-        this.sesion.microciclo_id = sesion_backup.microciclo_id;
-        this.sesion.fecha = sesion_backup.fecha;
-        this.sesion.hora = sesion_backup.hora;
-        this.sesion.fronton_id = sesion_backup.fronton_id;
-        this.sesion.pelotaris = [];
-        sesion_backup.pelotaris.map( (val, key) => {
-          const index = this.sesion.pelotaris.length;
-          this.sesion.pelotaris.push(val);
-          let ejercicios = [];
-          sesion_backup.pelotaris[key].ejercicios.map( (v, k) => {
-            ejercicios.push(v);
-          });
-          this.sesion.pelotaris[index].ejercicios = ejercicios;
-        });
-        this.setSesion(this.sesion);
       },
       saveSesion() {
         this.$root.$emit('saveEditSesion');
