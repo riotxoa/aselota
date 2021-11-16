@@ -16,19 +16,16 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
   import FormMicrociclo from './FormMicrociclo.vue';
+  import { microciclo } from '../../common/functions.js';
 
   export default {
+    mixins: [ microciclo ],
     data() {
       return {
-        microciclo_backup: null,
         disabled: false
       }
     },
-    computed: mapState({
-      microciclo: state => state.plen.microciclo
-    }),
     created() {
       this.resetMicrocicloBackup();
       this.$root.$on('disable-modal-microciclo-save-button', this.toggleSaveButton);
@@ -38,44 +35,8 @@
         this.restoreMicrocicloBackup();
         this.$root.$emit('cancelEditMicrociclo');
       },
-      makeMicrocicloBackup() {
-        this.microciclo_backup.id = this.microciclo.id;
-        this.microciclo_backup.mesociclo_id = this.microciclo.mesociclo_id;
-        this.microciclo_backup.tipo_microciclo_id = this.microciclo.tipo_microciclo_id;
-        this.microciclo_backup.fecha_ini = this.microciclo.fecha_ini;
-        this.microciclo_backup.fecha_fin = this.microciclo.fecha_fin;
-        this.microciclo_backup.volumen = this.microciclo.volumen;
-        this.microciclo_backup.intensidad = this.microciclo.intensidad;
-        this.microciclo_backup.description = this.microciclo.description;
-        this.microciclo_backup.objetivos = this.microciclo.objetivos;
-      },
       onShowModal() {
         this.makeMicrocicloBackup();
-      },
-      resetMicrocicloBackup() {
-        this.microciclo_backup = {
-          id: null,
-          mesociclo_id: null,
-          tipo_microciclo_id: null,
-          fecha_ini: null,
-          fecha_fin: null,
-          volumen: null,
-          intensidad: null,
-          description: '',
-          objetivos: ''
-        };
-      },
-      restoreMicrocicloBackup() {
-        this.microciclo.id = this.microciclo_backup.id;
-        this.microciclo.mesociclo_id = this.microciclo_backup.mesociclo_id;
-        this.microciclo.tipo_microciclo_id = this.microciclo_backup.tipo_microciclo_id;
-        this.microciclo.fecha_ini = this.microciclo_backup.fecha_ini;
-        this.microciclo.fecha_fin = this.microciclo_backup.fecha_fin;
-        this.microciclo.volumen = this.microciclo_backup.volumen;
-        this.microciclo.intensidad = this.microciclo_backup.intensidad;
-        this.microciclo.description = this.microciclo_backup.description;
-        this.microciclo.objetivos = this.microciclo_backup.objetivos;
-        this.resetMicrocicloBackup();
       },
       saveMicrociclo() {
         this.$root.$emit('saveEditMicrociclo');
