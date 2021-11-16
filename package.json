@@ -21,6 +21,9 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "@fullcalendar/core": "^5.10.1",
+        "@fullcalendar/daygrid": "^5.10.1",
+        "@fullcalendar/vue": "^5.10.1",
         "bootstrap-vue": "^2.0.0-rc.11",
         "moment": "^2.22.2",
         "v-treeview": "^0.2.1",
