@@ -57,8 +57,10 @@
   import { mapActions, mapState } from 'vuex';
   import VTreeview from "v-treeview";
   import moment from 'moment';
+  import functions from '../functions';
 
   export default {
+    mixins: [ functions ],
     data() {
       return {
         activePeriod: {
@@ -130,23 +132,6 @@
         keys.map( (val) => {
           this.activeTipology[val] = false;
         });
-      },
-      getFechaES(fecha, format = 'long') {
-        let fechaES = fecha;
-
-        switch( format ) {
-          case 'short':
-            fechaES = moment(fecha).format('D MMM');
-            break;
-          default:
-            fechaES = moment(fecha).format('DD/MM/YYYY');
-            break;
-        }
-
-        return fechaES;
-      },
-      getRangoFechas(f_ini, f_fin, format = 'long') {
-        return this.getFechaES(f_ini, format) + ' - ' + this.getFechaES(f_fin, format)
       },
       getPeriodDesc(period) {
         let desc = '';
@@ -845,6 +830,22 @@
         if (!this.activeTipology['year']) {
           this.loading = true;
           this.getActiveItemsThisYear(Date.now()).then( (items) => {
+
+            // Mostramos solo datos del año en curso, aunque de la API recibimos datos de los años anterior y posterior
+            const currentYear = new Date().getFullYear();
+            items.sesiones = _.filter(items.sesiones, (sesion) => {
+              return parseInt(sesion.fecha.substr(0,4)) === currentYear;
+            });
+            items.microciclos = _.filter(items.microciclos, (microciclo) => {
+              return parseInt(microciclo.fecha_ini.substr(0,4)) === currentYear;
+            });
+            items.mesociclos = _.filter(items.mesociclos, (mesociclo) => {
+              return parseInt(mesociclo.fecha_ini.substr(0,4)) === currentYear;
+            });
+            items.macrociclos = _.filter(items.macrociclos, (macrociclo) => {
+              return parseInt(macrociclo.fecha_ini.substr(0,4)) === currentYear;
+            });
+
             this.setActiveItems(items);
             this.setActivePeriod('year');
             this.onClickTipologySelect(this.selected_tipology);
