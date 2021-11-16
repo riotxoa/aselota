@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5">
+  <div id="timeline-wrap" class="py-5">
     <div :id="visualization_id"></div>
   </div>
 </template>
@@ -9,24 +9,13 @@
   import APIGetters from '../../../utils/getters.js';
   import { Timeline } from 'vis-timeline/standalone';
   import moment from 'moment';
+  import { mesociclo, microciclo, sesion } from '../../common/functions.js';
 
   export default {
     props: ['item'],
-    mixins: [ APIGetters ],
+    mixins: [ APIGetters, mesociclo, microciclo, sesion ],
     data() {
       return {
-        editMesociclo: {
-          item: null,
-          callback: null
-        },
-        editMicrociclo: {
-          item: null,
-          callback: null
-        },
-        editSesion: {
-          item: null,
-          callback: null
-        },
         visualization_id: "visualization_",
         time_groups: [
           { id: 0, content: '<small><strong>MACROCICLO</strong></small>' , style: 'letter-spacing:-1px;' },
@@ -279,18 +268,6 @@
         } else {
           alert("Debe seleccionar una fecha dentro de un Microciclo");
         }
-      },
-      cancelEditMesociclo() {
-        this.setMesociclo(this.editMesociclo.item);
-        this.resetEditMesociclo();
-      },
-      cancelEditMicrociclo() {
-        this.setMicrociclo(this.editMicrociclo.item);
-        this.resetEditMicrociclo();
-      },
-      cancelEditSesion() {
-        this.setSesion(this.editSesion.item);
-        this.resetEditSesion();
       },
       checkDateAfterLimit(end, limit) {
         var isAfterLimit = false;
@@ -876,24 +853,6 @@
           this.timeline.setItems(this.time_items);
         });
       },
-      resetEditMesociclo() {
-        this.editMesociclo = {
-          item: null,
-          callback: null
-        }
-      },
-      resetEditMicrociclo() {
-        this.editMicrociclo = {
-          item: null,
-          callback: null
-        }
-      },
-      resetEditSesion() {
-        this.editSesion = {
-          item: null,
-          callback: null
-        }
-      },
       saveEditMesociclo() {
         if( this.editMesociclo.item && this.editMesociclo.item.id ) {
           const index = _.findIndex(this.time_items, { id: this.editMesociclo.item.id, group: 1 });
@@ -941,24 +900,6 @@
           this.resetEditSesion();
         }
       },
-      setEditMesociclo( item, callback ) {
-        this.editMesociclo = {
-          item: item,
-          callback: callback
-        }
-      },
-      setEditMicrociclo( item, callback ) {
-        this.editMicrociclo = {
-          item: item,
-          callback: callback
-        }
-      },
-      setEditSesion( item, callback ) {
-        this.editSesion = {
-          item: item,
-          callback: callback
-        }
-      },
       setTiposMesociclo(arr) {
         arr.map( (val) => {
           this.tiposMesociclo[val.id] = {
@@ -989,38 +930,38 @@
 </script>
 
 <style>
-  .macrociclo,
-  .mesociclo,
-  .microciclo,
-  .sesion {
+  #timeline-wrap .macrociclo,
+  #timeline-wrap .mesociclo,
+  #timeline-wrap .microciclo,
+  #timeline-wrap .sesion {
     color:#ffffff;
     text-align:center;
     width:100%;
   }
 
-  .vis-group .macrociclo {
+  #timeline-wrap .vis-group .macrociclo {
     background-color:#c82333;
   }
 
-  .vis-group .mesociclo:nth-child(2n) {
+  #timeline-wrap .vis-group .mesociclo:nth-child(2n) {
     background-color:#676767;
   }
-  .vis-group .mesociclo:nth-child(2n+1) {
+  #timeline-wrap .vis-group .mesociclo:nth-child(2n+1) {
     background-color:#676767;
   }
-  .vis-group .mesociclo.vis-selected,
-  .vis-group .microciclo.vis-selected,
-  .vis-group .sesion.vis-selected {
+  #timeline-wrap .vis-group .mesociclo.vis-selected,
+  #timeline-wrap .vis-group .microciclo.vis-selected,
+  #timeline-wrap .vis-group .sesion.vis-selected {
     background-color:greenyellow!important;
     color:darkslategray;
   }
 
-  .vis-group .microciclo {
+  #timeline-wrap .vis-group .microciclo {
     /* background-color:goldenrod; */
     background-color:#ead9ff;
     color:darkslategray;
   }
-  .vis-group .microciclo::before {
+  #timeline-wrap .vis-group .microciclo::before {
     background-color:rgba(255,255,255,0.5);
     content:" ";
     position:absolute;
@@ -1030,58 +971,58 @@
     right:0;
     top:0;
   }
-  .vis-group .microciclo .vis-item-content,
-  .vis-group .sesion .vis-item-content {
+  #timeline-wrap .vis-group .microciclo .vis-item-content,
+  #timeline-wrap .vis-group .sesion .vis-item-content {
     display:block;
     padding-bottom:0;
   }
-  .vis-group .microciclo .vis-item-content hr {
+  #timeline-wrap .vis-group .microciclo .vis-item-content hr {
     margin-bottom:0;
     margin-top:0.25rem;
   }
-  .vis-group .microciclo .vis-item-content article:last-of-type {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article:last-of-type {
     margin-bottom:0.25rem;
   }
-  .vis-group .microciclo .vis-item-content article header small {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article header small {
     font-weight:bold;
   }
-  .vis-group .microciclo .vis-item-content article p {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article p {
     background:white;
     border:1px solid #e0e0e0;
     line-height:0.3;
   }
-  .vis-group .microciclo.vis-selected .vis-item-content article p {
+  #timeline-wrap .vis-group .microciclo.vis-selected .vis-item-content article p {
     background:rgba(255,255,255,0.75);
   }
-  .vis-group .microciclo .vis-item-content article p:not(:first-child) {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article p:not(:first-child) {
     margin-bottom:-1px;
   }
-  .vis-group .microciclo .vis-item-content article p span {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article p span {
     display:block;
   }
-  .vis-group .microciclo .vis-item-content article:first-of-type p span {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article:first-of-type p span {
     background-color:red;
   }
-  .vis-group .microciclo .vis-item-content article:last-of-type p span {
+  #timeline-wrap .vis-group .microciclo .vis-item-content article:last-of-type p span {
     background-color:green;
   }
 
-  .vis-group .sesion {
+  #timeline-wrap .vis-group .sesion {
     background-color:lightgray;
     color:darkslategray;
   }
 
-  .vis-item.vis-range .vis-item-content {
+  #timeline-wrap .vis-item.vis-range .vis-item-content {
     padding-left:0;
     padding-right:0;
   }
 
-  .vis-item-content p {
+  #timeline-wrap .vis-item-content p {
     line-height:1;
     margin:0;
   }
 
-  .vis-time-axis .vis-text {
+  #timeline-wrap .vis-time-axis .vis-text {
     font-weight:bold;
     text-transform:uppercase;
   }
