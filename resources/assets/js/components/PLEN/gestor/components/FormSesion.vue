@@ -109,7 +109,7 @@
       <b-row class="mt-3">
         <b-col cols="12" class="pelotaris-wrap">
           <div v-for="pelotari in sesion.pelotaris" v-bind:key="pelotari.id" class="pelotari-wrap" v-if="!pelotari.delete">
-            <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="light" class="border d-inline-block font-weight-bold pelotari-btn text-uppercase" v-bind:class="{ 'w-100': readonly }">{{ pelotari.alias }}</b-button>
+            <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="light" class="border d-inline-block font-weight-bold pelotari-btn text-uppercase" v-bind:class="{ 'w-100': readonly }"><i class="fas fa-caret-down float-left text-black-50"></i>{{ pelotari.alias }}</b-button>
             <b-button v-if="!readonly" block size="sm" class="d-inline-block delete-btn" variant="danger" v-on:click="onClickRemovePelotari(pelotari.id)"><i class="fas fa-trash-alt"></i></b-button>
             <b-collapse :id="'accordion-' + pelotari.id" role="tabpanel">
               <b-card class="ejercicios-wrap mb-3" body-class="p-3">
