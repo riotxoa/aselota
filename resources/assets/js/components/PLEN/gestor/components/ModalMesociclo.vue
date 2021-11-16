@@ -5,13 +5,13 @@
            size="lg"
            @ok="saveMesociclo"
            @cancel="cancelEditItem"
-           :ok-disabled="disabled"
+           :ok-disabled="disabled || readonly"
            ok-title="Guardar"
            ok-variant="danger"
            cancel-title="Cancelar"
            cancel-variant="secondary"
            @show="onShowModal">
-    <FormMesociclo />
+    <FormMesociclo :readonly="readonly" />
   </b-modal>
 </template>
 
@@ -23,17 +23,27 @@
     mixins: [ mesociclo ],
     data() {
       return {
-        disabled: false
+        disabled: false,
+        readonly: false,
       }
     },
     created() {
       this.resetMesocicloBackup();
       this.$root.$on('disable-modal-mesociclo-save-button', this.toggleSaveButton);
+
+      this.$root.$on('disable-modal-mesociclo-readonly', this.disableReadOnly );
+      this.$root.$on('enable-modal-mesociclo-readonly', this.enableReadOnly );
     },
     methods: {
       cancelEditItem() {
         this.restoreMesocicloBackup();
         this.$root.$emit('cancelEditMesociclo');
+      },
+      disableReadOnly() {
+        this.readonly = false;
+      },
+      enableReadOnly() {
+        this.readonly = true;
       },
       onShowModal() {
         this.makeMesocicloBackup();

@@ -21,6 +21,7 @@
             v-model="mesociclo.tipo_mesociclo_id"
             :options="tipos"
             size="sm"
+            :disabled="readonly"
             required
           ></b-form-select>
         </b-col>
@@ -33,6 +34,7 @@
             v-on:input="onInputFechaIni"
             type="date"
             size="sm"
+            :disabled="readonly"
             required
           ></b-form-input>
           <p id="errFechaIni" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_ini }}</p>
@@ -46,6 +48,7 @@
             v-on:change="onInputFechaFin"
             type="date"
             size="sm"
+            :disabled="readonly"
             required
           ></b-form-input>
           <p id="errFechaFin" class="font-weight-bold m-0 position-absolute small">{{ error_msg.fecha_fin }}</p>
@@ -58,6 +61,7 @@
               maxLength="1500"
               rows="3"
               max-rows="6"
+              :disabled="readonly"
             ></b-form-textarea>
           </b-form-group>
         </b-col>
@@ -69,6 +73,7 @@
               maxLength="1500"
               rows="3"
               max-rows="6"
+              :disabled="readonly"
             ></b-form-textarea>
           </b-form-group>
         </b-col>
@@ -82,6 +87,7 @@
   import moment from 'moment';
 
   export default {
+    props: [ 'readonly' ],
     data() {
       return {
         error_msg: null,
