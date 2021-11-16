@@ -132,8 +132,8 @@ class PLEN_MacrocicloController extends Controller
       $fecha = date('Y-m-d', $date/1000);
 
       $macrociclos = PLEN_Macrociclo::whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
-      $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo')->leftJoin('plen_tipos_mesociclo', 'plen_tipos_mesociclo.id', '=', 'plen_mesociclos.tipo_mesociclo_id')->whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
-      $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microcilo')->leftJoin('plen_tipos_microciclo', 'plen_tipos_microciclo.id', '=', 'plen_microciclos.tipo_microciclo_id')->whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+      $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo', 'plen_tipos_mesociclo.color')->leftJoin('plen_tipos_mesociclo', 'plen_tipos_mesociclo.id', '=', 'plen_mesociclos.tipo_mesociclo_id')->whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+      $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microciclo')->leftJoin('plen_tipos_microciclo', 'plen_tipos_microciclo.id', '=', 'plen_microciclos.tipo_microciclo_id')->whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
       $sesiones = \App\PLEN_Sesion::select('plen_sesiones.*', 'frontones.name as fronton')->leftJoin('frontones', 'frontones.id', '=', 'plen_sesiones.fronton_id')->whereDate('fecha', $fecha)->get();
       $sesion_ids = \App\PLEN_Sesion::whereDate('fecha', $fecha)->pluck('id');
       $pelotaris = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')->whereIn('sesion_id', $sesion_ids)->get();
@@ -161,13 +161,13 @@ class PLEN_MacrocicloController extends Controller
         ->orWhereRaw("'$fecha_fin' between fecha_ini and fecha_fin")
         ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
         ->get();
-      $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo')
+      $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo', 'plen_tipos_mesociclo.color')
         ->leftJoin('plen_tipos_mesociclo', 'plen_tipos_mesociclo.id', '=', 'plen_mesociclos.tipo_mesociclo_id')
         ->whereRaw("'$fecha_ini' between fecha_ini and fecha_fin")
         ->orWhereRaw("'$fecha_fin' between fecha_ini and fecha_fin")
         ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
         ->get();
-      $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microcilo')
+      $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microciclo')
         ->leftJoin('plen_tipos_microciclo', 'plen_tipos_microciclo.id', '=', 'plen_microciclos.tipo_microciclo_id')
         ->whereRaw("$fecha_ini between fecha_ini and fecha_fin")
         ->orWhereRaw("$fecha_fin between fecha_ini and fecha_fin")
@@ -227,10 +227,13 @@ class PLEN_MacrocicloController extends Controller
     {
       $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
 
-      $fecha_ini = date('Y-01-01', $date/1000);
-      $fecha_fin = date('Y-12-31', $date/1000);
+      // $fecha_ini = date('Y-01-01', $date/1000);
+      // $fecha_fin = date('Y-12-31', $date/1000);
 
-      return response()->json($this->getActiveItemsBetweenDates($fecha_ini, $fecha_fin), 200);
+      $fecha_ini_new = date('Y-01-01', strtotime("-1 year", $date/1000));
+      $fecha_fin_new = date('Y-12-31', strtotime("+1 year", $date/1000));
+
+      return response()->json($this->getActiveItemsBetweenDates($fecha_ini_new, $fecha_fin_new), 200);
     }
 
     public function getActiveMacrociclos(Request $request, $date)
