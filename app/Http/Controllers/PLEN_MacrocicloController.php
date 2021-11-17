@@ -160,22 +160,26 @@ class PLEN_MacrocicloController extends Controller
         ->whereRaw("'$fecha_ini' between fecha_ini and fecha_fin")
         ->orWhereRaw("'$fecha_fin' between fecha_ini and fecha_fin")
         ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
+        ->orderBy('fecha_ini', 'ASC')
         ->get();
       $mesociclos = \App\PLEN_Mesociclo::select('plen_mesociclos.*', 'plen_tipos_mesociclo.desc as tipo_mesociclo', 'plen_tipos_mesociclo.color')
         ->leftJoin('plen_tipos_mesociclo', 'plen_tipos_mesociclo.id', '=', 'plen_mesociclos.tipo_mesociclo_id')
         ->whereRaw("'$fecha_ini' between fecha_ini and fecha_fin")
         ->orWhereRaw("'$fecha_fin' between fecha_ini and fecha_fin")
         ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
+        ->orderBy('fecha_ini', 'ASC')
         ->get();
       $microciclos = \App\PLEN_Microciclo::select('plen_microciclos.*', 'plen_tipos_microciclo.desc as tipo_microciclo')
         ->leftJoin('plen_tipos_microciclo', 'plen_tipos_microciclo.id', '=', 'plen_microciclos.tipo_microciclo_id')
         ->whereRaw("$fecha_ini between fecha_ini and fecha_fin")
         ->orWhereRaw("$fecha_fin between fecha_ini and fecha_fin")
         ->orWhereRaw("('$fecha_ini' <= fecha_ini and '$fecha_fin' >= fecha_fin)")
+        ->orderBy('fecha_ini', 'ASC')
         ->get();
       $sesiones = \App\PLEN_Sesion::select('plen_sesiones.*', 'frontones.name as fronton')
         ->leftJoin('frontones', 'frontones.id', '=', 'plen_sesiones.fronton_id')
         ->whereBetween('fecha', [$fecha_ini, $fecha_fin])
+        ->orderBy('fecha', 'ASC')
         ->get();
       $sesion_ids = \App\PLEN_Sesion::whereBetween('fecha', [$fecha_ini, $fecha_fin])->pluck('id');
       $pelotaris = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')
@@ -217,8 +221,8 @@ class PLEN_MacrocicloController extends Controller
 
       $fecha = date('Y-m-d', $date/1000);
 
-      $fecha_ini = date('Y-m-d', strtotime($fecha . 'monday'));
-      $fecha_fin = date('Y-m-d', strtotime($fecha . 'sunday'));
+      $fecha_ini = date('Y-m-d', strtotime($fecha . ' monday this week'));
+      $fecha_fin = date('Y-m-d', strtotime($fecha . ' sunday this week'));
 
       return response()->json($this->getActiveItemsBetweenDates($fecha_ini, $fecha_fin), 200);
     }
@@ -241,7 +245,7 @@ class PLEN_MacrocicloController extends Controller
       $request->user()->authorizeRoles(['admin', 'plen_gestor', 'plen_entrenador']);
 
       $fecha = date('Y-m-d', $date/1000);
-      $items = PLEN_Macrociclo::whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->get();
+      $items = PLEN_Macrociclo::whereDate('fecha_ini', '<=', $fecha)->whereDate('fecha_fin', '>=', $fecha)->orderBy('fecha_ini', 'ASC')->get();
 
       return response()->json($items, 200);
     }
