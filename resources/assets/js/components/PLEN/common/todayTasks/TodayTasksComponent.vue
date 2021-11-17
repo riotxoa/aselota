@@ -1,5 +1,8 @@
 <template>
   <b-row id="calendarView" class="bg-white border px-0 py-3">
+    <b-col cols="12" class="text-center">
+      <h4 class="border-bottom font-weight-bold mb-4 pb-3 text-uppercase text-info">Próximas sesiones</h4>
+    </b-col>
     <b-col cols="12" class="">
       <hooper :settings="hooperSettings" style="height:auto;">
         <slide v-for="(resource, resourceIndex) in resources" :key="resourceIndex" :index="resourceIndex" class="border mx-1 p-3" style="min-height:225px;">
