@@ -138,7 +138,7 @@ class PLEN_MacrocicloController extends Controller
       $sesion_ids = \App\PLEN_Sesion::whereDate('fecha', $fecha)->pluck('id');
       $pelotaris = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')->whereIn('sesion_id', $sesion_ids)->get();
       $pelotari_ids = \App\PLEN_SesionPelotari::select('plen_sesion_pelotaris.*', 'pelotaris.alias')->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')->whereIn('sesion_id', $sesion_ids)->pluck('id');
-      $ejercicios = \App\PLEN_SesionEjercicio::select('plen_sesion_ejercicios.*', 'plen_ejercicios.name')->leftJoin('plen_ejercicios', 'plen_ejercicios.id', '=', 'plen_sesion_ejercicios.ejercicio_id')->whereIn('sesion_pelotari_id', $pelotari_ids)->get();
+      $ejercicios = \App\PLEN_SesionEjercicio::select('plen_sesion_ejercicios.*', 'plen_ejercicios.name', 'plen_ejercicios.material')->leftJoin('plen_ejercicios', 'plen_ejercicios.id', '=', 'plen_sesion_ejercicios.ejercicio_id')->whereIn('sesion_pelotari_id', $pelotari_ids)->get();
 
       $items = [
         'macrociclos' => $macrociclos,
@@ -186,7 +186,7 @@ class PLEN_MacrocicloController extends Controller
         ->leftJoin('pelotaris', 'pelotaris.id', '=', 'plen_sesion_pelotaris.pelotari_id')
         ->whereIn('sesion_id', $sesion_ids)
         ->pluck('id');
-      $ejercicios = \App\PLEN_SesionEjercicio::select('plen_sesion_ejercicios.*', 'plen_ejercicios.name')
+      $ejercicios = \App\PLEN_SesionEjercicio::select('plen_sesion_ejercicios.*', 'plen_ejercicios.name', 'plen_ejercicios.material')
         ->leftJoin('plen_ejercicios', 'plen_ejercicios.id', '=', 'plen_sesion_ejercicios.ejercicio_id')
         ->whereIn('sesion_pelotari_id', $pelotari_ids)
         ->get();
