@@ -15,7 +15,7 @@
               <strong>Fecha:</strong><span class="float-sm-right ml-2 text-secondary">{{ getSesionFecha(sesion.fecha) }}</span>
             </b-col>
             <b-col cols="6" sm="6" lg="1">
-              <strong class="d-lg-none">Hora:</strong><span class="float-sm-right ml-2 text-secondary">{{ sesion.hora.substr(0,5) }}</span>
+              <strong class="d-lg-none">Hora:</strong><span class="float-sm-right ml-2 text-secondary">{{ (sesion.hora ? sesion.hora.substr(0,5) : '-') }}</span>
             </b-col>
             <b-col cols="12" lg="4" class="d-none d-lg-inline-block">
               <strong>Frontón:</strong><span class="float-sm-right ml-2 text-secondary">{{ getFrontonName(sesion.fronton_id) }}</span>
@@ -190,14 +190,20 @@
     },
     methods: {
       getFrontonName(id) {
+        if( !id ) {
+          return '-';
+        }
         const fronton = _.find(this.frontones, { 'value': id });
-        return fronton.text;
+        return (fronton ? fronton.text : '-');
       },
       getPelotariAlias(id) {
         const pelotari = _.find(this.pelotaris_options, { 'value': id });
-        return pelotari.text;
+        return (pelotari ? pelotari.text : '-');
       },
       getSesionFecha(fecha) {
+        if( !fecha ) {
+          return '-';
+        }
         return moment(fecha).format("DD/MM/YYYY")
       },
       loadEjercicio(pelotari_id, ejercicio_id) {
