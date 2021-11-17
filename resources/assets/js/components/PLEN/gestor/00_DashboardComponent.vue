@@ -8,7 +8,7 @@
       </b-col>
 
       <b-col :xl="showMenu ? 10 : 12" class="position-relative">
-        <a id="toggleButton" class="d-none d-xl-inline position-absolute" :title="showMenu ? 'Ocultar menú' : 'Mostrar menú'" @click="toggleMenu()">
+        <a id="toggleButton" class="d-none d-xl-inline position-fixed" :title="showMenu ? 'Ocultar menú' : 'Mostrar menú'" @click="toggleMenu()">
           <i v-if="showMenu" class="fas fa-angle-double-left"></i>
           <i v-else class="fas fa-angle-double-right"></i>
         </a>
@@ -55,18 +55,16 @@
     z-index:0;
   }
   #toggleButton {
-    background-color:#444444;
-    border-bottom:2px solid #efefef;
-    border-right:2px solid #efefef;
+    background-color:#444444bb;
     color:#ffffff;
     cursor:pointer;
-    height:41px;
-    left:-0.1rem;
-    padding-top:.5rem;
+    height:25px;
+    left:0;
+    padding-top:.05rem;
     text-align:center;
-    top:-1.5rem;
+    top:3.5rem;
     width:41px;
-    z-index:99;
+    z-index:1;
 
     -webkit-transition:all .15s ease-in-out;
     -moz-transition:all .15s ease-in-out;
@@ -75,7 +73,7 @@
     transition:all .15s ease-in-out;
   }
   #toggleButton:hover {
-    background-color:#747474;
+    background-color:#444444;
   }
 </style>
 
