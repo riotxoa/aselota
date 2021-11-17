@@ -38,7 +38,21 @@
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                       <span class="navbar-toggler-icon"></span>
                   </button>
-
+                  <p class="font-weight-bold pt-3 text-center text-uppercase w-100" style="color:#94c11f;text-shadow:rgba(100, 150, 100, .35) 1px 1px 5px;">
+                    @switch( $role )
+                      @case ('admin')
+                        Administrador Aplicación
+                        @break
+                      @case ('plen_gestor')
+                        Planificación de entrenamientos
+                        @break
+                      @case ('plen_entrenador')
+                        Entrenamientos
+                        @break
+                      @default
+                        @break
+                    @endswitch
+                  </p>
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <!-- Left Side Of Navbar -->
                       <ul class="navbar-nav mr-auto">
