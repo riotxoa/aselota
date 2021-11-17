@@ -33,7 +33,7 @@
                 <b-card-body class="border-bottom pb-2 pt-0 px-3">
                   <b-card-text>
                     <ul class="mt-3 pl-2 text-left">
-                      <li v-for="(material, materialIndex) in resource.materiales" v-bind:key="materialIndex" class="initialism">
+                      <li v-for="(material, materialIndex) in resource.materiales" v-bind:key="materialIndex" class="mb-2 initialism">
                         {{ material }}
                       </li>
                     </ul>
@@ -77,9 +77,6 @@
             },
             990: {
               itemsToShow: 3
-            },
-            1200: {
-              itemsToShow: 4
             }
           }
         },
