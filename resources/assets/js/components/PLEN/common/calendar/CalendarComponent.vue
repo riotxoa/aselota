@@ -88,6 +88,7 @@
             meridiem: false
           },
           eventClick: this.eventClick,
+          eventDidMount: this.eventDidMount,
           events: [],
           firstDay: 1,
           headerToolbar: {
@@ -132,6 +133,24 @@
           // Do nothing
         }
       },
+      eventDidMount(info) {
+        const cicloClasses = info.el.className;
+        let tooltip = '';
+
+        if( cicloClasses.includes("sesion") ) {
+          tooltip = this.getTooltipSesion(info.event.id);
+        } else if( cicloClasses.includes("microciclo") ) {
+          tooltip = this.getTooltipMicrociclo(info.event.id);
+        } else if( cicloClasses.includes("mesociclo") ) {
+          tooltip = this.getTooltipMesociclo(info.event.id);
+        } else if( cicloClasses.includes("macrociclo") ) {
+          tooltip = this.getTooltipMacrociclo(info.event.id);
+        }
+
+        if( tooltip.length ) {
+          jQuery(info.el).attr('title', tooltip);
+        }
+      },
       getSelectedCiclos() {
         let ciclos = [];
 
@@ -160,6 +179,57 @@
         });
 
         return group_macrociclos;
+      },
+      getTooltipMacrociclo(event_id) {
+        const macrociclo_id = parseInt(event_id.replace("macrociclo_", ""));
+        const macrociclo = _.find(this.items.macrociclos, { id: macrociclo_id });
+
+        const tooltip = 'FECHAS: ' + this.getRangoFechas(macrociclo.fecha_ini, macrociclo.fecha_fin) + '\n\n' +
+                        (macrociclo.description ? 'DESCRIPCIÓN: ' + macrociclo.description + '\n\n' : '') +
+                        (macrociclo.objetivos ? 'OBJETIVOS: ' + macrociclo.objetivos : '');
+
+        return tooltip;
+      },
+      getTooltipMesociclo(event_id) {
+        const mesociclo_id = parseInt(event_id.replace("mesociclo_", ""));
+        const mesociclo = _.find(this.items.mesociclos, { id: mesociclo_id });
+
+        const tooltip = 'FECHAS: ' + this.getRangoFechas(mesociclo.fecha_ini, mesociclo.fecha_fin) + '\n' +
+                        'TIPO: ' + (mesociclo.tipo_mesociclo ? mesociclo.tipo_mesociclo : '---') + '\n\n' +
+                        (mesociclo.description ? 'DESCRIPCIÓN: ' + mesociclo.description + '\n\n' : '') +
+                        (mesociclo.objetivos ? 'OBJETIVOS: ' + mesociclo.objetivos : '');
+
+        return tooltip;
+      },
+      getTooltipMicrociclo(event_id) {
+        const microciclo_id = parseInt(event_id.replace("microciclo_", ""));
+        const microciclo = _.find(this.items.microciclos, { id: microciclo_id });
+
+        const tooltip = 'FECHAS: ' + this.getRangoFechas(microciclo.fecha_ini, microciclo.fecha_fin) + '\n' +
+                        'TIPO: ' + (microciclo.tipo_microciclo ? microciclo.tipo_microciclo : '---') + '\n' +
+                        'VOLUMEN: ' + (microciclo.volumen ? microciclo.volumen : '---') + '   -   INTENSIDAD: ' + (microciclo.intensidad ? microciclo.intensidad : '---') + '\n\n' +
+                        (microciclo.description ? 'DESCRIPCIÓN: ' + microciclo.description + '\n\n' : '') +
+                        (microciclo.objetivos ? 'OBJETIVOS: ' + microciclo.objetivos : '');
+
+        return tooltip;
+      },
+      getTooltipSesion(event_id) {
+        const sesion_id = parseInt(event_id.replace("sesion_", ""));
+        const sesion = _.find(this.items.sesiones, { id: sesion_id });
+        const pelotaris = _.filter(this.items.pelotaris, { sesion_id: sesion_id });
+
+        let tooltip = 'FECHA: ' + this.getFechaES(sesion.fecha) + ' ' + (sesion.hora ? sesion.hora.substr(0, 5) : '') + '\n' +
+                    (sesion.fronton ? 'FRONTÓN: ' + sesion.fronton + '\n\n' : '\n');
+        if( pelotaris.length ) {
+          tooltip += 'Pelotaris convocados:\n\n';
+          pelotaris.map( (pelotari) => {
+            tooltip += '- ' + pelotari.alias + '\n';
+          })
+        } else {
+          tooltip += 'No hay pelotaris convocados';
+        }
+
+        return tooltip;
       },
       loadEvents(date) {
         let order = 0;
