@@ -1,5 +1,8 @@
 <template>
   <b-row id="currentItemsList" class="bg-white border p-3">
+    <b-col cols="12" class="text-center">
+      <h4 class="border-bottom font-weight-bold mb-4 pb-3 text-uppercase text-info">Árbol de ciclos activos</h4>
+    </b-col>
     <!-- Selector de tipología de items -->
     <b-col cols="12" class="d-none d-sm-block text-center">
       <b-button-group>
