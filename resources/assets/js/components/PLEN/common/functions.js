@@ -3,6 +3,9 @@ import moment from 'moment';
 
 export default {
   methods: {
+    getFechaDB(fecha) {
+      return moment(fecha).format('YYYY-MM-DD');
+    },
     getFechaES(fecha, format = 'long') {
       let fechaES = fecha;
 
@@ -16,6 +19,20 @@ export default {
       }
 
       return fechaES;
+    },
+    getFechaWeekday(fecha, format = 'long') {
+      let weekday = '';
+
+      switch( format ) {
+        case 'short':
+          weekday = moment(fecha).locale('es').format('dd');
+          break;
+        default:
+          weekday = moment(fecha).locale('es').format('dddd');
+          break;
+      }
+
+      return weekday;
     },
     getRangoFechas(f_ini, f_fin, format = 'long') {
       return this.getFechaES(f_ini, format) + ' - ' + this.getFechaES(f_fin, format)
