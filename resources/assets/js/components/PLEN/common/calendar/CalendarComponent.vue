@@ -1,5 +1,8 @@
 <template>
   <b-row id="calendarView" class="bg-white border p-3">
+    <b-col cols="12" class="text-center">
+      <h4 class="border-bottom font-weight-bold pb-3 text-uppercase text-info">Calendario de planificación</h4>
+    </b-col>
     <b-col cols="12" class="filter-wrap mt-3 mx-0 px-0 text-center">
       <b-button-group size="sm" class="d-block d-sm-inline-flex">
         <b-button
