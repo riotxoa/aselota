@@ -17,13 +17,11 @@
               <b-button block v-b-toggle="'accordion-pelotaris-' + resourceIndex" variant="outline-success" size="sm">Pelotaris</b-button>
               <b-collapse :id="'accordion-pelotaris-' + resourceIndex" role="tabpanel">
                 <b-card-body class="border-bottom pb-2 pt-0 px-3">
-                  <b-card-text>
-                    <ul class="mt-3 pl-2 text-left">
-                      <li v-for="(pelotari, pelotariIndex) in resource.pelotaris" v-bind:key="pelotariIndex" class="initialism">
-                        {{ pelotari }}
-                      </li>
-                    </ul>
-                  </b-card-text>
+                  <ul class="mt-3 pl-2 text-left">
+                    <li v-for="(pelotari, pelotariIndex) in resource.pelotaris" v-bind:key="pelotariIndex" class="initialism">
+                      {{ pelotari }}
+                    </li>
+                  </ul>
                 </b-card-body>
               </b-collapse>
             </b-card>
@@ -31,13 +29,11 @@
               <b-button block v-b-toggle="'accordion-material-' + resourceIndex" variant="outline-info" size="sm">Material</b-button>
               <b-collapse :id="'accordion-material-' + resourceIndex" role="tabpanel">
                 <b-card-body class="border-bottom pb-2 pt-0 px-3">
-                  <b-card-text>
-                    <ul class="mt-3 pl-2 text-left">
-                      <li v-for="(material, materialIndex) in resource.materiales" v-bind:key="materialIndex" class="mb-2 initialism">
-                        {{ material }}
-                      </li>
-                    </ul>
-                  </b-card-text>
+                  <ul class="mt-3 pl-2 text-left">
+                    <li v-for="(material, materialIndex) in resource.materiales" v-bind:key="materialIndex" class="mb-2 initialism">
+                      {{ material }}
+                    </li>
+                  </ul>
                 </b-card-body>
               </b-collapse>
             </b-card>
