@@ -217,6 +217,9 @@ form label.col-form-label {
   background-color:#d2d2d2;
 }
 
+.cursor-move {
+  cursor:move!important;
+}
 .cursor-pointer {
   cursor:pointer!important;
 }
