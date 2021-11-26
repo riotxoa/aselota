@@ -49,6 +49,7 @@
               id="faseInput"
               :options="fases_options"
               v-model="fase_sesion_id"
+              required
               size="sm">
             </b-form-select>
           </b-form-group>
@@ -153,7 +154,7 @@
         ejercicios_options: [],
         fase_sesion_id: null,
         fases_options: [],
-        intensidad: null,
+        intensidad: 0,
         orden: null,
         pelotari: null,
         pelotaris_options: [],
@@ -162,7 +163,7 @@
         subtipos_options: [],
         tipo_ejercicio: null,
         tipos_options: [],
-        volumen: null,
+        volumen: 0,
       }
     },
     computed: mapState({
