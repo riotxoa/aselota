@@ -3,24 +3,24 @@
     <b-form v-if="show">
       <b-row class="macrociclo-wrap">
         <b-col sm="2">
-          <label class="font-weight-bold">Macrociclo:</label>
+          <label class="font-weight-bold mb-1">Macrociclo:</label>
         </b-col>
         <b-col sm="4" lg="3" class="px-sm-0">
           <p class="border mb-1 px-2" style="letter-spacing:-0.5px">{{ macrociclo_dates }}</p>
         </b-col>
         <b-col sm="6" lg="7" class="pl-sm-1">
-          <p class="border px-2">{{ macrociclo_desc }}</p>
+          <p class="border mb-1 px-2">{{ macrociclo_desc }}</p>
         </b-col>
       </b-row>
       <b-row class="mesociclo-wrap">
         <b-col sm="2">
-          <label class="font-weight-bold">Mesociclo:</label>
+          <label class="font-weight-bold mb-1">Mesociclo:</label>
         </b-col>
         <b-col sm="4" lg="3" class="px-sm-0">
           <p class="border mb-1 px-2" style="letter-spacing:-0.5px">{{ mesociclo_dates }}</p>
         </b-col>
         <b-col sm="6" lg="7" class="pl-sm-1">
-          <p class="border px-2">{{ mesociclo_desc }}</p>
+          <p class="border mb-1 px-2">{{ mesociclo_desc }}</p>
         </b-col>
       </b-row>
       <b-row class="border-bottom mb-3 microciclo-wrap">
@@ -84,7 +84,15 @@
       <!-- Pelotaris convocados -->
       <b-row class="border-top mt-3 pt-3">
         <b-col cols="12" sm="4" md="5">
-          <label for="pelotariInput" class="font-weight-bold">Pelotaris convocados:</label>
+          <label v-if="readonly" for="pelotariInput" class="font-weight-bold">Pelotaris convocados:</label>
+          <b-button
+            v-if="!readonly"
+            class="font-weight-bold text-dark text-uppercase"
+            variant="warning"
+            size="sm"
+            v-on:click="onClickOpenDesigner">
+            <i class="fas fa-highlighter mr-2"></i>Abrir Diseñador
+          </b-button>
         </b-col>
         <b-col v-if="!readonly" cols="12" sm="4" md="3" class="mb-1 mb-sm-0 pr-md-0">
           <b-form-select
@@ -102,14 +110,14 @@
             variant="primary"
             size="sm"
             v-on:click="onClickAddPelotari">
-            Añadir Pelotari
+            <i class="fas fa-user-plus mr-2"></i>Añadir Pelotari
           </b-btn>
         </b-col>
       </b-row>
       <b-row class="mt-3">
         <b-col cols="12" class="pelotaris-wrap">
           <div v-for="pelotari in sesion.pelotaris" v-bind:key="pelotari.id" class="pelotari-wrap" v-if="!pelotari.delete">
-            <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="light" class="border d-inline-block font-weight-bold pelotari-btn text-uppercase" v-bind:class="{ 'w-100': readonly }"><i class="fas fa-caret-down float-left text-black-50"></i>{{ pelotari.alias }}</b-button>
+            <b-button block size="sm" v-b-toggle="'accordion-' + pelotari.id" variant="outline-info" class="border-info d-inline-block font-weight-bold pelotari-btn text-uppercase" v-bind:class="{ 'w-100': readonly }"><i class="fas fa-caret-down float-left"></i>{{ pelotari.alias }}</b-button>
             <b-button v-if="!readonly" block size="sm" class="d-inline-block delete-btn" variant="danger" v-on:click="onClickRemovePelotari(pelotari.id)"><i class="fas fa-trash-alt"></i></b-button>
             <b-collapse :id="'accordion-' + pelotari.id" role="tabpanel">
               <b-card class="ejercicios-wrap mb-3" body-class="p-3">
@@ -117,9 +125,9 @@
                   <b-col cols="2" md="1" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">&nbsp;</small></b-col>
                   <b-col cols="3" sm="2" md="2" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Fase</small></b-col>
                   <b-col cols="5" md="6" class="pl-0 pr-2"><small class="font-weight-bold text-uppercase">Ejercicio</small></b-col>
-                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 text-right"><small class="font-weight-bold">Vol.</small></b-col>
-                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 text-right"><small class="font-weight-bold">Int.</small></b-col>
-                  <b-col cols="1" md="1" class="d-none d-sm-block d-md-none pl-0 pr-2 text-right"><small class="font-weight-bold">V/I</small></b-col>
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 text-center"><small class="font-weight-bold">Vol.</small></b-col>
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 text-center"><small class="font-weight-bold">Int.</small></b-col>
+                  <b-col cols="1" md="1" class="d-none d-sm-block d-md-none pl-0 pr-2 text-center"><small class="font-weight-bold">V/I</small></b-col>
                   <b-col cols="2" md="1" class="px-0">&nbsp;</b-col>
                 </b-row>
                 <b-row v-for="(ejercicio, index) in pelotari.ejercicios" v-bind:key="index" class="border-bottom mx-0 ejercicios-row">
@@ -140,13 +148,25 @@
                   <b-col cols="5" md="6" class="pl-0 pr-2 py-1">
                     <small>{{ ejercicio.name }}</small>
                   </b-col>
-                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-right">
-                    <small>{{ ejercicio.volumen }}</small>
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-center">
+                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block p-0 plus text-dark" title="Reducir el Volumen" @click="onClickVolumenDown(index, pelotari.id)">
+                      <i class="fas fa-minus"></i>
+                    </b-button>
+                    <small class="border px-2 py-1">{{ ejercicio.volumen }}</small>
+                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block minus p-0 text-dark" title="Aumentar el Volumen" @click="onClickVolumenUp(index, pelotari.id)">
+                      <i class="fas fa-plus"></i>
+                    </b-button>
                   </b-col>
-                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-right">
-                    <small>{{ ejercicio.intensidad }}</small>
+                  <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-center">
+                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block p-0 plus text-dark" title="Reducir el Volumen" @click="onClickIntensidadDown(index, pelotari.id)">
+                      <i class="fas fa-minus"></i>
+                    </b-button>
+                    <small class="border px-2 py-1">{{ ejercicio.intensidad }}</small>
+                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block minus p-0 text-dark" title="Aumentar el Volumen" @click="onClickIntensidadUp(index, pelotari.id)">
+                      <i class="fas fa-plus"></i>
+                    </b-button>
                   </b-col>
-                  <b-col cols="1" md="1" class="d-none d-sm-block d-md-none pl-0 pr-2 py-1 text-right">
+                  <b-col cols="1" md="1" class="d-none d-sm-block d-md-none pl-0 pr-2 py-1 text-center">
                     <small>{{ ejercicio.volumen }}/{{ ejercicio.intensidad}}</small>
                   </b-col>
                   <b-col cols="2" md="1" class="px-0 py-1 text-right">
@@ -166,10 +186,10 @@
                     <b-button
                       v-if="!readonly"
                       class="font-weight-bold text-uppercase"
-                      variant="success"
+                      variant="outline-secondary"
                       size="sm"
                       v-on:click="onClickAddEjercicio(pelotari.id)">
-                      Añadir Ejercicio
+                      <i class="fas fa-plus mr-2"></i>Añadir Ejercicio
                     </b-button>
                   </b-col>
                 </b-row>
@@ -185,6 +205,12 @@
       <FormSesionEjercicio class="form-wrap" :pelotari_id="pelotari_ejercicio" :order="order" :frontones="frontones" :ejercicio_id="ejercicio_id" />
     </div>
     <!-- /Formulario Ejercicios Programados -->
+
+    <!-- Diseñador de sesion (pelotaris y ejercicios por fases) -->
+    <div v-if="showFormSesionDesigner" id="formSesionDesigner" class="px-2 py-1">
+      <SesionDesigner class="designer-wrap form-wrap" :pelotaris="pelotaris_all" :frontones="frontones" />
+    </div>
+    <!-- /Diseñador de sesion (pelotaris y ejercicios por fases) -->
   </div>
 </template>
 
@@ -194,6 +220,7 @@
   import moment from 'moment';
 
   import FormSesionEjercicio from './SesionEjercicio/FormSesionEjercicio.vue';
+  import SesionDesigner from './SesionEjercicio/SesionDesigner.vue';
 
   export default {
     mixins: [ APIGetters ],
@@ -214,6 +241,7 @@
         pelotaris_all: [],
         pelotaris_select: [],
         show: false,
+        showFormSesionDesigner: false,
         showFormSesionEjercicio: false
       }
     },
@@ -234,6 +262,7 @@
               this.$root.$on('saveEditSesion', this.hideFormSesionEjercicio);
               this.$root.$on('cancelEditSesion', this.hideFormSesionEjercicio);
               this.$root.$on('hideFormSesionEjercicio', this.hideFormSesionEjercicio);
+              this.$root.$on('hideFormSesionDesigner', this.hideFormSesionDesigner);
             });
           });
         });
@@ -262,6 +291,9 @@
         getSubtiposEjercicio: 'plen/getSubtiposEjercicio',
         getTiposEjercicio: 'plen/getTiposEjercicio'
       }),
+      hideFormSesionDesigner() {
+        this.showFormSesionDesigner = false;
+      },
       hideFormSesionEjercicio() {
         this.showFormSesionEjercicio = false;
         this.pelotari_ejercicio = null;
@@ -322,6 +354,21 @@
 
         this.$root.$emit('disable-modal-sesion-footer-buttons', this.showFormSesionEjercicio);
       },
+      onClickIntensidadDown(index, pelotari_id) {
+        let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        if( pelotari.ejercicios[index].intensidad > 1 ) {
+          pelotari.ejercicios[index].intensidad--;
+        }
+      },
+      onClickIntensidadUp(index, pelotari_id) {
+        let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        if( pelotari.ejercicios[index].intensidad == 0 || pelotari.ejercicios[index].intensidad < 5 ) {
+          pelotari.ejercicios[index].intensidad++;
+        }
+      },
+      onClickOpenDesigner() {
+        this.showFormSesionDesigner = true;
+      },
       onClickOrderDown(index, pelotari_id) {
         let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
         const currentOrder = pelotari.ejercicios[index].order;
@@ -353,6 +400,18 @@
         const pelotari = _.find(this.pelotaris_all, { id: id });
         if( confirm("¿Desea BORRAR al Pelotari " + pelotari.alias + " de la lista de convocados?\n\nTambién se borrarán los ejercicios vinculados a este Pelotari y Sesión.") ) {
           this.removePelotari(id);
+        }
+      },
+      onClickVolumenDown(index, pelotari_id) {
+        let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        if( pelotari.ejercicios[index].volumen > 1 ) {
+          pelotari.ejercicios[index].volumen--;
+        }
+      },
+      onClickVolumenUp(index, pelotari_id) {
+        let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
+        if( pelotari.ejercicios[index].volumen == 0 || pelotari.ejercicios[index].volumen < 5 ) {
+          pelotari.ejercicios[index].volumen++;
         }
       },
       onInputFecha(fecha) {
@@ -399,7 +458,8 @@
       }
     },
     components: {
-      FormSesionEjercicio
+      FormSesionEjercicio,
+      SesionDesigner
     }
   }
 </script>
@@ -411,6 +471,10 @@
 .ejercicios-wrap .arrow:focus {
   box-shadow:none;
 }
+.ejercicios-wrap .minus .fas,
+.ejercicios-wrap .plus .fas {
+  font-size:8px;
+}
 #errFecha {
   color:red;
   line-height:1.1;
@@ -421,6 +485,22 @@
 }
 #pelotariInput {
   width:calc(98% - 130px);
+}
+#formSesionDesigner {
+  background-color:rgba(0,0,0,0.65);
+  left:0;
+  height:100%;
+  position:fixed;
+  top:0;
+  width:100%;
+}
+#formSesionDesigner .designer-wrap {
+  background-color:white;
+  height:calc(100% - 90px);
+  margin:45px auto;
+  max-width:1250px;
+  padding-bottom:1rem;
+  width:calc(100% - 90px);
 }
 #formSesionEjercicio {
   background-color:rgba(60, 60, 60, 0.75);
