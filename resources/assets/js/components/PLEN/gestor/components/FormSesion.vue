@@ -304,9 +304,10 @@
           var stringified = JSON.stringify(res).replace(/"id"/g, '"value"').replace(/alias/g, "text");
           this.pelotaris_select = JSON.parse(stringified);
 
-          this.pelotaris_select.map( (val) => {
-            if(val.fecha_fin_contrato < this.sesion.fecha) {
-              val.text = "**" + val.text + " (Fin Contrato: " + val.fecha_fin_contrato + ")";
+          this.pelotaris_select.map( (val, index) => {
+            if(val.fecha_fin_contrato <= this.sesion.fecha) {
+              this.pelotaris_select.splice(index, 1);
+              res.splice(index, 1);
             }
           });
 
