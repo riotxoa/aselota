@@ -63,7 +63,8 @@ class PelotariController extends Controller
           $today = date('Y-m-d');
           $three_months_ago = date('Y-m-d', strtotime("-3 Months"));
 
-          $items = $items->leftJoin('contratos_header as ch1', 'pelotaris.id', '=', 'ch1.pelotari_id')
+          $items = $items->addSelect('c1.fecha_fin as fecha_fin_contrato')
+                         ->leftJoin('contratos_header as ch1', 'pelotaris.id', '=', 'ch1.pelotari_id')
                          ->leftJoin('contratos as c1', 'ch1.id', '=', 'c1.header_id')
                          ->leftJoin('contratos_comercial as cc1', 'c1.header_id', '=', 'cc1.header_id')
                          ->where('ch1.disabled', '=', 0)
@@ -88,14 +89,15 @@ class PelotariController extends Controller
           //                ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
           //                ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'c2.garantia');
 
-          $items = $items->leftJoin('contratos_header as ch2', 'pelotaris.id', '=', 'ch2.pelotari_id')
+          $items = $items->addSelect('c2.fecha_fin as fecha_fin_contrato')
+                         ->leftJoin('contratos_header as ch2', 'pelotaris.id', '=', 'ch2.pelotari_id')
                          ->leftJoin('contratos as c2', 'ch2.id', '=', 'c2.header_id')
                          ->where('ch2.disabled', '=', 0)
                          ->whereDate('c2.fecha_ini', '<=', $fecha_fin)
                          ->whereDate('c2.fecha_fin', '>=', $fecha_ini)
                          ->whereNull('c2.deleted_at');
           if( $extended_select ) {
-            $items = $items->addSelect('c2.fecha_ini as fecha_contrato', 'c2.fecha_fin as fecha_fin_contrato', 'c2.garantia');
+            $items = $items->addSelect('c2.fecha_ini as fecha_contrato', 'c2.garantia');
           }
         }
 
