@@ -50,7 +50,10 @@ var Utils = {
         return "";
       }
       if( video.includes("youtube") || video.includes("youtu.be") ) {
-        src = video;
+        // https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url#8260383
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        var match = video.match(regExp);
+        src = (match && match[7].length == 11) ? "https://www.youtube-nocookie.com/embed/" + match[7] : false;
       }
       if( video.includes("vimeo") ) {
         src = video.replace("https://vimeo.com/", "https://player.vimeo.com/video/");
