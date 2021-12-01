@@ -301,14 +301,23 @@
       },
       loadPelotaris() {
         this.getAllPelotaris(this.sesion.fecha).then( (res) => {
+          var removeIndexes = [];
           var stringified = JSON.stringify(res).replace(/"id"/g, '"value"').replace(/alias/g, "text");
-          this.pelotaris_select = JSON.parse(stringified);
+          this.pelotaris_select = _.sortBy( JSON.parse(stringified), ['text', 'fecha_fin_contrato'] );
 
           this.pelotaris_select.map( (val, index) => {
-            if(val.fecha_fin_contrato <= this.sesion.fecha) {
-              this.pelotaris_select.splice(index, 1);
-              res.splice(index, 1);
+            if(val.fecha_fin_contrato < this.sesion.fecha) {
+              if( val.text === this.pelotaris_select[parseInt(index + 1)].text ) {
+                removeIndexes.push(index);
+              }
+              val.text = val.text + "** (Fin Contr. " + moment(val.fecha_fin_contrato).format('DD/MM/YYYY') + ")";
+              res[index].alias = val.text;
             }
+          });
+
+          removeIndexes.map( (val, idx) => {
+            this.pelotaris_select.splice(val - idx, 1);
+            res.splice(val - idx, 1);
           });
 
           this.pelotaris_select.unshift({ value: null, text: "Seleccionar pelotari" });
