@@ -140,6 +140,12 @@ class PLEN_MesocicloController extends Controller
         $mesociclo = PLEN_Mesociclo::find($id);
         foreach( $mesociclo->microciclos as $microciclo ) {
           foreach( $microciclo->sesiones as $sesion ) {
+            foreach( $sesion->sesion_pelotaris as $pelotari ) {
+              foreach( $pelotari->ejercicios as $ejercicio ) {
+                $ejercicio->delete();
+              }
+              $pelotari->delete();
+            }
             $sesion->delete();
           }
           $microciclo->delete();

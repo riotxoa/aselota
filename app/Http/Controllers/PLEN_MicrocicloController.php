@@ -131,6 +131,12 @@ class PLEN_MicrocicloController extends Controller
 
         $microciclo = PLEN_Microciclo::find($id);
         foreach( $microciclo->sesiones as $sesion ) {
+          foreach( $sesion->sesion_pelotaris as $pelotari ) {
+            foreach( $pelotari->ejercicios as $ejercicio ) {
+              $ejercicio->delete();
+            }
+            $pelotari->delete();
+          }
           $sesion->delete();
         }
         $microciclo->delete();

@@ -114,6 +114,12 @@ class PLEN_MacrocicloController extends Controller
       foreach( $macrociclo->mesociclos as $mesociclo ) {
         foreach( $mesociclo->microciclos as $microciclo ) {
           foreach( $microciclo->sesiones as $sesion ) {
+            foreach( $sesion->sesion_pelotaris as $pelotari ) {
+              foreach( $pelotari->ejercicios as $ejercicio ) {
+                $ejercicio->delete();
+              }
+              $pelotari->delete();
+            }
             $sesion->delete();
           }
           $microciclo->delete();

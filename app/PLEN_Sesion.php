@@ -21,7 +21,7 @@ class PLEN_Sesion extends Model
     public function delete() {
       $pelotaris = $this->sesion_pelotaris;
       foreach( $pelotaris as $pelotari ) {
-        $ejercicios = $pelotari->ejercicios;
+        $ejercicios = $pelotari->sesion_ejercicios;
         foreach( $ejercicios as $ejercicio ) {
           $ejercicio->delete();
         }
