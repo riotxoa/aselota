@@ -30,7 +30,11 @@
           <!-- <p>Debes identificarte para poder acceder a la aplicación</p> -->
         @else
           <nav class="navbar navbar-expand-md navbar-light navbar-laravel p-sm-0">
+            @if( $role == 'plen_gestor' or $role == 'plen_entrendador' )
+              <div class="container-fluid">
+            @else
               <div class="container">
+            @endif
                   <a class="navbar-brand" href="{{ url('/') }}">
                       <!-- {{ config('app.name', 'Laravel') }} -->
                       <img src="/storage/logo-enpresa.png" height="45px" style="padding:5px 0"/>
