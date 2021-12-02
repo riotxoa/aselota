@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="module-title py-2 text-center">Macrociclos</p>
+    <p class="module-title py-2 text-center">Planificador</p>
     <b-container fluid class="p-xl-3">
       <b-button :disabled="edit_index > 0" @click="addNewItem" variant="danger" class="float-right mb-3">Nuevo Macrociclo</b-button>
       <b-table

@@ -138,10 +138,7 @@ Vue.component('plen-home', require('./components/HomePLENComponent.vue'));
 
 Vue.component('plen-gestor-dashboard', require('./components/PLEN/gestor/00_DashboardComponent.vue'));
 Vue.component('plen-gestor-inicio', require('./components/PLEN/gestor/10_InicioComponent.vue'));
-Vue.component('plen-gestor-macrociclos', require('./components/PLEN/gestor/15_MacrociclosComponent.vue'));
-Vue.component('plen-gestor-mesociclos', require('./components/PLEN/gestor/20_MesociclosComponent.vue'));
-Vue.component('plen-gestor-microciclos', require('./components/PLEN/gestor/25_MicrociclosComponent.vue'));
-Vue.component('plen-gestor-sesiones', require('./components/PLEN/gestor/30_SesionesComponent.vue'));
+Vue.component('plen-gestor-planificador', require('./components/PLEN/gestor/20_PlanificadorComponent.vue'));
 Vue.component('plen-gestor-ejercicios', require('./components/PLEN/gestor/40_EjerciciosComponent.vue'));
 Vue.component('plen-gestor-tipos-meso', require('./components/PLEN/gestor/410_TiposMesocicloComponent.vue'));
 Vue.component('plen-gestor-tipos-micro', require('./components/PLEN/gestor/420_TiposMicrocicloComponent.vue'));
@@ -154,10 +151,7 @@ Vue.component('plen-entrenador-dashboard', require('./components/PLEN/entrenador
 const PLEN_Home = { template: '<plen-home></plen-home>' };
 const PLEN_GESTOR_Dashboard = { template: '<plen-gestor-dashboard></plen-gestor-dashboard>' };
 const PLEN_GESTOR_Inicio = { template: '<plen-gestor-inicio></plen-gestor-inicio>' };
-const PLEN_GESTOR_Macrociclos = { template: '<plen-gestor-macrociclos></plen-gestor-macrociclos>' };
-const PLEN_GESTOR_Mesociclos = { template: '<plen-gestor-mesociclos></plen-gestor-mesociclos>' };
-const PLEN_GESTOR_Microciclos = { template: '<plen-gestor-microciclos></plen-gestor-microciclos>' };
-const PLEN_GESTOR_Sesiones = { template: '<plen-gestor-sesiones></plen-gestor-sesiones>' };
+const PLEN_GESTOR_Planificador = { template: '<plen-gestor-planificador></plen-gestor-planificador>' };
 const PLEN_GESTOR_Ejercicios = { template: '<plen-gestor-ejercicios></plen-gestor-ejercicios>' };
 const PLEN_GESTOR_TiposMeso = { template: '<plen-gestor-tipos-meso></plen-gestor-tipos-meso>' };
 const PLEN_GESTOR_TiposMicro = { template: '<plen-gestor-tipos-micro></plen-gestor-tipos-micro>' };
@@ -305,16 +299,7 @@ const routes = [
         path: 'inicio', name: 'PLEN_GESTOR_Inicio', component: PLEN_GESTOR_Inicio
       },
       {
-        path: 'macrociclos', name: 'PLEN_GESTOR_Macrociclos', component: PLEN_GESTOR_Macrociclos
-      },
-      {
-        path: 'mesociclos', name: 'PLEN_GESTOR_Mesociclos', component: PLEN_GESTOR_Mesociclos
-      },
-      {
-        path: 'microciclos', name: 'PLEN_GESTOR_Microciclos', component: PLEN_GESTOR_Microciclos
-      },
-      {
-        path: 'sesiones', name: 'PLEN_GESTOR_Sesiones', component: PLEN_GESTOR_Sesiones
+        path: 'macrociclos', name: 'PLEN_GESTOR_Planificador', component: PLEN_GESTOR_Planificador
       },
       {
         path: 'ejercicios', name: 'PLEN_GESTOR_Ejercicios', component: PLEN_GESTOR_Ejercicios
