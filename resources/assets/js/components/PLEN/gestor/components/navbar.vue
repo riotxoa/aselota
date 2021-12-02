@@ -38,8 +38,8 @@
         <b-nav-item :to="{ name: 'PLEN_GESTOR_Ejercicios' }"><i class="fa fa-chevron-right mr-2"></i>Ejercicios</b-nav-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-nav-item class="dropdown position-relative">
-          <a class="nav-link dropdown-toggle p-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class='fas fa-table mr-2'></i>Auxiliares</a>
-          <div id="dropdownmenu" class="dropdown-menu plen-drop-menu">
+          <a class="nav-link dropdown-toggle p-0" v-bind:class="[ { 'show': expandAuxiliares } ]" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class='fas fa-table mr-2'></i>Auxiliares</a>
+          <div id="dropdownmenu" class="dropdown-menu plen-drop-menu" v-bind:class="[ { 'show': expandAuxiliares } ]">
             <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_TiposMeso' }"><i class="far fa-calendar mr-2"></i>Tipos de Mesociclo</router-link>
             <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_TiposMicro' }"><i class="far fa-calendar-alt mr-2"></i>Tipos de Microciclo</router-link>
             <router-link class="dropdown-item" :to="{ name: 'PLEN_GESTOR_TiposEjercicio' }"><i class="fas fa-bars mr-2"></i>Tipos de Ejercicio</router-link>
@@ -57,13 +57,30 @@
   export default {
     data () {
       return {
+        expandAuxiliares: false,
         expanded: false,
       }
     },
+    watch: {
+      $route(to, from) {
+        switch( to.name ) {
+          case 'PLEN_GESTOR_TiposMeso':
+          case 'PLEN_GESTOR_TiposMicro':
+          case 'PLEN_GESTOR_TiposEjercicio':
+          case 'PLEN_GESTOR_SubtiposEjercicio':
+          case 'PLEN_GESTOR_Fases':
+            this.expandAuxiliares = true;
+            break;
+          default:
+            this.expandAuxiliares = false;
+            break;
+        }
+      }
+    }
   }
 </script>
 
-<style focused>
+<style scoped>
   .navbar-laravel > .container {
     max-width:calc(100% - 1rem);
   }
@@ -79,11 +96,25 @@
 </style>
 
 <style>
+  .plen-side-nav .active,
+  .plen-side-nav .router-link-active {
+    background:#f1f7e2;
+    color:#769a17!important;
+    font-weight:bold;
+  }
   #dropdownmenu.plen-drop-menu {
     background:transparent;
     border:none;
     left:-1.25rem!important;
     top:.25rem!important;
+  }
+  #dropdownmenu.plen-drop-menu.show {
+    position: absolute;
+    transform: translate3d(16px, 31px, 0px);
+    top: 0px;
+    left: 0px;
+    width:100%;
+    will-change: transform;
   }
 
   #plennavbar .d-none li.nav-item:hover > a {
