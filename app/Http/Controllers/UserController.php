@@ -60,7 +60,7 @@ class UserController extends Controller
      */
     public function edit(Request $request)
     {
-        $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico']);
+        $request->user()->authorizeRoles(['admin', 'rrhh', 'gerente', 'entrenador', 'intendente', 'prensa', 'medico', 'plen_gestor', 'plen_entrenador']);
 
         $id = $request->user()->id;
 
