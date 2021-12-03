@@ -368,12 +368,14 @@
         let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
         if( pelotari.ejercicios[index].intensidad > 1 ) {
           pelotari.ejercicios[index].intensidad--;
+          this.$forceUpdate();
         }
       },
       onClickIntensidadUp(index, pelotari_id) {
         let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
         if( pelotari.ejercicios[index].intensidad == 0 || pelotari.ejercicios[index].intensidad < 5 ) {
           pelotari.ejercicios[index].intensidad++;
+          this.$forceUpdate();
         }
       },
       onClickOpenDesigner() {
@@ -388,6 +390,8 @@
         pelotari.ejercicios[index + 1].order = currentOrder;
 
         pelotari.ejercicios = _.orderBy(pelotari.ejercicios, 'order', 'asc');
+
+        this.$forceUpdate();
       },
       onClickOrderUp(index, pelotari_id) {
         let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
@@ -398,6 +402,8 @@
         pelotari.ejercicios[index - 1].order = currentOrder;
 
         pelotari.ejercicios = _.orderBy(pelotari.ejercicios, 'order', 'asc');
+
+        this.$forceUpdate();
       },
       onClickRemoveEjercicio(pelotari_id, ejercicio_id) {
         const pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
@@ -416,12 +422,14 @@
         let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
         if( pelotari.ejercicios[index].volumen > 1 ) {
           pelotari.ejercicios[index].volumen--;
+          this.$forceUpdate();
         }
       },
       onClickVolumenUp(index, pelotari_id) {
         let pelotari = _.find(this.sesion.pelotaris, { id: pelotari_id });
         if( pelotari.ejercicios[index].volumen == 0 || pelotari.ejercicios[index].volumen < 5 ) {
           pelotari.ejercicios[index].volumen++;
+          this.$forceUpdate();
         }
       },
       onInputFecha(fecha) {
@@ -439,6 +447,7 @@
         const index_pelotaris = _.findIndex(this.sesion.pelotaris, { 'id': pelotari_id });
         const index_ejercicios = _.findIndex(this.sesion.pelotaris[index_pelotaris].ejercicios, { 'ejercicio_id': ejercicio_id});
         this.sesion.pelotaris[index_pelotaris].ejercicios.splice(index_ejercicios, 1);
+        this.$forceUpdate();
       },
       removePelotari(id) {
         const index = _.findIndex(this.sesion.pelotaris, { 'id': id });
