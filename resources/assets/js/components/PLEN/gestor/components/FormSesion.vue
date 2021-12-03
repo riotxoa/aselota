@@ -132,11 +132,11 @@
                 </b-row>
                 <b-row v-for="(ejercicio, index) in pelotari.ejercicios" v-bind:key="index" class="border-bottom mx-0 ejercicios-row">
                   <b-col cols="2" md="1" class="pl-0 pr-2 py-1 text-left">
-                    <b-button v-if="index > 0" size="sm" variant="link" class="arrow d-none d-sm-block float-left p-0 text-dark" title="Desplazar hacia arriba en el orden del listado" @click="onClickOrderUp(index, pelotari.id)">
+                    <b-button v-if="!readonly && index > 0" size="sm" variant="link" class="arrow d-none d-sm-block float-left p-0 text-dark" title="Desplazar hacia arriba en el orden del listado" @click="onClickOrderUp(index, pelotari.id)">
                       <i class="fas fa-long-arrow-alt-up"></i>
                     </b-button>
                     <span v-else class="d-none d-sm-block float-left pl-1">&nbsp;</span>
-                    <b-button v-if="index < (pelotari.ejercicios.length - 1)" size="sm" variant="link" class="arrow d-none d-sm-block float-left p-0 text-dark" title="Desplazar hacia abajo en el orden del listado" @click="onClickOrderDown(index, pelotari.id)">
+                    <b-button v-if="!readonly && index < (pelotari.ejercicios.length - 1)" size="sm" variant="link" class="arrow d-none d-sm-block float-left p-0 text-dark" title="Desplazar hacia abajo en el orden del listado" @click="onClickOrderDown(index, pelotari.id)">
                       <i class="fas fa-long-arrow-alt-down"></i>
                     </b-button>
                     <span v-else class="d-none d-sm-block float-left pl-1">&nbsp;</span>
@@ -149,20 +149,20 @@
                     <small>{{ ejercicio.name }}</small>
                   </b-col>
                   <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-center">
-                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block p-0 plus text-dark" title="Reducir el Volumen" @click="onClickVolumenDown(index, pelotari.id)">
+                    <b-button v-if="!readonly" size="sm" variant="link" class="d-none d-sm-inline-block p-0 plus text-dark" title="Reducir el Volumen" @click="onClickVolumenDown(index, pelotari.id)">
                       <i class="fas fa-minus"></i>
                     </b-button>
-                    <small class="border px-2 py-1">{{ ejercicio.volumen }}</small>
-                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block minus p-0 text-dark" title="Aumentar el Volumen" @click="onClickVolumenUp(index, pelotari.id)">
+                    <small class="px-2 py-1" v-bind:class="[{ 'border': !readonly }]">{{ ejercicio.volumen }}</small>
+                    <b-button v-if="!readonly" size="sm" variant="link" class="d-none d-sm-inline-block minus p-0 text-dark" title="Aumentar el Volumen" @click="onClickVolumenUp(index, pelotari.id)">
                       <i class="fas fa-plus"></i>
                     </b-button>
                   </b-col>
                   <b-col cols="1" md="1" class="d-none d-md-block pl-0 pr-2 py-1 text-center">
-                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block p-0 plus text-dark" title="Reducir el Volumen" @click="onClickIntensidadDown(index, pelotari.id)">
+                    <b-button v-if="!readonly" size="sm" variant="link" class="d-none d-sm-inline-block p-0 plus text-dark" title="Reducir el Volumen" @click="onClickIntensidadDown(index, pelotari.id)">
                       <i class="fas fa-minus"></i>
                     </b-button>
-                    <small class="border px-2 py-1">{{ ejercicio.intensidad }}</small>
-                    <b-button size="sm" variant="link" class="d-none d-sm-inline-block minus p-0 text-dark" title="Aumentar el Volumen" @click="onClickIntensidadUp(index, pelotari.id)">
+                    <small class="px-2 py-1" v-bind:class="[{ 'border': !readonly }]">{{ ejercicio.intensidad }}</small>
+                    <b-button v-if="!readonly" size="sm" variant="link" class="d-none d-sm-inline-block minus p-0 text-dark" title="Aumentar el Volumen" @click="onClickIntensidadUp(index, pelotari.id)">
                       <i class="fas fa-plus"></i>
                     </b-button>
                   </b-col>
