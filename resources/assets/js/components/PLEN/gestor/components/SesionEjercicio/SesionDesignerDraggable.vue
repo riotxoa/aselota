@@ -78,11 +78,11 @@
             class="cursor-pointer float-right mr-2"
             v-bind:class="[ { 'text-white': 'pelotari' === item.type }, { 'text-info': 'fase' === item.type } ]"
             v-on:click="onClickToggleCollapse(idx)">
-            <i v-if="true == item.collapsed" class="fas fa-caret-down"></i>
-            <i v-else class="fas fa-caret-up"></i>
+            <i v-if="true == item.collapsed" class="fas fa-caret-down" v-on:click="onClickToggleCollapse(idx)"></i>
+            <i v-else class="fas fa-caret-up" v-on:click="onClickToggleCollapse(idx)"></i>
           </a>
         </div>
-        <SDDraggable v-if="item.type === 'fase' || group.type === 'sesion'" class="item-sub" :list="item.elements" :group="{ name: group.name, type: item.type, pull: group.pull, put: group.put }" :title="false" />
+        <SDDraggable v-if="(item.type === 'fase' || group.type === 'sesion') && !item.collapsed" class="item-sub" :list="item.elements" :group="{ name: group.name, type: item.type, pull: group.pull, put: group.put }" :title="false" />
       </div>
     </draggable>
   </div>
