@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use App\Pelotari;
 
-use Illuminate\Support\Facades\Log;
-
 class PelotarisProfesionalController extends Controller
 {
     /**
@@ -71,7 +69,7 @@ class PelotarisProfesionalController extends Controller
                          ->whereDate('cc2.fecha_fin', '>=', $fecha_ini)
                          ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'cc2.coste', 'c2.garantia');
         }
-Log::debug("[PelotarisProfesionalController] SQL: " . $items->toSql());
+
         $items = $items->orderBy('alias')
                        ->get();
 
