@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use App\Pelotari;
 
+use Illuminate\Support\Facades\Log;
+
 class PelotarisProfesionalController extends Controller
 {
     /**
@@ -40,7 +42,7 @@ class PelotarisProfesionalController extends Controller
                          // ->leftJoin('contratos_comercial as cc1', 'c1.header_id', '=', 'cc1.header_id')
                          ->leftJoin('contratos_comercial as cc1', function ($join) {
                             $join->on('c1.header_id', '=', 'cc1.header_id')
-                                 ->where('cc1.fecha_fin', '=', DB::raw('(SELECT MAX(fecha_fin) from contratos_comercial as ccx where ccx.pelotari_id = cc1.pelotari_id)'))
+                                 // ->where('cc1.fecha_fin', '=', DB::raw('(SELECT MAX(fecha_fin) from contratos_comercial as ccx where ccx.pelotari_id = cc1.pelotari_id)'))
                                  ->on('c1.fecha_ini', '<=', 'cc1.fecha_fin')
                                  ->on('c1.fecha_fin', '>=', 'cc1.fecha_ini');
                          })
@@ -69,7 +71,7 @@ class PelotarisProfesionalController extends Controller
                          ->whereDate('cc2.fecha_fin', '>=', $fecha_ini)
                          ->whereNull('c2.deleted_at')->addSelect('c2.fecha_ini as fecha_contrato', 'cc2.coste', 'c2.garantia');
         }
-
+Log::debug("[PelotarisProfesionalController] SQL: " . $items->toSql());
         $items = $items->orderBy('alias')
                        ->get();
 
